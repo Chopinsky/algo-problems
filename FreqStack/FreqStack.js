@@ -1,5 +1,5 @@
-const _map = {};
-const _stacks = [];
+let _map = {};
+let _stacks = [];
 
 const push = function(x) {
   if (typeof x !== "number") {
@@ -32,6 +32,11 @@ const pop = function() {
   return result;
 };
 
+const clear = function() {
+  _map = {};
+  _stacks = [];
+};
+
 const dump = function() {
   console.log(_map);
   console.log(_stacks);
@@ -40,5 +45,6 @@ const dump = function() {
 module.exports = {
   push,
   pop,
+  clear,
   dump
 };

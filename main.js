@@ -1,13 +1,29 @@
-// Freq-Stack problem
-const freqStack = function(debug) {
-  const freqTest = require("./FreqStack/FreqStackRun");
-  if (debug) {
-    freqTest.dump();
-  } else {
-    freqTest.run();
-  }
-};
+let runParam =
+  process.argv && process.argv.length > 2
+    ? process.argv[2].toLowerCase()
+    : "freqstack";
 
-freqStack();
+let runDebug =
+  process.argv && process.argv.length > 3 ? process.argv[3].toLowerCase() : "";
 
-console.log("Done...");
+let debugMode = false;
+
+if (runDebug === "-d" || runDebug === "--debug") {
+  debugMode = true;
+}
+
+switch (runParam) {
+  // Freq-Stack problem
+  case "freqstack":
+    console.log("Running Freq_Stack:\n");
+
+    const freqStack = require("./FreqStack/FreqStackRun");
+    freqStack.run(debugMode);
+
+    break;
+
+  default:
+    break;
+}
+
+console.log("\nAll is done...");

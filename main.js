@@ -18,9 +18,15 @@ switch (runParam) {
     console.log("Running Freq_Stack:\n");
 
     const freqStack = require("./FreqStack/FreqStackRun");
-    freqStack.run(debugMode);
+    freqStack.run(null, debugMode);
 
     break;
+
+  case "lru":
+    console.log("Running LRU:\n");
+
+    const lru = require("./LRU/LRURun");
+    lru.run(null, debugMode);
 
   default:
     break;

@@ -32,7 +32,7 @@ const pop = function() {
   return result;
 };
 
-const clear = function() {
+const reset = function() {
   _map = {};
   _stacks = [];
 };
@@ -45,6 +45,6 @@ const dump = function() {
 module.exports = {
   push,
   pop,
-  clear,
+  reset,
   dump
 };

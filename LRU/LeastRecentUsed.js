@@ -12,6 +12,12 @@ const initialize = function(size) {
   setCapacity(size);
 };
 
+const reset = function() {
+  _cacheHead = null;
+  _cacheMap = {};
+  _size = 0;
+};
+
 const shrinkToSize = function(size) {
   if (typeof size !== "number" || size < 1) {
     console.error(`Size must be a positive integer, but now it's ${capacity}`);
@@ -161,6 +167,7 @@ const dump = function() {
 
 module.exports = {
   initialize,
+  reset,
   setCapacity,
   get,
   put,

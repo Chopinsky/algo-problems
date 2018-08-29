@@ -3,7 +3,7 @@ var freqStack = require("./FreqStack");
 
 describe("Basics", function() {
   beforeEach(function() {
-    freqStack.clear();
+    freqStack.reset();
   });
 
   it("Null in, null out", function() {

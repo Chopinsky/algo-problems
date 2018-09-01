@@ -4,7 +4,9 @@
   "description": "A collection of algorithm problem solutions.",
   "main": "main.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "go-build": "del-cli .\\problems.exe && go build",
+    "go-run": "npm run go-build && .\\problems.exe"
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/Chopinsky/Algo_Problems/issues"
   },
-  "homepage": "https://github.com/Chopinsky/Algo_Problems#readme"
+  "homepage": "https://github.com/Chopinsky/Algo_Problems#readme",
+  "devDependencies": {
+    "del-cli": "^1.1.0"
+  }
 }

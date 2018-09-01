@@ -27,6 +27,14 @@ switch (runParam) {
 
     const lru = require("./LRU/LRURun");
     lru.run(null, debugMode);
+    break;
+
+  case "binarytreerebuild":
+    console.log("Running Binary Tree from Traveseral:\n");
+
+    const bt = require("./BinaryTreeRebuild/BinaryTreeRun");
+    bt.run([1, 2, 4, 5, 3, 6, 7], [4, 5, 2, 6, 7, 3, 1], debugMode);
+    break;
 
   default:
     break;

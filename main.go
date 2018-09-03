@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"./LFU"
+	"./LRU"
 )
 
 func main() {
@@ -32,7 +33,9 @@ func main() {
 	for _, problem := range toRun {
 		switch problem {
 		case "lfu":
-			lfu.Run(debug)
+			lfu.Run(2, debug)
+		case "lru":
+			lru.Run(2, debug)
 		default:
 			fmt.Printf("Problem category not defined...")
 		}

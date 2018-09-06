@@ -23,5 +23,5 @@ func Run(capacity int, _debug bool) {
 	fmt.Println(cache.Get(3))
 	fmt.Println(cache.Get(4))
 
-	fmt.Println("\nLFU done...")
+	fmt.Println("\nLRU done...")
 }

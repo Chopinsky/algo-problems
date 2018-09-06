@@ -3,18 +3,15 @@ package lfu
 import (
 	"errors"
 	"fmt"
-)
 
-type node struct {
-	key   int
-	value int
-}
+	"../Support"
+)
 
 // Cache ...
 type Cache struct {
-	store    map[int][]int
-	storeMap map[int]*node
-	capacity int
+	freqStore map[int]*support.List
+	mapStore  map[int]*support.Node
+	capacity  int
 }
 
 // InitCache ...
@@ -24,8 +21,8 @@ func InitCache(capacity int) (*Cache, error) {
 	}
 
 	cache := &Cache{
-		make(map[int][]int),
-		make(map[int]*node),
+		make(map[int]*support.List),
+		make(map[int]*support.Node),
 		1,
 	}
 
@@ -56,47 +53,85 @@ func (cache *Cache) SetCapacity(c int) error {
 
 // Put ...
 func (cache *Cache) Put(key, value int) {
-	if n := cache.storeMap[key]; n != nil {
-		if n.value != value {
-			n.value = value
+	if node := cache.mapStore[key]; node != nil {
+		if node.GetValue() != value {
+			node.SetValue(value)
 		}
 
-		cache.touch(n)
+		cache.touch(node)
 		return
 	}
 
-	newNode := &node{
-		key,
-		value,
+	// get space for the new entry
+	size := len(cache.mapStore)
+	if size >= cache.capacity {
+		cache.shrinkBy(size - cache.capacity + 1)
 	}
 
-	cache.storeMap[key] = newNode
+	newNode := support.NewNode(key, value)
+	cache.mapStore[key] = newNode
 
-	size := len(cache.storeMap)
-	if size > cache.capacity {
-		cache.shrinkBy(size - cache.capacity)
+	if store, ok := cache.freqStore[1]; ok {
+		store.Push(newNode)
+	} else {
+		cache.freqStore[1] = support.NewList(newNode)
 	}
 }
 
 // Get ...
 func (cache *Cache) Get(key int) int {
-	if n := cache.storeMap[key]; n != nil {
-		cache.touch(n)
-		return n.value
+	if node := cache.mapStore[key]; node != nil {
+		cache.touch(node)
+		return node.GetValue()
 	}
 
 	return -1
 }
 
-func (cache *Cache) touch(node *node) {
+func (cache *Cache) touch(node *support.Node) {
+	freq := node.GetFreq()
+	node.Detach()
 
-}
+	if store, ok := cache.freqStore[freq]; ok {
+		if store.IsEmpty() {
+			delete(cache.freqStore, freq)
+		}
+	}
 
-func (cache *Cache) shrinkBy(count int) {
-	for {
-		break
+	freq++
+	node.Touch()
+
+	if store, ok := cache.freqStore[freq]; ok {
+		store.Push(node)
+	} else {
+		cache.freqStore[freq] = support.NewList(node)
 	}
 }
 
-func (node *node) detach() {
+func (cache *Cache) shrinkBy(count int) {
+	var key int
+	freq := 1
+
+	for {
+		if store, ok := cache.freqStore[freq]; ok {
+			for {
+				if !store.IsEmpty() {
+					key = store.PopFront().GetKey()
+					delete(cache.mapStore, key)
+
+					count--
+					if count == 0 {
+						return
+					}
+				}
+
+				if store.IsEmpty() {
+					delete(cache.freqStore, freq)
+					break
+				}
+			}
+		}
+
+		freq++
+	}
 }

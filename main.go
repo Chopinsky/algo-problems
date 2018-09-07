@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"./Bipartition"
+	"./BitOrSub"
 	"./LFU"
 	"./LRU"
 )
@@ -27,6 +28,7 @@ func main() {
 		}
 
 		param := strings.SplitN(val, "=", 2)
+
 		if len(param) == 2 {
 			switch param[0] {
 			case "test":
@@ -36,24 +38,20 @@ func main() {
 				}
 
 				testCase = num
+
 			default:
-				testCase = 1
 			}
 
 			continue
 		}
 
-		switch val {
-		case "lfu":
-			toRun = append(toRun, "lfu")
-		case "lru":
-			toRun = append(toRun, "lru")
-		case "bipartition":
-			toRun = append(toRun, "bipartition")
-		default:
-			fmt.Printf("Flag not supported: %s\n", arg)
+		if val == "lfu" || val == "lru" || val == "bipartition" || val == "bit" {
+			toRun = append(toRun, val)
 		}
 	}
+
+	fmt.Println("====== Running... ======")
+	fmt.Println()
 
 	for _, problem := range toRun {
 		switch problem {
@@ -63,10 +61,13 @@ func main() {
 			lru.Run(2, debug)
 		case "bipartition":
 			bipartition.Run(testCase, debug)
+		case "bit":
+			bitorsub.Run(testCase, debug)
 		default:
 			fmt.Printf("\n>>> Problem category not defined... <<<\n")
 		}
 	}
 
-	fmt.Println("\nDone...")
+	fmt.Println("\n====== Done... ======")
+	fmt.Println()
 }

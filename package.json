@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "mocha",
+    "main": "node main.js --",
     "go-build": "del-cli .\\problems.exe && go build",
     "go-run": "npm run go-build && .\\problems.exe"
   },

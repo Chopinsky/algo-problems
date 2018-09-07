@@ -1,18 +1,36 @@
-let runParam =
-  process.argv && process.argv.length > 2
-    ? process.argv[2].toLowerCase()
-    : "freqstack";
-
-let runDebug =
-  process.argv && process.argv.length > 3 ? process.argv[3].toLowerCase() : "";
-
+let prog = "";
 let debugMode = false;
 
-if (runDebug === "-d" || runDebug === "--debug") {
-  debugMode = true;
+if (process.argv && process.argv.length > 2) {
+  let params = process.argv.slice(2);
+
+  for (let val of params) {
+    let command = val.toLowerCase();
+    if (command === "-d" || command === "--debug") {
+      debugMode = true;
+      continue;
+    }
+
+    if (!prog) {
+      for (let p of ["freqstack", "lru", "binarytreerebuild"]) {
+        if (p.startsWith(command)) {
+          prog = p;
+          break;
+        }
+      }
+    }
+  }
 }
 
-switch (runParam) {
+if (!prog) {
+  prog = "lru";
+}
+
+if (debugMode) {
+  console.info("(In debug mode...)");
+}
+
+switch (prog) {
   // Freq-Stack problem
   case "freqstack":
     console.log("Running Freq_Stack:\n");

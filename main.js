@@ -1,3 +1,39 @@
+const cases = {
+  freqstack: (testSet, debug) => {
+    console.log("Running >> Frequent Stack << \n");
+
+    const freqStack = require("./FreqStack/FreqStackRun");
+    freqStack.run(testSet, debug);
+  },
+  lru: (testSet, debug) => {
+    console.log("Running >> Least Recent Used << \n");
+
+    const lru = require("./LRU/LRURun");
+    lru.run(testSet, debug);
+  },
+  binarytreerebuild: (testSet, debug) => {
+    console.log("Running >> Rebuild Binary Tree << \n");
+
+    const bt = require("./BinaryTreeRebuild/BinaryTreeRun");
+    testSet = testSet
+      ? testSet
+      : {
+          preorder: [1, 2, 4, 5, 3, 6, 7],
+          postorder: [4, 5, 2, 6, 7, 3, 1]
+        };
+
+    bt.run(testSet, debug);
+  },
+  alltrees: (testSet, debug) => {
+    console.log("Running >> All Possible Trees << \n");
+
+    const at = require("./AllTrees/AllTreesRun");
+    testSet = testSet ? testSet : 9;
+
+    at.run2(testSet, debug);
+  }
+};
+
 let prog = "";
 let debugMode = false;
 
@@ -12,7 +48,7 @@ if (process.argv && process.argv.length > 2) {
     }
 
     if (!prog) {
-      for (let p of ["freqstack", "lru", "binarytreerebuild"]) {
+      for (let p of Object.keys(cases)) {
         if (p.startsWith(command)) {
           prog = p;
           break;
@@ -27,35 +63,18 @@ if (!prog) {
 }
 
 if (debugMode) {
-  console.info("(In debug mode...)");
+  console.info("(Running in debug mode...)");
 }
 
-switch (prog) {
-  // Freq-Stack problem
-  case "freqstack":
-    console.log("Running Freq_Stack:\n");
-
-    const freqStack = require("./FreqStack/FreqStackRun");
-    freqStack.run(null, debugMode);
-
-    break;
-
-  case "lru":
-    console.log("Running LRU:\n");
-
-    const lru = require("./LRU/LRURun");
-    lru.run(null, debugMode);
-    break;
-
-  case "binarytreerebuild":
-    console.log("Running Binary Tree from Traveseral:\n");
-
-    const bt = require("./BinaryTreeRebuild/BinaryTreeRun");
-    bt.run([1, 2, 4, 5, 3, 6, 7], [4, 5, 2, 6, 7, 3, 1], debugMode);
-    break;
-
-  default:
-    break;
+if (cases.hasOwnProperty(prog)) {
+  let func = cases[prog];
+  if (typeof func === "function") {
+    func(null, debugMode);
+  } else {
+    console.error(`Unable to find the entry point for the case ${prog}...\n`);
+  }
+} else {
+  console.error(`No matching case is founded for the case ${prog}...\n`);
 }
 
 console.log("\nAll is done...");

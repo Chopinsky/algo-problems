@@ -31,6 +31,30 @@ const cases = {
     testSet = testSet ? testSet : 9;
 
     at.run2(testSet, debug);
+  },
+  subgraph: (testSet, debug) => {
+    console.log("Running >> Reachable Nodes in a SubGraph << \n");
+
+    const sub = require("./SubGraph/SubGraphRun");
+    testSet = testSet
+      ? testSet
+      : {
+          edges: [[0, 1, 10], [0, 2, 1], [1, 2, 2]],
+          nodes: 3,
+          steps: 6
+        };
+
+    let ans = sub.run(testSet, debug);
+    console.log(ans);
+  },
+  twoSum: (testSet, debug) => {
+    console.log("Running >> 2 Sum << \n");
+
+    const sum = require("./2Sum/2Sum");
+    testSet = testSet ? testSet : [-40, 50, -20, 1000, 5, 0, -11, 40];
+
+    let ans = sum.calc(testSet, debug);
+    console.log(ans);
   }
 };
 

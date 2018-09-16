@@ -36,13 +36,20 @@ const cases = {
     console.log("Running >> Reachable Nodes in a SubGraph << \n");
 
     const sub = require("./SubGraph/SubGraphRun");
-    testSet = testSet
-      ? testSet
-      : {
-          edges: [[0, 1, 10], [0, 2, 1], [1, 2, 2]],
-          nodes: 3,
-          steps: 6
-        };
+
+    const setOne = {
+      edges: [[0, 1, 10], [0, 2, 1], [1, 2, 2]],
+      nodes: 3,
+      steps: 6
+    };
+
+    const setTwo = {
+      edges: [[1, 2, 5], [0, 3, 3], [1, 3, 2], [2, 3, 4], [0, 4, 1]],
+      nodes: 5,
+      steps: 7
+    };
+
+    testSet = testSet ? testSet : setTwo;
 
     let ans = sub.run(testSet, debug);
     console.log(ans);
@@ -54,6 +61,21 @@ const cases = {
     testSet = testSet ? testSet : [-40, 50, -20, 1000, 5, 0, -11, 40];
 
     let ans = sum.calc(testSet, debug);
+    console.log(ans);
+  },
+  kthSmallest: (testCase, debug) => {
+    console.log("Running >> Kth Smallest << \n");
+
+    const kth = require("./KthSmallest/KthSmallest");
+    testCase = testCase
+      ? testCase
+      : {
+          m: 3,
+          n: 3,
+          k: 3
+        };
+
+    let ans = kth.run(testCase, debug);
     console.log(ans);
   }
 };

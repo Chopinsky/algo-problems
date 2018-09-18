@@ -77,6 +77,24 @@ const cases = {
 
     let ans = kth.run(testCase, debug);
     console.log(ans);
+  },
+  stockSpan: (tests, debug) => {
+    console.log("Running >> Stock Span << \n");
+
+    const stock = require("./StockSpan/StockSpan");
+    tests = tests ? tests : [100, 80, 60, 70, 60, 75, 85];
+
+    let ans = stock.run(tests, debug);
+    console.log(ans);
+  },
+  removeBoxes: (tests, debug) => {
+    console.log("Running >> Remove Boxes << \n");
+
+    const boxes = require("./RemoveBoxes/run");
+    tests = tests ? tests : [1, 3, 2, 2, 2, 3, 4, 3, 1];
+
+    let ans = boxes.run(tests, debug);
+    console.log(ans);
   }
 };
 

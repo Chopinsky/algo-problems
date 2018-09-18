@@ -23,23 +23,24 @@ const search = function(m, n, k, debug) {
 };
 
 const lex = function(m, n, k, x, debug) {
-  let ans = 0;
+  let counts = 0;
   let len = m > x ? x : m;
+  let base = Math.floor(x / i);
 
   for (let i = 1; i <= len; i++) {
-    ans += Math.min(n, Math.floor(x / i));
+    counts += Math.min(n, base);
 
     // early return, if already more than k elements, no need to continue counting
-    if (ans >= k) {
+    if (counts >= k) {
       break;
     }
   }
 
   if (debug) {
-    console.log(`Number: ${x}; Counts: ${ans}`);
+    console.log(`Number: ${x}; Counts: ${counts}`);
   }
 
-  return ans;
+  return counts;
 };
 
 module.exports = {

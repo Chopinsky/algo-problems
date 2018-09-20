@@ -95,6 +95,35 @@ const cases = {
 
     let ans = boxes.run(tests, debug);
     console.log(ans);
+  },
+  stoneGame: (test, debug) => {
+    console.log("Running >> Stone Games << \n");
+
+    const sg = require("./StoneGame/run");
+    const testSet = require("./StoneGame/testSet");
+
+    test = test ? test : testSet && testSet.set ? testSet.set : [5, 3, 4, 5];
+
+    console.log(`Test set: ${test}`);
+
+    let ans = sg.run(test, debug);
+    console.log(ans);
+  },
+  profitableSchemes: (test, debug) => {
+    console.log("Running >> Profitable Schemes << \n");
+
+    const ps = require("./ProfitableSchemes/run");
+    test = test
+      ? test
+      : {
+          gSize: 5,
+          pSize: 3,
+          group: [2, 2],
+          profit: [2, 3]
+        };
+
+    let ans = ps.run(test.pSize, test.gSize, test.profit, test.group);
+    console.log(ans);
   }
 };
 
@@ -133,7 +162,11 @@ if (debugMode) {
 if (cases.hasOwnProperty(prog)) {
   let func = cases[prog];
   if (typeof func === "function") {
+    let start = new Date().getMilliseconds();
     func(null, debugMode);
+    let end = new Date().getMilliseconds();
+
+    console.log(`Execution time: ${end - start} ms`);
   } else {
     console.error(`Unable to find the entry point for the case ${prog}...\n`);
   }

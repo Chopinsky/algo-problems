@@ -116,13 +116,27 @@ const cases = {
     test = test
       ? test
       : {
-          gSize: 5,
-          pSize: 3,
-          group: [2, 2],
-          profit: [2, 3]
+          gSize: 10,
+          pSize: 5,
+          group: [2, 3, 5],
+          profit: [6, 7, 8]
         };
 
-    let ans = ps.run(test.pSize, test.gSize, test.profit, test.group);
+    let ans = ps.run(test.pSize, test.gSize, test.profit, test.group, debug);
+    console.log(ans);
+  },
+  givenDigitSet: (test, debug) => {
+    console.log("Running >> Numbers under Limit w/ Given Digit Set << \n");
+
+    const gs = require("./GivenDigitSet/run");
+    test = test
+      ? test
+      : {
+          digits: [1, 4, 9],
+          limit: 2111111111
+        };
+
+    let ans = gs.run(test.digits, test.limit, debug);
     console.log(ans);
   }
 };

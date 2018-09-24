@@ -138,6 +138,14 @@ const cases = {
 
     let ans = gs.run(test.digits, test.limit, debug);
     console.log(ans);
+  },
+  sortList: (test, debug) => {
+    console.log("Running >> Sort List << \n");
+
+    const sl = require("./SortList/run");
+    test = test ? test : [4, 2, 1, 3];
+
+    return sl.run(test, debug);
   }
 };
 
@@ -177,8 +185,12 @@ if (cases.hasOwnProperty(prog)) {
   let func = cases[prog];
   if (typeof func === "function") {
     let start = new Date().getMilliseconds();
-    func(null, debugMode);
+    let ans = func(null, debugMode);
     let end = new Date().getMilliseconds();
+
+    if (ans) {
+      console.log(ans);
+    }
 
     console.log(`Execution time: ${end - start} ms`);
   } else {

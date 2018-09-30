@@ -146,6 +146,14 @@ const cases = {
     test = test ? test : [4, 2, 1, 3];
 
     return sl.run(test, debug);
+  },
+  longestFib: (test, debug) => {
+    console.log("Running >> Longest Fib Sub Sequence << \n");
+
+    const lf = require("./longestFib/run");
+    test = test ? test : [1, 3, 7, 11, 12, 14, 18]; //[1, 2, 3, 4, 5, 6, 7, 8];
+
+    return lf.run(test, debug);
   }
 };
 

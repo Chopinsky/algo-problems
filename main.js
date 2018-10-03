@@ -154,6 +154,19 @@ const cases = {
     test = test ? test : [1, 3, 7, 11, 12, 14, 18]; //[1, 2, 3, 4, 5, 6, 7, 8];
 
     return lf.run(test, debug);
+  },
+  miniDelSum: (test, debug) => {
+    console.log("Running >> Minimum Delete Sum for 2 Strings << \n");
+
+    const mds = require("./MiniDelSum/run");
+    test = test
+      ? test
+      : {
+          s1: "delete",
+          s2: "leet"
+        };
+
+    return mds.run(test, debug);
   }
 };
 

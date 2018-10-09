@@ -1,4 +1,18 @@
 module.exports = {
+  distinctSub: (testSet, debug) => {
+    console.log("Running >> Distinct Subsequences << \n");
+
+    const ds = require("./DistinctSub/run");
+    testSet = testSet
+      ? testSet
+      : {
+          s: "rabbbit",
+          t: "rabbit"
+        };
+
+    let ans = ds.run(testSet, debug);
+    console.log(ans);
+  },
   freqstack: (testSet, debug) => {
     console.log("Running >> Frequent Stack << \n");
 

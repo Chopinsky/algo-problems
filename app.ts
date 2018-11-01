@@ -1,9 +1,47 @@
-import { cases } from "./cases.js";
+import { Cases, Executor } from "./executor";
+
+interface Command {
+  prog: string;
+  debug: boolean;
+}
 
 class main {
   public static run(): number {
-    let prog: string = "";
-    let debugMode: boolean = false;
+    let cases: any = require("./cases.js");
+    let { prog, debug } = this.parseCommand(cases);
+
+    if (debug) {
+      console.info("(Running in debug mode...)");
+    }
+
+    if (cases && cases.hasOwnProperty(prog)) {
+      let func = cases[prog];
+      if (typeof func === "function") {
+        let start = new Date().getMilliseconds();
+        let ans = func(null, debug);
+        let end = new Date().getMilliseconds();
+
+        if (ans) {
+          console.log(ans);
+        }
+
+        console.log(`Execution time: ${end - start} ms`);
+      } else {
+        console.error(
+          `Unable to find the entry point for the case ${prog}...\n`
+        );
+      }
+    } else {
+      console.error(`No matching case is founded for the case ${prog}...`);
+    }
+
+    console.log("\nAll is done...");
+    return 0;
+  }
+
+  static parseCommand(cases: any): Command {
+    let prog: string;
+    let debugMode: boolean;
 
     if (process.argv && process.argv.length > 2) {
       let params = process.argv.slice(2);
@@ -30,11 +68,10 @@ class main {
       prog = "lru";
     }
 
-    let x: number = 10;
-    let y: number = 32;
-
-    console.log("Hello World! The answer is: ", x + y);
-    return 0;
+    return {
+      prog,
+      debug: debugMode
+    };
   }
 }
 

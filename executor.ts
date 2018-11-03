@@ -8,6 +8,7 @@ export class Executor {
   static run(problem: string, debug: boolean) {
     switch (problem) {
       case "value":
+        const p = require(`${problem}`);
         break;
 
       default:

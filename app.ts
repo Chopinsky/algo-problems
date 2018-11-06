@@ -1,52 +1,35 @@
-import { Cases, Executor } from "./executor";
+import { Problems, Executor } from "./Problems/Executor";
+import "./Utils/support";
 
 interface Command {
   prog: string;
+  caseNum: number;
   debug: boolean;
 }
 
 class main {
   public static run(): number {
-    let cases: any = require("./cases.js");
-    let { prog, debug } = this.parseCommand(cases);
+    let { prog, caseNum, debug } = this.parseCommand();
 
     if (debug) {
       console.info("(Running in debug mode...)");
     }
 
-    if (cases && cases.hasOwnProperty(prog)) {
-      let func = cases[prog];
-      if (typeof func === "function") {
-        let start = new Date().getMilliseconds();
-        let ans = func(null, debug);
-        let end = new Date().getMilliseconds();
-
-        if (ans) {
-          console.log(ans);
-        }
-
-        console.log(`Execution time: ${end - start} ms`);
-      } else {
-        console.error(
-          `Unable to find the entry point for the case ${prog}...\n`
-        );
-      }
-    } else {
-      console.error(`No matching case is founded for the case ${prog}...`);
-    }
+    Executor.run(prog, caseNum, debug);
 
     console.log("\nAll is done...");
     return 0;
   }
 
-  static parseCommand(cases: any): Command {
+  static parseCommand(): Command {
     let prog: string;
-    let debugMode: boolean;
+    let caseNum: number = 0;
+    let debugMode: boolean = false;
 
     if (process.argv && process.argv.length > 2) {
       let params = process.argv.slice(2);
 
-      for (let val of params) {
+      for (const val of params) {
         let command = val.toLowerCase();
         if (command === "-d" || command === "--debug") {
           debugMode = true;
@@ -54,9 +37,10 @@ class main {
         }
 
         if (!prog) {
-          for (let p of Object.keys(cases)) {
-            if (p.indexOf(command) === 0) {
-              prog = p;
+          let len: number = val.length;
+          for (const problem of Problems) {
+            if (problem.startsWith(val)) {
+              prog = problem;
               break;
             }
           }
@@ -65,11 +49,12 @@ class main {
     }
 
     if (!prog) {
-      prog = "lru";
+      prog = "3SumWithMulti";
     }
 
     return {
       prog,
+      caseNum,
       debug: debugMode
     };
   }

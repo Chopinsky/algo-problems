@@ -4,6 +4,7 @@ export class ThreeSumMulti implements Problem {
   private _combSet: object = {
     largest: -1
   };
+
   private _testCase: TestCase;
 
   constructor(caseNum: number, private _debug: boolean) {

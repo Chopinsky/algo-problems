@@ -29,6 +29,17 @@ export class Map<V> {
 
     return resultFactory(null, this._store[key]);
   }
+
+  remove(key: KeyType): Result<V> {
+    if (!this._store.hasOwnProperty(key)) {
+      return resultFactory(null, null);
+    }
+
+    let oldVal: V = this._store[key];
+    delete this._store[key];
+
+    return resultFactory(null, oldVal);
+  }
 }
 
 const update = <V extends {}>(

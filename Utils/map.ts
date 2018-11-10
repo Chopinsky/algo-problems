@@ -30,6 +30,16 @@ export class Map<V> {
     return resultFactory(null, this._store[key]);
   }
 
+  contains(key: KeyType): boolean {
+    switch (typeof key) {
+      case "string":
+        return key.length === 0 ? false : this._store.hasOwnProperty(key);
+
+      default:
+        return this._store.hasOwnProperty(key);
+    }
+  }
+
   remove(key: KeyType): Result<V> {
     if (!this._store.hasOwnProperty(key)) {
       return resultFactory(null, null);
@@ -39,6 +49,10 @@ export class Map<V> {
     delete this._store[key];
 
     return resultFactory(null, oldVal);
+  }
+
+  keys(): string[] {
+    return Object.keys(this._store);
   }
 }
 

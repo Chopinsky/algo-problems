@@ -1,4 +1,5 @@
 import { ThreeSumMulti } from "./3SumWithMulti";
+import { KnightDialer } from "./KnightDialer";
 
 export interface Problem {
   solve: () => void;
@@ -10,7 +11,11 @@ export interface TestCase {
   target: any;
 }
 
-export const Problems: [string] = ["3SumWithMulti"];
+export function TestCaseFactory(data: any[], target: any): TestCase {
+  return { data, target };
+}
+
+export const Problems: string[] = ["3SumWithMulti", "KnightDialer"];
 
 export class Executor {
   static run(problem: string, caseNum: number, debug: boolean) {
@@ -19,6 +24,10 @@ export class Executor {
     switch (problem) {
       case "3SumWithMulti":
         exec = new ThreeSumMulti(caseNum, debug);
+        break;
+
+      case "KnightDialer":
+        exec = new KnightDialer(caseNum, debug);
         break;
 
       default:

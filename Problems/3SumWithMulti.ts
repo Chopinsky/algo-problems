@@ -1,14 +1,15 @@
 import { Problem, TestCase } from "./Executor";
 
 export class ThreeSumMulti implements Problem {
+  private _testCase: TestCase;
+  private _debug: boolean;
   private _combSet: object = {
     largest: -1
   };
 
-  private _testCase: TestCase;
-
-  constructor(caseNum: number, private _debug: boolean) {
+  make(caseNum: number, debug: boolean) {
     this._testCase = this.genTestCase(caseNum);
+    this._debug = debug;
 
     if (this._testCase.data) {
       this._testCase.data.forEach(val => {

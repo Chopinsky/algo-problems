@@ -18,9 +18,11 @@ const boardMap: number[][][] = [
 
 export class KnightDialer implements Problem {
   private _testCase: TestCase;
+  private _debug: boolean;
 
-  constructor(caseNum: number, private debug: boolean) {
+  make(caseNum: number, debug: boolean) {
     this._testCase = this.genTestCase(caseNum);
+    this._debug = debug;
   }
 
   solve(): void {

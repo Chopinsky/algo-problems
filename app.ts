@@ -23,7 +23,7 @@ class main {
 
   static parseCommand(): Command {
     let prog: string;
-    let caseNum: number = 2;
+    let caseNum: number = 0;
     let debugMode: boolean = false;
 
     if (process.argv && process.argv.length > 2) {
@@ -31,14 +31,15 @@ class main {
 
       for (const val of params) {
         let command = val.toLowerCase();
+
         if (command === "-d" || command === "--debug") {
           debugMode = true;
           continue;
         }
 
         if (!prog) {
-          for (const problem of Problems) {
-            if (problem.toLowerCase().startsWith(val)) {
+          for (const problem of Object.keys(Problems)) {
+            if (problem.toLowerCase().startsWith(command)) {
               prog = problem;
               break;
             }

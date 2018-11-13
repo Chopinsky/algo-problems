@@ -17,7 +17,7 @@ class main {
 
     Executor.run(prog, caseNum, debug);
 
-    console.log("\nAll is done...");
+    console.log("<<<<<<<\nAll is done...");
     return 0;
   }
 

@@ -1,5 +1,6 @@
 import { ThreeSumMulti } from "./3SumWithMulti";
 import { KnightDialer } from "./KnightDialer";
+import { Knapsack } from "./Knapsack";
 
 export interface Problem {
   solve: () => void;
@@ -17,24 +18,21 @@ export function TestCaseFactory(data: any[], target: any): TestCase {
 }
 
 export const Problems: object = {
-  "3SumWithMulti": ThreeSumMulti,
-  KnightDialer: KnightDialer
+  "3SumWithMulti": new ThreeSumMulti(),
+  KnightDialer: new KnightDialer(),
+  Knapsack: new Knapsack()
 };
 
 export class Executor {
   static run(problem: string, caseNum: number, debug: boolean) {
-    let prog: any = Problems[problem];
+    let prog: Problem = Problems[problem];
     if (!prog) {
       console.error(`Unable to run the problem...`);
-      return;
-    }
+    } else {
+      console.log(`Running problem: {${problem}}\n>>>>>>>\n`);
 
-    let exec: Problem = new prog();
-    if (exec) {
-      console.log(`Running problem: ${problem}...\n`);
-
-      exec.make(caseNum, debug);
-      exec.solve();
+      prog.make(caseNum, debug);
+      prog.solve();
     }
   }
 }

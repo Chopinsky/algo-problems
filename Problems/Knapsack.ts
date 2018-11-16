@@ -11,11 +11,9 @@ export class Knapsack implements Problem {
       return;
     }
 
-    let maxVal: number = 0;
-    let maxWeight: number = this._testCase.data[2];
-    let itemWeight: number[] = this._testCase.data[1];
-    let itemVal: number[] = this._testCase.data[0];
+    let [itemVal, itemWeight, maxWeight]: any[] = this._testCase.data;
     let itemLen: number = itemVal.length;
+    let maxVal: number = 0;
 
     for (let i = 1; i <= itemLen; i++) {
       let itemIndex: number = i - 1;

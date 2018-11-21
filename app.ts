@@ -1,4 +1,4 @@
-import { Problems, Executor } from "./Problems/Executor";
+import { Executor } from "./Problems/Executor";
 import "./Utils/support";
 
 interface Command {
@@ -15,7 +15,7 @@ class main {
       console.info("(Running in debug mode...)");
     }
 
-    Executor.run(prog, caseNum, debug);
+    Executor.Run(prog, caseNum, debug);
 
     console.log("<<<<<<<\nAll is done...");
     return 0;
@@ -38,7 +38,7 @@ class main {
         }
 
         if (!prog) {
-          for (const problem of Object.keys(Problems)) {
+          for (const problem of Executor.ProblemKeys()) {
             if (problem.toLowerCase().startsWith(command)) {
               prog = problem;
               break;

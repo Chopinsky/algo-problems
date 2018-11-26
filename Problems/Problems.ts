@@ -1,8 +1,8 @@
-import { ThreeSumMulti } from "./3SumWithMulti";
-import { KnightDialer } from "./KnightDialer";
-import { Knapsack } from "./Knapsack";
-import { ShortestBridges } from "./ShortestBridges";
-import { ShortestSuperstring } from "./ShortestSuperstring";
+import { ThreeSumMulti } from "./Collection/3SumWithMulti";
+import { KnightDialer } from "./Collection/KnightDialer";
+import { Knapsack } from "./Collection/Knapsack";
+import { ShortestBridges } from "./Collection/ShortestBridges";
+import { ShortestSuperstring } from "./Collection/ShortestSuperstring";
 
 export const Problems: object = {
   "3SumWithMulti": new ThreeSumMulti(),

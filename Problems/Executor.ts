@@ -17,15 +17,18 @@ export function TestCaseFactory(data: any[], target: any): TestCase {
 
 export class Executor {
   static Run(problem: string, caseNum: number = 0, debug: boolean = false) {
-    let prog: Problem = Problems[problem];
+    let progClass = Problems[problem];
+    let prog: Problem = new progClass();
 
     if (!prog) {
-      console.error(`Unable to run the problem...`);
+      console.error(`Unable to run the problem...\n`);
     } else {
       console.log(`Running problem: {${problem}}\n>>>>>>>\n`);
 
       prog.make(caseNum, debug);
       prog.solve();
+
+      console.log("\n<<<<<<<");
     }
   }
 

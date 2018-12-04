@@ -17,13 +17,12 @@ class main {
 
     Executor.Run(prog, caseNum, debug);
 
-    console.log("<<<<<<<\nAll is done...");
     return 0;
   }
 
   static parseCommand(): Command {
     let prog: string;
-    let caseNum: number = 0;
+    let caseNum: number = 2;
     let debugMode: boolean = false;
 
     if (process.argv && process.argv.length > 2) {

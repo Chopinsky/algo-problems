@@ -22,7 +22,7 @@ class main {
 
   static parseCommand(): Command {
     let prog: string;
-    let caseNum: number = 2;
+    let caseNum: number = 0;
     let debugMode: boolean = false;
 
     if (process.argv && process.argv.length > 2) {
@@ -31,8 +31,17 @@ class main {
       for (const val of params) {
         let command = val.toLowerCase();
 
-        if (command === "-d" || command === "--debug") {
+        if (command.indexOf("-d") >= 0) {
           debugMode = true;
+          continue;
+        }
+
+        if (command.startsWith("case=")) {
+          let num = parseInt(command.substring(5));
+          if (num !== NaN && num >= 0) {
+            caseNum = num;
+          }
+
           continue;
         }
 

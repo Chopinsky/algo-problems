@@ -29,7 +29,11 @@ var LargestCommonFactor = /** @class */ (function () {
         for (var i = 0; i < this._data.length; i++) {
             this._dsu[i] = i;
         }
-        this._data.forEach(function (val, idx) {
+        this._data
+            .sort(function (a, b) {
+            return a - b;
+        })
+            .forEach(function (val, idx) {
             var factors = _this.findFactors(val);
             if (factors.length > 0) {
                 factors.forEach(function (factor) {

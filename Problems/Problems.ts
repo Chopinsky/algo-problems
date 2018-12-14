@@ -5,6 +5,7 @@ import { ShortestBridges } from "./Collection/ShortestBridges";
 import { ShortestSuperstring } from "./Collection/ShortestSuperstring";
 import { MinRefuelingStops } from "./Collection/MinRefuelingStops";
 import { LargestCommonFactor } from "./Collection/LargestCommonFactor";
+import { StampingTheSequence } from "./Collection/StampingTheSequence";
 
 export const Problems: object = {
   "3SumWithMulti": ThreeSumMulti,
@@ -13,5 +14,6 @@ export const Problems: object = {
   ShortestBridges: ShortestBridges,
   ShortestSuperstring: ShortestSuperstring,
   MinRefuelingStops: MinRefuelingStops,
-  LargestCommonFactor: LargestCommonFactor
+  LargestCommonFactor: LargestCommonFactor,
+  StampingTheSequence: StampingTheSequence
 };

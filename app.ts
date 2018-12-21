@@ -31,7 +31,7 @@ class main {
       for (const val of params) {
         let command = val.toLowerCase();
 
-        if (command.indexOf("-d") >= 0) {
+        if (command.indexOf("-d") >= 0 || command.indexOf("debug") >= 0) {
           debugMode = true;
           continue;
         }

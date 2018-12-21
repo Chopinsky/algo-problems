@@ -7,6 +7,7 @@ import { MinRefuelingStops } from "./Collection/MinRefuelingStops";
 import { LargestCommonFactor } from "./Collection/LargestCommonFactor";
 import { StampingTheSequence } from "./Collection/StampingTheSequence";
 import { RegionsCut } from "./Collection/RegionsCut";
+import { TallestBillboard } from "./Collection/TallestBillboard";
 
 export const Problems: object = {
   "3SumWithMulti": ThreeSumMulti,
@@ -17,5 +18,6 @@ export const Problems: object = {
   MinRefuelingStops: MinRefuelingStops,
   LargestCommonFactor: LargestCommonFactor,
   StampingTheSequence: StampingTheSequence,
-  RegionsCut: RegionsCut
+  RegionsCut: RegionsCut,
+  TallestBillboard: TallestBillboard
 };

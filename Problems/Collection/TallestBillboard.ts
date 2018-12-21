@@ -1,6 +1,6 @@
 import { Problem, TestCase, TestCaseFactory } from "../Executor";
 
-export class $Template implements Problem {
+export class TallestBillboard implements Problem {
   genTestCase(caseNum: number): TestCase {
     let data: any[];
     let result: any;
@@ -11,8 +11,8 @@ export class $Template implements Problem {
         result = "";
 
       default:
-        data = [];
-        result = "";
+        data = [1, 2, 3, 6];
+        result = 6;
     }
 
     return TestCaseFactory(data, result);

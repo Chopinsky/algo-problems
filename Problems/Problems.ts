@@ -8,6 +8,7 @@ import { LargestCommonFactor } from "./Collection/LargestCommonFactor";
 import { StampingTheSequence } from "./Collection/StampingTheSequence";
 import { RegionsCut } from "./Collection/RegionsCut";
 import { TallestBillboard } from "./Collection/TallestBillboard";
+import { Subsets } from "./Collection/Subsets";
 
 export const Problems: object = {
   "3SumWithMulti": ThreeSumMulti,
@@ -19,5 +20,6 @@ export const Problems: object = {
   LargestCommonFactor: LargestCommonFactor,
   StampingTheSequence: StampingTheSequence,
   RegionsCut: RegionsCut,
-  TallestBillboard: TallestBillboard
+  TallestBillboard: TallestBillboard,
+  Subsets: Subsets
 };

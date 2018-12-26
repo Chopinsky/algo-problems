@@ -48,7 +48,9 @@ var TallestBillboard = /** @class */ (function () {
                 }
                 var idxAdd = j + rod;
                 var idxMinus = Math.abs(j - rod);
-                this.dp[idxAdd] = Math.max(this.dp[idxAdd], curr[j]);
+                if (idxAdd <= this.sum) {
+                    this.dp[idxAdd] = Math.max(this.dp[idxAdd], curr[j]);
+                }
                 this.dp[idxMinus] = Math.max(this.dp[idxMinus], curr[j] + Math.min(rod, j));
             }
         }

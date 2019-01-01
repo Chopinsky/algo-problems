@@ -27,11 +27,8 @@ var Subsets = /** @class */ (function () {
         for (var n = 0; n <= this.nums.length; n++) {
             this.dfs(n, 0, []);
         }
-        if (this.result && this.result.length > 0) {
-            this.result.forEach(function (ary) {
-                console.log(ary);
-            });
-        }
+        this.print("Calculated results:", this.result);
+        this.print("Expected results:", this.ans);
     };
     Subsets.prototype.dfs = function (size, start, curr) {
         if (curr.length === size) {
@@ -43,6 +40,15 @@ var Subsets = /** @class */ (function () {
             this.dfs(size, i + 1, curr);
             curr.pop();
         }
+    };
+    Subsets.prototype.print = function (title, ary) {
+        console.log(title);
+        if (ary && ary.length > 0) {
+            ary.forEach(function (ary) {
+                console.log(ary);
+            });
+        }
+        console.log("\n");
     };
     return Subsets;
 }());

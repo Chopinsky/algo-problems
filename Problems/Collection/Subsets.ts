@@ -11,13 +11,9 @@ export class Subsets implements Problem {
     let result: any;
 
     switch (caseNum) {
-      case 1:
-        data = [];
-        result = "";
-
       default:
         data = [1, 2, 3];
-        result = [[3], [2], [1], [1, 2, 3], [1, 3], [1, 2], [2, 3], []];
+        result = [[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]];
     }
 
     return TestCaseFactory(data, result);
@@ -36,14 +32,11 @@ export class Subsets implements Problem {
       this.dfs(n, 0, []);
     }
 
-    if (this.result && this.result.length > 0) {
-      this.result.forEach(ary => {
-        console.log(ary);
-      });
-    }
+    this.print("Calculated results:", this.result);
+    this.print("Expected results:", this.ans);
   }
 
-  dfs(size: number, start: number, curr: number[]) {
+  private dfs(size: number, start: number, curr: number[]) {
     if (curr.length === size) {
       this.result.push([...curr]);
       return;
@@ -54,5 +47,15 @@ export class Subsets implements Problem {
       this.dfs(size, i + 1, curr);
       curr.pop();
     }
+  }
+
+  private print(title: string, ary: number[][] | null) {
+    console.log(title);
+    if (ary && ary.length > 0) {
+      ary.forEach(ary => {
+        console.log(ary);
+      });
+    }
+    console.log("\n");
   }
 }

@@ -8,12 +8,9 @@ var Subsets = /** @class */ (function () {
         var data;
         var result;
         switch (caseNum) {
-            case 1:
-                data = [];
-                result = "";
             default:
                 data = [1, 2, 3];
-                result = [[3], [2], [1], [1, 2, 3], [1, 3], [1, 2], [2, 3], []];
+                result = [[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]];
         }
         return Executor_1.TestCaseFactory(data, result);
     };

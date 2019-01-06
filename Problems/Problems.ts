@@ -9,6 +9,7 @@ import { StampingTheSequence } from "./Collection/StampingTheSequence";
 import { RegionsCut } from "./Collection/RegionsCut";
 import { TallestBillboard } from "./Collection/TallestBillboard";
 import { Subsets } from "./Collection/Subsets";
+import { LeastOperators } from "./Collection/LeastOperators";
 
 export const Problems: object = {
   "3SumWithMulti": ThreeSumMulti,
@@ -21,5 +22,6 @@ export const Problems: object = {
   StampingTheSequence: StampingTheSequence,
   RegionsCut: RegionsCut,
   TallestBillboard: TallestBillboard,
-  Subsets: Subsets
+  Subsets: Subsets,
+  LeastOperators: LeastOperators
 };

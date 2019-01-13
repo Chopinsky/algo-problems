@@ -1,5 +1,4 @@
 import { Problem, TestCase, TestCaseFactory } from "../Executor";
-import { copyFile } from "fs";
 
 export class TallestBillboard implements Problem {
   private rods: number[];

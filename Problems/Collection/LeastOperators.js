@@ -74,6 +74,8 @@ var LeastOperators = /** @class */ (function () {
         console.log("Needed operatiors: " + result);
         console.log("Expected operatiors: " + this.answer);
     };
+    // running a Dijkstra graph, possible targets become nodes, and we maintain the counts as the
+    // value of each nodes.
     LeastOperators.prototype.dijSearch = function () {
         var seen = {};
         var queue = new PairQueue();
@@ -91,10 +93,12 @@ var LeastOperators = /** @class */ (function () {
             }
             seen[target] = true;
             var n = Math.floor(Math.log(target) / Math.log(this.base));
+            // possible path 1: plus lower order
             var l = target - Math.pow(this.base, n);
             if (!seen.hasOwnProperty(l)) {
                 queue.insert(ops + (n === 0 ? 2 : n), l);
             }
+            // possible path 2: minus from higher order
             var r = Math.pow(this.base, n + 1) - target;
             if (!seen.hasOwnProperty(r)) {
                 queue.insert(ops + n + 1, r);

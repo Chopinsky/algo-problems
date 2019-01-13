@@ -10,6 +10,7 @@ import { RegionsCut } from "./Collection/RegionsCut";
 import { TallestBillboard } from "./Collection/TallestBillboard";
 import { Subsets } from "./Collection/Subsets";
 import { LeastOperators } from "./Collection/LeastOperators";
+import { SameSeqDiff } from "./Collection/SameSeqDiff";
 
 export const Problems: object = {
   "3SumWithMulti": ThreeSumMulti,
@@ -23,5 +24,6 @@ export const Problems: object = {
   RegionsCut: RegionsCut,
   TallestBillboard: TallestBillboard,
   Subsets: Subsets,
-  LeastOperators: LeastOperators
+  LeastOperators: LeastOperators,
+  SameSeqDiff: SameSeqDiff
 };

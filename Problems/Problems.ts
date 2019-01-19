@@ -11,6 +11,7 @@ import { TallestBillboard } from "./Collection/TallestBillboard";
 import { Subsets } from "./Collection/Subsets";
 import { LeastOperators } from "./Collection/LeastOperators";
 import { SameSeqDiff } from "./Collection/SameSeqDiff";
+import { EqualRationalNumbers } from "./Collection/EqualRationalNumbers";
 
 export const Problems: object = {
   "3SumWithMulti": ThreeSumMulti,
@@ -25,5 +26,6 @@ export const Problems: object = {
   TallestBillboard: TallestBillboard,
   Subsets: Subsets,
   LeastOperators: LeastOperators,
-  SameSeqDiff: SameSeqDiff
+  SameSeqDiff: SameSeqDiff,
+  EqualRationalNumbers: EqualRationalNumbers
 };

@@ -12,6 +12,7 @@ import { Subsets } from "./Collection/Subsets";
 import { LeastOperators } from "./Collection/LeastOperators";
 import { SameSeqDiff } from "./Collection/SameSeqDiff";
 import { EqualRationalNumbers } from "./Collection/EqualRationalNumbers";
+import { UniquePaths } from "./Collection/UniquePaths";
 
 export const Problems: object = {
   "3SumWithMulti": ThreeSumMulti,
@@ -27,5 +28,6 @@ export const Problems: object = {
   Subsets: Subsets,
   LeastOperators: LeastOperators,
   SameSeqDiff: SameSeqDiff,
-  EqualRationalNumbers: EqualRationalNumbers
+  EqualRationalNumbers: EqualRationalNumbers,
+  UniquePaths: UniquePaths
 };

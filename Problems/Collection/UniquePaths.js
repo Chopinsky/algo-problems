@@ -33,15 +33,17 @@ var UniquePaths = /** @class */ (function () {
         }
     };
     UniquePaths.prototype.solve = function () {
-        var state = 0;
+        var state = 0; // state is a series of 0s, each node in the map denotes to 1 bit in the state
         var sx = -1;
         var sy = -1;
         for (var y = 0; y < this.m; y++) {
             for (var x = 0; x < this.n; x++) {
                 if (this.map[y][x] === 0 || this.map[y][x] === 2) {
+                    // if we need to visit this node, add it to the state -- the nodes waiting to be visited
                     state += this.calcKey(x, y);
                 }
                 else if (this.map[y][x] === 1) {
+                    // starting point
                     sx = x;
                     sy = y;
                 }
@@ -53,9 +55,12 @@ var UniquePaths = /** @class */ (function () {
     };
     UniquePaths.prototype.dfs = function (x, y, state) {
         if (!!this.dp[y][x][state]) {
+            // if the path has already been calculated, return the result.
             return this.map[y][x][state];
         }
         if (this.map[y][x] === 2) {
+            // if we reached the destination and all other possible paths are exhausted (meaning
+            // there is no more unvisited nodes for this state), return the result;
             return state === 0;
         }
         var paths = 0;
@@ -70,17 +75,22 @@ var UniquePaths = /** @class */ (function () {
                 this.map[ty][tx] === -1) {
                 continue;
             }
+            // find out the bit pos of this node in the state
             var key = this.calcKey(tx, ty);
             if (!(state & key)) {
-                // opposite states, pass
+                // if the path has been visited already, continue
                 continue;
             }
+            // otherwise, mark the node as visited and then iterate
             paths += this.dfs(tx, ty, state ^ key);
         }
+        // finally, visited all possible directions, store the paths back to the states (unvisited nodes)
+        // from this node -- (x, y).
         this.dp[y][x][state] = paths;
         return this.dp[y][x][state];
     };
     UniquePaths.prototype.calcKey = function (x, y) {
+        // find the node position in the state series
         return Math.pow(2, y * this.n + x);
     };
     return UniquePaths;

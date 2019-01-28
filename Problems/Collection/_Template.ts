@@ -9,6 +9,7 @@ export class $Template implements Problem {
       case 1:
         data = [];
         result = "";
+        break;
 
       default:
         data = [];

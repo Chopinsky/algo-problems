@@ -13,6 +13,7 @@ import { LeastOperators } from "./Collection/LeastOperators";
 import { SameSeqDiff } from "./Collection/SameSeqDiff";
 import { EqualRationalNumbers } from "./Collection/EqualRationalNumbers";
 import { UniquePaths } from "./Collection/UniquePaths";
+import { OddEvenJump } from "./Collection/OddEvenJump";
 
 export const Problems: object = {
   "3SumWithMulti": ThreeSumMulti,
@@ -29,5 +30,6 @@ export const Problems: object = {
   LeastOperators: LeastOperators,
   SameSeqDiff: SameSeqDiff,
   EqualRationalNumbers: EqualRationalNumbers,
-  UniquePaths: UniquePaths
+  UniquePaths: UniquePaths,
+  OddEvenJump: OddEvenJump
 };

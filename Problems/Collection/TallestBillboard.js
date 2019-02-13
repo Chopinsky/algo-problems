@@ -38,8 +38,7 @@ var TallestBillboard = /** @class */ (function () {
         }
     };
     TallestBillboard.prototype.solve = function () {
-        var rows = this.rods.length;
-        for (var i = 0; i < rows; i++) {
+        for (var i = 0; i < this.rods.length; i++) {
             var curr = this.dp.map(function (val) { return val; });
             var rod = this.rods[i];
             for (var j = 0; j <= this.sum - rod; j++) {

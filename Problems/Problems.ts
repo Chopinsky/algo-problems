@@ -15,6 +15,7 @@ import { EqualRationalNumbers } from "./Collection/EqualRationalNumbers";
 import { UniquePaths } from "./Collection/UniquePaths";
 import { OddEvenJump } from "./Collection/OddEvenJump";
 import { RisingWater } from "./Collection/RisingWater";
+import { DistributingCoins } from "./Collection/DistributingCoins";
 
 export const Problems: object = {
   "3SumWithMulti": ThreeSumMulti,
@@ -33,5 +34,6 @@ export const Problems: object = {
   EqualRationalNumbers: EqualRationalNumbers,
   UniquePaths: UniquePaths,
   OddEvenJump: OddEvenJump,
-  RisingWater: RisingWater
+  RisingWater: RisingWater,
+  DistributingCoins: DistributingCoins
 };

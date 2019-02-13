@@ -50,8 +50,7 @@ export class TallestBillboard implements Problem {
   }
 
   solve(): void {
-    const rows = this.rods.length;
-    for (let i = 0; i < rows; i++) {
+    for (let i = 0; i < this.rods.length; i++) {
       const curr = this.dp.map(val => val);
       const rod = this.rods[i];
 

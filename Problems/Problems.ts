@@ -16,6 +16,7 @@ import { UniquePaths } from "./Collection/UniquePaths";
 import { OddEvenJump } from "./Collection/OddEvenJump";
 import { RisingWater } from "./Collection/RisingWater";
 import { DistributingCoins } from "./Collection/DistributingCoins";
+import { MergeStones } from "./Collection/MergeStones";
 
 export const Problems: object = {
   "3SumWithMulti": ThreeSumMulti,
@@ -35,5 +36,6 @@ export const Problems: object = {
   UniquePaths: UniquePaths,
   OddEvenJump: OddEvenJump,
   RisingWater: RisingWater,
-  DistributingCoins: DistributingCoins
+  DistributingCoins: DistributingCoins,
+  MergeStones: MergeStones
 };

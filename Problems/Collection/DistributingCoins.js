@@ -34,7 +34,8 @@ var DistributingCoins = /** @class */ (function () {
         this.answer = 0;
     };
     DistributingCoins.prototype.solve = function () {
-        var ans = this.balance(0);
+        // upside-down balancing... overall net-flow is 0.
+        this.balance(0);
         console.log("Calculated steps: " + this.answer);
         console.log("Expected steps: " + this.result);
     };
@@ -42,9 +43,12 @@ var DistributingCoins = /** @class */ (function () {
         if (node >= this.len) {
             return 0;
         }
+        // pre-iterating the tree, stored in the form of a balanced tree
         var left = 2 * node + 1 < this.len ? this.balance(2 * node + 1) : 0;
         var right = 2 * node + 2 < this.len ? this.balance(2 * node + 2) : 0;
+        // answer is the flow required from or to the left and right branches to balance the tree
         this.answer += Math.abs(left) + Math.abs(right);
+        // return the net-flow through this node, which is what to give/ask for from the parent
         return this.data[node] - 1 + left + right;
     };
     return DistributingCoins;

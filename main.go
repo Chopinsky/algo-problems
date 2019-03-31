@@ -68,6 +68,6 @@ func main() {
 		}
 	}
 
-	fmt.Println("\n====== Done... ======")
+	fmt.Println("\n====== Done ======")
 	fmt.Println()
 }

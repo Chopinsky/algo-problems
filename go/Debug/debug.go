@@ -1,9 +1,12 @@
-package main
+package debug
 
 import (
 	"bytes"
 	"fmt"
 )
+
+// DEBUG ...
+var DEBUG = false
 
 // Debug ...
 func Debug(text string, level int) {

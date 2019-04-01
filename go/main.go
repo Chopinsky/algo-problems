@@ -5,10 +5,10 @@ import (
 	"os"
 	"strconv"
 	"strings"
-)
 
-// DEBUG ...
-var DEBUG = false
+	d "./Debug"
+	problems "./Problems"
+)
 
 func main() {
 	args := os.Args[1:]
@@ -20,7 +20,7 @@ func main() {
 		val := strings.ToLower(arg)
 
 		if val == "--debug" || val == "-d" {
-			DEBUG = true
+			d.DEBUG = true
 			continue
 		}
 
@@ -35,7 +35,7 @@ func main() {
 			case "test":
 				num, err := strconv.Atoi(param[1])
 				if err != nil || num < 0 {
-					fmt.Printf("Unable to parse the test case number: %s", param[1])
+					fmt.Printf("Unable to parse the test case number: %s\n", param[1])
 				}
 
 				testCase = num
@@ -49,19 +49,28 @@ func main() {
 		}
 	}
 
-	Debug(
+	d.Debug(
 		fmt.Sprintf(
 			"Running debug mode...\n>> Input Arguments... \n>>   is-debug:  { %t } \n>>   test-case: { %d }\n",
-			DEBUG,
+			d.DEBUG,
 			testCase,
 		),
 		0,
 	)
 
+	fmt.Println()
 	fmt.Println("====== Running ======")
+	fmt.Println()
 
 	if len(toRun) > 0 {
-		Execute(toRun, testCase)
+		p, err := problems.Create(toRun)
+		if err != nil {
+			fmt.Print(err)
+			return
+		}
+
+		p.Build(testCase)
+		p.Run()
 	} else {
 		fmt.Println("Unable to find the problem to run...")
 	}

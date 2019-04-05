@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	d "./Debug"
 	problems "./Problems"
@@ -69,8 +70,12 @@ func main() {
 			return
 		}
 
+		start := time.Now()
 		p.Build(testCase)
 		p.Run()
+		elapsed := time.Since(start)
+
+		fmt.Println("\n>> Program finished in", elapsed, " <<")
 	} else {
 		fmt.Println("Unable to find the problem to run...")
 	}

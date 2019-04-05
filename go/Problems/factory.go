@@ -8,12 +8,13 @@ import (
 )
 
 // LIST ...
-var LIST = []string{
-	"nthprimefraction",
-	"nextgreaternode",
+var LIST = map[string]Problem{
+	"nthprimefraction":  CreateNPF(),
+	"nextgreaternode":   CreateNGN(),
+	"binarytreefactors": CreateBTF(),
 }
 
-// Problem ...
+// Problem ...m
 type Problem interface {
 	Run()
 	Build(int)
@@ -21,37 +22,16 @@ type Problem interface {
 
 // Create ...
 func Create(problem string) (Problem, error) {
-	var target string
-	var p Problem
-
-	for _, candidate := range LIST {
-		if len(problem) > len(candidate) {
+	for k, v := range LIST {
+		if len(problem) > len(k) {
 			continue
 		}
 
-		if strings.HasPrefix(candidate, problem) {
-			target = candidate
-			break
+		if strings.HasPrefix(k, problem) {
+			d.Debug("Target found: "+k+"\n", 0)
+			return v, nil
 		}
 	}
 
-	d.Debug("Target: "+target+"\n", 0)
-
-	if len(target) == 0 {
-		return nil, fmt.Errorf("Failed to interpret the target problem: %s", problem)
-	}
-
-	switch target {
-	case "nthprimefraction":
-		p = CreateNPF()
-
-	case "nextgreaternode":
-		p = CreateNGN()
-
-	default:
-		return nil, fmt.Errorf("Unable to match the correct problem for %s to run", problem)
-
-	}
-
-	return p, nil
+	return nil, fmt.Errorf("Unable to match the correct problem for %s to run", problem)
 }

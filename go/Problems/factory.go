@@ -9,9 +9,11 @@ import (
 
 // LIST ...
 var LIST = map[string]Problem{
-	"nthprimefraction":  CreateNPF(),
-	"nextgreaternode":   CreateNGN(),
-	"binarytreefactors": CreateBTF(),
+	"nthprimefraction":      CreateNPF(),
+	"1019.nextgreaternode":  CreateNGN(),
+	"823.binarytreefactors": CreateBTF(),
+	"486.predictwinner":     CreatePW(),
+	"1024.vidstitching":     CreateVS(),
 }
 
 // Problem ...m

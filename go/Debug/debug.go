@@ -9,7 +9,7 @@ import (
 var DEBUG = false
 
 // Debug ...
-func Debug(text string, level int) {
+func Debug(text interface{}, level int) {
 	if !DEBUG {
 		return
 	}
@@ -19,5 +19,6 @@ func Debug(text string, level int) {
 		buffer.WriteString("  ")
 	}
 
-	fmt.Println("\n>> " + buffer.String() + text)
+	fmt.Print(">> " + buffer.String())
+	fmt.Println(text)
 }

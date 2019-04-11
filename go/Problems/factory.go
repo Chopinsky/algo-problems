@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	d "../Debug"
+	d "../Utils"
 )
 
 // LIST ...
@@ -14,6 +14,7 @@ var LIST = map[string]Problem{
 	"823.binarytreefactors": CreateBTF(),
 	"486.predictwinner":     CreatePW(),
 	"1024.vidstitching":     CreateVS(),
+	"801.minswapinc":        CreateMSI(),
 }
 
 // Problem ...m

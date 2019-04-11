@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	d "./Debug"
 	problems "./Problems"
+	d "./Utils"
 )
 
 func main() {
@@ -63,6 +63,9 @@ func main() {
 	fmt.Println("====== Running ======")
 	fmt.Println()
 
+	var elapsed time.Duration
+	var done bool
+
 	if len(toRun) > 0 {
 		p, err := problems.Create(toRun)
 		if err != nil {
@@ -73,13 +76,18 @@ func main() {
 		start := time.Now()
 		p.Build(testCase)
 		p.Run()
-		elapsed := time.Since(start)
 
-		fmt.Println("\n>> Program finished in", elapsed, " <<")
+		elapsed = time.Since(start)
+		done = true
 	} else {
 		fmt.Println("Unable to find the problem to run...")
 	}
 
 	fmt.Println("\n======  Done  ======")
+
+	if done {
+		fmt.Println("\n>> Program finished in", elapsed, " <<")
+	}
+
 	fmt.Println()
 }

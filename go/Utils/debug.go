@@ -1,4 +1,4 @@
-package debug
+package utils
 
 import (
 	"bytes"

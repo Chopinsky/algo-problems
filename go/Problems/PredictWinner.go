@@ -3,7 +3,7 @@ package problems
 import (
 	"fmt"
 
-	d "../Debug"
+	d "../Utils"
 )
 
 // PW ...

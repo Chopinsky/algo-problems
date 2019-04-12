@@ -1,6 +1,8 @@
 package problems
 
 import (
+	"errors"
+	"fmt"
 	"strconv"
 )
 
@@ -55,9 +57,20 @@ func Create(problem string) (Problem, string, error) {
 		t = "Race Car"
 		p = CreateRC()
 
-	default:
+	case 786:
 		t = "Nth Prime Fraction"
 		p = CreateNPF()
+
+	case 417:
+		t = "Pacific-Atlantic Water Flow"
+		p = CreateWF()
+
+	case 817:
+		t = "Linked-List Components"
+		p = CreateLLC()
+
+	default:
+		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}
 
 	return p, t, nil

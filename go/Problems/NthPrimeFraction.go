@@ -21,11 +21,7 @@ type NPF struct {
 
 // CreateNPF ...
 func CreateNPF() *NPF {
-	return &NPF{
-		source: nil,
-		kth:    0,
-		ans:    nil,
-	}
+	return &NPF{}
 }
 
 // Build ...

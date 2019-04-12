@@ -1,10 +1,7 @@
 package problems
 
 import (
-	"fmt"
-	"strings"
-
-	d "../Utils"
+	"strconv"
 )
 
 // LIST ...
@@ -24,17 +21,44 @@ type Problem interface {
 }
 
 // Create ...
-func Create(problem string) (Problem, error) {
-	for k, v := range LIST {
-		if len(problem) > len(k) {
-			continue
-		}
-
-		if strings.HasPrefix(k, problem) {
-			d.Debug("Target found: "+k+"\n", 0)
-			return v, nil
-		}
+func Create(problem string) (Problem, string, error) {
+	num, err := strconv.Atoi(problem)
+	if err != nil {
+		return nil, "", err
 	}
 
-	return nil, fmt.Errorf("Unable to match the correct problem for %s to run", problem)
+	var p Problem
+	var t string
+
+	switch num {
+	case 801:
+		t = "Min Swap to Increase"
+		p = CreateMSI()
+
+	case 1024:
+		t = "Video Stitching"
+		p = CreateVS()
+
+	case 486:
+		t = "Predict Winner"
+		p = CreatePW()
+
+	case 823:
+		t = "Binary Tree Factors"
+		p = CreateBTF()
+
+	case 1019:
+		t = "Next Greater Node"
+		p = CreateNGN()
+
+	case 818:
+		t = "Race Car"
+		p = CreateRC()
+
+	default:
+		t = "Nth Prime Fraction"
+		p = CreateNPF()
+	}
+
+	return p, t, nil
 }

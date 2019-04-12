@@ -67,17 +67,20 @@ func main() {
 	var done bool
 
 	if len(toRun) > 0 {
-		p, err := problems.Create(toRun)
+		p, title, err := problems.Create(toRun)
 		if err != nil {
 			fmt.Print(err)
 			return
 		}
 
+		fmt.Println("Problem >>> ", title, " <<< found ...")
+		fmt.Println()
+
 		start := time.Now()
 		p.Build(testCase)
 		p.Run()
-
 		elapsed = time.Since(start)
+
 		done = true
 	} else {
 		fmt.Println("Unable to find the problem to run...")

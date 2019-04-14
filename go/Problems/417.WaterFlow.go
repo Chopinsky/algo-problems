@@ -44,6 +44,7 @@ func (p *WF) Run() {
 	n := len(p.source[0])
 	results := [][]int{}
 
+	// init flow
 	flow := make([][][]bool, m)
 	for i := range flow {
 		flow[i] = make([][]bool, n)
@@ -59,9 +60,11 @@ func (p *WF) Run() {
 		}
 	}
 
+	// run the flow for bidirections
 	p.calc(m, n, 0, flow)
 	p.calc(m, n, 1, flow)
 
+	// check the flow
 	for i := range flow {
 		for j := range flow[i] {
 			if flow[i][j][0] && flow[i][j][1] {

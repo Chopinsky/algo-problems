@@ -3,7 +3,7 @@ package problems
 // XXX ...
 type XXX struct {
 	source []int
-	kth    int
+	output int
 }
 
 // CreateXXX ...
@@ -16,7 +16,7 @@ func (p *XXX) Build(test int) {
 	switch test {
 	default:
 		p.source = nil
-		p.kth = 0
+		p.output = 0
 
 	}
 }

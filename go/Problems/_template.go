@@ -8,10 +8,7 @@ type XXX struct {
 
 // CreateXXX ...
 func CreateXXX() *XXX {
-	return &XXX{
-		source: nil,
-		kth:    0,
-	}
+	return &XXX{}
 }
 
 // Build ...

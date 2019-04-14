@@ -6,6 +6,8 @@ import (
 	d "../Utils"
 )
 
+const mMethod = 3
+
 // RC ...
 type RC struct {
 	target int
@@ -44,15 +46,21 @@ func (p *RC) Run() {
 	var output int
 
 	if p.target != 0 {
-		// method 1: bfs
-		//output = bfs(map[int][]int{0: []int{1}}, p.target, 0)
+		switch mMethod {
+		case 1:
+			// method 1: bfs
+			output = bfs(map[int][]int{0: []int{1}}, p.target, 0)
 
-		// method 2: in place bfs
-		// output = bfsInPlace(map[int][]int{0: []int{1}}, p.target)
+		case 2:
+			// method 2: in place bfs
+			output = bfsInPlace(map[int][]int{0: []int{1}}, p.target)
 
-		// method 3: generic search
-		cache := make(map[int]int)
-		output = search(p.target, cache)
+		default:
+			// method 3: generic search
+			cache := make(map[int]int)
+			output = search(p.target, cache)
+
+		}
 	} else {
 		// "RA" -- position: 0 -> 1 -> 0; speed: 1 -> -1 -> -2, output = 2
 		// but really, just stay where you're, that's output = 0
@@ -100,7 +108,7 @@ func bfsInPlace(curr map[int][]int, target int) int {
 	step := 0
 
 	for {
-		next := make(map[int][]int, 2*len(curr))
+		next := make(map[int][]int, len(curr))
 		step++
 
 		for pos, speeds := range curr {
@@ -170,6 +178,9 @@ func search(target int, cache map[int]int) int {
 	pos := 0
 	speed := 1
 
+	final := -1
+	remainder := 0
+
 	// approaching the target
 	for {
 		step++
@@ -181,19 +192,35 @@ func search(target int, cache map[int]int) int {
 			return step
 		}
 
+		if pos < target {
+			remainder = target - pos
+		} else {
+			remainder = pos - target
+		}
+
+		if s, ok := cache[remainder]; ok {
+			if final == 0 || step+2+s < final {
+				final = step + 2 + s
+			}
+		}
+
 		if pos < target && pos+speed > target {
+			routeA := step + 2 + search(target-pos, cache)
+			if final < 0 || routeA < final {
+				final = routeA
+			}
+
+			routeB := step + 2 + search(pos+speed-target, cache)
+			if final < 0 || routeB < final {
+				final = routeB
+			}
+		}
+
+		if pos > 2*target || speed > 2*target {
 			break
 		}
 	}
 
-	// now we're close to the target --
-	//   route A = before target, reset speed at position (RR), search for the remainder
-	//   route B = overshoot target, then reverse and reset speed (AR), search for the remainder
-	routeA := step + 2 + search(target-pos, cache)
-	routeB := step + 2 + search(pos+speed-target, cache)
-
-	final := d.Min(routeA, routeB)
 	cache[target] = final
-
 	return final
 }

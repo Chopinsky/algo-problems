@@ -39,7 +39,7 @@ func (n *Node) Next() *Node {
 	return n.next
 }
 
-// Val ...
+// Value ...
 func (n *Node) Value() int {
 	return n.val
 }

@@ -69,6 +69,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Linked-List Components"
 		p = CreateLLC()
 
+	case 815:
+		t = "Bus Routes"
+		p = CreateBR()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

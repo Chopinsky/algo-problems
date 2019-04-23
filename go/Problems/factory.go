@@ -73,6 +73,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Bus Routes"
 		p = CreateBR()
 
+	case 813:
+		t = "Largest Sum of Averages"
+		p = CreateLSA()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

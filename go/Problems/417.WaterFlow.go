@@ -6,8 +6,6 @@ import (
 	d "../Utils"
 )
 
-var dir = []int{-1, 0, 1, 0, -1}
-
 // WF ...
 type WF struct {
 	source [][]int

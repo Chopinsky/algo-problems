@@ -6,15 +6,8 @@ import (
 	"strconv"
 )
 
-// LIST ...
-var LIST = map[string]Problem{
-	"nthprimefraction":      CreateNPF(),
-	"1019.nextgreaternode":  CreateNGN(),
-	"823.binarytreefactors": CreateBTF(),
-	"486.predictwinner":     CreatePW(),
-	"1024.vidstitching":     CreateVS(),
-	"801.minswapinc":        CreateMSI(),
-}
+var dir = []int{-1, 0, 1, 0, -1}
+var void struct{}
 
 // Problem ...m
 type Problem interface {
@@ -76,6 +69,18 @@ func Create(problem string) (Problem, string, error) {
 	case 813:
 		t = "Largest Sum of Averages"
 		p = CreateLSA()
+
+	case 450:
+		t = "Delete Node in BST"
+		p = CreateDN()
+
+	case 560:
+		t = "Sub-Array Sum"
+		p = CreateSAS()
+
+	case 803:
+		t = "Bricks Falling When Hit"
+		p = CreateBFH()
 
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))

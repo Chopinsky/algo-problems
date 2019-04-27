@@ -6,8 +6,6 @@ import (
 	d "../Utils"
 )
 
-var void struct{}
-
 // BR ...
 type BR struct {
 	routes [][]int

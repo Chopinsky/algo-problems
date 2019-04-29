@@ -7,7 +7,7 @@ import (
 )
 
 var dir = []int{-1, 0, 1, 0, -1}
-var void struct{}
+var empty = struct{}{}
 
 // Problem ...m
 type Problem interface {
@@ -81,6 +81,10 @@ func Create(problem string) (Problem, string, error) {
 	case 803:
 		t = "Bricks Falling When Hit"
 		p = CreateBFH()
+
+	case 802:
+		t = "Find Eventual Safe States"
+		p = CreateESS()
 
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))

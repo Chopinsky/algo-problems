@@ -94,7 +94,7 @@ func (p *BR) calc() int {
 		temp := []info{}
 
 		for _, stopInfo := range curr {
-			visited[stopInfo.stop] = void
+			visited[stopInfo.stop] = empty
 			conn := stops[stopInfo.stop]
 
 			for _, bus := range conn {
@@ -180,7 +180,7 @@ func (p *BR) calcAlt() int {
 
 		temp := []info{}
 		for _, me := range curr {
-			visited[me.stop] = void
+			visited[me.stop] = empty
 
 			for _, neighbor := range stops[me.stop] {
 				if _, ok := visited[neighbor[0]]; ok {

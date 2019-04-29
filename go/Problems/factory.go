@@ -86,6 +86,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Find Eventual Safe States"
 		p = CreateESS()
 
+	case 799:
+		t = "Champagne Tower"
+		p = CreateCT()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

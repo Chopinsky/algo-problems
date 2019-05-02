@@ -90,6 +90,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Champagne Tower"
 		p = CreateCT()
 
+	case 792:
+		t = "Number of Matching Subsequences"
+		p = CreateNMS()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

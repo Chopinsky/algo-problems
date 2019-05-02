@@ -94,6 +94,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Number of Matching Subsequences"
 		p = CreateNMS()
 
+	case 790:
+		t = "Domino and Tromino"
+		p = CreateDAT()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

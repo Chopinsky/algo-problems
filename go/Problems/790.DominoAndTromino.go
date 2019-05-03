@@ -54,7 +54,7 @@ func dnt(n int) int {
 
 	for i := 3; i <= n; i++ {
 		// x0 existing styles with 1 unique new, plus y0 existing styles with 1 more unique new,
-		// plus y1 existing styles with L-shape tile at the end, L can be facing up or down, so times 2.
+		// plus y1 existing styles with Lll-shape tile at the end, L can be facing up or down, so times 2.
 		temp = x0 + y0 + 2*y1
 
 		// y1 existing styles and 1 more unique domino tile, plus x0 existing styles with 1 more

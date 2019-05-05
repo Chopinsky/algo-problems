@@ -98,6 +98,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Domino and Tromino"
 		p = CreateDAT()
 
+	case 787:
+		t = "Cheapeast Flights Connecting K Stops"
+		p = CreateCFS()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

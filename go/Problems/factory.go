@@ -106,6 +106,14 @@ func Create(problem string) (Problem, string, error) {
 		t = "Letter Case Permutation"
 		p = CreateLCP()
 
+	case 773:
+		t = "Sliding Puzzle"
+		p = CreateSP()
+
+	case 636:
+		t = "Exclusive Time of Functions"
+		p = CreateETF()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

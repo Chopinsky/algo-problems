@@ -114,6 +114,14 @@ func Create(problem string) (Problem, string, error) {
 		t = "Exclusive Time of Functions"
 		p = CreateETF()
 
+	case 464:
+		t = "Can I Win the 100-Game?"
+		p = CreateOHG()
+
+	case 769:
+		t = "Max Chunk to Make Sorted"
+		p = CreateMCS()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

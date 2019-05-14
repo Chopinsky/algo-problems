@@ -122,6 +122,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Max Chunk to Make Sorted"
 		p = CreateMCS()
 
+	case 282:
+		t = "Expression Add Operator"
+		p = CreateEAO()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

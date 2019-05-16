@@ -126,6 +126,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Expression Add Operator"
 		p = CreateEAO()
 
+	case 1043:
+		t = "Partition Array for Maximum Sum"
+		p = CreatePAMS()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

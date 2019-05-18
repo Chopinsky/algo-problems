@@ -130,6 +130,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Partition Array for Maximum Sum"
 		p = CreatePAMS()
 
+	case 480:
+		t = "Sliding Window Median"
+		p = CreateSWM()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

@@ -134,6 +134,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Sliding Window Median"
 		p = CreateSWM()
 
+	case 763:
+		t = "Partition Labels"
+		p = CreatePL()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

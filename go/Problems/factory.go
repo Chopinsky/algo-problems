@@ -138,6 +138,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Partition Labels"
 		p = CreatePL()
 
+	case 239:
+		t = "Sliding Window Max"
+		p = CreateSWMAX()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

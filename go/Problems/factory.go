@@ -142,6 +142,14 @@ func Create(problem string) (Problem, string, error) {
 		t = "Sliding Window Max"
 		p = CreateSWMAX()
 
+	case 69:
+		t = "Square Root"
+		p = CreateSQRT()
+
+	case 494:
+		t = "Target Sum"
+		p = CreateTS()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

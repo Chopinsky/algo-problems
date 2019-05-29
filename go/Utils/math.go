@@ -1,6 +1,9 @@
 package utils
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 const (
 	// MaxUint ...
@@ -9,6 +12,9 @@ const (
 	// MaxInt ...
 	MaxInt = int(MaxUint >> 1)
 )
+
+// Epsilon ...
+var Epsilon = math.Nextafter(1.0, 2.0) - 1.0
 
 // Min ...
 func Min(a, b int) int {
@@ -51,4 +57,27 @@ func BinarySearch(src []int, target int) (int, bool) {
 	}
 
 	return l, false
+}
+
+// Sqrt ...
+func Sqrt(num int) float64 {
+	if num < 0 {
+		return -1.
+	}
+
+	if num == 0 {
+		return 0.
+	}
+
+	x := float64(num)
+	y := x
+	delta, temp := 1., 0.
+
+	for delta >= Epsilon {
+		temp = 0.5 * (y + x/y)
+		delta = math.Abs(temp - y)
+		y = temp
+	}
+
+	return y
 }

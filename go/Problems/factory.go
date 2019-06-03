@@ -150,6 +150,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Target Sum"
 		p = CreateTS()
 
+	case 759:
+		t = "Employee Free Time"
+		p = CreateEFT()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

@@ -154,6 +154,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Employee Free Time"
 		p = CreateEFT()
 
+	case 264:
+		t = "Ugly Number II"
+		p = CreateUN2()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

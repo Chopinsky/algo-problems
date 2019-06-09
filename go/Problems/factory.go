@@ -162,6 +162,14 @@ func Create(problem string) (Problem, string, error) {
 		t = "Task Scheduler"
 		p = CreateTSE()
 
+	case 755:
+		t = "Pour Water"
+		p = CreatePWT()
+
+	case 309:
+		t = "Best Time to Buy and Sell Stocks"
+		p = CreateBTTS()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

@@ -1,6 +1,8 @@
 package problems
 
 import (
+	"math"
+
 	d "../Utils"
 )
 
@@ -73,4 +75,20 @@ func (p *BTTS) calc() int {
 	d.Debug(dp, 0)
 
 	return dp[size-1]
+}
+
+func (p *BTTS) calc2() int {
+	// rest -- no stock in holding, can be from a rest from last turn, or a sold at last turn
+	// hold -- after buy, can be a new buy or a holding from previous holding
+	// sold -- sell stock this turn: from holding last turn plus the profit
+	var sold, rest, hold int
+	hold = math.MinInt32
+
+	for _, val := range p.source {
+		hold = d.Max(hold, rest-val) // hold from last buy, or a new buy (from rest)
+		rest = d.Max(rest, sold)     // rest from do nothing still, or sold last turn (meaning we have to rest this turn)
+		sold = hold + val            // sold from last hold
+	}
+
+	return d.Max(rest, sold)
 }

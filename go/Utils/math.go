@@ -81,3 +81,31 @@ func Sqrt(num int) float64 {
 
 	return y
 }
+
+// GreatestCommonDenominator ...
+func GreatestCommonDenominator(a, b int) int {
+	if a == 0 || b == 0 {
+		return 0
+	}
+
+	if a == b {
+		return a
+	}
+
+	if a > b {
+		a, b = b, a
+	}
+
+	var t int
+	for t > 0 {
+		t = b % a
+		a, b = t, a
+	}
+
+	return b
+}
+
+// LeastCommonMultiple ...
+func LeastCommonMultiple(a, b int) int {
+	return (a * b) / GreatestCommonDenominator(a, b)
+}

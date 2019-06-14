@@ -170,6 +170,18 @@ func Create(problem string) (Problem, string, error) {
 		t = "Best Time to Buy and Sell Stocks"
 		p = CreateBTTS()
 
+	case 315:
+		t = "Count Smaller Numbers Than Self"
+		p = CreateCSN()
+
+	case 322:
+		t = "Coin Change"
+		p = CreateCCHG()
+
+	case 754:
+		t = "Reach A Number"
+		p = CreateRAN()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

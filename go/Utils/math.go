@@ -3,6 +3,8 @@ package utils
 import (
 	"fmt"
 	"math"
+	"math/rand"
+	"time"
 )
 
 const (
@@ -108,4 +110,27 @@ func GreatestCommonDenominator(a, b int) int {
 // LeastCommonMultiple ...
 func LeastCommonMultiple(a, b int) int {
 	return (a * b) / GreatestCommonDenominator(a, b)
+}
+
+// RandIntArr ...
+func RandIntArr(m, n int) []int {
+	if m > n {
+		return []int{}
+	}
+
+	rand.Seed(time.Now().UnixNano() / 42)
+	result := make([]int, 0, m)
+
+	for i := 0; i < n; i++ {
+		if rand.Int()%(n-i) < m {
+			result = append(result, i)
+			if len(result) == m {
+				break
+			}
+
+			m--
+		}
+	}
+
+	return result
 }

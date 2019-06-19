@@ -182,6 +182,18 @@ func Create(problem string) (Problem, string, error) {
 		t = "Reach A Number"
 		p = CreateRAN()
 
+	case 652:
+		t = "Find Duplicate Subtrees"
+		p = CreateFDS()
+
+	case 1092:
+		t = "Shortest Common Super-Sequence"
+		p = CreateSCSS()
+
+	case 416:
+		t = "Partition Equal Subset Sum"
+		p = CreatePESS()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

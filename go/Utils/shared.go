@@ -78,3 +78,32 @@ func QSort(src []int, l, u int) []int {
 
 	return src
 }
+
+// Permut ...
+func Permut(src []int, k int, output [][]int) [][]int {
+	if k == 1 {
+		output = append(output, append([]int(nil), src...))
+	} else {
+		// output the source array, which is also a valid result
+		output = Permut(src, k-1, output)
+
+		// actual elem swaps to create a new and different array
+		var index int
+		for i := 0; i < k-1; i++ {
+			if k%2 == 0 {
+				index = i
+			} else {
+				index = 0
+			}
+
+			// swap
+			src[index], src[k-1] = src[k-1], src[index]
+
+			// permut the newly created array. Note that the Permut(...) will
+			// also output the made array at this step
+			output = Permut(src, k-1, output)
+		}
+	}
+
+	return output
+}

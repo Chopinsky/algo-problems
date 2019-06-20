@@ -194,6 +194,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Partition Equal Subset Sum"
 		p = CreatePESS()
 
+	case 753:
+		t = "Cracking The Safe"
+		p = CreateCS()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

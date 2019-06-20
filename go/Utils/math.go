@@ -134,3 +134,27 @@ func RandIntArr(m, n int) []int {
 
 	return result
 }
+
+// ComplementNumber ...
+func ComplementNumber(num int) int {
+	var base uint
+	var comp int
+
+	for num > 0 {
+		// flip last bit to 1 if 0, and to 0 if 1
+		bit := 1 - num&1
+
+		// add to the complement number
+		if base > 0 {
+			comp += bit << base
+		} else {
+			comp = bit
+		}
+
+		// update states
+		num = num >> 1
+		base++
+	}
+
+	return comp
+}

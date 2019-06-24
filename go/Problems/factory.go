@@ -198,6 +198,22 @@ func Create(problem string) (Problem, string, error) {
 		t = "Cracking The Safe"
 		p = CreateCS()
 
+	case 752:
+		t = "Open The Lock"
+		p = CreateOTL()
+
+	case 17:
+		t = "Letter Combo of a Phone Number"
+		p = CreateLC()
+
+	case 171:
+		t = "Best Time to Buy and Sell Stocks"
+		p = CreateBTBSS()
+
+	case 301:
+		t = "Remove Invalid Parentheses"
+		p = CreateRIP()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

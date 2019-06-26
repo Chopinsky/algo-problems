@@ -214,6 +214,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Remove Invalid Parentheses"
 		p = CreateRIP()
 
+	case 23:
+		t = "Merge Sorted Lists"
+		p = CreateMSL()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

@@ -8,8 +8,9 @@ import (
 
 // RIP ...
 type RIP struct {
-	source string
-	output []string
+	source    string
+	output    []string
+	testCount int
 }
 
 // CreateRIP ...
@@ -20,6 +21,7 @@ func CreateRIP() *RIP {
 // Build ...
 func (p *RIP) Build(test int) {
 	p.ResetGlobals()
+	p.testCount = 5
 
 	switch test {
 	case 1:
@@ -53,14 +55,12 @@ var (
 	globalMax   = 0
 )
 
-const tests = 5
-
 // Run ...
 func (p *RIP) Run() {
 	for j := 0; j < 10; j++ {
 		fmt.Println("============ Trial:", j, "============")
 
-		for i := 0; i < tests; i++ {
+		for i := 0; i < p.testCount; i++ {
 			fmt.Println("\nTest case: ", i, ":")
 			p.Build(i)
 

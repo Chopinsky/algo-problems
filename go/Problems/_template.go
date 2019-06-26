@@ -4,8 +4,9 @@ import "fmt"
 
 // XXX ...
 type XXX struct {
-	source []int
-	output int
+	source    []int
+	output    int
+	testCount int
 }
 
 // CreateXXX ...

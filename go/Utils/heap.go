@@ -69,6 +69,30 @@ func (h *Heap) Heapify() {
 	}
 }
 
+// UpdateRoot ...
+func (h *Heap) UpdateRoot(newVal int) {
+	h.inner[0].val = newVal
+	h.siftDown(0)
+}
+
+// PeekNextRoot ...
+func (h *Heap) PeekNextRoot() *HeapNode {
+	size := len(h.inner)
+	if size < 2 {
+		return nil
+	}
+
+	if size == 2 {
+		return h.inner[1]
+	}
+
+	if h.shallSwap(1, 2, size) {
+		return h.inner[1]
+	}
+
+	return h.inner[2]
+}
+
 // Push ...
 func (h *Heap) Push(val, data int) {
 	node := &HeapNode{
@@ -77,13 +101,13 @@ func (h *Heap) Push(val, data int) {
 	}
 
 	h.inner = append(h.inner, node)
-	idx, parent := len(h.inner)-1, 0
+	size, idx, parent := len(h.inner), len(h.inner)-1, 0
 
 	// Now sift-up the heap
 	for idx > 0 {
 		parent = (idx - 1) / 2
 
-		if h.shallSwap(idx, parent) {
+		if h.shallSwap(idx, parent, size) {
 			h.inner[idx], h.inner[parent] = h.inner[parent], h.inner[idx]
 		}
 
@@ -133,6 +157,11 @@ func (h *Heap) IsEmpty() bool {
 	return len(h.inner) == 0
 }
 
+// GetLen ...
+func (h *Heap) GetLen() int {
+	return len(h.inner)
+}
+
 func (h *Heap) siftDown(idx int) {
 	bound := len(h.inner)
 	if idx > bound/2-1 {
@@ -141,11 +170,11 @@ func (h *Heap) siftDown(idx int) {
 
 	left, right, next := 2*idx+1, 2*idx+2, idx
 
-	if left < bound && h.shallSwap(left, next) {
+	if left < bound && h.shallSwap(left, next, bound) {
 		next = left
 	}
 
-	if right < bound && h.shallSwap(right, next) {
+	if right < bound && h.shallSwap(right, next, bound) {
 		next = right
 	}
 
@@ -157,8 +186,7 @@ func (h *Heap) siftDown(idx int) {
 	}
 }
 
-func (h *Heap) shallSwap(child, parent int) bool {
-	n := len(h.inner)
+func (h *Heap) shallSwap(child, parent, n int) bool {
 	if child >= n || parent >= n {
 		return false
 	}

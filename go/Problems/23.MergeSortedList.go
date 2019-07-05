@@ -9,7 +9,7 @@ import (
 // MSL ...
 type MSL struct {
 	source    []*listNode
-	output    []int
+	output    *listNode
 	testCount int
 }
 
@@ -24,6 +24,7 @@ func (p *MSL) Build(test int) {
 	p.testCount = 1
 
 	var src [][]int
+	var output []int
 
 	switch test {
 	default:
@@ -33,7 +34,7 @@ func (p *MSL) Build(test int) {
 			{2, 6},
 		}
 
-		p.output = []int{1, 1, 2, 3, 4, 4, 5, 6}
+		output = []int{1, 1, 2, 3, 4, 4, 5, 6}
 
 	}
 
@@ -42,6 +43,8 @@ func (p *MSL) Build(test int) {
 		head := buildList(src[i])
 		p.source[i] = head
 	}
+
+	p.output = buildList(output)
 }
 
 // ResetGlobals ...
@@ -56,16 +59,99 @@ func (p *MSL) Run() {
 		for i := 0; i < p.testCount; i++ {
 			p.Build(i)
 
-			//TODO: write code here ...
+			fmt.Println("\nTest Case -", i, ":")
 
-			fmt.Println("\nTest case: ", i, ":")
-			// d.Output(result, p.output)
+			h := p.buildHeap()
+			fmt.Print("Calculated result: ")
+			p.merge(h).output()
+			fmt.Println()
+
+			fmt.Print("Expected result:   ")
+			p.output.output()
+			fmt.Println()
 		}
 
 		fmt.Println()
 	}
+}
 
-	d.TestHeap()
+func (p *MSL) buildHeap() *d.Heap {
+	ary := make([]int, len(p.source))
+	for i := range p.source {
+		ary[i] = p.source[i].val
+	}
+
+	h := d.NewHeap(ary, true)
+
+	return h
+}
+
+func (p *MSL) merge(heap *d.Heap) *listNode {
+	if len(p.source) == 1 {
+		return p.source[0]
+	}
+
+	if heap.IsEmpty() {
+		return nil
+	}
+
+	var upperBound int
+	var nextRoot *d.HeapNode
+	var next *listNode
+
+	root := heap.Peek()
+	idx := root.GetData()
+	head, tail := p.source[idx], p.source[idx]
+
+	for !heap.IsEmpty() {
+		nextRoot = heap.PeekNextRoot()
+		if nextRoot != nil {
+			upperBound = nextRoot.GetVal()
+		} else {
+			heap.Pop()
+			break
+		}
+
+		for {
+			next = tail.next
+
+			if next != nil {
+				if next.val <= upperBound {
+					tail = next
+				} else {
+					p.source[idx] = next
+					heap.UpdateRoot(next.val)
+					break
+				}
+			} else {
+				heap.Pop()
+				p.source[idx] = nil
+				break
+			}
+		}
+
+		// we're done with this list, get the next list
+		root = heap.Peek()
+		if root == nil {
+			break
+		}
+
+		idx = root.GetData()
+		tail.next = p.source[idx]
+
+		if tail.next != nil {
+			tail = tail.next
+		} else {
+			break
+		}
+	}
+
+	last := heap.Pop()
+	if last != nil {
+		tail.next = p.source[last.GetData()]
+	}
+
+	return head
 }
 
 type listNode struct {
@@ -93,4 +179,16 @@ func buildList(src []int) *listNode {
 	}
 
 	return head
+}
+
+func (n *listNode) output() {
+	head, link := n, " -> "
+	for head != nil {
+		if head.next == nil {
+			link = ""
+		}
+
+		fmt.Print(head.val, link)
+		head = head.next
+	}
 }

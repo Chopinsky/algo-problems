@@ -17,6 +17,7 @@ func CreateXXX() *XXX {
 // Build ...
 func (p *XXX) Build(test int) {
 	p.ResetGlobals()
+	p.testCount = 1
 
 	switch test {
 	default:
@@ -25,8 +26,6 @@ func (p *XXX) Build(test int) {
 
 	}
 }
-
-const tests = 1
 
 // ResetGlobals ...
 func (p *XXX) ResetGlobals() {
@@ -37,7 +36,7 @@ func (p *XXX) Run() {
 	for j := 0; j < 10; j++ {
 		fmt.Println("============ Trial: ", j, " ============")
 
-		for i := 0; i < tests; i++ {
+		for i := 0; i < p.testCount; i++ {
 			p.Build(i)
 
 			//TODO: write code here ...

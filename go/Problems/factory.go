@@ -218,6 +218,18 @@ func Create(problem string) (Problem, string, error) {
 		t = "Merge Sorted Lists"
 		p = CreateMSL()
 
+	case 748:
+		t = "Shortest Completing Word"
+		p = CreateSCW()
+
+	case 1105:
+		t = "Filling Bookcase Shelf"
+		p = CreateFBS()
+
+	case 1106:
+		t = "Parsing Boolean Expression"
+		p = CreatePBE()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

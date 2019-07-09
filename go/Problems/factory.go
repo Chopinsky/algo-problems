@@ -230,6 +230,18 @@ func Create(problem string) (Problem, string, error) {
 		t = "Parsing Boolean Expression"
 		p = CreatePBE()
 
+	case 391:
+		t = "Perfect Rectangle"
+		p = CreatePR()
+
+	case 746:
+		t = "Min Cost To Climb Stairs"
+		p = CreateMCC()
+
+	case 749:
+		t = "Contains Virus"
+		p = CreateCV()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

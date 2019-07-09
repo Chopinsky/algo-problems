@@ -1,6 +1,8 @@
 package problems
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // XXX ...
 type XXX struct {
@@ -34,17 +36,17 @@ func (p *XXX) ResetGlobals() {
 // Run ...
 func (p *XXX) Run() {
 	for j := 0; j < 10; j++ {
-		fmt.Println("============ Trial: ", j, " ============")
+		fmt.Println("============ Running Trial: ", j, " ============")
 
 		for i := 0; i < p.testCount; i++ {
 			p.Build(i)
 
-			//TODO: write code here ...
-
-			fmt.Println("\nTest case: ", i, ":")
-			// d.Output(result, p.output)
+			if j == 9 {
+				fmt.Println("\nTest case: ", i, ":")
+				//d.Output(buildShape(p.source), p.output)
+			} else {
+				//buildShape(p.source)
+			}
 		}
-
-		fmt.Println()
 	}
 }

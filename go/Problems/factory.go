@@ -242,6 +242,14 @@ func Create(problem string) (Problem, string, error) {
 		t = "Contains Virus"
 		p = CreateCV()
 
+	case 377:
+		t = "Combo Sum 4"
+		p = CreateCS4()
+
+	case 540:
+		t = "Single Element in Sorted Array"
+		p = CreateSE()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

@@ -232,21 +232,29 @@ func buildIslands(src [][]int) ([][]int, map[int][][]int) {
 	var key int
 	for r := range src {
 		for c := range src[r] {
+			// flattern 2d to 1d key
 			key = r*col + c + 1
+
 			if src[r][c] == 1 {
+				// the island
 				if r > 0 && src[r-1][c] == 1 {
+					// try connect with the island above
 					base = union(base, (r-1)*col+c+1, key)
 				} else if c > 0 && src[r][c-1] == 1 {
+					// otherwise, try connect with the island to the left
 					base = union(base, r*col+c, key)
 				} else {
+					// not connected, starting a new island number
 					base[key] = key
 				}
 			} else {
+				// the sea
 				base[key] = 0
 			}
 		}
 	}
 
+	// reforming back to 2d map for later use
 	islands := make([][]int, row)
 	for i := range islands {
 		islands[i] = make([]int, col)

@@ -43,9 +43,9 @@ func (p *XXX) Run() {
 
 			if j == 9 {
 				fmt.Println("\nTest case: ", i, ":")
-				//d.Output(buildShape(p.source), p.output)
+				//d.Output(calcXXX(p.source), p.output)
 			} else {
-				//buildShape(p.source)
+				//calcXXX(p.source)
 			}
 		}
 	}

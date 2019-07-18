@@ -250,6 +250,18 @@ func Create(problem string) (Problem, string, error) {
 		t = "Single Element in Sorted Array"
 		p = CreateSE()
 
+	case 1124:
+		t = "Longest Well-Performing Interval"
+		p = CreateLPI()
+
+	case 1125:
+		t = "Smallest Sufficient Team"
+		p = CreateSST()
+
+	case 477:
+		t = "Total Hamming Distance"
+		p = CreateTHD()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

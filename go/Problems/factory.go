@@ -262,6 +262,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Total Hamming Distance"
 		p = CreateTHD()
 
+	case 1129:
+		t = "Shortest Path with Alternative colors"
+		p = CreateSPC()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

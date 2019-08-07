@@ -266,6 +266,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Shortest Path with Alternative colors"
 		p = CreateSPC()
 
+	case 1140:
+		t = "Stone Game II"
+		p = CreateSGII()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

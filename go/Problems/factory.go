@@ -4,10 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
-)
 
-var dir = []int{-1, 0, 1, 0, -1}
-var empty = struct{}{}
+	p1 "./1-999"
+	p2 "./1000-1999"
+)
 
 // Problem ...m
 type Problem interface {
@@ -28,247 +28,259 @@ func Create(problem string) (Problem, string, error) {
 	switch num {
 	case 801:
 		t = "Min Swap to Increase"
-		p = CreateMSI()
+		p = p1.CreateMSI()
 
 	case 1024:
 		t = "Video Stitching"
-		p = CreateVS()
+		p = p2.CreateVS()
 
 	case 486:
 		t = "Predict Winner"
-		p = CreatePW()
+		p = p1.CreatePW()
 
 	case 823:
 		t = "Binary Tree Factors"
-		p = CreateBTF()
+		p = p1.CreateBTF()
 
 	case 1019:
 		t = "Next Greater Node"
-		p = CreateNGN()
+		p = p2.CreateNGN()
 
 	case 818:
 		t = "Race Car"
-		p = CreateRC()
+		p = p1.CreateRC()
 
 	case 786:
 		t = "Nth Prime Fraction"
-		p = CreateNPF()
+		p = p1.CreateNPF()
 
 	case 417:
 		t = "Pacific-Atlantic Water Flow"
-		p = CreateWF()
+		p = p1.CreateWF()
 
 	case 817:
 		t = "Linked-List Components"
-		p = CreateLLC()
+		p = p1.CreateLLC()
 
 	case 815:
 		t = "Bus Routes"
-		p = CreateBR()
+		p = p1.CreateBR()
 
 	case 813:
 		t = "Largest Sum of Averages"
-		p = CreateLSA()
+		p = p1.CreateLSA()
 
 	case 450:
 		t = "Delete Node in BST"
-		p = CreateDN()
+		p = p1.CreateDN()
 
 	case 560:
 		t = "Sub-Array Sum"
-		p = CreateSAS()
+		p = p1.CreateSAS()
 
 	case 803:
 		t = "Bricks Falling When Hit"
-		p = CreateBFH()
+		p = p1.CreateBFH()
 
 	case 802:
 		t = "Find Eventual Safe States"
-		p = CreateESS()
+		p = p1.CreateESS()
 
 	case 799:
 		t = "Champagne Tower"
-		p = CreateCT()
+		p = p1.CreateCT()
 
 	case 792:
 		t = "Number of Matching Subsequences"
-		p = CreateNMS()
+		p = p1.CreateNMS()
 
 	case 790:
 		t = "Domino and Tromino"
-		p = CreateDAT()
+		p = p1.CreateDAT()
 
 	case 787:
 		t = "Cheapeast Flights Connecting K Stops"
-		p = CreateCFS()
+		p = p1.CreateCFS()
 
 	case 784:
 		t = "Letter Case Permutation"
-		p = CreateLCP()
+		p = p1.CreateLCP()
 
 	case 773:
 		t = "Sliding Puzzle"
-		p = CreateSP()
+		p = p1.CreateSP()
 
 	case 636:
 		t = "Exclusive Time of Functions"
-		p = CreateETF()
+		p = p1.CreateETF()
 
 	case 464:
 		t = "Can I Win the 100-Game?"
-		p = CreateOHG()
+		p = p1.CreateOHG()
 
 	case 769:
 		t = "Max Chunk to Make Sorted"
-		p = CreateMCS()
+		p = p1.CreateMCS()
 
 	case 282:
 		t = "Expression Add Operator"
-		p = CreateEAO()
+		p = p1.CreateEAO()
 
 	case 1043:
 		t = "Partition Array for Maximum Sum"
-		p = CreatePAMS()
+		p = p2.CreatePAMS()
 
 	case 480:
 		t = "Sliding Window Median"
-		p = CreateSWM()
+		p = p1.CreateSWM()
 
 	case 763:
 		t = "Partition Labels"
-		p = CreatePL()
+		p = p1.CreatePL()
 
 	case 239:
 		t = "Sliding Window Max"
-		p = CreateSWMAX()
+		p = p1.CreateSWMAX()
 
 	case 69:
 		t = "Square Root"
-		p = CreateSQRT()
+		p = p1.CreateSQRT()
 
 	case 494:
 		t = "Target Sum"
-		p = CreateTS()
+		p = p1.CreateTS()
 
 	case 759:
 		t = "Employee Free Time"
-		p = CreateEFT()
+		p = p1.CreateEFT()
 
 	case 264:
 		t = "Ugly Number II"
-		p = CreateUN2()
+		p = p1.CreateUN2()
 
 	case 621:
 		t = "Task Scheduler"
-		p = CreateTSE()
+		p = p1.CreateTSE()
 
 	case 755:
 		t = "Pour Water"
-		p = CreatePWT()
+		p = p1.CreatePWT()
 
 	case 309:
 		t = "Best Time to Buy and Sell Stocks"
-		p = CreateBTTS()
+		p = p1.CreateBTTS()
 
 	case 315:
 		t = "Count Smaller Numbers Than Self"
-		p = CreateCSN()
+		p = p1.CreateCSN()
 
 	case 322:
 		t = "Coin Change"
-		p = CreateCCHG()
+		p = p1.CreateCCHG()
 
 	case 754:
 		t = "Reach A Number"
-		p = CreateRAN()
+		p = p1.CreateRAN()
 
 	case 652:
 		t = "Find Duplicate Subtrees"
-		p = CreateFDS()
+		p = p1.CreateFDS()
 
 	case 1092:
 		t = "Shortest Common Super-Sequence"
-		p = CreateSCSS()
+		p = p2.CreateSCSS()
 
 	case 416:
 		t = "Partition Equal Subset Sum"
-		p = CreatePESS()
+		p = p1.CreatePESS()
 
 	case 753:
 		t = "Cracking The Safe"
-		p = CreateCS()
+		p = p1.CreateCS()
 
 	case 752:
 		t = "Open The Lock"
-		p = CreateOTL()
+		p = p1.CreateOTL()
 
 	case 17:
 		t = "Letter Combo of a Phone Number"
-		p = CreateLC()
+		p = p1.CreateLC()
 
 	case 171:
 		t = "Best Time to Buy and Sell Stocks"
-		p = CreateBTBSS()
+		p = p1.CreateBTBSS()
 
 	case 301:
 		t = "Remove Invalid Parentheses"
-		p = CreateRIP()
+		p = p1.CreateRIP()
 
 	case 23:
 		t = "Merge Sorted Lists"
-		p = CreateMSL()
+		p = p1.CreateMSL()
 
 	case 748:
 		t = "Shortest Completing Word"
-		p = CreateSCW()
+		p = p1.CreateSCW()
 
 	case 1105:
 		t = "Filling Bookcase Shelf"
-		p = CreateFBS()
+		p = p2.CreateFBS()
 
 	case 1106:
 		t = "Parsing Boolean Expression"
-		p = CreatePBE()
+		p = p2.CreatePBE()
 
 	case 391:
 		t = "Perfect Rectangle"
-		p = CreatePR()
+		p = p1.CreatePR()
 
 	case 746:
 		t = "Min Cost To Climb Stairs"
-		p = CreateMCC()
+		p = p1.CreateMCC()
 
 	case 749:
 		t = "Contains Virus"
-		p = CreateCV()
+		p = p1.CreateCV()
 
 	case 377:
 		t = "Combo Sum 4"
-		p = CreateCS4()
+		p = p1.CreateCS4()
 
 	case 540:
 		t = "Single Element in Sorted Array"
-		p = CreateSE()
+		p = p1.CreateSE()
 
 	case 1124:
 		t = "Longest Well-Performing Interval"
-		p = CreateLPI()
+		p = p2.CreateLPI()
 
 	case 1125:
 		t = "Smallest Sufficient Team"
-		p = CreateSST()
+		p = p2.CreateSST()
 
 	case 477:
 		t = "Total Hamming Distance"
-		p = CreateTHD()
+		p = p1.CreateTHD()
 
 	case 1129:
 		t = "Shortest Path with Alternative colors"
-		p = CreateSPC()
+		p = p2.CreateSPC()
 
 	case 1140:
 		t = "Stone Game II"
-		p = CreateSGII()
+		p = p2.CreateSGII()
+
+	case 1145:
+		t = "Binary Tree Coloring"
+		p = p2.CreateBTC()
+
+	case 1110:
+		t = "DeleteNodesAndReturnForest"
+		p = p2.CreateDNRF()
+
+	case 1155:
+		t = "Num of Dice Rools with Target Sum"
+		p = p2.CreateNDR()
 
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))

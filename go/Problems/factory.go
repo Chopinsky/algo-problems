@@ -282,6 +282,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Num of Dice Rools with Target Sum"
 		p = p2.CreateNDR()
 
+	case 212:
+		t = "Word Search II"
+		p = p1.CreateWSII()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

@@ -286,6 +286,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Word Search II"
 		p = p1.CreateWSII()
 
+	case 116:
+		t = "Populate Next Right Pointer"
+		p = p1.CreateNRP()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

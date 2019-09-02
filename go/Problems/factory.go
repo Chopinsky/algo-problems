@@ -290,6 +290,14 @@ func Create(problem string) (Problem, string, error) {
 		t = "Populate Next Right Pointer"
 		p = p1.CreateNRP()
 
+	case 1172:
+		t = "Dinner Plate Stack"
+		p = p2.CreateDPS()
+
+	case 1178:
+		t = "Number of Valid Words for Each Puzzle"
+		p = p2.CreateNVW()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

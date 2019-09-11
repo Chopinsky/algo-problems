@@ -298,6 +298,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Number of Valid Words for Each Puzzle"
 		p = p2.CreateNVW()
 
+	case 1187:
+		t = "Make the Array Strictly Increasing"
+		p = p2.CreateMAI()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

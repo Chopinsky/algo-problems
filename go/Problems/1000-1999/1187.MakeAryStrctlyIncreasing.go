@@ -81,8 +81,8 @@ func (p *MAI) Run() {
 
 			if j == 9 {
 				fmt.Println("\nTest case: ", i, ":")
-				// d.Output(p.findResult(), p.output)
 
+				// d.Output(p.findResult(), p.output)
 				d.Output(runMAI2(p.source, p.comp), p.output)
 			} else {
 				// p.findResult()
@@ -93,9 +93,9 @@ func (p *MAI) Run() {
 }
 
 type alt struct {
-	ary   []int
 	ops   int
 	start int
+	last  int
 }
 
 func runMAI2(src, comp []int) int {
@@ -104,42 +104,39 @@ func runMAI2(src, comp []int) int {
 	}
 
 	upperCache = make(map[int]int)
-	root, size := buildTree(comp), len(src)
+	root, size, result := buildTree(comp), len(src), -1
 	alts := make([]*alt, 0, size*len(comp))
-	result := -1
 
-	var resAry []int
 	var max, sub int
 	var cur *alt
 
 	alts = append(alts, &alt{
-		ary:   src,
 		ops:   0,
 		start: size - 1,
+		last:  upperBound,
 	})
 
 	for len(alts) > 0 {
 		cur, alts = alts[0], alts[1:]
 
 		pos := cur.start
-		ary := cur.ary
+		last := cur.last
 
 		for {
 			if pos == -1 {
 				// reaching a valid solution, check with the bench and update it
 				if result == -1 {
 					result = cur.ops
-					resAry = cur.ary
 				} else if cur.ops < result {
 					result = cur.ops
-					resAry = cur.ary
 				}
 
 				break
 			}
 
-			if (pos == size-1 || ary[pos] < ary[pos+1]) && (pos == 0 || ary[pos] > ary[pos-1]) {
+			if (pos == size-1 || src[pos] < last) && (pos == 0 || src[pos] > src[pos-1]) {
 				// a valid value
+				last = src[pos]
 				pos--
 				continue
 			}
@@ -148,7 +145,7 @@ func runMAI2(src, comp []int) int {
 			if pos == size-1 {
 				max = upperBound
 			} else {
-				max = ary[pos+1]
+				max = last
 			}
 
 			sub = root.findUpper(max)
@@ -157,23 +154,19 @@ func runMAI2(src, comp []int) int {
 				break
 			}
 
-			if pos == size-1 || ary[pos] < ary[pos+1] {
+			if pos == size-1 || src[pos] < last {
 				// this op can delay to the left elem
 				alts = append(alts, &alt{
-					ary:   append([]int(nil), ary...),
 					ops:   cur.ops,
 					start: pos - 1,
+					last:  src[pos],
 				})
 			}
 
-			ary[pos] = sub
 			cur.ops++
+			last = sub
 			pos--
 		}
-	}
-
-	if d.DEBUG {
-		fmt.Println(result, "->", resAry)
 	}
 
 	return result

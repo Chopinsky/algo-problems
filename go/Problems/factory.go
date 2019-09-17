@@ -302,6 +302,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Make the Array Strictly Increasing"
 		p = p2.CreateMAI()
 
+	case 1191:
+		t = "K-Concaatenation Max Sum"
+		p = p2.CreateKCMS()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

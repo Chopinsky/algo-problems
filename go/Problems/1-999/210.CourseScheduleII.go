@@ -100,7 +100,7 @@ func calcCSII(number int, prerequisites [][]int) []int {
 		}
 
 		stack = append(stack, i)
-		result = dfs(visited, stack, result)
+		result = dfsInPlace(visited, stack, result)
 
 		// clear the stack
 		stack = stack[:0]
@@ -109,7 +109,7 @@ func calcCSII(number int, prerequisites [][]int) []int {
 	return result
 }
 
-func dfs(visited []bool, stack, result []int) []int {
+func dfsInPlace(visited []bool, stack, result []int) []int {
 	var curr int
 
 	size = 1

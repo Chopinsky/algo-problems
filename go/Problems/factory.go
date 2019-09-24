@@ -310,6 +310,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Course Schedule II"
 		p = p1.CreateCSII()
 
+	case 1201:
+		t = "Ugly Numbers III"
+		p = p2.CreateUNIII()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

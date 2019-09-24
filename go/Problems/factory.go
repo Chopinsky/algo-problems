@@ -306,6 +306,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "K-Concaatenation Max Sum"
 		p = p2.CreateKCMS()
 
+	case 210:
+		t = "Course Schedule II"
+		p = p1.CreateCSII()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

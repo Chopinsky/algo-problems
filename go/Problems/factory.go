@@ -314,6 +314,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Ugly Numbers III"
 		p = p2.CreateUNIII()
 
+	case 1202:
+		t = "Smallest String With Swaps"
+		p = p2.CreateSSS()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

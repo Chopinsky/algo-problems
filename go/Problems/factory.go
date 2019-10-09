@@ -318,6 +318,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Smallest String With Swaps"
 		p = p2.CreateSSS()
 
+	case 1220:
+		t = "Counting Voewls Permutations"
+		p = p2.CreateVP()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

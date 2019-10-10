@@ -318,6 +318,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Smallest String With Swaps"
 		p = p2.CreateSSS()
 
+	case 1218:
+		t = "Longest Arithmetic Subsequence with Given Difference"
+		p = p2.CreateLAS()
+
 	case 1220:
 		t = "Counting Voewls Permutations"
 		p = p2.CreateVP()

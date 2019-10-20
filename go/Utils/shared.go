@@ -4,6 +4,9 @@ import (
 	"fmt"
 )
 
+// Dirs ...
+var Dirs = []int{-1, 0, 1, 0, -1}
+
 // Output ...
 func Output(calculated, expected interface{}) {
 	fmt.Println("Calculated result: ", calculated)

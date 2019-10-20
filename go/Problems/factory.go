@@ -326,6 +326,10 @@ func Create(problem string) (Problem, string, error) {
 		t = "Counting Voewls Permutations"
 		p = p2.CreateVP()
 
+	case 130:
+		t = "Surrounded Regions"
+		p = p1.CreateSR()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", problem))
 	}

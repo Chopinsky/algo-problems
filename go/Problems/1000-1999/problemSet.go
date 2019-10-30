@@ -101,6 +101,10 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Dice Roll Simulation"
 		p = CreateDRS()
 
+	case 1239:
+		t = "Max Len of a Concatenated String with Unique Char"
+		p = CreateMLS()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

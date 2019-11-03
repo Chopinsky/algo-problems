@@ -105,6 +105,10 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Max Len of a Concatenated String with Unique Char"
 		p = CreateMLS()
 
+	case 1240:
+		t = "Tiling a Rectangle with the Fewest Squares"
+		p = CreateTR()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

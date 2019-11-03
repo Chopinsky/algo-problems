@@ -18,19 +18,15 @@ func CreateXXX() *XXX {
 
 // Build ...
 func (p *XXX) Build(test int) {
-	p.ResetGlobals()
-	p.testCount = 1
-
 	switch test {
 	default:
 		p.source = nil
 		p.output = 0
 
 	}
-}
 
-// ResetGlobals ...
-func (p *XXX) ResetGlobals() {
+	p.ResetGlobals()
+	p.testCount = 1
 }
 
 // Run ...
@@ -49,4 +45,8 @@ func (p *XXX) Run() {
 			}
 		}
 	}
+}
+
+// ResetGlobals ...
+func (p *XXX) ResetGlobals() {
 }

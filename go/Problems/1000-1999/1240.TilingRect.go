@@ -22,7 +22,7 @@ func CreateTR() *TR {
 // Build ...
 func (p *TR) Build(test int) {
 	p.ResetGlobals()
-	p.testCount = 3
+	p.testCount = 4
 
 	switch test {
 	case 1:
@@ -32,6 +32,10 @@ func (p *TR) Build(test int) {
 	case 2:
 		p.source = []int{11, 13}
 		p.output = 6
+
+	case 3:
+		p.source = []int{41, 45}
+		p.output = 11
 
 	default:
 		p.source = []int{2, 3}

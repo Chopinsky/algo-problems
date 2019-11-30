@@ -109,6 +109,10 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Tiling a Rectangle with the Fewest Squares"
 		p = CreateTR()
 
+	case 1268:
+		t = "Search Suggestions System"
+		p = CreateSSS2()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

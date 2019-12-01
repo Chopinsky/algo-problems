@@ -113,6 +113,10 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Search Suggestions System"
 		p = CreateSSS2()
 
+	case 1263:
+		t = "Minimum Move Game"
+		p = CreateMMG()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

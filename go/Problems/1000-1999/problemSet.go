@@ -117,6 +117,10 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Minimum Move Game"
 		p = CreateMMG()
 
+	case 1278:
+		t = "Palindrom Patition III"
+		p = CreatePPIII()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

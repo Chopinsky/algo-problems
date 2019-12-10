@@ -233,6 +233,10 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Surrounded Regions"
 		p = CreateSR()
 
+	case 132:
+		t = "Palindrome Patition II"
+		p = CreatePPII()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

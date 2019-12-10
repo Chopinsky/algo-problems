@@ -97,7 +97,13 @@ func runDpCalc(src string, k int) int {
 			} else {
 				dp[i][j] = 1 << 32
 				for l := 1; l <= j-i+1; l++ {
-					dp[i][j] = d.Min(dp[i][j], dp[i-1][j-l]+palindromCost[hashKey(j-l, j-1)])
+					dp[i][j] = d.Min(
+						dp[i][j],
+						dp[i-1][j-l]+palindromCost[hashKey(j-l, j-1)])
+
+					if dp[i][j] == 0 {
+						break
+					}
 				}
 			}
 		}

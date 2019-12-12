@@ -6,9 +6,11 @@ import (
 
 // XXX ...
 type XXX struct {
-	problems []*XXXProblem
+	problems    []*XXXProblem
+	currProblem *XXXProblem
 }
 
+// XXXProblem ...
 type XXXProblem struct {
 	source []int
 	output int
@@ -16,40 +18,45 @@ type XXXProblem struct {
 
 // CreateXXX ...
 func CreateXXX() *XXX {
-	problems := make([]*XXXProblem)
+	problems := make([]*XXXProblem, 0)
 
 	problems = append(problems, &XXXProblem{
-		src:    nil,
+		source: nil,
 		output: -1,
 	})
 
 	return &XXX{
-		problems,
+		problems:    problems,
+		currProblem: nil,
 	}
 }
 
 // Build ...
-func (p *XXX) Build(test int) *XXXProblem {
+func (p *XXX) Build(test int) {
 	p.ResetGlobals()
 
 	if test < len(p.problems) {
-		return p.problems[test]
+		p.currProblem = p.problems[test]
+		return
 	}
 
-	return p.problems[0]
+	p.currProblem = p.problems[0]
 }
 
 // Run ...
 func (p *XXX) Run() {
+	var prb *XXXProblem
+
 	for j := 0; j < 10; j++ {
 		fmt.Println("============ Running Trial: ", j, " ============")
 
 		for i := 0; i < len(p.problems); i++ {
-			problem := p.Build(i)
+			p.Build(i)
+			prb = p.currProblem
 
 			if j == 9 {
 				fmt.Println("\nTest case: ", i, ":")
-				d.Output(problem.solveXXX(), p.output)
+				d.Output(prb.calcXXX(), prb.output)
 			} else {
 				//calcXXX(problem)
 			}
@@ -61,6 +68,6 @@ func (p *XXX) Run() {
 func (p *XXX) ResetGlobals() {
 }
 
-func (p *XXXProblem) solveXXX() int {
+func (p *XXXProblem) calcXXX() int {
 	return -1
 }

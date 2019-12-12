@@ -121,6 +121,10 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Palindrom Patition III"
 		p = CreatePPIII()
 
+	case 1283:
+		t = "Smallest Divisor"
+		p = CreateSD()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

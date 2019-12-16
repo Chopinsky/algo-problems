@@ -125,6 +125,10 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Smallest Divisor"
 		p = CreateSD()
 
+	case 1284:
+		t = "Min Number of Flips to Convert Binary Matrix to Zero"
+		p = CreateMNCBM()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

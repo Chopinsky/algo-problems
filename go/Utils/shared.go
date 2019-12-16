@@ -9,8 +9,8 @@ var Dirs = []int{-1, 0, 1, 0, -1}
 
 // Output ...
 func Output(calculated, expected interface{}) {
-	fmt.Println("Calculated result: ", calculated)
 	fmt.Println("Expected result:   ", expected)
+	fmt.Println("Calculated result: ", calculated)
 }
 
 // QSort ...

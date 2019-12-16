@@ -16,21 +16,6 @@ type XXXProblem struct {
 	output int
 }
 
-// CreateXXX ...
-func CreateXXX() *XXX {
-	problems := make([]*XXXProblem, 0)
-
-	problems = append(problems, &XXXProblem{
-		source: nil,
-		output: -1,
-	})
-
-	return &XXX{
-		problems:    problems,
-		currProblem: nil,
-	}
-}
-
 // Build ...
 func (p *XXX) Build(test int) {
 	p.ResetGlobals()
@@ -55,10 +40,10 @@ func (p *XXX) Run() {
 			prb = p.currProblem
 
 			if j == 9 {
-				fmt.Println("\nTest case: ", i, ":")
+				fmt.Println("\n>>> Test case: ", i, ":")
 				d.Output(prb.calcXXX(), prb.output)
 			} else {
-				//calcXXX(problem)
+				prb.calcXXX()
 			}
 		}
 	}
@@ -66,6 +51,21 @@ func (p *XXX) Run() {
 
 // ResetGlobals ...
 func (p *XXX) ResetGlobals() {
+}
+
+// CreateXXX ...
+func CreateXXX() *XXX {
+	problems := make([]*XXXProblem, 0)
+
+	problems = append(problems, &XXXProblem{
+		source: nil,
+		output: -1,
+	})
+
+	return &XXX{
+		problems:    problems,
+		currProblem: nil,
+	}
 }
 
 func (p *XXXProblem) calcXXX() int {

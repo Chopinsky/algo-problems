@@ -129,6 +129,14 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Min Number of Flips to Convert Binary Matrix to Zero"
 		p = CreateMNCBM()
 
+	case 1292:
+		t = "Max Length of Square Width with Sum Less Than Threshold"
+		p = CreateMSW()
+
+	case 1293:
+		t = "Shortest Path in A Grid with Obstacles Elimination"
+		p = CreateSPG()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

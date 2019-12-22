@@ -2,18 +2,14 @@ package problems
 
 import (
 	"fmt"
+
+	d "../../Utils"
 )
 
 // XXX ...
 type XXX struct {
 	problems    []*XXXProblem
 	currProblem *XXXProblem
-}
-
-// XXXProblem ...
-type XXXProblem struct {
-	source []int
-	output int
 }
 
 // Build ...
@@ -51,6 +47,12 @@ func (p *XXX) Run() {
 
 // ResetGlobals ...
 func (p *XXX) ResetGlobals() {
+}
+
+// XXXProblem ...
+type XXXProblem struct {
+	source []int
+	output int
 }
 
 // CreateXXX ...

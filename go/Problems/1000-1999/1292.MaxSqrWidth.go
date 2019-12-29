@@ -80,6 +80,26 @@ func CreateMSW() *MSW {
 		output:    0,
 	})
 
+	problems = append(problems, &MSWProblem{
+		source: [][]int{
+			{1, 1, 1, 1},
+			{1, 0, 0, 0},
+			{1, 0, 0, 0},
+			{1, 0, 0, 0},
+		},
+		threshold: 6,
+		output:    3,
+	})
+
+	problems = append(problems, &MSWProblem{
+		source: [][]int{
+			{18, 61, 25, 14, 11, 97},
+			{70, 1, 85, 40, 96, 96},
+		},
+		threshold: 40184,
+		output:    2,
+	})
+
 	return &MSW{
 		problems:    problems,
 		currProblem: nil,
@@ -148,6 +168,10 @@ func (p *MSWProblem) calcMSW() int {
 				calcSum(row, x0, y0, x0, y1) + calcSum(col, x0, y0, x1, y0) - curr[x1][y1]
 
 			valid = valid || anchor.sum <= p.threshold
+
+			if i == h && valid {
+				return i
+			}
 
 			if anchor.sum < p.threshold && anchor.x+i+1 < h && anchor.y+i+1 < w {
 				next = append(next, anchor)

@@ -137,6 +137,10 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Shortest Path in A Grid with Obstacles Elimination"
 		p = CreateSPG()
 
+	case 1301:
+		t = "Number of Paths with max Score"
+		p = CreateNPMS()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

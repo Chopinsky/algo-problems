@@ -137,6 +137,14 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Shortest Path in A Grid with Obstacles Elimination"
 		p = CreateSPG()
 
+	case 1296:
+		t = "Divide Array in Sets of K Consecutive Numbers"
+		p = CreateDASKCN()
+
+	case 1298:
+		t = "Maxium Number of Candies You Can Get From Boxes"
+		p = CreateMCFB()
+
 	case 1301:
 		t = "Number of Paths with max Score"
 		p = CreateNPMS()

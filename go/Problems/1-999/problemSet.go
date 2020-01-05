@@ -13,6 +13,14 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 	var t string
 
 	switch num {
+	case 2:
+		t = "Add Two Numbers"
+		p = CreateATN()
+
+	case 5:
+		t = "Longest Palindromic Substring"
+		p = CreateLPS()
+
 	case 801:
 		t = "Min Swap to Increase"
 		p = CreateMSI()

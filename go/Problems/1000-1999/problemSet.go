@@ -149,6 +149,14 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Number of Paths with max Score"
 		p = CreateNPMS()
 
+	case 1312:
+		t = "Minimum Insertions to Make a String a Palindrome"
+		p = CreateMISP()
+
+	case 1310:
+		t = "XOR Queries of a Subarray"
+		p = CreateXORQ()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

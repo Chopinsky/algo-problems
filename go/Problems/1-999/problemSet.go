@@ -17,6 +17,10 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Add Two Numbers"
 		p = CreateATN()
 
+	case 3:
+		t = "Longest Substring W/O Repeating Characters"
+		p = CreateLSRC()
+
 	case 5:
 		t = "Longest Palindromic Substring"
 		p = CreateLPS()

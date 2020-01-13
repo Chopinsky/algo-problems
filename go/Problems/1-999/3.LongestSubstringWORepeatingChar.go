@@ -86,7 +86,35 @@ func (p *LSRCProblem) calcLSRC() int {
 	longest := 1
 
 	store := make(map[byte]int)
-	store[src[0]] = 1
+	store[src[0]] = 0
+
+	for end < size-1 {
+		end++
+
+		if pos, ok := store[src[end]]; ok {
+			start = pos + 1
+		}
+
+		store[src[end]] = end
+
+		if d.DEBUG {
+			fmt.Println("iterating:", end, string(src[end]), start, string(src[start]))
+		}
+
+		if end-start+1 > longest {
+			longest = end - start + 1
+		}
+	}
+
+	return longest
+}
+
+func naiveIter(src string) int {
+	start, end := 0, 0
+	longest := 1
+
+	store := make(map[byte]int)
+	store[src[0]] = 0
 
 	for end < size-1 {
 		end++

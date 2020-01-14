@@ -157,6 +157,14 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "XOR Queries of a Subarray"
 		p = CreateXORQ()
 
+	case 1319:
+		t = "Number of Operations to Make Network Connected"
+		p = CreateMOMNC()
+
+	case 1320:
+		t = "Minimum Distance to Type a Word with 2 Fingers"
+		p = CreateMDTW()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

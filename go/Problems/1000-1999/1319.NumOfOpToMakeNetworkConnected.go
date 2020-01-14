@@ -105,34 +105,38 @@ func (p *MOMNCProblem) calcMOMNC() int {
 	size := len(p.source)
 	src, unions := p.source, createUnion(p.count)
 
-	nodes := make(map[int]int)
+	srcMap := make(map[int][]int)
 	network := make([]int, p.count)
 
 	nwCount, extra := 0, 0
 
 	for i := 0; i < size; i++ {
 		a, b := src[i][0], src[i][1]
+		if a > b {
+			a, b = b, a
+		}
+
 		root := union(unions, a, b)
 
-		nodes[a]++
-		nodes[b]++
+		srcMap[a] = append(srcMap[a], b)
+
+		if _, ok := srcMap[b]; !ok {
+			srcMap[b] = []int{}
+		}
 
 		if network[root] == 0 {
 			// a new network is found
 			network[root] = 1
 			nwCount++
-		} else {
-			// already in an existing network
-			if nodes[a] > 1 && nodes[b] > 1 {
-				extra++
-				nodes[a]--
-				nodes[b]--
-			}
 		}
 	}
 
 	for i := 0; i < p.count; i++ {
-		if _, ok := nodes[i]; ok {
+		if _, ok := srcMap[i]; ok {
+			if network[i] == 1 {
+				extra += p.calcRedudent(i, srcMap)
+			}
+
 			continue
 		}
 
@@ -140,9 +144,9 @@ func (p *MOMNCProblem) calcMOMNC() int {
 		nwCount++
 	}
 
-	if d.DEBUG {
+	if !d.DEBUG {
 		fmt.Println(unions)
-		fmt.Println(nwCount, extra, network)
+		fmt.Println(nwCount, extra)
 	}
 
 	if nwCount == 1 {
@@ -154,6 +158,32 @@ func (p *MOMNCProblem) calcMOMNC() int {
 	}
 
 	return -1
+}
+
+func (p *MOMNCProblem) calcRedudent(head int, srcMap map[int][]int) int {
+	nodes := make(map[int]struct{})
+	count := 0
+
+	queue := append([]int(nil), srcMap[head]...)
+	nodes[head] = empty
+
+	for len(queue) > 0 {
+		head, queue = queue[0], queue[1:]
+
+		if _, ok := nodes[head]; ok {
+			count++
+			continue
+		}
+
+		next := srcMap[head]
+		if len(next) > 0 {
+			queue = append(queue, next...)
+		}
+
+		nodes[head] = empty
+	}
+
+	return count
 }
 
 func createUnion(count int) []int {

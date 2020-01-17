@@ -39,7 +39,7 @@ func (p *XXX) Run() {
 				fmt.Println("\n>>> Test case: ", i, ":")
 				d.Output(prb.calcXXX(), prb.output)
 			} else {
-				prb.calcXXX()
+				// prb.calcXXX()
 			}
 		}
 	}

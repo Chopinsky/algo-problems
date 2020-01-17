@@ -25,6 +25,10 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Longest Palindromic Substring"
 		p = CreateLPS()
 
+	case 42:
+		t = "Trapping Rain Water"
+		p = CreateTRW()
+
 	case 801:
 		t = "Min Swap to Increase"
 		p = CreateMSI()

@@ -253,6 +253,10 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Palindrome Patition II"
 		p = CreatePPII()
 
+	case 842:
+		t = "Split Array into Fibonacci Sequence"
+		p = CreateSAIFS()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

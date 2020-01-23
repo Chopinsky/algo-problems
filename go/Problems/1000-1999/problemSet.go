@@ -165,6 +165,10 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Minimum Distance to Type a Word with 2 Fingers"
 		p = CreateMDTW()
 
+	case 1326:
+		t = "Minimum Number of Taps to Open to Water a Garden"
+		p = CreateMNTWG()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

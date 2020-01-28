@@ -51,7 +51,7 @@ func (p *XXX) ResetGlobals() {
 
 // XXXProblem ...
 type XXXProblem struct {
-	source []int
+	data   []int
 	output int
 }
 
@@ -60,7 +60,7 @@ func CreateXXX() *XXX {
 	problems := make([]*XXXProblem, 0)
 
 	problems = append(problems, &XXXProblem{
-		source: nil,
+		data:   nil,
 		output: -1,
 	})
 

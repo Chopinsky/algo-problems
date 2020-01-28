@@ -169,6 +169,10 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Minimum Number of Taps to Open to Water a Garden"
 		p = CreateMNTWG()
 
+	case 1335:
+		t = "Minimum Difficulty of a Job Schedule"
+		p = CreateMDJS()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

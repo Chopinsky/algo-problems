@@ -18,6 +18,10 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Minimum Difficulty of a Job Schedule"
 		p = CreateMDJS()
 
+	case 1343:
+		t = "Maximum Product of Splitted Binary Tree"
+		p = CreateMPSBT()
+
 	}
 
 	return t, p

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	s "go-problems/shared"
 	"strconv"
+	"time"
 )
 
 // XXXProblems ...
@@ -15,10 +16,19 @@ type XXXProblems struct {
 func (p *XXXProblems) Solve() {
 	fmt.Println()
 
-	for i, p := range p.set {
-		result := p.solve()
-		s.Print(i, strconv.Itoa(p.output), strconv.Itoa(result))
+	start := time.Now()
+
+	for j := 0; j <= 20; j++ {
+		for i, p := range p.set {
+			result := p.solve()
+
+			if j == 20 {
+				s.Print(i, strconv.Itoa(p.output), strconv.Itoa(result))
+			}
+		}
 	}
+
+	fmt.Println("Algorithm took", time.Since(start))
 }
 
 // XXX ...

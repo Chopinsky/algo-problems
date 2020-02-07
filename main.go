@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 
+	p0 "go-problems/p0"
 	p1 "go-problems/p1"
 	s "go-problems/shared"
 )
@@ -24,7 +25,9 @@ func main() {
 		return
 	}
 
-	if number >= 1000 && number <= 1999 {
+	if number < 1000 {
+		problem = p0.CreateProblem(number)
+	} else if number >= 1000 && number <= 1999 {
 		problem = p1.CreateProblem(number)
 	} else {
 		fmt.Println("invalid problem number; expecting it to be between 1000 and 1999, but getting: ", number)

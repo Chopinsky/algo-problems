@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	s "go-problems/shared"
-	"strconv"
 	"time"
 )
 
@@ -23,7 +22,7 @@ func (p *XXXProblems) Solve() {
 			result := p.solve()
 
 			if j == 20 {
-				s.Print(i, strconv.Itoa(p.output), strconv.Itoa(result))
+				s.Print(i, p.output, result)
 			}
 		}
 	}

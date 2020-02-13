@@ -22,6 +22,9 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Maximum Product of Splitted Binary Tree"
 		p = CreateMPSBT()
 
+	case 1349:
+		t = "Maximum Students Taking Exam"
+		p = CreateMSTE()
 	}
 
 	return t, p

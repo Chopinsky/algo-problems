@@ -5,9 +5,9 @@
   "main": "main.js",
   "scripts": {
     "test": "mocha",
-    "main": "node main.js --",
-    "ts-build": "tsc -p .",
-    "ts-run": "tsc app.ts && node app.js",
+    "main": "node /js-problems/main.js --",
+    "ts-build": "tsc -p ./ts-problems",
+    "ts-run": "tsc ./ts-problems/app.ts && node ./ts-problems/app.js",
     "go-build": "del-cli .\\problems.exe && go build",
     "go-run": "npm run go-build && .\\problems.exe"
   },

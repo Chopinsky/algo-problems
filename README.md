@@ -2,12 +2,18 @@
 
 This repository contains a collection of solutions to some interesting LeetCode problems. The solutions are written in Javascript and shall be run by Node.
 
-## How to run a specific problem
+## Run Go Problems
+
+```go
+$ go run . -n=<problem_number>
+```
+
+## How to run a JavaScript specific problem
 
 Download the repository and enter the folder, then at your command-line tool execute:
 
 ```node
-$ node .\main.js $1 $2
+$ node ./js-problems/main.js $1 $2
 ```
 
 - The `$1` parameter is optional, if specified, it will run the solution with the same name of the problem folder. By default we will run the "FreqStack" solution.

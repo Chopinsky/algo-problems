@@ -173,6 +173,10 @@ func MakeProblemSet(num int) (i.Problem, string, error) {
 		t = "Minimum Difficulty of a Job Schedule"
 		p = CreateMDJS()
 
+	case 1344:
+		t = "Jump Game V"
+		p = CreateJGV()
+
 	default:
 		return nil, "", errors.New(fmt.Sprint("unable to find the problem: ", num))
 	}

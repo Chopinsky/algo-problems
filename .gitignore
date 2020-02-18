@@ -4,3 +4,4 @@ app.js.map
 /Problems/*.js
 *.js.map
 *.exe
+*.lock

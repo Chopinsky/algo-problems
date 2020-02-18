@@ -92,6 +92,11 @@ func (p *MSTE) solve() int {
 		}
 	}
 
+	// set := s.GenerateBinarySet(9, 4)
+	// for _, val := range set {
+	// 	fmt.Printf("%b\n", val)
+	// }
+
 	return rowBest
 }
 

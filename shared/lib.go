@@ -30,3 +30,16 @@ func SetDebug(val bool) {
 func DebugMode() bool {
 	return DEBUG
 }
+
+// GenerateBinarySet ...
+func GenerateBinarySet(start, length int) []int {
+	result := []int{start, 0, 1 << length}
+	val := start
+
+	for val > 0 {
+		val = (val - 1) & start
+		result = append(result, val)
+	}
+
+	return result
+}

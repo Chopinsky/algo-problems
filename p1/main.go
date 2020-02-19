@@ -25,6 +25,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1349:
 		t = "Maximum Students Taking Exam"
 		p = CreateMSTE()
+
+	case 1353:
+		t = "Maximum Number of Events That Can Be Attened"
+		p = CreateMNE()
 	}
 
 	return t, p

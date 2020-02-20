@@ -78,6 +78,20 @@ func CreateMNE() s.Problem {
 		output: 7,
 	})
 
+	set = append(set, &MNE{
+		data: [][]int{
+			{1, 5}, {2, 3}, {2, 3}, {1, 5}, {1, 5},
+		},
+		output: 5,
+	})
+
+	set = append(set, &MNE{
+		data: [][]int{
+			{1, 4}, {1, 1}, {2, 2}, {3, 4}, {4, 4},
+		},
+		output: 4,
+	})
+
 	return &MNEProblems{set}
 }
 
@@ -96,18 +110,20 @@ func (p *MNE) solve() int {
 		fmt.Println(data)
 	}
 
-	next := data[size-1][1] - 1
+	seen := make([]int, data[size-1][1])
+	seen[0]++
 	count := 1
 
-	for i := size - 2; i >= 0; i-- {
-		start, end := data[i][0], data[i][1]
+	for i := 1; i < size; i++ {
+		for j := data[i][0]; j <= data[i][1]; j++ {
+			if seen[j-1] > 0 {
+				continue
+			}
 
-		if next >= end {
-			next = end - 1
+			seen[j-1]++
 			count++
-		} else if next >= start {
-			next--
-			count++
+
+			break
 		}
 	}
 

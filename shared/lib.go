@@ -16,8 +16,8 @@ type Problem interface {
 // Print ...
 func Print(num int, res, calc interface{}) {
 	fmt.Println("\n >> Solving Problem #", num+1, "<<")
-	fmt.Println("Expecting:  ", res)
 	fmt.Println("Caculation: ", calc)
+	fmt.Println("Expecting:  ", res)
 	fmt.Println()
 }
 

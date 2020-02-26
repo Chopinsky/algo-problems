@@ -7,8 +7,6 @@ import (
 	"time"
 )
 
-var count = 0
-
 // MNEProblems ...
 type MNEProblems struct {
 	set []*MNE

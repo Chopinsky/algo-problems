@@ -5,6 +5,8 @@ import (
 	s "go-problems/shared"
 )
 
+var count = 0
+
 func findProblem(num int) (string, s.Problem) {
 	var t string
 	var p s.Problem
@@ -29,6 +31,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1353:
 		t = "Maximum Number of Events That Can Be Attened"
 		p = CreateMNE()
+
+	case 1354:
+		t = "Construct Target Array with Multiple Sums"
+		p = CreateCTA()
 	}
 
 	return t, p

@@ -70,13 +70,24 @@ func (p *CTA) solve() int {
 
 	for {
 		val := heap.Pop()
-		next := 2*val - sum
 
-		if next <= 0 {
+		// not going to finish ...
+		if 2*val-sum <= 0 {
 			break
 		}
 
+		// skipping a couple of middle states to find the final value
+		next := sum % (sum - val)
+
+		if next == 0 {
+			// the next value is the muliply of the excluding-self-sum, use the least val here
+			next = sum - val
+		}
+
+		// calc the new sum
 		sum -= val - next
+
+		// check if we're getting the initial array: all 1s
 		if sum == size {
 			found = 1
 			break

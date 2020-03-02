@@ -35,6 +35,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1354:
 		t = "Construct Target Array with Multiple Sums"
 		p = CreateCTA()
+
+	case 1368:
+		t = "Min Cost to Make at Least One Valid Path in a Grid"
+		p = CreateMCMLP()
 	}
 
 	return t, p

@@ -11,19 +11,17 @@ type XXXProblems struct {
 	set []*XXX
 }
 
-var count = 0
-
 // Solve ...
 func (p *XXXProblems) Solve() {
 	fmt.Println()
 
 	start := time.Now()
 
-	for j := 0; j <= count; j++ {
+	for j := 0; j <= 0; j++ {
 		for i, p := range p.set {
 			result := p.solve()
 
-			if j == count {
+			if j == 0 {
 				s.Print(i, p.output, result)
 			}
 		}

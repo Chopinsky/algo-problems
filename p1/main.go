@@ -39,6 +39,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1368:
 		t = "Min Cost to Make at Least One Valid Path in a Grid"
 		p = CreateMCMLP()
+
+	case 1373:
+		t = "Maximum Sum BST in Binary Tree"
+		p = CreateMSB()
 	}
 
 	return t, p

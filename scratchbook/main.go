@@ -16,7 +16,7 @@ func main() {
 	start := time.Now()
 
 	for i := 1; i <= n; i++ {
-		remainder := getRemainder(i, k)
+		remainder := getRemainder(i%k, i, k)
 		arr[remainder] = (arr[remainder] + 1) % mod
 	}
 
@@ -46,34 +46,52 @@ func getEulerVal(num int) int {
 	return 0
 }
 
-func getRemainder(n, k int) int {
-	if n%k == 0 {
+// find the result of n^m % k
+func getRemainder(n, m, k int) int {
+	if n == 0 || n%k == 0 {
 		return 0
 	}
 
-	e := getEulerVal(k)
-	r := n % e
-	val := 1
-
-	var b int
-
-	if n > k {
-		b = n % k
-	} else {
-		b = n
+	if m == 0 || n%k == 1 {
+		return 1
 	}
+
+	aval := 1
+	val := 1
+	b := n % k
+
+	if debug && n == m {
+		base := n % k
+		for i := 0; i < m; i++ {
+			aval = (aval * base) % mod
+		}
+	}
+
+	gcd := gcd(n, k)
+	if gcd != 1 {
+		k /= gcd
+
+		val = ((n / gcd) % k) * getRemainder(n, m-1, k)
+		val %= k
+
+		if debug && n == m {
+			// fmt.Println(n, k, "gcd:", gcd)
+			fmt.Println("gcd", m, val, aval%(k*gcd))
+		}
+
+		return val
+	}
+
+	e := getEulerVal(k)
+	r := m % e
 
 	for i := 0; i < r; i++ {
 		val = (val * b) % mod
 	}
 
-	// aval := 1
-	// for i := 0; i < n; i++ {
-	// 	aval = (aval * n)
-	// }
-
-	if debug {
-		fmt.Println(n, k, e, r, b, val) //, aval%k)
+	if debug && n == m {
+		// fmt.Println(n, k, "gcd:", gcd)
+		fmt.Println(n, val%k, aval%k, aval)
 	}
 
 	return val % k
@@ -102,4 +120,22 @@ func input() (int, int) {
 	}
 
 	return n, k
+}
+
+// GCD ...
+func gcd(a, b int) int {
+	if a == b {
+		return a
+	}
+
+	if a < b {
+		a, b = b, a
+	}
+
+	for b != 0 {
+		a = a % b
+		a, b = b, a
+	}
+
+	return a
 }

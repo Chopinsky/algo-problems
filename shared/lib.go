@@ -32,7 +32,7 @@ func DebugMode() bool {
 }
 
 // GenerateBinarySet ...
-func GenerateBinarySet(start, length int) []int {
+func GenerateBinarySet(start int, length uint) []int {
 	result := []int{start, 0, 1 << length}
 	val := start
 
@@ -42,4 +42,47 @@ func GenerateBinarySet(start, length int) []int {
 	}
 
 	return result
+}
+
+// BinaryGCD ...
+func BinaryGCD(a, b int) (int, int) {
+	d := 0
+
+	for a%2 == 0 && b%2 == 0 {
+		a /= 2
+		b /= 2
+		d++
+	}
+
+	for a != b {
+		if a%2 == 0 {
+			a /= 2
+		} else if b%2 == 0 {
+			b /= 2
+		} else if a > b {
+			a = (a - b) / 2
+		} else {
+			b = (b - a) / 2
+		}
+	}
+
+	return a, d
+}
+
+// GCD ...
+func GCD(a, b int) int {
+	if a == b {
+		return a
+	}
+
+	if a < b {
+		a, b = b, a
+	}
+
+	for b != 0 {
+		a = a % b
+		a, b = b, a
+	}
+
+	return a
 }

@@ -3,9 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	p0 "go-problems/p0"
-	p1 "go-problems/p1"
-	s "go-problems/shared"
+
+	p0 "./p0"
+	p1 "./p1"
+	s "./shared"
 )
 
 func main() {

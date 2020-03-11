@@ -2,8 +2,9 @@ package p1
 
 import (
 	"fmt"
-	s "go-problems/shared"
 	"time"
+
+	s "../shared"
 )
 
 // MCMLPProblems ...
@@ -109,8 +110,8 @@ func (st *state) move(scores, grid [][]int, stack []*state, best, h, w int) ([][
 
 	x, y := st.pos[0], st.pos[1]
 	dir := grid[x][y]
-	visited := st.visited | (1 << (x*w + y))
-	modifies := st.modifies | (1 << (x*w + y))
+	visited := st.visited | (1 << uint(x*w+y))
+	modifies := st.modifies | (1 << uint(x*w+y))
 
 	// fmt.Println(x, y, dir, visited, modifies)
 
@@ -135,7 +136,7 @@ func (st *state) move(scores, grid [][]int, stack []*state, best, h, w int) ([][
 				continue
 			}
 
-			if (visited&(1<<(x0*w+y0)) == 0) || (nextCost < scores[x0][y0]) {
+			if (visited&(1<<uint(x0*w+y0)) == 0) || (nextCost < scores[x0][y0]) {
 				// not yet visited, or we can get here with better scores, add it to the stack
 				scores[x0][y0] = nextCost
 

@@ -2,7 +2,8 @@ package p1
 
 import (
 	"fmt"
-	s "go-problems/shared"
+
+	s "../shared"
 )
 
 var count = 0
@@ -43,6 +44,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1373:
 		t = "Maximum Sum BST in Binary Tree"
 		p = CreateMSB()
+
+	case 1377:
+		t = "Frog Position After T Seconds"
+		p = CreateFPS()
 	}
 
 	return t, p

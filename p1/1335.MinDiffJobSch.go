@@ -1,8 +1,9 @@
 package p1
 
 import (
-	s "go-problems/shared"
 	"strconv"
+
+	s "../shared"
 )
 
 // MDJSProblems ...

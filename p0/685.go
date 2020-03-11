@@ -2,8 +2,9 @@ package p0
 
 import (
 	"fmt"
-	s "go-problems/shared"
 	"time"
+
+	s "../shared"
 )
 
 var round int = 1

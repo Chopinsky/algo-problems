@@ -2,8 +2,9 @@ package p1
 
 import (
 	"fmt"
-	s "go-problems/shared"
 	"time"
+
+	s "../shared"
 )
 
 // MSBProblems ...
@@ -68,7 +69,7 @@ func CreateMSB() s.Problem {
 	return &MSBProblems{set}
 }
 
-var maxVal int = 0
+var maxVal int
 
 func (p *MSB) solve() int {
 	maxVal = 0

@@ -2,9 +2,10 @@ package p1
 
 import (
 	"fmt"
-	s "go-problems/shared"
 	"strconv"
 	"time"
+
+	s "../shared"
 )
 
 // MPSBTProblems ...

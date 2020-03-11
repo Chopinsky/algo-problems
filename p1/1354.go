@@ -2,9 +2,10 @@ package p1
 
 import (
 	"fmt"
-	s "go-problems/shared"
-	sp "go-problems/support"
 	"time"
+
+	s "../shared"
+	sp "../support"
 )
 
 // CTAProblems ...

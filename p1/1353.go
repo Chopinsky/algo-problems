@@ -2,9 +2,10 @@ package p1
 
 import (
 	"fmt"
-	s "go-problems/shared"
 	"sort"
 	"time"
+
+	s "../shared"
 )
 
 // MNEProblems ...

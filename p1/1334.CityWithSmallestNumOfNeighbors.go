@@ -2,7 +2,8 @@ package p1
 
 import (
 	"fmt"
-	s "go-problems/shared"
+
+	s "../shared"
 )
 
 // CSNNProblems ...

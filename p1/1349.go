@@ -2,8 +2,9 @@ package p1
 
 import (
 	"fmt"
-	s "go-problems/shared"
 	"time"
+
+	s "../shared"
 )
 
 // MSTEProblems ...
@@ -104,7 +105,7 @@ func (p *MSTE) getRowScores(lastSettings [][]int, lastRow, currRow []string, las
 	best := lastRowBest
 	lastLen := len(lastSettings)
 
-	settings := make([][]int, 0, (1<<(width+1))-1)
+	settings := make([][]int, 0, (1<<(uint(width)+1))-1)
 
 	// row structure: [setting, rowCount, totalCount]
 	settings = append(settings, []int{0, 0, lastRowBest})
@@ -145,8 +146,8 @@ func (p *MSTE) getRowScores(lastSettings [][]int, lastRow, currRow []string, las
 		}
 
 		// i > 0
-		leftTaken := 1 << (i - 1)
-		currTaken := 1 << i
+		leftTaken := 1 << (uint(i) - 1)
+		currTaken := 1 << uint(i)
 		size := len(settings)
 
 		for j := 0; j < size; j++ {

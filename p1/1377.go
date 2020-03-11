@@ -1,19 +1,19 @@
-package main
+package p1
 
 import (
 	"fmt"
 	"time"
 
-	s "./shared"
+	s "../shared"
 )
 
-// XXXProblems ...
-type XXXProblems struct {
-	set []*XXX
+// FPSProblems ...
+type FPSProblems struct {
+	set []*FPS
 }
 
 // Solve ...
-func (p *XXXProblems) Solve() {
+func (p *FPSProblems) Solve() {
 	fmt.Println()
 
 	start := time.Now()
@@ -31,24 +31,24 @@ func (p *XXXProblems) Solve() {
 	fmt.Println("Algorithm took", time.Since(start))
 }
 
-// XXX ...
-type XXX struct {
+// FPS ...
+type FPS struct {
 	data   []int
 	output int
 }
 
-// CreateXXX ...
-func CreateXXX() s.Problem {
-	set := make([]*XXX, 0, 4)
+// CreateFPS ...
+func CreateFPS() s.Problem {
+	set := make([]*FPS, 0, 4)
 
-	set = append(set, &XXX{
+	set = append(set, &FPS{
 		data:   []int{},
 		output: 0,
 	})
 
-	return &XXXProblems{set}
+	return &FPSProblems{set}
 }
 
-func (p *XXX) solve() int {
+func (p *FPS) solve() int {
 	return 0
 }

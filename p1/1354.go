@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	s "../shared"
-	sp "../support"
+	s "go-problems/shared"
+	sp "go-problems/support"
 )
 
 // CTAProblems ...

@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	s "../shared"
+	s "go-problems/shared"
 )
 
 // MPSBTProblems ...

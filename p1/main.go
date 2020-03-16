@@ -3,7 +3,7 @@ package p1
 import (
 	"fmt"
 
-	s "../shared"
+	s "go-problems/shared"
 )
 
 var count = 0

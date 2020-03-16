@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	s "../shared"
+	s "go-problems/shared"
 )
 
 // MSTEProblems ...

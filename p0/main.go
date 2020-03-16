@@ -3,7 +3,7 @@ package p0
 import (
 	"fmt"
 
-	s "../shared"
+	s "go-problems/shared"
 )
 
 func findProblem(num int) (string, s.Problem) {

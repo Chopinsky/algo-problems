@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	s "../shared"
+	s "go-problems/shared"
 )
 
 // SSProblems ...
@@ -57,7 +57,12 @@ func CreateSS() s.Problem {
 	return &SSProblems{set}
 }
 
+var a = byte('a')
+var m map[string]bool
+
 func (p *SS) solve() bool {
+	m = make(map[string]bool)
+
 	src, tgt := p.data, p.target
 	size := len(p.data)
 
@@ -102,9 +107,60 @@ func (p *SS) solve() bool {
 		}
 	}
 
-	if size <= 2 {
+	if size <= 3 {
 		return true
 	}
 
-	return true
+	return p.verify(src, tgt, size)
+}
+
+func (p *SS) verify(src, tgt string, size int) bool {
+	if size <= 3 {
+		return true
+	}
+
+	var key string
+	if src < tgt {
+		key = src + "," + tgt
+	} else {
+		key = tgt + "," + src
+	}
+
+	if val, ok := m[key]; ok {
+		return val
+	}
+
+	sHash, tHash, trHash := 0, 0, 0
+	result := false
+
+	for i := 0; i < size-1; i++ {
+		sKey, tKey, trKey := int(src[i]-a), int(tgt[i]-a), int(tgt[size-1-i]-a)
+
+		sHash += sKey * 100
+		tHash += tKey * 100
+		trHash += trKey * 100
+
+		if s.DebugMode() {
+			fmt.Println(string(src[i]), string(tgt[i]), string(tgt[size-1-i]))
+			fmt.Println(sKey, tKey, trKey, "\n")
+		}
+
+		if sHash == tHash {
+			if p.verify(src[:i+1], tgt[:i+1], i) && p.verify(src[i+1:], tgt[i+1:], size-i) {
+				result = true
+				break
+			}
+		}
+
+		if sHash == trHash {
+			if p.verify(src[:i+1], tgt[size-i-1:], i) && p.verify(src[i+1:], tgt[:size-i-1], size-i) {
+				result = true
+				break
+			}
+		}
+	}
+
+	m[key] = result
+
+	return result
 }

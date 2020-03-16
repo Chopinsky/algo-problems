@@ -5,7 +5,7 @@ import (
 	"sort"
 	"time"
 
-	s "../shared"
+	s "go-problems/shared"
 )
 
 // MNEProblems ...

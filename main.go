@@ -4,9 +4,9 @@ import (
 	"flag"
 	"fmt"
 
-	p0 "./p0"
-	p1 "./p1"
-	s "./shared"
+	p0 "go-problems/p0"
+	p1 "go-problems/p1"
+	s "go-problems/shared"
 )
 
 func main() {

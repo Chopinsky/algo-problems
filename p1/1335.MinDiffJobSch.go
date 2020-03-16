@@ -3,7 +3,7 @@ package p1
 import (
 	"strconv"
 
-	s "../shared"
+	s "go-problems/shared"
 )
 
 // MDJSProblems ...

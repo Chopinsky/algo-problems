@@ -85,8 +85,12 @@ func (p *SS) solve() bool {
 		}
 	}
 
-	src, tgt = src[i:j+1], tgt[i:j+1]
 	size = j + 1
+	if size <= 3 {
+		return true
+	}
+
+	src, tgt = src[i:j+1], tgt[i:j+1]
 
 	if s.DebugMode() {
 		fmt.Println(src, tgt)
@@ -105,10 +109,6 @@ func (p *SS) solve() bool {
 		if store[i] != 0 {
 			return false
 		}
-	}
-
-	if size <= 3 {
-		return true
 	}
 
 	return p.verify(src, tgt, size)

@@ -11,6 +11,10 @@ func findProblem(num int) (string, s.Problem) {
 	var p s.Problem
 
 	switch num {
+	case 87:
+		t = "Scramble String"
+		p = CreateSS()
+
 	case 685:
 		t = "Redundant Connection II"
 		p = CreateRCII()

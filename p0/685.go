@@ -7,7 +7,7 @@ import (
 	s "../shared"
 )
 
-var round int = 1
+var round = 1
 
 // RCIIProblems ...
 type RCIIProblems struct {

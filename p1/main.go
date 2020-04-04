@@ -48,9 +48,14 @@ func findProblem(num int) (string, s.Problem) {
 	case 1377:
 		t = "Frog Position After T Seconds"
 		p = CreateFPS()
+
 	case 1371:
 		t = "Find the Longest Substring Containing Vowels in Even Counts"
 		p = CreateFLSCV()
+
+	case 1382:
+		t = "Balance a Binary Search Tree"
+		p = CreateBBST()
 
 	}
 

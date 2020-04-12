@@ -57,6 +57,13 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Balance a Binary Search Tree"
 		p = CreateBBST()
 
+	case 1395:
+		t = "Count Number of Teams"
+		p = CreateCNT()
+
+	case 1406:
+		t = "Stone Game III"
+		p = CreateSGIII()
 	}
 
 	return t, p

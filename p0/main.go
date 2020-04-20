@@ -22,6 +22,14 @@ func findProblem(num int) (string, s.Problem) {
 	case 685:
 		t = "Redundant Connection II"
 		p = CreateRCII()
+
+	case 207:
+		t = "Course Schedule"
+		p = CreateCS()
+
+	case 935:
+		t = "Knight Dialer"
+		p = CreateKD()
 	}
 
 	return t, p

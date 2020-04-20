@@ -64,6 +64,14 @@ func findProblem(num int) (string, s.Problem) {
 	case 1406:
 		t = "Stone Game III"
 		p = CreateSGIII()
+
+	case 1409:
+		t = "Queries on a Permutation with Key"
+		p = CreateQPK()
+
+	case 1411:
+		t = "Number of Ways to Paint N x 3 Grid"
+		p = CreateNWPG()
 	}
 
 	return t, p

@@ -70,20 +70,30 @@ func CreateSGIII() s.Problem {
 }
 
 func (p *SGIII) solve() string {
-	// alice -- player 1;
-	// bob   -- player -1;
-	b0, b1 := p.play(0, 1, 0, 0, len(p.data))
+	result := p.play2(p.data)
+	fmt.Println("alt: ", result)
 
-	if b0 > b1 {
+	if result > 0 {
 		return "alice"
-	} else if b0 < b1 {
+	} else if result < 0 {
 		return "bob"
 	} else {
 		return "tie"
 	}
+
+	// alice -- player 1;
+	// bob   -- player -1;
+	// b0, b1 := p.play1(0, 1, 0, 0, len(p.data))
+	// if b0 > b1 {
+	// 	return "alice"
+	// } else if b0 < b1 {
+	// 	return "bob"
+	// } else {
+	// 	return "tie"
+	// }
 }
 
-func (p *SGIII) play(start, player, p0, p1, size int) (int, int) {
+func (p *SGIII) play1(start, player, p0, p1, size int) (int, int) {
 	if start >= size {
 		return p0, p1
 	}
@@ -125,7 +135,7 @@ func (p *SGIII) play(start, player, p0, p1, size int) (int, int) {
 			p1 += p.data[i]
 		}
 
-		g0, g1 = p.play(i+1, -1*player, p0, p1, size)
+		g0, g1 = p.play1(i+1, -1*player, p0, p1, size)
 
 		if i == start || (g0-g1)*player > (b0-b1)*player {
 			pos = i
@@ -138,4 +148,28 @@ func (p *SGIII) play(start, player, p0, p1, size int) (int, int) {
 	}
 
 	return b0, b1
+}
+
+func (p *SGIII) play2(stones []int) int {
+	size := len(stones)
+	stones = append(stones, []int{0, 0, 0}...)
+
+	dp := make([]int, size+3)
+	for i := 0; i < size; i++ {
+		dp[i] = -10 ^ 9
+	}
+
+	for i := size - 1; i > -1; i-- {
+		sum := 0
+		for k := 1; k <= 3; k++ {
+			sum += stones[i+k-1]
+			altVal := sum - dp[i+k]
+
+			if altVal > dp[i] {
+				dp[i] = altVal
+			}
+		}
+	}
+
+	return dp[0]
 }

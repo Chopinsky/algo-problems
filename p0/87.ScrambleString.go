@@ -142,7 +142,7 @@ func (p *SS) verify(src, tgt string, size int) bool {
 
 		if s.DebugMode() {
 			fmt.Println(string(src[i]), string(tgt[i]), string(tgt[size-1-i]))
-			fmt.Println(sKey, tKey, trKey, "\n")
+			fmt.Println(sKey, tKey, trKey)
 		}
 
 		if sHash == tHash {

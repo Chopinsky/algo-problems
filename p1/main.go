@@ -72,6 +72,14 @@ func findProblem(num int) (string, s.Problem) {
 	case 1411:
 		t = "Number of Ways to Paint N x 3 Grid"
 		p = CreateNWPG()
+
+	case 1416:
+		t = "Restore The Array"
+		p = CreateRA()
+
+	case 1425:
+		t = "Constrained Subset Sum"
+		p = CreateCSS()
 	}
 
 	return t, p

@@ -80,6 +80,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1425:
 		t = "Constrained Subset Sum"
 		p = CreateCSS()
+
+	case 1424:
+		t = "Diagnoal Traverse II"
+		p = CreateDTII()
 	}
 
 	return t, p

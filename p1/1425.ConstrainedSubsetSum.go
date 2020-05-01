@@ -65,6 +65,57 @@ func CreateCSS() s.Problem {
 
 func (p *CSS) solve() int {
 	size := len(p.data)
+	
+	dp := make([]int, size)
+	dp[0] = p.data[0]
+
+	queue := make([]int, 0, p.k * size)
+	queue = append(queue, 0)
+
+	max := dp[0]
+
+	for i := 1; i < size; i++ {
+		qLen := len(queue)
+
+		if i > p.k && qLen > 0 && queue[0] == i - p.k - 1 {
+			queue = queue[1:]
+			qLen--
+		}
+
+		dp[i] = p.data[i]
+
+		if qLen > 0 {
+			front := queue[0]
+			if dp[front] > 0 {
+				dp[i] += dp[front]
+			}
+		}
+
+		if dp[i] > max {
+			max = dp[i]
+		}
+
+		if s.DebugMode() {
+			fmt.Println(i, dp[i], queue)
+		}
+
+		backIdx := qLen - 1
+		for backIdx >= 0 && dp[i] >= dp[queue[backIdx]] {
+			backIdx--
+		}
+
+		if backIdx != qLen - 1 {
+			queue = queue[:backIdx+1]
+		}
+
+		queue = append(queue, i)
+	}
+
+	return max
+}
+
+func (p *CSS) solve1() int {
+	size := len(p.data)
 	dp := make([]int, size)
 	heap := s.InitHeap(size)
 

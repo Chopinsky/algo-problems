@@ -84,6 +84,14 @@ func findProblem(num int) (string, s.Problem) {
 	case 1424:
 		t = "Diagnoal Traverse II"
 		p = CreateDTII()
+
+	case 1438:
+		t = "Lonngest Subarray with Absolute Diff Less Than the Limit"
+		p = CreateLSWD()
+
+	case 1442:
+		t = "Count Triplets Forming Two Arrays of Equal XOR"
+		p = CreateCTTA()
 	}
 
 	return t, p

@@ -7,6 +7,7 @@ import (
 )
 
 var count = 0
+var mod = 1000000007
 
 func findProblem(num int) (string, s.Problem) {
 	var t string
@@ -92,6 +93,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1442:
 		t = "Count Triplets Forming Two Arrays of Equal XOR"
 		p = CreateCTTA()
+
+	case 1444:
+		t = "Number of Ways of Cutting a Pizza"
+		p = CreateNWCP()
 	}
 
 	return t, p

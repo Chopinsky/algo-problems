@@ -38,8 +38,6 @@ type MPSBT struct {
 	output int
 }
 
-var mod = 1 // 10^9+7
-
 // CreateMPSBT ...
 func CreateMPSBT() s.Problem {
 	set := make([]*MPSBT, 0, 4)

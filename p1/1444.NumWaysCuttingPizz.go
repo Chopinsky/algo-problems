@@ -99,10 +99,12 @@ func (p *NWCP) solve() int {
 
 					if j < h - 1 {
 						sum += counter[j+1][i][0] * dp[j+1][i][k-1] + dp[j+1][i][k]
+						sum %= mod
 					}
 
 					if i < w - 1 {
 						sum += counter[j][i+1][1] * dp[j][i+1][k-1] + dp[j][i+1][k]
+						sum %= mod
 					}
 
 					dp[j][i][k] = sum

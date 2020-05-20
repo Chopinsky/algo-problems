@@ -97,6 +97,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1444:
 		t = "Number of Ways of Cutting a Pizza"
 		p = CreateNWCP()
+
+	case 1449:
+		t = "Form Largest Integer With Digits That Add Up to Target"
+		p = CreateFLI()
 	}
 
 	return t, p

@@ -94,6 +94,10 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Count Triplets Forming Two Arrays of Equal XOR"
 		p = CreateCTTA()
 
+	case 1443:
+		t = "Min Time to Collect All Apples in Tree"
+		p = CreateMTCA()
+
 	case 1444:
 		t = "Number of Ways of Cutting a Pizza"
 		p = CreateNWCP()

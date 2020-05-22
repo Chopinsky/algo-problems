@@ -15,6 +15,10 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Scramble String"
 		p = CreateSS()
 
+	case 150:
+		t = "Evaluate Reverse Polish Notation"
+		p = CreateERPN()
+
 	case 393:
 		t = "UTF-8 Validation"
 		p = CreateUTF8()

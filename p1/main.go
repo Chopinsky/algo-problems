@@ -105,6 +105,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1449:
 		t = "Form Largest Integer With Digits That Add Up to Target"
 		p = CreateFLI()
+
+	case 1457:
+		t = "Pseud-Palindromic Paths in a Binary Tree"
+		p = CreatePPPBT()
 	}
 
 	return t, p

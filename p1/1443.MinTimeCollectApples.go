@@ -2,6 +2,7 @@ package p1
 
 import (
 	"fmt"
+	"math/rand"
 	"time"
 
 	s "go-problems/shared"
@@ -36,7 +37,7 @@ type MTCA struct {
 	data      [][]int
 	n         int
 	hasApples []bool
-	output 	  int
+	output    int
 }
 
 // CreateMTCA ...
@@ -44,39 +45,63 @@ func CreateMTCA() s.Problem {
 	set := make([]*MTCA, 0, 4)
 
 	set = append(set, &MTCA{
-		data:   [][]int{
-			{0,1}, {0,2}, {1,4}, {1,5}, {2,3}, {2,6},
-		},
-		n: 7,
-		hasApples: []bool{
-			false, false, true, false, true, true, false,
-		},
-		output: 8,
+		data:      [][]int{{0, 1}, {0, 2}, {1, 4}, {1, 5}, {2, 3}, {2, 6}},
+		n:         7,
+		hasApples: []bool{false, false, true, false, true, true, false},
+		output:    8,
 	})
 
 	set = append(set, &MTCA{
-		data:   [][]int{
-			{0,1}, {0,2}, {1,4}, {1,5}, {2,3}, {2,6},
-		},
-		n: 7,
-		hasApples: []bool{
-			false, false, true, false, false, true, false,
-		},
-		output: 6,
+		data:      [][]int{{0, 1}, {0, 2}, {1, 4}, {1, 5}, {2, 3}, {2, 6}},
+		n:         7,
+		hasApples: []bool{false, false, true, false, false, true, false},
+		output:    6,
 	})
 
 	set = append(set, &MTCA{
-		data:   [][]int{
-			{0,1}, {0,2}, {1,4}, {1,5}, {2,3}, {2,6},
-		},
-		n: 7,
-		hasApples: []bool{
-			false, false, false, false, false, false, false,
-		},
-		output: 0,
+		data:      [][]int{{0, 1}, {0, 2}, {1, 4}, {1, 5}, {2, 3}, {2, 6}},
+		n:         7,
+		hasApples: []bool{false, false, false, false, false, false, false},
+		output:    0,
 	})
+
+	testMergeSort()
 
 	return &MTCAProblems{set}
+}
+
+func testMergeSort() {
+	var a s.MergeSort
+
+	size := 250
+	r1 := rand.New(rand.NewSource(time.Now().UnixNano()))
+	vals := make(map[int]bool)
+
+	a = make([]int, size)
+	for i := 0; i < size; i++ {
+		val := r1.Intn(5 * size)
+
+		for vals[val] {
+			val = r1.Intn(5 * size)
+		}
+
+		vals[val] = true
+		a[i] = val
+	}
+
+	fmt.Println("before sort:", a)
+
+	a.Sort(0, size-1)
+
+	fmt.Println("post sort:", a)
+
+	for i := 1; i < size; i++ {
+		if a[i] <= a[i-1] {
+			fmt.Println("invalid position:", i)
+		}
+	}
+
+	fmt.Println("validation done ... ")
 }
 
 func (p *MTCA) solve() int {

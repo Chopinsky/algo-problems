@@ -34,7 +34,7 @@ func (p *NWCPProblems) Solve() {
 // NWCP ...
 type NWCP struct {
 	data   []string
-	k int
+	k      int
 	output int
 }
 
@@ -44,19 +44,19 @@ func CreateNWCP() s.Problem {
 
 	set = append(set, &NWCP{
 		data:   []string{"A..", "AAA", "..."},
-		k: 3,
+		k:      3,
 		output: 3,
 	})
 
 	set = append(set, &NWCP{
 		data:   []string{"A..", "AA.", "..."},
-		k: 3,
+		k:      3,
 		output: 1,
 	})
 
 	set = append(set, &NWCP{
 		data:   []string{"A..", "A..", "..."},
-		k: 1,
+		k:      1,
 		output: 1,
 	})
 
@@ -78,11 +78,11 @@ func (p *NWCP) solve() int {
 		counter[i] = make([][]int, w)
 	}
 
-	for i := w - 1; i >= 0; i-- {		
-		for j := h-1; j >= 0; j-- {
+	for i := w - 1; i >= 0; i-- {
+		for j := h - 1; j >= 0; j-- {
 			if dp[j][i] == nil {
 				dp[j][i] = make([]int, p.k)
-				counter[j][i] = make([]int, 2)				
+				counter[j][i] = make([]int, 2)
 			}
 
 			hasApple := data[j][i] == byte('A')
@@ -97,13 +97,13 @@ func (p *NWCP) solve() int {
 				for k := 1; k < p.k; k++ {
 					sum := 0
 
-					if j < h - 1 {
-						sum += counter[j+1][i][0] * dp[j+1][i][k-1] + dp[j+1][i][k]
+					if j < h-1 {
+						sum += counter[j+1][i][0]*dp[j+1][i][k-1] + dp[j+1][i][k]
 						sum %= mod
 					}
 
-					if i < w - 1 {
-						sum += counter[j][i+1][1] * dp[j][i+1][k-1] + dp[j][i+1][k]
+					if i < w-1 {
+						sum += counter[j][i+1][1]*dp[j][i+1][k-1] + dp[j][i+1][k]
 						sum %= mod
 					}
 
@@ -111,24 +111,24 @@ func (p *NWCP) solve() int {
 				}
 			} else {
 				// empty cell
-				if j < h - 1 && counter[j+1][i][0] > 0 {
+				if j < h-1 && counter[j+1][i][0] > 0 {
 					counter[j][i][0] = counter[j+1][i][0] + 1
 				}
-				
-				if i < w - 1 && counter[j][i+1][1] > 0 {
+
+				if i < w-1 && counter[j][i+1][1] > 0 {
 					counter[j][i][1] = counter[j][i+1][1] + 1
 				}
 
-				if (j < h - 1 && dp[j+1][i][0] > 0) || (i < w - 1 && dp[j][i+1][0] > 0) {
+				if (j < h-1 && dp[j+1][i][0] > 0) || (i < w-1 && dp[j][i+1][0] > 0) {
 					dp[j][i][0] = 1
 				}
 
 				for k := 1; k < p.k; k++ {
-					if j < h - 1 {
+					if j < h-1 {
 						dp[j][i][k] += dp[j+1][i][k]
 					}
 
-					if i < w - 1 {
+					if i < w-1 {
 						dp[j][i][k] += dp[j][i+1][k]
 					}
 				}
@@ -143,7 +143,7 @@ func (p *NWCP) solve() int {
 
 		for i := 0; i < h; i++ {
 			fmt.Println(counter[i])
-		}		
+		}
 	}
 
 	return dp[0][0][p.k-1]
@@ -172,16 +172,16 @@ func (p *NWCP) solve1() int {
 			cols[i] = make([]int, 0, h)
 		}
 
-		for j := h-1; j >= 0; j-- {
+		for j := h - 1; j >= 0; j-- {
 			if rows[j] == nil {
 				// fmt.Println("making rows for:", j, i, rows)
 				rows[j] = make([]int, 0, w)
 			}
 
-			if i == w - 1 && j == h - 1 {
+			if i == w-1 && j == h-1 {
 				dp[j][i] = make([]int, p.k)
 
-				if data[j][i] == byte('A')  {
+				if data[j][i] == byte('A') {
 					dp[j][i][0] = 1
 				}
 
@@ -191,15 +191,15 @@ func (p *NWCP) solve1() int {
 			// fmt.Println("visiting:", j, i)
 
 			hasApple := data[j][i] == byte('A')
-			
+
 			dp[j][i] = make([]int, p.k)
 			if hasApple {
-				dp[j][i][0] = 1				
+				dp[j][i][0] = 1
 			}
 
 			//TODO: this doesn't feel right, must use (val-j)*(dp[val][i][k-1] + dp[val][i][k]) instead
 
-			if j < h - 1 {
+			if j < h-1 {
 				// make a horizontal count, count from below
 				cLen = len(cols[i])
 
@@ -236,7 +236,7 @@ func (p *NWCP) solve1() int {
 				}
 			}
 
-			if i < w - 1 {
+			if i < w-1 {
 				// make a vertical cut, count from right
 				rLen = len(rows[j])
 
@@ -276,16 +276,16 @@ func (p *NWCP) solve1() int {
 					}
 				}
 			}
-			
+
 			if hasApple {
 				rows[j] = append(rows[j], i)
-				cols[i] = append(cols[i], j)				
+				cols[i] = append(cols[i], j)
 			}
 		}
 	}
 
 	for i := 0; i < h; i++ {
-		fmt.Println(dp[i])		
+		fmt.Println(dp[i])
 	}
 
 	// fmt.Println("rows:", rows)

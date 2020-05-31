@@ -85,12 +85,12 @@ func (p *FLI) solve() int {
 		}
 	}
 
-	dp := make([]*num, p.target + 1)
+	dp := make([]*num, p.target+1)
 	dp[lb] = newNum(store[lb])
 
 	for i := lb + 1; i <= p.target; i++ {
 		if i <= ub && store[i] > 0 {
-			dp[i]	= newNum(store[i])
+			dp[i] = newNum(store[i])
 		}
 
 		for k, v := range store {
@@ -111,9 +111,9 @@ func (p *FLI) solve() int {
 					curr, nextVal := dp[i].numbers[j], dp[i-k].numbers[j]
 
 					if j == v {
-						nextVal++	
+						nextVal++
 					}
-					
+
 					if curr == 0 && nextVal == 0 {
 						continue
 					}
@@ -136,7 +136,7 @@ func (p *FLI) solve() int {
 	}
 
 	if s.DebugMode() {
-		fmt.Println(dp[p.target])		
+		fmt.Println(dp[p.target])
 	}
 
 	if dp[p.target] != nil {
@@ -160,14 +160,14 @@ func (p *FLI) solve() int {
 
 type num struct {
 	numbers map[int]int
-	count int
+	count   int
 	largest int
 }
 
 func newNum(val int) *num {
 	return &num{
-		numbers: map[int]int{ val: 1 },
-		count: 1,
+		numbers: map[int]int{val: 1},
+		count:   1,
 		largest: val,
 	}
 }
@@ -182,7 +182,7 @@ func (n *num) getNext(val int) *num {
 
 	next := &num{
 		numbers: make(map[int]int, len(n.numbers)),
-		count: n.count + 1,
+		count:   n.count + 1,
 		largest: largest,
 	}
 

@@ -109,6 +109,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1457:
 		t = "Pseud-Palindromic Paths in a Binary Tree"
 		p = CreatePPPBT()
+
+	case 1458:
+		t = "Max Dot Product of Two Subsequences"
+		p = CreateMDPTS()
 	}
 
 	return t, p

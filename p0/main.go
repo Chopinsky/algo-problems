@@ -34,6 +34,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 935:
 		t = "Knight Dialer"
 		p = CreateKD()
+
+	case 741:
+		t = "Cherry Pick"
+		p = CreateCP()
 	}
 
 	return t, p

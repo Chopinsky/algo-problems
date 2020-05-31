@@ -42,6 +42,10 @@ type FLI struct {
 func CreateFLI() s.Problem {
 	set := make([]*FLI, 0, 4)
 
+	a := []int{4, 7, 6, 5, 5, 5, 6, 8, 7, 8, 3, 2, 5, 6, 7, 2, 5, 5}
+	s.QuickSort(a)
+	fmt.Println(a)
+
 	set = append(set, &FLI{
 		data:   []int{4, 3, 2, 5, 6, 7, 2, 5, 5},
 		target: 9,

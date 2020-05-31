@@ -15,7 +15,7 @@ var maxQueue = true
 // a maximum queue
 func (s TestNode) Less(t Compare) bool {
 	if maxQueue {
-		return s.val > t.(TestNode).val		
+		return s.val > t.(TestNode).val
 	}
 
 	return s.val < t.(TestNode).val
@@ -33,11 +33,11 @@ func TestMinPQ(t *testing.T) {
 func runTest(t *testing.T) {
 	src := []int{42, 1, 98, 7, 29, 4, 13, 11, 83}
 	tgt := append([]int(nil), src...)
-	
+
 	// use correct sort for comparison
-	sort.Slice(tgt, func (i, j int) bool {
+	sort.Slice(tgt, func(i, j int) bool {
 		if maxQueue {
-			return tgt[i] > tgt[j]			
+			return tgt[i] > tgt[j]
 		}
 
 		return tgt[i] < tgt[j]
@@ -53,7 +53,7 @@ func runTest(t *testing.T) {
 	}
 
 	idx := 0
-	
+
 	for pq.Len() > 0 {
 		top := pq.Pop().(TestNode).val
 
@@ -64,4 +64,3 @@ func runTest(t *testing.T) {
 		idx++
 	}
 }
-

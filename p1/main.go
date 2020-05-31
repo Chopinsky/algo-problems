@@ -113,6 +113,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1458:
 		t = "Max Dot Product of Two Subsequences"
 		p = CreateMDPTS()
+
+	case 1463:
+		t = "Cherry Pick II"
+		p = CreateCPII()
 	}
 
 	return t, p

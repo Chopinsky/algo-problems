@@ -38,6 +38,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 741:
 		t = "Cherry Pick"
 		p = CreateCP()
+
+	case 304:
+		t = "Range Sum Query 2D"
+		p = CreateRSQ()
 	}
 
 	return t, p

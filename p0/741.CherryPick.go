@@ -57,22 +57,16 @@ type seeker struct {
 	x       int
 	y       int
 	count   int
-	id      int
 	forward bool
+	path    map[int]bool
 }
 
-var gID int
-
 func (p *CP) solve() int {
-	gID = 0
 	h, w, grid := len(p.data), len(p.data[0]), p.data
-
 	scores := make([][][]int, h)
-	visited := make([][]map[int]bool, h)
 
 	for i := 0; i < h; i++ {
 		scores[i] = make([][]int, w)
-		visited[i] = make([]map[int]bool, w)
 
 		for j := 0; j < w; j++ {
 			scores[i][j] = make([]int, 2)
@@ -84,15 +78,16 @@ func (p *CP) solve() int {
 		x:       0,
 		y:       0,
 		count:   grid[0][0],
-		id:      getID(),
 		forward: true,
+		path:    make(map[int]bool),
 	})
 
 	var curr seeker
+	var cCount, max int
 
 	for len(stack) > 0 {
 		curr, stack = stack[0], stack[1:]
-		x, y, forward, count := curr.x, curr.y, curr.forward, curr.count
+		x, y, forward, count, path := curr.x, curr.y, curr.forward, curr.count, curr.path
 
 		if (forward && count < scores[x][y][0]) || (!forward && count < scores[x][y][1]) {
 			// a better solution exists in the queue, stop this seeker.
@@ -100,60 +95,118 @@ func (p *CP) solve() int {
 		}
 
 		if forward {
-			if x+1 < h && grid[x+1][y] >= 0 && count+grid[x+1][y] > scores[x+1][y][0] {
+			if x+1 < h && grid[x+1][y] != -1 && count+grid[x+1][y] > scores[x+1][y][0] {
 				next := seeker{
 					x:       x + 1,
 					y:       y,
 					count:   count + grid[x+1][y],
-					id:      getID(),
 					forward: true,
+					path:    nextPath(path, x+1, y, w),
 				}
 
 				if next.x == h-1 && next.y == w-1 {
 					next.forward = false
+					// fmt.Println("x", count, path)
 				}
 
 				scores[x+1][y][0] = next.count
-				visited[x+1][y][next.id] = true
 				stack = append(stack, next)
 			}
 
-			if y+1 < w && grid[x][y+1] >= 0 && count+grid[x][y+1] > scores[x][y+1][0] {
+			if y+1 < w && grid[x][y+1] != -1 && count+grid[x][y+1] > scores[x][y+1][0] {
 				next := seeker{
 					x:       x,
 					y:       y + 1,
 					count:   count + grid[x][y+1],
-					id:      getID(),
 					forward: true,
+					path:    nextPath(path, x, y+1, w),
 				}
 
 				if next.x == h-1 && next.y == w-1 {
 					next.forward = false
+					// fmt.Println("y", next.count, next.path)
 				}
 
 				scores[x][y+1][0] = next.count
-				visited[x][y+1][next.id] = true
 				stack = append(stack, next)
 			}
 		} else {
-			if x-1 >= 0 && grid[x-1][y] >= 0 {
+			if x-1 >= 0 && grid[x-1][y] != -1 {
+				key := calcKeys(x-1, y, w)
 
+				if grid[x-1][y] >= 1 && !path[key] {
+					cCount = 1
+				} else {
+					cCount = 0
+				}
+
+				if count+cCount > scores[x-1][y][1] {
+					next := seeker{
+						x:       x - 1,
+						y:       y,
+						count:   count + cCount,
+						forward: false,
+						path:    nextPath(path, x-1, y, w),
+					}
+
+					if next.x == 0 && next.y == 0 && next.count > max {
+						max = next.count
+					}
+
+					scores[x-1][y][1] = next.count
+					if next.x > 0 || next.y > 0 {
+						stack = append(stack, next)
+					}
+				}
 			}
 
-			if y-1 >= 0 && grid[x][y+1] >= 0 {
+			if y-1 >= 0 && grid[x][y-1] != -1 {
+				key := calcKeys(x, y-1, w)
 
+				if grid[x][y-1] >= 1 && !path[key] {
+					cCount = 1
+				} else {
+					cCount = 0
+				}
+
+				if count+cCount > scores[x][y-1][1] {
+					next := seeker{
+						x:       x,
+						y:       y - 1,
+						count:   count + cCount,
+						forward: false,
+						path:    nextPath(path, x, y-1, w),
+					}
+
+					if next.x == 0 && next.y == 0 && next.count > max {
+						max = next.count
+					}
+
+					scores[x][y-1][1] = next.count
+					if next.x > 0 || next.y > 0 {
+						stack = append(stack, next)
+					}
+				}
 			}
 		}
 	}
 
-	return 0
+	return max
 }
 
 func calcKeys(i, j, pad int) int {
 	return i*pad + j
 }
 
-func getID() int {
-	gID++
-	return gID
+func nextPath(src map[int]bool, i, j, pad int) map[int]bool {
+	nextp := make(map[int]bool)
+
+	for k := range src {
+		nextp[k] = true
+	}
+
+	key := calcKeys(i, j, pad)
+	nextp[key] = true
+
+	return nextp
 }

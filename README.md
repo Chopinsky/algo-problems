@@ -1,8 +1,10 @@
 # LeetCode Problems
 
-This repository contains a collection of solutions to some interesting LeetCode problems. The solutions are written in Javascript and shall be run by Node.
+This repository contains a collection of solutions to some interesting `LeetCode` problems. The solutions are written in `Go` and you can check the results by running the corresponding problem.
 
 ## Run Go Problems
+
+At the project root, run the following command
 
 ```go
 $ go run . -n=<problem_number>

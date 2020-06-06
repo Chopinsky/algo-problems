@@ -58,6 +58,24 @@ func GCD(a, b int) int {
 	return a
 }
 
+// GCDUint64 ...
+func GCDUint64(a, b uint64) uint64 {
+	if a == b {
+		return a
+	}
+
+	if a < b {
+		a, b = b, a
+	}
+
+	for b != 0 {
+		a = a % b
+		a, b = b, a
+	}
+
+	return a
+}
+
 // FastPower ...package shared
 func FastPower(a, b, n, mod uint64) uint64 {
 	if a == 0 {
@@ -103,6 +121,7 @@ func MtrxMulti(a, b [][]uint64, mod uint64) [][]uint64 {
 		result[i] = make([]uint64, w)
 	}
 
+	// actual multiplications
 	for i := 0; i < h; i++ {
 		for j := 0; j < w; j++ {
 			for k := 0; k < w; k++ {

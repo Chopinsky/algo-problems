@@ -117,6 +117,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1463:
 		t = "Cherry Pick II"
 		p = CreateCPII()
+
+	case 1467:
+		t = "Probability of a Two Boxes Having the Same Number of Distinct Balls"
+		p = CreatePTBSN()
 	}
 
 	return t, p

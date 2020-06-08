@@ -121,6 +121,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1467:
 		t = "Probability of a Two Boxes Having the Same Number of Distinct Balls"
 		p = CreatePTBSN()
+
+	case 1473:
+		t = "Paint House III"
+		p = CreatePHIII()
 	}
 
 	return t, p

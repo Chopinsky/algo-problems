@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func main() {
+func main1() {
 	//Enter your code here. Read input from STDIN. Print output to STDOUT
 	n, k := input()
 	arr := make([]int, k)

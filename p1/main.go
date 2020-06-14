@@ -125,6 +125,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1473:
 		t = "Paint House III"
 		p = CreatePHIII()
+
+	case 1475:
+		t = "Final Prices with a Special Discount in a Shop"
+		p = CreateFPD()
 	}
 
 	return t, p

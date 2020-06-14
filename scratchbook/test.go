@@ -4,16 +4,68 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math/rand"
+	"strconv"
+	"strings"
 )
 
 func main() {
-	cmds, err := ioutil.ReadFile("cmds.json")
+	rawCmds, err := ioutil.ReadFile("cmds.json")
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("error", err)
 		return
 	}
 
-	fmt.Println("Done ... ", string(cmds))
+	cmds := strings.Split(string(rawCmds), "\r\n")
+	size := len(cmds)
+	// fmt.Println(size)
+
+	rawParams, err := ioutil.ReadFile("params.json")
+	if err != nil {
+		fmt.Println("error", err)
+		return
+	}
+
+	params := strings.Split(string(rawParams), ",")
+	// size = len(params)
+	// fmt.Println(params[0], params[size-1])
+
+	obj := Constructor()
+	var res bool
+	var val int
+
+	fmt.Println("starting ... ")
+
+	for i := 0; i < size; i++ {
+		cmd := strings.Trim(cmds[i], " \",")
+		// fmt.Println("running", cmd)
+
+		switch cmd {
+		case "insert":
+			val = parseParam(params[i-1])
+			res = obj.Insert(val)
+
+			if val == 3675 {
+				fmt.Println("insert:", val, res)
+			}
+
+		case "remove":
+			val = parseParam(params[i-1])
+			res = obj.Remove(val)
+
+			if val == 3675 {
+				fmt.Println("remove:", val, res)
+				fmt.Println(obj.dict[3675], obj.size)
+			}
+		}
+
+		// fmt.Println(cmds[i], val, res)
+	}
+}
+
+func parseParam(param string) int {
+	arr := strings.Split(param, "\r\n")
+	val, _ := strconv.Atoi(strings.Trim(arr[2], " "))
+	return val
 }
 
 // RandomizedSet ...
@@ -58,17 +110,25 @@ func (this *RandomizedSet) Remove(val int) bool {
 	var pos int
 
 	if idx, ok := this.dict[val]; ok {
+		// if idx < 0 {
+		// 	return false
+		// }
+
 		pos = idx
 	} else {
 		return false
 	}
 
 	delete(this.dict, val)
+	// this.dict[val] = -1
 
 	if this.size > 1 {
 		lastVal := this.store[this.size-1]
-		this.store[pos] = lastVal
-		this.dict[lastVal] = pos
+
+		if lastVal != val {
+			this.store[pos] = lastVal
+			this.dict[lastVal] = pos
+		}
 	}
 
 	this.size--

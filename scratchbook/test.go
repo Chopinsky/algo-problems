@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func main() {
+func main2() {
 	rawCmds, err := ioutil.ReadFile("cmds.json")
 	if err != nil {
 		fmt.Println("error", err)

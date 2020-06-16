@@ -129,6 +129,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1475:
 		t = "Final Prices with a Special Discount in a Shop"
 		p = CreateFPD()
+
+	case 1477:
+		t = "Find 2 Non-Overlapping Subarrays Each With Target Sum"
+		p = CreateFNS()
 	}
 
 	return t, p

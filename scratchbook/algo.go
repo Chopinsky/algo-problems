@@ -1,4 +1,4 @@
-package shared
+package main
 
 // BinarySearch ...
 func BinarySearch(src []int, l, r, val int) int {

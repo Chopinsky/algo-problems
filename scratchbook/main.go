@@ -9,6 +9,14 @@ import (
 	"time"
 )
 
+func main() {
+	solveNested()
+}
+
+func solveNested() {
+	// test := [][][]int{1, 2, []int{4, 5, []int{7}, 8}, 9}
+}
+
 func main1() {
 	//Enter your code here. Read input from STDIN. Print output to STDOUT
 	n, k := input()

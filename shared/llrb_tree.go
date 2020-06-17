@@ -1,11 +1,6 @@
 package shared
 
-/* Node ... definition:
- * type Node struct {
- *     Val int
- *     Neighbors []*Node
- * }
- */
+// Node ...
 type Node struct {
 	Val       int
 	Neighbors []*Node
@@ -26,15 +21,16 @@ func cloneGraph(node *Node) *Node {
 		curr, stack = stack[0], stack[1:]
 		val, n := curr.Val, curr.Neighbors
 
+		if n == nil || len(n) == 0 {
+			continue
+		}
+
 		clone := graph[val]
 		if graph[val] != nil {
 			continue
 		}
 
 		clone = createNode(val)
-		if n == nil || len(n) == 0 {
-			continue
-		}
 
 		for i := 0; i < len(n); i++ {
 			// fmt.Println(val)

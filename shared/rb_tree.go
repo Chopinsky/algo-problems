@@ -161,12 +161,43 @@ func (r *RBTreeNode) balance() {
 	}
 
 	// case 2: uncle is black, left-left
+	if r == parent.left {
+		gparent.red, parent.red = parent.red, gparent.red
+		r.rightRotate(gparent, parent)
+		return
+	}
 
 	// case 3: uncle is black, left-right
+	if r == parent.right {
+		r.leftRotate(gparent, parent)
+		parent.rightRotate(gparent, r)
+		return
+	}
 
 	// case 4: uncle is black, right-left
 
 	// case 5: uncle is black, right-right
+}
+
+func (r *RBTreeNode) rightRotate(gp, p *RBTreeNode) {
+	temp := &RBTreeNode{
+		red:    gp.red,
+		key:    gp.key,
+		val:    gp.val,
+		right:  gp.right,
+		left:   p.right,
+		parent: p,
+	}
+
+	gp = p
+	gp.right = temp
+	gp.left = r
+}
+
+func (r *RBTreeNode) leftRotate(gp, p *RBTreeNode) {
+	gp.left = r
+	p.right = r.left
+	r.left = p
 }
 
 func (r *RBTreeNode) findDel(key string, p *RBTreeNode) (int, error) {

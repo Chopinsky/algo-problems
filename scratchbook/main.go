@@ -10,11 +10,95 @@ import (
 )
 
 func main() {
-	solveNested()
+	solve()
 }
 
-func solveNested() {
-	// test := [][][]int{1, 2, []int{4, 5, []int{7}, 8}, 9}
+func solve() {
+	arr := []int{1, 2, 3, 4, 5, 6, 7}
+
+	Heapify(arr)
+	fmt.Println(UpdateHeap(arr, 2), arr)
+	fmt.Println(UpdateHeap(arr, 5), arr)
+	fmt.Println(UpdateHeap(arr, 4), arr)
+
+	arr1 := []int{5, 9, 2, 8, 3, 4, 6, 1, 7}
+	HeapSort(arr1)
+	fmt.Println(arr1)
+
+	// idx := FindLeastCommonAncestor(arr, 4, 5, false)
+	// fmt.Println("Common ancestor:", idx, arr[idx])
+
+	// idx = FindLeastCommonAncestor(arr, 4, 6, false)
+	// fmt.Println("Common ancestor:", idx, arr[idx])
+
+	// idx = FindLeastCommonAncestor(arr, 3, 4, false)
+	// fmt.Println("Common ancestor:", idx, arr[idx])
+
+	// idx = FindLeastCommonAncestor(arr, 2, 4, false)
+	// fmt.Println("Common ancestor:", idx, arr[idx])
+	fmt.Println(eval([]string{
+		"(", "+", "5", "(", "*", "7", "8", ")", "9", "10", "33",
+	}))
+}
+
+func eval(src []string) string {
+	size := len(src)
+	stack := make([]string, 0, size)
+
+	for i := size - 1; i >= 0; i-- {
+		if src[i] != "(" {
+			stack = append(stack, src[i])
+			continue
+		}
+
+		stack = calc(stack)
+	}
+
+	if len(stack) != 1 {
+		return "-1"
+	}
+
+	return stack[0]
+}
+
+func calc(stack []string) []string {
+	size := len(stack)
+	if size < 2 {
+		return stack
+	}
+
+	calcType := stack[size-1]
+	curr, _ := strconv.Atoi(stack[size-2])
+	last := 0
+
+	for j := size - 3; j >= 0; j-- {
+		if stack[j] == ")" {
+			last = j
+			break
+		}
+
+		val, _ := strconv.Atoi(stack[j])
+
+		switch calcType {
+		case "+":
+			curr += val
+
+		case "-":
+			curr -= val
+
+		case "*":
+			curr *= val
+
+		case "/":
+			curr /= val
+		}
+	}
+
+	stack = stack[:last]
+	res := strconv.Itoa(curr)
+	stack = append(stack, res)
+
+	return stack
 }
 
 func main1() {

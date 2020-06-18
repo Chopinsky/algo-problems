@@ -33,7 +33,6 @@ func cloneGraph(node *Node) *Node {
 		clone = createNode(val)
 
 		for i := 0; i < len(n); i++ {
-			// fmt.Println(val)
 			ne = n[i]
 
 			if graph[ne.Val] != nil {

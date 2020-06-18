@@ -77,7 +77,6 @@ func (p *KAT) solve() []int {
 	// fmt.Println(store)
 
 	for i, q := range p.query {
-		// fmt.Println(q, res)
 		res[i] = query(store, q[0], q[1], false)
 	}
 

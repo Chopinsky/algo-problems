@@ -72,7 +72,9 @@ func (p *KAT) solve() []int {
 		store = append(store, s)
 	}
 
-	// fmt.Println(store)
+	if s.DebugMode() {
+		fmt.Println(store)
+	}
 
 	for i, q := range p.query {
 		res[i] = query(store, q[0], q[1], false)

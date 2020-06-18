@@ -133,6 +133,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1477:
 		t = "Find 2 Non-Overlapping Subarrays Each With Target Sum"
 		p = CreateFNS()
+
+	case 1483:
+		t = "Kth Ancestor of a Tree Node"
+		p = CreateKAT()
 	}
 
 	return t, p

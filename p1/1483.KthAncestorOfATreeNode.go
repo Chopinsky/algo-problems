@@ -28,7 +28,7 @@ func (p *KATProblems) Solve() {
 		}
 	}
 
-	fmt.Println("Algorithm took", time.Since(start))
+	fmt.Println("Algorithm finished in:", time.Since(start))
 }
 
 // KAT ...

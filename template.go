@@ -28,7 +28,7 @@ func (p *XXXProblems) Solve() {
 		}
 	}
 
-	fmt.Println("Algorithm took", time.Since(start))
+	fmt.Println("Algorithm finished in:", time.Since(start))
 }
 
 // XXX ...

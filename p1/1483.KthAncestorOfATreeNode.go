@@ -44,7 +44,7 @@ func CreateKAT() s.Problem {
 	set := make([]*KAT, 0, 4)
 
 	set = append(set, &KAT{
-		data:   []int{-1, 0, 0, 1, 1, 2, 2},
+		data:   []int{-1, 0, 0, 1, 1, 2, 2, 3, 3},
 		query:  [][]int{{3, 1}, {5, 2}, {6, 3}},
 		output: []int{1, 0, -1},
 	})

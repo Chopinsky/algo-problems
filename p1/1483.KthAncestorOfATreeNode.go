@@ -64,8 +64,6 @@ func (p *KAT) solve() []int {
 		s = append(s, parent)
 
 		for kp != -1 {
-			// fmt.Println(i, kp, k, store)
-
 			kp = query(store, kp, k, false)
 			s = append(s, kp)
 			k <<= 1

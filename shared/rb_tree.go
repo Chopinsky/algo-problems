@@ -161,25 +161,39 @@ func (r *RBTreeNode) balance() {
 	}
 
 	// case 2: uncle is black, left-left
-	if r == parent.left {
+	if parent == gparent.left && r == parent.left {
 		gparent.red, parent.red = parent.red, gparent.red
 		r.rightRotate(gparent, parent)
 		return
 	}
 
 	// case 3: uncle is black, left-right
-	if r == parent.right {
+	if parent == gparent.left && r == parent.right {
 		r.leftRotate(gparent, parent)
 		parent.rightRotate(gparent, r)
 		return
 	}
 
 	// case 4: uncle is black, right-left
+	if parent == gparent.right && r == parent.right {
+		gparent.red, parent.red = parent.red, gparent.red
+		parent.leftRotate(parent.parent, gparent)
+		return
+	}
 
 	// case 5: uncle is black, right-right
+	gparent.right = r
+	parent.left = r.right
+	r.right = parent
+
+	gparent.red, r.red = r.red, gparent.red
+	r.leftRotate(gparent.parent, gparent)
 }
 
 func (r *RBTreeNode) rightRotate(gp, p *RBTreeNode) {
+	//TODO: implementation is incorrect, in the sense that the "parent" node
+	//      is not right
+
 	temp := &RBTreeNode{
 		red:    gp.red,
 		key:    gp.key,
@@ -195,6 +209,9 @@ func (r *RBTreeNode) rightRotate(gp, p *RBTreeNode) {
 }
 
 func (r *RBTreeNode) leftRotate(gp, p *RBTreeNode) {
+	//TODO: implementation is incorrect, in the sense that the "parent" node
+	//      is not right
+
 	gp.left = r
 	p.right = r.left
 	r.left = p

@@ -42,6 +42,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 304:
 		t = "Range Sum Query 2D"
 		p = CreateRSQ()
+
+	case 247:
+		t = "H-Index"
+		p = CreateHI()
 	}
 
 	return t, p

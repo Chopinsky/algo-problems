@@ -137,6 +137,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1483:
 		t = "Kth Ancestor of a Tree Node"
 		p = CreateKAT()
+
+	case 1488:
+		t = "Avoid Flood in the City"
+		p = CreateAFC()
 	}
 
 	return t, p

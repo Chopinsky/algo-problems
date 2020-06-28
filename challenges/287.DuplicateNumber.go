@@ -32,6 +32,8 @@ which gives: a = b - k
 
 Then slow from 0, fast from k, after walking a steps (and meet at a), we have
 slow @ 0 + a = a; fast @ k + a = k + (b - k) = b, and after finishing the full circle, fast is at a (the stating point) again.
+
+see Floyd's Tortoise and Hare (Cycle Detection)
 */
 
 func findDuplicate(nums []int) int {

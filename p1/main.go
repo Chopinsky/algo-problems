@@ -141,6 +141,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1488:
 		t = "Avoid Flood in the City"
 		p = CreateAFC()
+
+	case 1489:
+		t = "Find Critical and Pseudo-Critical Edges in a MST"
+		p = CreateFCEMST()
 	}
 
 	return t, p

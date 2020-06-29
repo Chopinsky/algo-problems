@@ -145,6 +145,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1489:
 		t = "Find Critical and Pseudo-Critical Edges in a MST"
 		p = CreateFCEMST()
+
+	case 1493:
+		t = "Longest Subarray of 1's After Deleting One Element"
+		p = CreateLSADOE()
 	}
 
 	return t, p

@@ -64,7 +64,7 @@ func CreateMCMLP() s.Problem {
 }
 
 func (p *MCMLP) solve() int {
-	stack := []*state{&state{
+	stack := []*state{{
 		pos:      [2]int{0, 0},
 		cost:     0,
 		visited:  0,

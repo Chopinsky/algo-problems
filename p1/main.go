@@ -153,6 +153,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1494:
 		t = "Parallel Courses II"
 		p = CreatePCII()
+
+	case 1499:
+		t = "Max Value Of Equation"
+		p = CreateMVE()
 	}
 
 	return t, p

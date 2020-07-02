@@ -78,13 +78,33 @@ func CreateFNS() s.Problem {
 func (p *FNS) solve() int {
 	size := len(p.data)
 	subs := make([][]int, 0, size)
+	min := make([]int, size)
 
 	l, r := 0, 0
+	best, last, lastEnd := -1, -1, -1
 	sum := p.data[0]
 
 	for l < size {
 		if sum == p.tgt {
 			subs = append(subs, []int{l, r})
+			count := r - l + 1
+
+			if last != -1 {
+				if count < last {
+					for i := r; i > lastEnd; i-- {
+						min[i] = last
+					}
+				}
+
+				if best == -1 || best > last+count {
+					best = last + count
+				}
+			}
+
+			if last == -1 || count < last {
+				last = count
+				lastEnd = r
+			}
 
 			// shifting the window
 			if l < size {
@@ -120,31 +140,6 @@ func (p *FNS) solve() int {
 	}
 
 	// fmt.Println(subs)
-
-	count := len(subs)
-	if count < 2 {
-		return -1
-	}
-
-	best, lLen, rLen := -1, 0, 0
-
-	for i := 0; i < count-1; i++ {
-		lLen = subs[i][1] - subs[i][0] + 1
-		if best != -1 && lLen >= best {
-			continue
-		}
-
-		for j := count - 1; j > i; j-- {
-			if subs[i][1] >= subs[j][0] {
-				break
-			}
-
-			rLen = subs[j][1] - subs[j][0] + 1
-			if best == -1 || lLen+rLen < best {
-				best = lLen + rLen
-			}
-		}
-	}
 
 	return best
 }

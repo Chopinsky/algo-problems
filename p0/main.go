@@ -46,6 +46,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 247:
 		t = "H-Index"
 		p = CreateHI()
+
+	case 996:
+		t = "Rotting Oranges"
+		p = CreateRO()
 	}
 
 	return t, p

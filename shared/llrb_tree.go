@@ -1,59 +1,92 @@
 package shared
 
-// Node ...
-type Node struct {
-	Val       int
-	Neighbors []*Node
+// Comparable ...
+type Comparable interface {
+	Compare(Comparable) int
 }
 
-func cloneGraph(node *Node) *Node {
-	graph := make([]*Node, 101)
+// Color ...
+type Color bool
 
-	stack := make([]*Node, 0, 101)
-	stack = append(stack, node)
-
-	head := createNode(node.Val)
-	graph[node.Val] = head
-
-	var curr, next, ne *Node
-
-	for len(stack) > 0 {
-		curr, stack = stack[0], stack[1:]
-		val, n := curr.Val, curr.Neighbors
-
-		if n == nil || len(n) == 0 {
-			continue
-		}
-
-		clone := graph[val]
-		if graph[val] != nil {
-			continue
-		}
-
-		clone = createNode(val)
-
-		for i := 0; i < len(n); i++ {
-			ne = n[i]
-
-			if graph[ne.Val] != nil {
-				next = graph[ne.Val]
-			} else {
-				next = createNode(ne.Val)
-				graph[ne.Val] = next
-				stack = append(stack, ne)
-			}
-
-			// clone
-			clone.Neighbors = append(clone.Neighbors, next)
-		}
+// String ...
+func (r Color) String() string {
+	if r {
+		return "Red"
 	}
 
-	return head
+	return "Black"
 }
 
-func createNode(val int) *Node {
-	return &Node{
-		Val:       val,
-		Neighbors: make([]*Node, 0, 100),
+const (
+	// Red ...
+	Red Color = false
+	// Black ...
+	Black Color = true
+)
+
+// TNode ...
+type TNode struct {
+	Left  *TNode
+	Right *TNode
+	Color Color
+	Val   Comparable
+}
+
+// LLRBTree ...
+type LLRBTree struct {
+	Root  *TNode
+	Count int
+}
+
+/* internal helper functions */
+func (n *TNode) color() Color {
+	if n == nil {
+		return Black
+	}
+
+	return n.Color
+}
+
+func (n *TNode) leftRotate() *TNode {
+	if n.Right == nil {
+		return n
+	}
+
+	root := n.Right
+	n.Right = root.Left
+	root.Left = n
+
+	root.Color = n.Color
+	n.Color = Red
+
+	return root
+}
+
+func (n *TNode) rightRotate() *TNode {
+	if n.Left == nil {
+		return n
+	}
+
+	root := n.Left
+	n.Left = root.Right
+	root.Right = n
+
+	root.Color = n.Color
+	n.Color = Red
+
+	return root
+}
+
+func (n *TNode) flipColors() {
+	n.Color = !n.Color
+
+	if n.Left != nil {
+		n.Left.Color = !n.Left.Color
+	}
+
+	if n.Right != nil {
+		n.Right.Color = !n.Right.Color
 	}
 }
+
+/* helper functions end */

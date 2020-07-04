@@ -133,7 +133,7 @@ func (h vtxHeap) Swap(i, j int) {
 
 func (h *vtxHeap) Push(x interface{}) {
 	v := x.(*vertex)
-	v.incoming = h.Len()
+	// v.incoming = h.Len()
 	*h = append(*h, v)
 }
 

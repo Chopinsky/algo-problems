@@ -12,8 +12,6 @@ func longestDupSubstring(s string) string {
 		mid := (low + high) / 2
 		res := RKSearch(s, size, mid)
 
-		// fmt.Println(low, mid, high, res)
-
 		if res == "" {
 			high = mid - 1
 			continue
@@ -30,7 +28,6 @@ func longestDupSubstring(s string) string {
 func RKSearch(s string, size, l int) string {
 	top := getTopBase(l)
 	hashes := make(map[int][]int)
-	// seen := make(map[int]bool)
 
 	h := -1
 	for i := 0; i < size-l+1; i++ {
@@ -43,6 +40,7 @@ func RKSearch(s string, size, l int) string {
 
 		if positions, ok := hashes[h]; ok {
 			for _, pos := range positions {
+				// compare strings with matching hashes
 				if s[pos:pos+l] == s[i:i+l] {
 					return s[i : i+l]
 				}
@@ -52,14 +50,7 @@ func RKSearch(s string, size, l int) string {
 			continue
 		}
 
-		/*
-			if seen[h] && strings.Contains(s[:i+l-1], s[i:i+l]) {
-				return s[i:i+l]
-			}
-		*/
-
 		hashes[h] = []int{i}
-		// seen[h] = true
 	}
 
 	return ""

@@ -36,3 +36,27 @@ func (f *Fenwick) Query(idx int) int {
 
 	return sum
 }
+
+// UpdateFenwick ...
+func UpdateFenwick(src []int, idx, val int) {
+	idx++
+	size := len(src)
+
+	for idx < size {
+		src[idx] += val
+		idx += (idx & -idx)
+	}
+}
+
+// QueryFenwick ...
+func QueryFenwick(src []int, idx int) int {
+	sum := 0
+	idx++
+
+	for idx > 0 {
+		sum += src[idx]
+		idx -= (idx & -idx)
+	}
+
+	return sum
+}

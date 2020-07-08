@@ -157,6 +157,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1499:
 		t = "Max Value Of Equation"
 		p = CreateMVE()
+
+	case 1505:
+		t = "Minimum Possible Integer After At Most K Adjacent Swaps"
+		p = CreateMPI()
 	}
 
 	return t, p
@@ -165,7 +169,6 @@ func findProblem(num int) (string, s.Problem) {
 // CreateProblem ...
 func CreateProblem(num int) s.Problem {
 	title, p := findProblem(num)
-
 	fmt.Println("Solving problem:", title)
 
 	return p

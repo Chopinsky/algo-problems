@@ -76,6 +76,76 @@ func CreateMPI() s.Problem {
 }
 
 func (p *MPI) solve() string {
+	l, k, src := len(p.data), p.k, p.data
+	findMinSwaps(src, l)
+
+	res, val := "", 0
+	fw, mv := make([]int, l+1), make([]bool, l)
+	store := make(map[int][]int)
+
+	for i := range src {
+		val = int(src[i] - '0')
+		store[val] = append(store[val], i)
+	}
+
+	for len(res) < l && k > 0 {
+		for d := 0; d < 10; d++ {
+			if len(store[d]) == 0 {
+				continue
+			}
+
+			f := store[d][0]
+			cost := f - s.QueryFenwick(fw, f)
+
+			if cost <= k {
+				res += src[f : f+1]
+				k -= cost
+
+				s.UpdateFenwick(fw, f, 1)
+				store[d] = store[d][1:]
+				mv[f] = true
+				break
+			}
+		}
+	}
+
+	if len(res) == l {
+		return res
+	}
+
+	for i := 0; i < l; i++ {
+		if !mv[i] {
+			res += src[i : i+1]
+		}
+	}
+
+	return res
+}
+
+func findMinSwaps(src string, size int) {
+	sum, val, res := 0, 0, ""
+	fw := make([]int, size+1)
+	store := make(map[int][]int)
+
+	for i := range src {
+		val = int(src[i] - '0')
+		store[val] = append(store[val], i)
+	}
+
+	for d := 0; d < 10; d++ {
+		for i := range store[d] {
+			pos := store[d][i]
+
+			res += src[pos : pos+1]
+			sum += pos - s.QueryFenwick(fw, pos)
+			s.UpdateFenwick(fw, pos, 1)
+		}
+	}
+
+	fmt.Println("Min number of swaps needed to Get: [", res, "] is: ", sum)
+}
+
+func (p *MPI) solve1() string {
 	l, src := len(p.data), p.data
 	k := p.k
 	mv := make([]bool, l)

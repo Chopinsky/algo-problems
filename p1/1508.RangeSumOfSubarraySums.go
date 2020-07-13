@@ -75,6 +75,8 @@ func CreateRSSS() s.Problem {
 // use min-heap
 func (p *RSSS) solve() int {
 	h := s.IntHeapInit(p.data)
+	a, b := p.subarrSumNCount(p.output)
+	fmt.Println("Sum & Count:", a, b)
 
 	l, r := p.l, p.r
 	size := len(p.data)
@@ -121,4 +123,32 @@ func (p *RSSS) solve1() int {
 	}
 
 	return res
+}
+
+// Find sum of all subarraies whose array-sum is smaller than k
+func (p *RSSS) subarrSumNCount(k int) (int, int) {
+	size := len(p.data)
+	i := 0
+
+	sum := 0      // max sum of the range
+	count := 0    // number of subarraies met the criteria (i.e. sum < k)
+	total := 0    // sum total of all subarraies in the range met the criteria
+	rngTotal := 0 // overall tally of the totals
+
+	for j := 0; j < size; j++ {
+		val := p.data[j]
+		sum += val
+		total += val * (j-i+1)
+
+		for sum > k {
+			total -= sum
+			sum -= p.data[i]
+			i++
+		}
+
+		count += j-i+1
+		rngTotal += total
+	}
+
+	return count, rngTotal
 }

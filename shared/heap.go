@@ -1,6 +1,59 @@
 package shared
 
-import "fmt"
+import (
+	"container/heap"
+	"fmt"
+)
+
+// IntHeap ...
+type IntHeap [][]int
+
+// IntHeapInit ...
+func IntHeapInit(src []int) IntHeap {
+	size := len(src)
+	h := make(IntHeap, size)
+
+	for i := range src {
+		h[i] = []int{src[i], i}
+	}
+
+	heap.Init(&h)
+	return h
+}
+
+// Heap ...
+func (h IntHeap) Len() int {
+	return len(h)
+}
+
+func (h IntHeap) Less(i, j int) bool {
+	return h[i][0] < h[j][0]
+}
+
+func (h IntHeap) Swap(i, j int) {
+	h[i], h[j] = h[j], h[i]
+}
+
+// Push ...
+func (h *IntHeap) Push(x interface{}) {
+	// Push and Pop use pointer receivers because they modify the slice's length,
+	// not just its contents.
+	*h = append(*h, x.([]int))
+}
+
+// Pop ...
+func (h *IntHeap) Pop() interface{} {
+	old := *h
+	n := len(old)
+
+	x := (*h)[0]
+	(*h)[0] = old[n-1]
+	*h = old[0 : n-1]
+
+	heap.Fix(h, 0)
+
+	return x
+}
 
 // Heap ...
 type Heap struct {
@@ -22,7 +75,6 @@ func InitHeap(size int) *Heap {
 
 func (h *Heap) swap(i, j int) {
 	h.slice[i], h.slice[j] = h.slice[j], h.slice[i]
-
 	h.records[h.slice[i][0]] = i
 	h.records[h.slice[j][0]] = j
 }

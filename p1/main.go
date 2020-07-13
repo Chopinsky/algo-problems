@@ -161,6 +161,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1505:
 		t = "Minimum Possible Integer After At Most K Adjacent Swaps"
 		p = CreateMPI()
+
+	case 1508:
+		t = "Range Sum of Sorted Subarray Sums"
+		p = CreateRSSS()
 	}
 
 	return t, p

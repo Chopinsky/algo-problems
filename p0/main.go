@@ -19,6 +19,18 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Evaluate Reverse Polish Notation"
 		p = CreateERPN()
 
+	case 207:
+		t = "Course Schedule"
+		p = CreateCS()
+
+	case 247:
+		t = "H-Index"
+		p = CreateHI()
+
+	case 304:
+		t = "Range Sum Query 2D"
+		p = CreateRSQ()
+
 	case 393:
 		t = "UTF-8 Validation"
 		p = CreateUTF8()
@@ -27,25 +39,17 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Redundant Connection II"
 		p = CreateRCII()
 
-	case 207:
-		t = "Course Schedule"
-		p = CreateCS()
-
-	case 935:
-		t = "Knight Dialer"
-		p = CreateKD()
-
 	case 741:
 		t = "Cherry Pick"
 		p = CreateCP()
 
-	case 304:
-		t = "Range Sum Query 2D"
-		p = CreateRSQ()
+	case 825:
+		t = "Friends of Appropriate Ages"
+		p = CreateFAA()
 
-	case 247:
-		t = "H-Index"
-		p = CreateHI()
+	case 935:
+		t = "Knight Dialer"
+		p = CreateKD()
 
 	case 996:
 		t = "Rotting Oranges"

@@ -14,6 +14,14 @@ func findProblem(num int) (string, s.Problem) {
 	var p s.Problem
 
 	switch num {
+	case 1039:
+		t = "Min Score"
+		p = CreateMSTP()
+
+	case 1311:
+		t = "Get Watched Videos by Friends"
+		p = CreateGWV()
+
 	case 1334:
 		t = "City With the Smallest Number of Neighbors Within the Threshold"
 		p = CreateCSNN()

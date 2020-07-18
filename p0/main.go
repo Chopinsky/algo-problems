@@ -31,6 +31,10 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Range Sum Query 2D"
 		p = CreateRSQ()
 
+	case 341:
+		t = "Top K Frequent Element"
+		p = CreateTKFE()
+
 	case 393:
 		t = "UTF-8 Validation"
 		p = CreateUTF8()

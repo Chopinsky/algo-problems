@@ -76,10 +76,19 @@ func GCDUint64(a, b uint64) uint64 {
 	return a
 }
 
-// FastPower ...package shared
-func FastPower(a, b, n, mod uint64) uint64 {
+// FastPower for computing: a * x^n
+func FastPower(a, x float64, n, mod uint64) float64 {
+	if n == 0 {
+		return 1
+	}
+
 	if a == 0 {
-		a = 1
+		return 0
+	}
+
+	if n < 0 {
+		n *= -1
+		x = 1 / x
 	}
 
 	if mod < 1 {
@@ -88,10 +97,12 @@ func FastPower(a, b, n, mod uint64) uint64 {
 
 	for n > 0 {
 		if n&1 == 1 {
-			a *= b % mod
+			// desolve a * x^25 into: a * x^1 * x^8 * x^16
+			a = (a * x) % mod
 		}
 
-		b = b * b % mod
+		// raising the power: x^2 -> x^4 -> x^8 ....
+		x = (x * x) % mod
 		n = n >> 1
 	}
 

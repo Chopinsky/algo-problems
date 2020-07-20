@@ -51,7 +51,7 @@ func CreateTKFE() s.Problem {
 	return &TKFEProblems{set}
 }
 
-func (p *TKFE) solve() int {
+func (p *TKFE) solve() []int {
 	return topKFrequent(p.data, p.k)
 }
 

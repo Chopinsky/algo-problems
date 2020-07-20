@@ -23,6 +23,10 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Course Schedule"
 		p = CreateCS()
 
+	case 210:
+		t = "Course Schedule"
+		p = CreateCSII()
+
 	case 247:
 		t = "H-Index"
 		p = CreateHI()

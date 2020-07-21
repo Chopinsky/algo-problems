@@ -18,6 +18,10 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Min Score"
 		p = CreateMSTP()
 
+	case 1172:
+		t = "Dinner Plate Stacks"
+		p = CreateDPS()
+
 	case 1311:
 		t = "Get Watched Videos by Friends"
 		p = CreateGWV()

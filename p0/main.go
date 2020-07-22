@@ -59,6 +59,10 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Knight Dialer"
 		p = CreateKD()
 
+	case 954:
+		t = "Array of Doubled Pairs"
+		p = CreateAODP()
+
 	case 996:
 		t = "Rotting Oranges"
 		p = CreateRO()

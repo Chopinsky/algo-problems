@@ -15,6 +15,10 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Scramble String"
 		p = CreateSS()
 
+	case 126:
+		t = "Word Ladder II"
+		p = CreateWLII()
+
 	case 150:
 		t = "Evaluate Reverse Polish Notation"
 		p = CreateERPN()
@@ -46,6 +50,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 685:
 		t = "Redundant Connection II"
 		p = CreateRCII()
+
+	case 719:
+		t = "Kth Smallest Pair Distance"
+		p = CreateKSPD()
 
 	case 741:
 		t = "Cherry Pick"

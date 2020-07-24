@@ -77,7 +77,7 @@ func GCDUint64(a, b uint64) uint64 {
 }
 
 // FastPower for computing: a * x^n
-func FastPower(a, x float64, n, mod uint64) float64 {
+func FastPower(a, x, mod, n int64) int64 {
 	if n == 0 {
 		return 1
 	}

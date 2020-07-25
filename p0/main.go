@@ -59,6 +59,10 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Cherry Pick"
 		p = CreateCP()
 
+	case 813:
+		t = "Largest Sum Of Averages"
+		p = CreateLSOA()
+
 	case 825:
 		t = "Friends of Appropriate Ages"
 		p = CreateFAA()

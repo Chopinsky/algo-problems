@@ -11,6 +11,10 @@ func findProblem(num int) (string, s.Problem) {
 	var p s.Problem
 
 	switch num {
+	case 33:
+		t = "Search In Rotated Sorted Array"
+		p = CreateSRSA()
+
 	case 87:
 		t = "Scramble String"
 		p = CreateSS()
@@ -22,6 +26,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 150:
 		t = "Evaluate Reverse Polish Notation"
 		p = CreateERPN()
+
+	case 154:
+		t = "Find Min In Rotated Sorted Array II"
+		p = CreateMRSA()
 
 	case 207:
 		t = "Course Schedule"
@@ -58,6 +66,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 741:
 		t = "Cherry Pick"
 		p = CreateCP()
+
+	case 726:
+		t = "Kth Smallest Prime Fraction"
+		p = CreateKSPF()
 
 	case 813:
 		t = "Largest Sum Of Averages"

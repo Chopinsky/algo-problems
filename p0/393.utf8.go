@@ -100,5 +100,5 @@ func (p *UTF8) solve() bool {
 		// fmt.Println(val, num)
 	}
 
-	return true
+	return count == 0
 }

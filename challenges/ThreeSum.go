@@ -1,3 +1,9 @@
+package challenges
+
+import (
+	"sort"
+)
+
 /**
 =====================
 Problem:
@@ -25,117 +31,117 @@ Kind of the brutal force, but using tricks and watching for edge cases.
 */
 
 func threeSum(nums []int) [][]int {
-  size := len(nums)
-  if size < 3 {
-    return [][]int{}
-  }
+	size := len(nums)
+	if size < 3 {
+		return [][]int{}
+	}
 
-  sort.Ints(nums)
-  res := make([][]int, 0, size*(size-1))
+	sort.Ints(nums)
+	res := make([][]int, 0, size*(size-1))
 
-  for i, v := range nums {
-    if i > 0 && v == nums[i-1] {
-      continue
-    }
+	for i, v := range nums {
+		if i > 0 && v == nums[i-1] {
+			continue
+		}
 
-    l, r := i+1, size-1
-    for l < r {
-      sum := v + nums[l] + nums[r]
+		l, r := i+1, size-1
+		for l < r {
+			sum := v + nums[l] + nums[r]
 
-      if sum > 0 {
-        r--
-      } else if sum < 0 {
-        l++
-      } else {
-        res = append(res, []int{v, nums[l], nums[r]})
-        l++
+			if sum > 0 {
+				r--
+			} else if sum < 0 {
+				l++
+			} else {
+				res = append(res, []int{v, nums[l], nums[r]})
+				l++
 
-        for l < r && nums[l-1] == nums[l] {
-          l++
-        }
-      }
-    }
-  }
+				for l < r && nums[l-1] == nums[l] {
+					l++
+				}
+			}
+		}
+	}
 
-  return res
+	return res
 }
 
 func threeSum1(nums []int) [][]int {
-  size := len(nums)
-  if size < 3 {
-    return [][]int{}
-  }
+	size := len(nums)
+	if size < 3 {
+		return [][]int{}
+	}
 
-  sort.Ints(nums)
+	sort.Ints(nums)
 
-  store := make(map[int]int, size)
-  l, u := nums[0], nums[size-1]
+	store := make(map[int]int, size)
+	l, u := nums[0], nums[size-1]
 
-  for i := range nums {
-    store[nums[i]]++
-  }
+	for i := range nums {
+		store[nums[i]]++
+	}
 
-  //fmt.Println(store)
+	//fmt.Println(store)
 
-  if l > 0 {
-    return [][]int{}
-  }
+	if l > 0 {
+		return [][]int{}
+	}
 
-  if u < 0 {
-    return [][]int{}
-  }
+	if u < 0 {
+		return [][]int{}
+	}
 
-  res := make([][]int, 0, size*(size-1))
-  last := l-1
+	res := make([][]int, 0, size*(size-1))
+	last := l - 1
 
-  for idx, i := range nums {
-    if i > 0 {
-      break
-    }
+	for idx, i := range nums {
+		if i > 0 {
+			break
+		}
 
-    if i == last {
-      continue
-    }
+		if i == last {
+			continue
+		}
 
-    last = i
-    if store[i] == 0 {
-      continue
-    }
+		last = i
+		if store[i] == 0 {
+			continue
+		}
 
-    store[i]--
-    res = twoSum(store, res, nums[idx+1:], i)
-    store[i]++
-  }
+		store[i]--
+		res = twoSum(store, res, nums[idx+1:], i)
+		store[i]++
+	}
 
-  return res
+	return res
 }
 
 func twoSum(m map[int]int, res [][]int, nums []int, src int) [][]int {
-  tgt := -1 * src
-  last := src-1
+	tgt := -1 * src
+	last := src - 1
 
-  for _, i := range nums {
-    if i > tgt - i {
-      break
-    }
+	for _, i := range nums {
+		if i > tgt-i {
+			break
+		}
 
-    if i == last {
-      continue
-    }
+		if i == last {
+			continue
+		}
 
-    last = i
-    if i == (tgt - i) {
-      if m[i] >= 2 {
-        res = append(res, []int{src, i, i})
-      }
+		last = i
+		if i == (tgt - i) {
+			if m[i] >= 2 {
+				res = append(res, []int{src, i, i})
+			}
 
-      continue
-    }
+			continue
+		}
 
-    if m[i] > 0 && m[tgt-i] > 0 {
-      res = append(res, []int{src, i, tgt-i})
-    }
-  }
+		if m[i] > 0 && m[tgt-i] > 0 {
+			res = append(res, []int{src, i, tgt - i})
+		}
+	}
 
-  return res
+	return res
 }

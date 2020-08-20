@@ -42,14 +42,6 @@ func RunCP(n int, flights [][]int, src int, dst int, K int) int {
 	return d[dst]
 }
 
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-
-	return b
-}
-
 // RunCP1 ..
 func RunCP1(n int, flights [][]int, src int, dst int, K int) int {
 	store := make(map[int][][]int)
@@ -63,14 +55,6 @@ func RunCP1(n int, flights [][]int, src int, dst int, K int) int {
 	if stop, ok := store[src]; ok {
 		for _, next := range stop {
 			stack = append(stack, []int{next[0], next[1], 0})
-
-			// if p, ok := prices[next[0]]; ok {
-			//   if next[1] < p {
-			//     prices[next[0]] = next[1]
-			//   }
-			// } else {
-			//   prices[next[0]] = next[1]
-			// }
 		}
 	}
 

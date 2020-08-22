@@ -67,67 +67,105 @@ func CreateRCII() s.Problem {
 }
 
 func (p *RCII) solve() []int {
-	size := len(p.data)
+	return findRedundantDirectedConnection(p.data)
+}
 
-	parents := make([][]int, size+1)
-	dualParentsNode := 0
+func findRedundantDirectedConnection(edges [][]int) []int {
+	size := len(edges)
+	root := -1
 
-	for _, pair := range p.data {
-		p, c := pair[0], pair[1]
+	hasParent := make([]bool, size+1)
+	m := make(map[int]int)
+	conflict := []int{-1, -1, -1}
 
-		if len(parents[c]) > 0 {
-			if dualParentsNode != 0 || len(parents[c]) > 1 {
-				fmt.Println("[Exception] more than 1 node has dual parents:", c, "and", dualParentsNode)
+	for i, e := range edges {
+		v := e[1]
+		hasParent[v] = true
+
+		if j, ok := m[v]; ok {
+			// found the dual-parent conflict: v
+			conflict[0] = v
+
+			// duplicate edges: i and j
+			conflict[1] = j
+			conflict[2] = i
+		} else {
+			m[v] = i
+		}
+	}
+
+	// fmt.Println(hasParent)
+
+	for i := range hasParent {
+		if i == 0 {
+			continue
+		}
+
+		if !hasParent[i] {
+			root = i
+			break
+		}
+	}
+
+	// the real root is in a circle! use union-find to remove the
+	// edge added later to form the circle!
+	if root == -1 || conflict[0] == -1 {
+		u := make([]int, size)
+		for i := range u {
+			u[i] = i
+		}
+
+		for _, e := range edges {
+			if !union(u, e[0]-1, e[1]-1) {
+				return e
 			}
-
-			// this is the epic center, nuke it!
-			dualParentsNode = c
-		} else if !verify(parents, p, c) {
-			return pair
 		}
 
-		parents[c] = append(parents[c], p)
+		// shouldn't happen
+		return nil
 	}
 
-	if dualParentsNode > 0 {
-		return findRealRoot(parents, dualParentsNode)
+	// fmt.Println(root, conflict[0], edges[conflict[1]], edges[conflict[2]])
+
+	pathA := backtrace(m, edges, edges[conflict[1]][0], conflict[0], root)
+	if !pathA {
+		return edges[conflict[1]]
 	}
 
-	return nil
+	return edges[conflict[2]]
 }
 
-func findRealRoot(parents [][]int, start int) []int {
-	next := parents[start][1]
-	visited := map[int]bool{
-		start: true,
-	}
-
-	for !visited[next] {
-		visited[next] = true
-
-		if len(parents[next]) == 0 {
-			// we find the root of this branch --> the true root, so the other parent shall be removed
-			return []int{parents[start][0], start}
-		}
-
-		// fetch the grandparent
-		next = parents[next][0]
-	}
-
-	// we've found a cycled directed graph, this is the one to eliminate
-	return []int{parents[start][1], start}
-}
-
-func verify(parents [][]int, parent, child int) bool {
-	for len(parents[parent]) > 0 {
-		parent = parents[parent][0]
-
-		// create the p -> c link will cause a cycle in the graph
-		if parent == child {
+func backtrace(m map[int]int, edges [][]int, node, conflict, root int) bool {
+	for node != root {
+		p := edges[m[node]][0]
+		if p == conflict {
 			return false
 		}
+
+		node = p
 	}
 
-	// we've reached a root
 	return true
+}
+
+func union(u []int, p, c int) bool {
+	rp, rc := findRCII(u, p), findRCII(u, c)
+
+	if rc == rp {
+		fmt.Println("last:", p+1, c+1, rc)
+		return false
+	}
+
+	u[rc] = rp
+	return true
+}
+
+func findRCII(u []int, s int) int {
+	// todo: will need to tweek this function
+
+	for u[s] != s {
+		s = u[s]
+	}
+
+	return s
 }

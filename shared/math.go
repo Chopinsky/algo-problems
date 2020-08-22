@@ -58,6 +58,11 @@ func GCD(a, b int) int {
 	return a
 }
 
+// LCD ...
+func LCD(a, b int) int {
+	return a * b / GCD(a, b)
+}
+
 // GCDUint64 ...
 func GCDUint64(a, b uint64) uint64 {
 	if a == b {

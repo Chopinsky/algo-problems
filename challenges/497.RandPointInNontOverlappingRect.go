@@ -13,8 +13,8 @@ type Solution struct {
 	r1     *rand.Rand
 }
 
-// Constructor ...
-func Constructor(rects [][]int) Solution {
+// RPNConstructor ...
+func RPNConstructor(rects [][]int) Solution {
 	r1 := rand.New(rand.NewSource(42))
 	size := len(rects)
 	points := make([]int, size+1)

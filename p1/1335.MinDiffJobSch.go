@@ -64,7 +64,7 @@ type MDJS struct {
 	output int
 }
 
-var max = 1<<16 - 1
+var maxInt = 1<<16 - 1
 
 func (p *MDJS) solve() int {
 	size, day := len(p.data), p.day
@@ -86,7 +86,7 @@ func (p *MDJS) solve() int {
 	for i := 0; i < size+1; i++ {
 		dp[i] = make([]int, day+1)
 		for j := 0; j < day+1; j++ {
-			dp[i][j] = max
+			dp[i][j] = maxInt
 		}
 	}
 

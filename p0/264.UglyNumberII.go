@@ -69,7 +69,7 @@ func nthUglyNumber(n int) int {
 	for idx := 1; idx < n; idx++ {
 		a, b, c = nums[i]*2, nums[j]*3, nums[k]*5
 
-		val = min(a, b, c)
+		val = min3(a, b, c)
 		nums[idx] = val
 
 		if val == a {
@@ -90,7 +90,7 @@ func nthUglyNumber(n int) int {
 	return nums[n-1]
 }
 
-func min(a, b, c int) int {
+func min3(a, b, c int) int {
 	m := a
 
 	if m > b {

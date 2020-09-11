@@ -54,113 +54,55 @@ func CreateSS() s.Problem {
 		output: false,
 	})
 
+	set = append(set, &SS{
+		data:   "abb",
+		target: "bab",
+		output: true,
+	})
+
 	return &SSProblems{set}
 }
 
-var a = byte('a')
-var m map[string]bool
-
 func (p *SS) solve() bool {
-	m = make(map[string]bool)
+	return isScramble(p.data, p.target)
+}
 
-	src, tgt := p.data, p.target
-	size := len(p.data)
-
-	i, j := 0, size-1
-	for i < j {
-		canContinue := false
-
-		if src[i] == tgt[i] {
-			i++
-			canContinue = true
-		}
-
-		if src[j] == tgt[j] {
-			j--
-			canContinue = true
-		}
-
-		if !canContinue {
-			break
-		}
-	}
-
-	size = j + 1
-	if size <= 3 {
+func isScramble(s1 string, s2 string) bool {
+	if s1 == s2 {
 		return true
 	}
 
-	src, tgt = src[i:j+1], tgt[i:j+1]
-
-	if s.DebugMode() {
-		fmt.Println(src, tgt)
+	size := len(s1)
+	if size == 1 {
+		return false
 	}
 
-	store := make([]int, 26)
-	for i := 0; i < size; i++ {
-		idx := src[i] - byte('a')
-		store[idx]++
-
-		idx = tgt[i] - byte('a')
-		store[idx]--
+	if size == 2 {
+		return s1[0] == s2[1] && s1[1] == s2[0]
 	}
 
-	for i := 0; i < size; i++ {
-		if store[i] != 0 {
+	check := make(map[byte]int)
+	for i := range s1 {
+		check[s1[i]]++
+		check[s2[i]]--
+	}
+
+	for _, v := range check {
+		if v != 0 {
 			return false
 		}
 	}
 
-	return p.verify(src, tgt, size)
-}
-
-func (p *SS) verify(src, tgt string, size int) bool {
-	if size <= 3 {
-		return true
-	}
-
-	var key string
-	if src < tgt {
-		key = src + "," + tgt
-	} else {
-		key = tgt + "," + src
-	}
-
-	if val, ok := m[key]; ok {
-		return val
-	}
-
-	sHash, tHash, trHash := 0, 0, 0
-	result := false
-
-	for i := 0; i < size-1; i++ {
-		sKey, tKey, trKey := int(src[i]-a), int(tgt[i]-a), int(tgt[size-1-i]-a)
-
-		sHash += sKey * 100
-		tHash += tKey * 100
-		trHash += trKey * 100
-
-		if s.DebugMode() {
-			fmt.Println(string(src[i]), string(tgt[i]), string(tgt[size-1-i]))
-			fmt.Println(sKey, tKey, trKey)
+	// partisitioning
+	for i := 1; i < size; i++ {
+		if isScramble(s1[:i], s2[:i]) && isScramble(s1[i:], s2[i:]) {
+			return true
 		}
 
-		if sHash == tHash {
-			if p.verify(src[:i+1], tgt[:i+1], i) && p.verify(src[i+1:], tgt[i+1:], size-i) {
-				result = true
-				break
-			}
-		}
-
-		if sHash == trHash {
-			if p.verify(src[:i+1], tgt[size-i-1:], i) && p.verify(src[i+1:], tgt[:size-i-1], size-i) {
-				result = true
-				break
-			}
+		if isScramble(s1[:i], s2[size-i:]) && isScramble(s1[i:], s2[:size-i]) {
+			return true
 		}
 	}
 
-	m[key] = result
-
-	return result
+	return false
 }

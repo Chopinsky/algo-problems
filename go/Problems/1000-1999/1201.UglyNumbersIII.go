@@ -71,77 +71,113 @@ func (p *UNIII) Run() {
 }
 
 func calcUNIII(src []int, nth int) int {
-	// the 1st number will meet the needs
-	if src[0]*nth <= src[1] {
-		return src[0] * nth
+	sort.Ints(src)
+	return int(test1(uint64(nth), src))
+}
+
+func test1(n uint64, tmp []int) uint64 {
+	a, b, c := uint64(tmp[0]), uint64(tmp[1]), uint64(tmp[2])
+	if n == 1 {
+		return a
 	}
 
-	if src[1]%src[0] == 0 {
-		src[1] = 0
+	if a*n <= b {
+		return a * n
 	}
 
-	if src[2]%src[0] == 0 || (src[1] != 0 && src[2]%src[1] == 0) {
-		src[2] = 0
+	l, r := a, c*uint64(n)
+	lab, lac, lbc := lcd(a, b), lcd(a, c), lcd(b, c)
+
+	if b%a == 0 {
+		b = 0
 	}
 
-	upper, lower := nth, 1
-
-	var a0, b0, c0, total int
-	a0 = (upper + lower) / 2
-
-	if src[1] != 0 {
-		b0 = src[0] * a0 / src[1]
+	if (c%a == 0) || (b != 0 && c != 0 && c%b == 0) {
+		c = 0
 	}
 
-	if src[2] != 0 {
-		c0 = src[0] * a0 / src[2]
-	}
+	var total, an, bn, cn uint64
+	var m uint64
 
-	total = a0 + b0 + c0
+	for l <= r {
+		m = (l + r) / 2
 
-	for total != nth {
-		if total > nth {
-			upper = a0 - 1
-		} else {
-			lower = a0 + 1
-		}
+		an, bn, cn = count(m, a, b, c, lab, lac, lbc)
+		total = an + bn + cn
 
-		if upper <= lower {
+		fmt.Println(an, bn, cn, total, m)
+
+		if total == n {
 			break
 		}
 
-		a0 = (upper + lower) / 2
-
-		if src[1] != 0 {
-			b0 = src[0] * a0 / src[1]
-		}
-
-		if src[2] != 0 {
-			c0 = src[0] * a0 / src[2]
-		}
-
-		total = a0 + b0 + c0
-
-		if d.DEBUG {
-			fmt.Println(a0, b0, c0, total)
+		if total < n {
+			l = m + 1
+		} else {
+			r = m - 1
 		}
 	}
 
-	max1, max2, max3 := src[0]*a0, src[1]*b0, src[2]*c0
+	var m1, m2, m3 uint64
 
-	if d.DEBUG {
-		fmt.Println("==========")
-		fmt.Println(a0, b0, c0)
-		fmt.Println(max1, max2, max3)
+	m1 = (m / a) * a
+
+	if b != 0 {
+		m2 = (m / b) * b
 	}
 
-	if max1 >= max2 && max1 >= max3 {
-		return max1
+	if c != 0 {
+		m3 = (m / c) * c
 	}
 
-	if max2 >= max1 && max2 >= max3 {
-		return max2
+	fmt.Println("final totals:", m1, m2, m3)
+
+	if m1 >= m2 && m1 >= m3 {
+		return m1
 	}
 
-	return max3
+	if m2 >= m1 && m2 >= m3 {
+		return m2
+	}
+
+	return m3
+}
+
+func count(num, a, b, c, lab, lac, lbc uint64) (uint64, uint64, uint64) {
+	var an, bn, cn uint64
+
+	an = num / a
+
+	if b != 0 {
+		bn = num/b - num/lab
+	}
+
+	if c != 0 {
+		cn = num/c - num/lac
+
+		if b != 0 {
+			cn -= num / lbc
+		}
+	}
+
+	return an, bn, cn
+}
+
+func lcd(a, b uint64) uint64 {
+	mult := a * b
+
+	if a == b {
+		return a
+	}
+
+	if a < b {
+		a, b = b, a
+	}
+
+	for b != 0 {
+		a = a % b
+		a, b = b, a
+	}
+
+	return mult / a
 }

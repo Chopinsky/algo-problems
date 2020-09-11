@@ -73,7 +73,45 @@ func CreateFLI() s.Problem {
 	return &FLIProblems{set}
 }
 
-func (p *FLI) solve() int {
+func (p *FLI) solve() string {
+	cost := p.data
+	target := p.target
+
+	// save the longest valid string that add to `i`
+	dp := make([]string, target+1)
+
+	// if such an add-to-number could be formed
+	valid := make([]bool, target+1)
+	valid[0] = true
+
+	// looping over all possible add-to-number, from 1 till target
+	for i := 1; i <= target; i++ {
+		// check all possible costs
+		for j := range cost {
+			// de facto a loop in reverse order
+			n := 9 - j
+
+			// make sure we have a base to calculate the next possible
+			// replacement
+			if i-cost[n-1] >= 0 && valid[i-cost[n-1]] {
+				valid[i] = true
+
+				// if we can form a longer (i.e. larger) number, replace it
+				if 1+len(dp[i-cost[n-1]]) > len(dp[i]) {
+					dp[i] = fmt.Sprintf("%d%s", n, dp[i-cost[n-1]])
+				}
+			}
+		}
+	}
+
+	if valid[target] {
+		return dp[target]
+	}
+
+	return "0"
+}
+
+func (p *FLI) solve1() int {
 	store := make(map[int]int)
 	data := p.data
 	lb, ub := 5999, 0

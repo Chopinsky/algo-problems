@@ -76,6 +76,14 @@ func (p *NWPG) solve() int {
 	dp := make([][]uint64, last)
 	dp[0] = []uint64{6, 6}
 
+	// RGB combos have a limisted number of patterns transfers can satisfy the
+	// conditions.
+	//
+	// We can group them into 2 groups: dp[i][0] and dp[i][1]; For next row,
+	// to get patter 1 group, we can derive from the last row's pattern with:
+	//    1) dp[i][0] = 2 * dp[i-1][0] + 2 * dp[i-1][1]
+	// to get patter 2 group, we can derive the following:
+	//    2) dp[i][1] = 2 * dp[i-1][0] + 3 * dp[i-1][1]
 	for i := 1; i < last; i++ {
 		a, b := 2*dp[i-1][0]+2*dp[i-1][1], 2*dp[i-1][0]+3*dp[i-1][1]
 		dp[i] = []uint64{a % mod, b % mod}

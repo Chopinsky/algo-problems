@@ -108,7 +108,7 @@ func (p *MNCBMProblem) calcMNCBM() int {
 	for i := 0; i < h; i++ {
 		for j := 0; j < w; j++ {
 			if p.source[i][j] == 1 {
-				src |= 1 << (uint)(i*w+j)
+				src |= 1 << uint(i*w+j)
 			}
 		}
 	}
@@ -187,5 +187,5 @@ func flip(src int, i, j, h, w int) int {
 }
 
 func flipOneDigit(src int, pos int) int {
-	return src ^ (1 << (uint)(pos))
+	return src ^ (1 << uint(pos))
 }

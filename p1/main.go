@@ -22,9 +22,33 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Dinner Plate Stacks"
 		p = CreateDPS()
 
+	case 1235:
+		t = "Max Profit in Job Scheduling"
+		p = CreateMPJS()
+
+	case 1240:
+		t = "Tiling Rectangle With The Fewest Squares"
+		p = CreateTRWTFS()
+
+	case 1255:
+		t = "Max Score Words Formed By Letters"
+		p = CreateMSWFBL()
+
+	case 1267:
+		t = "Server Networks"
+		p = CreateSN()
+
+	case 1307:
+		t = "Verbal Arith Puzzle"
+		p = CreateVAP()
+
 	case 1311:
 		t = "Get Watched Videos by Friends"
 		p = CreateGWV()
+
+	case 1316:
+		t = "Distinct Echo Substrings"
+		p = CreateDES()
 
 	case 1334:
 		t = "City With the Smallest Number of Neighbors Within the Threshold"
@@ -89,6 +113,10 @@ func findProblem(num int) (string, s.Problem) {
 	case 1416:
 		t = "Restore The Array"
 		p = CreateRA()
+
+	case 1420:
+		t = "Build Array Where You can Find The Maximum Exactly K Comparisons"
+		p = CreateBAFMEKC()
 
 	case 1425:
 		t = "Constrained Subset Sum"
@@ -177,6 +205,50 @@ func findProblem(num int) (string, s.Problem) {
 	case 1508:
 		t = "Range Sum of Sorted Subarray Sums"
 		p = CreateRSSS()
+
+	case 1520:
+		t = "Max Number of Non-Overlapping Substring"
+		p = CreateMNNS()
+
+	case 1524:
+		t = "Number of Sub-Arrays With Odd Sum"
+		p = CreateNSOS()
+
+	case 1530:
+		t = "Number of Good Leaf Nodes Pairs"
+		p = CreateNGLNP()
+
+	case 1531:
+		t = "String Compression II"
+		p = CreateSCII()
+
+	case 1537:
+		t = "Get Max Score"
+		p = CreateGMS()
+
+	case 1542:
+		t = "Find Longest Awesome Substring"
+		p = CreateFLS()
+
+	case 1553:
+		t = "Min Number of Days to Eat N Oranges"
+		p = CreateMNDENO()
+
+	case 1563:
+		t = "Stone Game V"
+		p = CreateSGV()
+
+	case 1558:
+		t = "Min Number of Function Calls to Make Target Array"
+		p = CreateMNFCMTA()
+
+	case 1573:
+		t = "Number of Ways to Split a String"
+		p = CreateNWSS()
+
+	case 1579:
+		t = "Remove Max Number of Edges to Keep Graph Fully Traversable"
+		p = CreateRMNEKGC()
 	}
 
 	return t, p
@@ -188,4 +260,20 @@ func CreateProblem(num int) s.Problem {
 	fmt.Println("Solving problem:", title)
 
 	return p
+}
+
+func min(a, b int) int {
+	if b >= a {
+		return a
+	}
+
+	return b
+}
+
+func max(a, b int) int {
+	if b >= a {
+		return b
+	}
+
+	return a
 }

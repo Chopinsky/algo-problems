@@ -2,6 +2,7 @@ package p1
 
 import (
 	"fmt"
+	"sort"
 	"time"
 
 	s "go-problems/shared"
@@ -82,37 +83,140 @@ func CreateRMNEKGC() s.Problem {
 func (p *RMNEKGC) solve() int {
 	n, g := p.n, p.data
 
-	a := make([]int, n+1)
-	b := make([]int, n+1)
+	a := make([][]int, 0, len(p.data))
+	b := make([][]int, 0, len(p.data))
 
-	for i := 1; i <= n; i++ {
-		a[i] = i
-		b[i] = i
+	sort.Slice(g, func(i, j int) bool {
+		if g[i][0] == g[j][0] {
+			if g[i][1] == g[j][1] {
+				return g[i][2] < g[j][2]
+			}
+
+			return g[i][1] < g[j][1]
+		}
+
+		return g[i][0] > g[j][0]
+	})
+
+	// fmt.Println(g)
+
+	e := make([][]int, n+1)
+
+	for i := range e {
+		e[i] = make([]int, n+1)
 	}
+
+	count := 0
 
 	for i := range g {
+		u, v := g[i][1], g[i][2]
+
+		if u > v {
+			g[i][1] = v
+			g[i][2] = u
+			u, v = v, u
+		}
+
 		if g[i][0] == 1 {
-			union(a, g[i][1], g[i][2])
+			if e[u][v] >= 0 {
+				a = append(a, g[i])
+			} else {
+				count++
+			}
 		} else if g[i][0] == 2 {
-			union(b, g[i][1], g[i][2])
+			if e[u][v] >= 0 {
+				b = append(b, g[i])
+			} else {
+				count++
+			}
 		} else {
-			union(a, g[i][1], g[i][2])
-			union(b, g[i][1], g[i][2])
+			a = append(a, g[i])
+			b = append(b, g[i])
+
+			e[u][v] = -1
 		}
 	}
 
-	abase, bbase := findRoot(a, 1), findRoot(b, 1)
+	ea := findExtraEdges(a, n)
+	if ea == nil {
+		return -1
+	}
+
+	eb := findExtraEdges(b, n)
+	if eb == nil {
+		return -1
+	}
+
+	if len(ea) == 0 && len(eb) == 0 {
+		return count
+	}
+
+	shared := make(map[int]bool)
+	for _, edge := range ea {
+		// the edge can definitely be removed
+		if edge[0] != 3 {
+			count++
+			continue
+		}
+
+		//todo: check if both share the same edge
+		u, v := edge[1], edge[2]
+		shared[u*n+v] = true
+	}
+
+	for _, edge := range eb {
+		if edge[0] != 3 {
+			count++
+			continue
+		}
+
+		u, v := edge[1], edge[2]
+		if shared[u*n+v] {
+			count++
+		}
+	}
+
+	if s.DebugMode() {
+		fmt.Println("extras from a:", a, ea)
+		fmt.Println("extras from b:", b, eb)
+	}
+
+	return count
+}
+
+func findExtraEdges(edges [][]int, n int) [][]int {
+	ans := make([][]int, 0, len(edges))
+	root := make([]int, n+1)
+
+	for i := range root {
+		root[i] = i
+	}
+
+	for _, e := range edges {
+		ru, rv := findRoot(root, e[1]), findRoot(root, e[2])
+
+		if ru != rv {
+			if ru < rv {
+				root[rv] = ru
+			} else {
+				root[rv] = ru
+			}
+
+			continue
+		}
+
+		ans = append(ans, e)
+	}
+
+	baseRoot := findRoot(root, 1)
+
 	for i := 2; i <= n; i++ {
-		if findRoot(a, i) != abase {
-			return -1
-		}
-
-		if findRoot(b, i) != bbase {
-			return -1
+		if findRoot(root, i) != baseRoot {
+			return nil
 		}
 	}
 
-	return 0
+	return ans
 }
 
 func union(a []int, i, j int) {

@@ -39,6 +39,7 @@ func (h *IntHeap) Push(x interface{}) {
 	// Push and Pop use pointer receivers because they modify the slice's length,
 	// not just its contents.
 	*h = append(*h, x.([]int))
+	heap.Fix(h, h.Len()-1)
 }
 
 // Pop ...
@@ -46,8 +47,8 @@ func (h *IntHeap) Pop() interface{} {
 	old := *h
 	n := len(old)
 
-	x := (*h)[0]
-	(*h)[0] = old[n-1]
+	x := old[0]
+	old[0] = old[n-1]
 	*h = old[0 : n-1]
 
 	heap.Fix(h, 0)

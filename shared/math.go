@@ -1,6 +1,9 @@
 package shared
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 // GenerateBinarySet ...
 func GenerateBinarySet(start int, length uint) []int {
@@ -147,4 +150,11 @@ func MtrxMulti(a, b [][]uint64, mod uint64) [][]uint64 {
 	}
 
 	return result
+}
+
+// CalcAngle ...
+func CalcAngle(x1, y1, x2, y2 int) float64 {
+	n1 := math.Sqrt(float64(x1*x1 + y1*y1))
+	n2 := math.Sqrt(float64(x2*x2 + y2*y2))
+	return math.Acos(float64(x1*x2+y1*y2)/(n1*n2)) * 180.0 / 3.141593
 }

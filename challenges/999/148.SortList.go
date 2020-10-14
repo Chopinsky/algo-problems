@@ -34,10 +34,10 @@ func mergeSort(h *ListNode) *ListNode {
 	l := mergeSort(h)
 	r := mergeSort(s)
 
-	return merge(l, r)
+	return mergeList(l, r)
 }
 
-func merge(l, r *ListNode) *ListNode {
+func mergeList(l, r *ListNode) *ListNode {
 	if l == nil {
 		return r
 	}

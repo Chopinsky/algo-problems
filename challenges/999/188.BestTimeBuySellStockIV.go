@@ -31,12 +31,15 @@ func maxProfitIV(k int, prices []int) int {
 		// max profits we can get from (k-1) trades that have
 		// finished on or before j-th day
 		for j := 1; j < n; j++ {
-			// get a better buy prices along the way
+			// get a better buy prices along the way, note the best
+			// entry price is established on the trades that finished
+			// before the k-th trade on j-th day, i.e. dp[j-1]
 			bestEntry = max(bestEntry, dp[j-1]-prices[j])
 
 			// if we finished the trade on j-th day, update the max
-			// profit: we either don't take the trade, or trade with
-			// a previous best buy price
+			// profit: we either don't take the current running trade,
+			// or use the previously established best profit with k-th
+			// trade
 			next[j] = max(next[j-1], bestEntry+prices[j])
 		}
 

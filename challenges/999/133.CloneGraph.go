@@ -2,8 +2,6 @@ package challenges
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
 )
 
 // Node ...
@@ -72,11 +70,4 @@ func toNodeKey(i, j int) string {
 	}
 
 	return fmt.Sprintf("%d,%d", i, j)
-}
-
-func fromKey(key string) (int, int) {
-	keys := strings.Split(key, ",")
-	i, _ := strconv.Atoi(keys[0])
-	j, _ := strconv.Atoi(keys[1])
-	return i, j
 }

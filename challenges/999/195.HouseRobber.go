@@ -36,11 +36,3 @@ func rob(nums []int) int {
 
 	return max(dp[size-1][0], dp[size-1][1])
 }
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-
-	return b
-}

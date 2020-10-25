@@ -122,7 +122,6 @@ func (p *SGIII) play1(start, player, p0, p1, size int) (int, int) {
 	}
 
 	var g0, g1, b0, b1 int
-	var pos int
 
 	for i := start; i < start+3; i++ {
 		if i >= size {
@@ -138,13 +137,12 @@ func (p *SGIII) play1(start, player, p0, p1, size int) (int, int) {
 		g0, g1 = p.play1(i+1, -1*player, p0, p1, size)
 
 		if i == start || (g0-g1)*player > (b0-b1)*player {
-			pos = i
 			b0, b1 = g0, g1
 		}
 	}
 
 	if s.DebugMode() && start == 0 {
-		fmt.Println(start, player, b0, b1, pos)
+		fmt.Println(start, player, b0, b1)
 	}
 
 	return b0, b1
@@ -152,19 +150,30 @@ func (p *SGIII) play1(start, player, p0, p1, size int) (int, int) {
 
 func (p *SGIII) play2(stones []int) int {
 	size := len(stones)
-	stones = append(stones, []int{0, 0, 0}...)
 
+	// get psudo-scores in, these will not affect the outcome of the
+	// first 3 stones being played, best scores are purely the largest
+	// range sum for the first 3 stones.
+	stones = append(stones, 0, 0, 0)
+
+	// dp[i] == score diff of the 1st player if there're i stones
 	dp := make([]int, size+3)
 	for i := 0; i < size; i++ {
-		dp[i] = -10 ^ 9
+		dp[i] = -1007
 	}
 
 	for i := size - 1; i > -1; i-- {
 		sum := 0
 		for k := 1; k <= 3; k++ {
+			// what if player takes k-stones at this play
 			sum += stones[i+k-1]
+
+			// the net score compares to the opponent --
+			// positive == winning; negative == losing; 0 == tie
 			altVal := sum - dp[i+k]
 
+			// get the best result for this many of stones that's possible
+			// in this game
 			if altVal > dp[i] {
 				dp[i] = altVal
 			}

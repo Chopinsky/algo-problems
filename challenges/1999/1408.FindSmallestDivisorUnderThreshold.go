@@ -1,5 +1,7 @@
 package challenges
 
+import "sort"
+
 func smallestDivisor(nums []int, threshold int) int {
 	size := len(nums)
 	if size == 1 {

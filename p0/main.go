@@ -123,6 +123,10 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Super Egg Drop"
 		p = CreateSED()
 
+	case 879:
+		t = "Profitable Schemes"
+		p = CreatePS()
+
 	case 902:
 		t = "Numbers At Most N Given Digit Set"
 		p = CreateNAMNGDS()

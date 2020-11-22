@@ -78,18 +78,14 @@ func atMostNGivenDigitSet(D []string, n int) int {
 	presum := make([]int, 10)
 
 	for i := 1; i < 10; i++ {
-		presum[i] = presum[i-1]
-
-		if d[i] == 1 {
-			presum[i]++
-		}
+		presum[i] = presum[i-1] + d[i]
 	}
 
 	if n < 10 {
 		return presum[n]
 	}
 
-	fmt.Println(presum)
+	// fmt.Println(presum)
 
 	ans, base := size, size
 	nums := make([]int, 0, 9)
@@ -110,20 +106,16 @@ func atMostNGivenDigitSet(D []string, n int) int {
 
 	var val, count int
 	base = 1
-	fmt.Println("base", ans)
+	// fmt.Println("base", ans)
 
 	for i := len(nums) - 1; i >= 0; i-- {
 		val = nums[i]
 		count = presum[val]
 
 		if count == 0 {
-			// b0, b1 = 0, 0
 			base = 0
 			break
 		}
-
-		// todo: more complex cases -- for d[val] == 1, count the high number and repeat,
-		//       and update `base` ...
 
 		if i == 0 {
 			ans += count
@@ -137,7 +129,7 @@ func atMostNGivenDigitSet(D []string, n int) int {
 			break
 		}
 
-		fmt.Println(val, count, counts[i-1])
+		// fmt.Println(val, count, counts[i-1])
 	}
 
 	// fmt.Println(ans, b0, b1)

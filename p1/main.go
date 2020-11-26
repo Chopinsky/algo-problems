@@ -249,6 +249,58 @@ func findProblem(num int) (string, s.Problem) {
 	case 1579:
 		t = "Remove Max Number of Edges to Keep Graph Fully Traversable"
 		p = CreateRMNEKGC()
+
+	case 1585:
+		t = "Check If String Is Transformable With Substring Sort Operations"
+		p = CreateCISITWS()
+
+	case 1593:
+		t = "Split a String Into the Max Number of Unique Substring"
+		p = CreateSSMUS()
+
+	case 1595:
+		t = "Min Cost to Connect Two Group of Points"
+		p = CreateMCTCTGP()
+
+	case 1606:
+		t = "Find Servers That Handled Most Number of Requests"
+		p = CreateFBS()
+
+	case 1610:
+		t = "Max Number of Visible Points"
+		p = CreateMNVP()
+
+	case 1616:
+		t = "Spint Two Strings to Make Palindrome"
+		p = CreateSTSMP()
+
+	case 1617:
+		t = "Count Subtrees With Max Distance Between Cities"
+		p = CreateCSWMD()
+
+	case 1621:
+		t = "Number of Sets of K Non-Overlapping Line Segments"
+		p = CreateNSOKNOLS()
+
+	case 1631:
+		t = "Path with Minimum Effort"
+		p = CreatePME()
+
+	case 1642:
+		t = "Furthest Building You Can Reach"
+		p = CreateFBYCR()
+
+	case 1648:
+		t = "Sell Diminishing Valued Colored Balls"
+		p = CreateSDVCB()
+
+	case 1655:
+		t = "Distribute Repeating Integers"
+		p = CreateDPI()
+
+	case 1659:
+		t = "Maximum Grid Happiness"
+		p = CreateMGH()
 	}
 
 	return t, p

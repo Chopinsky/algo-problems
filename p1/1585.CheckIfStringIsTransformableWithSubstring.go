@@ -91,6 +91,70 @@ func (p *CISITWS) solve() bool {
 		return false
 	}
 
+	// key idea is that the numbers can move before larger
+	// numbers in the range, but not before the smaller ones,
+	// so we check s, such that all numbers appears in t can
+	// be moved to the desired position, i.e. not blocked by
+	// a smaller number appearing before the position of the
+	// number in t to be checked
+
+	q := make([][]int, 10)
+	for i := range q {
+		q[i] = make([]int, 0, size)
+	}
+
+	for i, ch := range s {
+		idx := int(ch - '0')
+		q[idx] = append(q[idx], i)
+	}
+
+	for _, ch := range t {
+		idx := int(ch - '0')
+
+		// s does not contain this digit
+		if len(q[idx]) == 0 {
+			return false
+		}
+
+		// check if there are smaller numbers that are before
+		// the location of the current number, which will
+		// block the swap to the destination position in t
+		for i := idx - 1; i >= 0; i-- {
+			// numbers that have been moved to the front are popped,
+			// so the current position is the first appearance of
+			// number i in the remainder subarray
+			if len(q[i]) > 0 && q[i][0] < q[idx][0] {
+				return false
+			}
+		}
+
+		// pop front, as it has "moved" to the front
+		q[idx] = q[idx][1:]
+	}
+
+	return true
+}
+
+func (p *CISITWS) solve1() bool {
+	s, t := p.data, p.t
+
+	if len(s) != len(t) {
+		return false
+	}
+
+	if s == t {
+		return true
+	}
+
+	size := len(s)
+	if size == 1 {
+		if s[0] == t[0] {
+			return true
+		}
+
+		return false
+	}
+
 	// there's no way we can amend this situation
 	if t[0] > t[1] && s[0] < t[0] {
 		return false

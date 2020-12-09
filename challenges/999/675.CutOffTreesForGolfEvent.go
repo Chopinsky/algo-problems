@@ -165,11 +165,3 @@ func walkDist(from, to, h, w int, f, dist [][]int) int {
 
 	return ans
 }
-
-func toKey(i, j, w int) int {
-	return i*w + j
-}
-
-func fromKey(k, w int) (int, int) {
-	return k / w, k % w
-}

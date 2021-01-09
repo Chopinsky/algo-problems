@@ -48,11 +48,3 @@ func maxProfitIV(k int, prices []int) int {
 
 	return dp[n-1]
 }
-
-func max(a, b int) int {
-	if a >= b {
-		return a
-	}
-
-	return b
-}

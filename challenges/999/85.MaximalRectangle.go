@@ -19,7 +19,6 @@ func maximalRectangle(matrix [][]byte) int {
 		return 1
 	}
 
-	//todo
 	var ans, area int
 	var hist []int
 

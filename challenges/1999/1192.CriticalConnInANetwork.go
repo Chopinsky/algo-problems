@@ -118,11 +118,3 @@ func build(u, curr int, edges map[int][]int, parent, lvl, root []int, visited []
 
 	return c, curr
 }
-
-func min(a, b int) int {
-	if a > b {
-		return b
-	}
-
-	return a
-}

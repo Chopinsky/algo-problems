@@ -31,6 +31,7 @@ func longestPalindrome(s string) string {
 		return s
 	}
 
+	// use Manacher's algo: done in O(n) time
 	p := make([]int, 2*size+1)
 	b := make([]byte, 0, 2*size+1)
 

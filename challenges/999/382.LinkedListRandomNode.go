@@ -23,18 +23,20 @@ func LLRNConstructor(head *ListNode) LLRNSolution {
 	}
 }
 
-// GetRandom ...
+// GetRandom ... the idea is to check if we can
+// change the number from the later of the array
+// with arr[0], i.e. reservior sampling with k = 1
 func (t *LLRNSolution) GetRandom() int {
-	scope := 1
+	numRange := 1
 	val := t.head.Val
 	curr := t.head
 
 	for curr != nil {
-		if rand.Intn(scope) < 1 {
+		if rand.Intn(numRange) < 1 {
 			val = curr.Val
 		}
 
-		scope++
+		numRange++
 		curr = curr.Next
 	}
 

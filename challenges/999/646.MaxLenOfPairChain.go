@@ -38,7 +38,38 @@ func findLongestChain(pairs [][]int) int {
 		}
 	}
 
-	/* Alt solution:
+	/* Alt solution 1:
+	var pos int
+	ans := 1
+	l := len(pairs)
+	dp := make([]int, l)
+	bounds := make([]int, 0, l)
+
+	for i, p := range pairs {
+		if len(bounds) > 0 {
+			pos = sort.SearchInts(bounds, p[0])
+		} else {
+			pos = 0
+		}
+
+		// extend from the longest subsequence ending with pairs[pos-1][1]
+		if pos > 0 {
+			dp[i] = dp[pos-1] + 1
+		} else {
+			dp[i] = 1
+		}
+
+		// check if the previous subsequence can form a longer one, if so,
+		// we use the last one
+		if i > 0 && dp[i-1] > dp[i] {
+			dp[i] = dp[i-1]
+		}
+
+		bounds = append(bounds, p[1])
+	}
+	*/
+
+	/* Alt solution 2:
 	ans := 1
 	l := len(pairs)
 	dp := make([]int, l)

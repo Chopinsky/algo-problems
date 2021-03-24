@@ -55,7 +55,7 @@ func mincostTickets(days []int, costs []int) int {
 			d30 = costs[2]
 		}
 
-		dp[i] = min3(d1, d7, d30)
+		dp[i] = getMin3(d1, d7, d30)
 	}
 
 	fmt.Println(dp)
@@ -63,7 +63,7 @@ func mincostTickets(days []int, costs []int) int {
 	return dp[len(dp)-1]
 }
 
-func min3(a, b, c int) int {
+func getMin3(a, b, c int) int {
 	if a > b {
 		a = b
 	}

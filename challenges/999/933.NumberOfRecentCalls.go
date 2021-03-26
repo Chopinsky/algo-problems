@@ -5,8 +5,8 @@ type RecentCounter struct {
 	stack []int
 }
 
-// Constructor ...
-func Constructor() RecentCounter {
+// NoRConstructor ...
+func NoRConstructor() RecentCounter {
 	return RecentCounter{
 		stack: make([]int, 0, 256),
 	}

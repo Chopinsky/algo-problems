@@ -26,7 +26,9 @@ func longestSubstring(s string, k int) int {
 		return len(s)
 	}
 
-	var num int
+	var num, idx, jdx, l, r, uc, lc, long int
+	var rc []int
+
 	counts := make([]int, 26)
 
 	for _, c := range s {
@@ -38,9 +40,8 @@ func longestSubstring(s string, k int) int {
 		counts[idx]++
 	}
 
-	var idx, jdx, l, r, uc, lc, long int
-	var rc []int
-
+	// the base loop: define the slide window, where at most `u` unique
+	// characters can be allowed within
 	for u := 1; u <= num; u++ {
 		l, r = 0, 1
 		lc, uc = 0, 1
@@ -53,34 +54,55 @@ func longestSubstring(s string, k int) int {
 		for r < len(s) {
 			idx = int(s[r] - 'a')
 
+			// new char, not included in this running window
 			if rc[idx] == 0 {
+				// unique char count increment
 				uc++
 
 				// inner: slide left bound
 				for uc > u && l < r {
+					// removing the left-most char from the counts
 					jdx = int(s[l] - 'a')
+
+					// if this char's used make up the count limits,
+					// now it's not, decrement the chars meeting the
+					// requriements of the repeating limits
 					if rc[jdx] == k {
 						lc--
 					}
 
+					// now remove 1 char from the counts, and shift the
+					// left bounds
 					rc[jdx]--
 					l++
 
+					// if this char is the last in the running window,
+					// also deduct the unique char count
 					if rc[jdx] == 0 {
 						uc--
 					}
 				}
 			}
 
+			// now put the right bound char into the counts
 			rc[idx]++
+
+			// if adding this char will make it qualified for the
+			// char of the repeating limits, increment the limit-met
+			// char count
 			if rc[idx] == k {
 				lc++
 			}
 
+			// if the unique char count == the chars meeting the requirements,
+			// meaning all chars inside the slide window is a legit substring,
+			// make sure to update the longest substring count if this substring
+			// is longer
 			if lc == uc && r-l+1 > long {
 				long = r - l + 1
 			}
 
+			// now shift the right window and move on
 			r++
 		}
 	}

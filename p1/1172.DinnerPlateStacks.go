@@ -100,8 +100,8 @@ func (q *Queue) Pop() interface{} {
 
 	old.Swap(0, n-1)
 	*q = old[:n-1]
-
 	heap.Fix(q, 0)
+
 	return pos
 }
 

@@ -96,10 +96,10 @@ func repl(w string) string {
 }
 
 func spellchecker1(wordlist []string, queries []string) []string {
-	root := &trie{
+	root := &ctrie{
 		word:     "",
 		priority: -1,
-		children: make([]*trie, 52),
+		children: make([]*ctrie, 52),
 	}
 
 	for i, w := range wordlist {
@@ -118,13 +118,13 @@ func spellchecker1(wordlist []string, queries []string) []string {
 
 var vowels = []int{0, 4, 8, 14, 20, 26, 30, 34, 40, 46}
 
-type trie struct {
+type ctrie struct {
 	word     string
 	priority int
-	children []*trie
+	children []*ctrie
 }
 
-func (t *trie) insert(word string, idx, priority int) {
+func (t *ctrie) insert(word string, idx, priority int) {
 	if idx >= len(word) {
 		return
 	}
@@ -137,10 +137,10 @@ func (t *trie) insert(word string, idx, priority int) {
 	}
 
 	if t.children[pos] == nil {
-		t.children[pos] = &trie{
+		t.children[pos] = &ctrie{
 			word:     "",
 			priority: -1,
-			children: make([]*trie, 52),
+			children: make([]*ctrie, 52),
 		}
 	}
 
@@ -155,7 +155,7 @@ func (t *trie) insert(word string, idx, priority int) {
 	}
 }
 
-func (t *trie) find(word string, idx int) (string, int) {
+func (t *ctrie) find(word string, idx int) (string, int) {
 	if idx >= len(word) {
 		return t.word, t.priority
 	}

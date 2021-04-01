@@ -1,6 +1,6 @@
 package challenges
 
-func maxProfit(prices []int) int {
+func maxProfit1(prices []int) int {
 	profit := 0
 	low := -1
 	high := -1

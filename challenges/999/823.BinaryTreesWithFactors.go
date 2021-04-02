@@ -1,4 +1,4 @@
-package challegnes
+package challenges
 
 import "sort"
 

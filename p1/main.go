@@ -1,6 +1,7 @@
 package p1
 
 import (
+	"container/heap"
 	"fmt"
 
 	s "go-problems/shared"
@@ -282,6 +283,10 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Number of Sets of K Non-Overlapping Line Segments"
 		p = CreateNSOKNOLS()
 
+	case 1627:
+		t = "Graph Connectivity with Threshold"
+		p = CreateGCWT()
+
 	case 1631:
 		t = "Path with Minimum Effort"
 		p = CreatePME()
@@ -301,6 +306,78 @@ func findProblem(num int) (string, s.Problem) {
 	case 1659:
 		t = "Maximum Grid Happiness"
 		p = CreateMGH()
+
+	case 1674:
+		t = "Minimum Moves to Make Array Complementary"
+		p = CreateMMMAC()
+
+	case 1675:
+		t = "Minimize Deviation in Array"
+		p = CreateMDA()
+
+	case 1681:
+		t = "Minimum Incompatibility"
+		p = CreateMI()
+
+	case 1690:
+		t = "Stone Game VII"
+		p = CreateSGVII()
+
+	case 1696:
+		t = "Jump Game V"
+		p = CreateJGV()
+
+	case 1707:
+		t = "Maximum XOR With an Element From Array"
+		p = CreateMXOR()
+
+	case 1713:
+		t = "Minimum Operations to Make a Subsequence"
+		p = CreateMOMS()
+
+	case 1727:
+		t = "Largest Submatrix With Rearrangement"
+		p = CreateLSWR()
+
+	case 1745:
+		t = "Palindrome Partitioning IV"
+		p = CreatePPIV()
+
+	case 1755:
+		t = "Closest Subsequence Sum"
+		p = CreateClSS()
+
+	case 1760:
+		t = "Minimum Limits of Balls in a Bag"
+		p = CreateMLBB()
+
+	case 1770:
+		t = "Maximum Score from Performing Multiply"
+		p = CreateMSFM()
+
+	case 1771:
+		t = "Maximum Palindrome Length From Subsequences"
+		p = CreateMPLFS()
+
+	case 1775:
+		t = "Equal Sum Arrays With Min Number of Operations"
+		p = CreateESAMNO()
+
+	case 1786:
+		t = "Number of Restricted Paths from First to Last Node"
+		p = CreateNRP()
+
+	case 1792:
+		t = "Maximm Average PassRatio"
+		p = CreateMAPR()
+
+	case 1799:
+		t = "Maximize Score After N Operations"
+		p = CreateMSANO()
+
+	case 1815:
+		t = "Maxim Number of Groups Getting Fresh Donuts"
+		p = CreateMNGG()
 	}
 
 	return t, p
@@ -315,7 +392,7 @@ func CreateProblem(num int) s.Problem {
 }
 
 func min(a, b int) int {
-	if b >= a {
+	if a <= b {
 		return a
 	}
 
@@ -328,4 +405,122 @@ func max(a, b int) int {
 	}
 
 	return a
+}
+
+// IntQueue ...
+type IntQueue []int
+
+// Len ...
+func (q IntQueue) Len() int {
+	return len(q)
+}
+
+// Less ...
+func (q IntQueue) Less(i, j int) bool {
+	return q[i] < q[j]
+}
+
+// Swap ...
+func (q IntQueue) Swap(i, j int) {
+	q[i], q[j] = q[j], q[i]
+}
+
+// Push ...
+func (q *IntQueue) Push(val interface{}) {
+	v := val.(int)
+	*q = append(*q, v)
+	heap.Fix(q, q.Len()-1)
+}
+
+// Pop ...
+func (q *IntQueue) Pop() interface{} {
+	old := *q
+	n := old.Len()
+	val := old[0]
+
+	old.Swap(0, n-1)
+	*q = old[:n-1]
+	heap.Fix(q, 0)
+
+	return val
+}
+
+// IntsQueue .
+type IntsQueue [][]int
+
+func (q IntsQueue) Len() int {
+	return len(q)
+}
+
+func (q IntsQueue) Less(i, j int) bool {
+	return q[i][0] < q[j][0]
+}
+
+// Swap ...
+func (q IntsQueue) Swap(i, j int) {
+	q[i], q[j] = q[j], q[i]
+}
+
+// Push ...
+func (q *IntsQueue) Push(x interface{}) {
+	item := x.([]int)
+	*q = append(*q, item)
+	heap.Fix(q, q.Len()-1)
+}
+
+// Pop ...
+func (q *IntsQueue) Pop() interface{} {
+	old := *q
+
+	n := len(old)
+	item := old[0]
+
+	q.Swap(0, n-1)
+	old[n-1] = nil
+
+	*q = old[:n-1]
+	heap.Fix(q, 0)
+
+	return item
+}
+
+// IntsQueue ..
+type FloatQueue [][]float32
+
+// Len ...
+func (q FloatQueue) Len() int {
+	return len(q)
+}
+
+// Less ...
+func (q FloatQueue) Less(i, j int) bool {
+	return q[i][0] < q[j][0]
+}
+
+// Swap ...
+func (q FloatQueue) Swap(i, j int) {
+	q[i], q[j] = q[j], q[i]
+}
+
+// Push ...
+func (q *FloatQueue) Push(x interface{}) {
+	item := x.([]float32)
+	*q = append(*q, item)
+	heap.Fix(q, q.Len()-1)
+}
+
+// Pop ...
+func (q *FloatQueue) Pop() interface{} {
+	old := *q
+
+	n := len(old)
+	item := old[0]
+
+	q.Swap(0, n-1)
+	old[n-1] = nil
+
+	*q = old[:n-1]
+	heap.Fix(q, 0)
+
+	return item
 }

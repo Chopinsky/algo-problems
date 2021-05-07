@@ -1,4 +1,5 @@
 from p0.StringToInteger_8 import Solution8
+from p0.WildcardMatching_44 import Solution44
 
 def execute(problem: int) -> None:
   solution = None
@@ -8,6 +9,9 @@ def execute(problem: int) -> None:
 
   if problem == 8:
     solution = Solution8()
+
+  if problem == 44:
+    solution = Solution44()
 
   if solution is not None:
     solution.test()

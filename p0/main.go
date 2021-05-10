@@ -59,6 +59,10 @@ func findProblem(num int) (string, s.Problem) {
 		t = "Range Sum Query 2D"
 		p = CreateRSQ()
 
+	case 305:
+		t = "Number of Islands II"
+		p = CreateNOIII()
+
 	case 309:
 		t = "Best Time to Buy and Sell Stock with Cooldown"
 		p = CreateBTTBSS()

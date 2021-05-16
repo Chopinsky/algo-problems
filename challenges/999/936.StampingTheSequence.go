@@ -36,12 +36,12 @@ stamp and target only contain lowercase letters.
 
 func movesToStamp(stamp string, target string) []int { // unused
 	m, n := len(stamp), len(target)
-	done := make([]bool, n)
-	q := make([]int, 0, n)
+	done := make([]bool, n) // mark if the char has just been marked as '*'
+	q := make([]int, 0, n)  // stores positions that's been marked as '*', and make it a wild card for windows that go across this char
 	ans := make([]int, 0, n)
 
-	todo := make([]map[int]bool, n-m+1)
-	seen := make([]map[int]bool, n-m+1)
+	todo := make([]map[int]bool, n-m+1) // `todo` contains chars in this window that has to be coming from later stamps, and needs to be "un-stamped" first
+	seen := make([]map[int]bool, n-m+1) // `seen` contains chars in this window that's from the current stamp, which hasn't been dealt with and needs to be "un-stamped" when clearning this stamp window
 
 	for i := 0; i <= n-m; i++ {
 		t, s := make(map[int]bool), make(map[int]bool)

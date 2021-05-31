@@ -44,6 +44,7 @@ class Solution:
   In addition, we also record the parent (the last word to be added),
   such that we can reconstruct the series from the `dp`
   '''
+
   def shortestSuperstring(self, words: List[str]) -> str:
     dic = defaultdict(list)
     n = len(words)

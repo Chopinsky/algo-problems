@@ -25,6 +25,28 @@ Constraints:
 '''
 
 class Solution:
+  def countPrimes0(self, n: int) -> int:
+    if n < 2:
+      return 0
+
+    strikes = [1] * n
+    strikes[0] = 0
+    strikes[1] = 0
+
+    # till p*p >= n
+    upper = int(n ** 0.5) + 1
+
+    for i in range(2, upper):
+      # if the number is not a prime, skip
+      if strikes[i] == 0:
+        continue
+
+      # mark all multiplies of i to be "none-prime"
+      strikes[i*i:n:i] = [0] * ((n-1-i*i)//i + 1)
+
+    return sum(strikes)
+
+
   def countPrimes(self, n: int) -> int:
     n -= 1
     if n < 2:

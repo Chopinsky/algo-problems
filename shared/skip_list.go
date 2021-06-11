@@ -100,3 +100,7 @@ func (s *SkipList) Delete(val int) {
 		}
 	}
 }
+
+func (s *SkipList) Insert(val int) {
+
+}

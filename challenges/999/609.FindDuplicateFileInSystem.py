@@ -32,6 +32,9 @@ You may assume no files or directories share the same name in the same directory
 You may assume each given directory info represents a unique directory. A single blank space separates the directory path and file info.
 '''
 
+from collections import defaultdict
+from typing import List
+
 class Solution:
   def findDuplicate(self, paths: List[str]) -> List[List[str]]:
     ans = []

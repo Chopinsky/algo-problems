@@ -35,7 +35,18 @@ from typing import List
 
 class Solution:
   '''
-  The idea is to
+  The idea is to alterante the person who can pick the stone, and maximize the score
+  the person can obtain from the remaining stones.
+
+  The equation is: 
+  
+  max_score_with_l_to_r = max(
+    sum(stones[l:r]) - next_round_score_with_l_to_r-1),
+    sum(stones[l+1:r+1] - next_round_score_with_l+1_to_r)
+  )
+
+  then we increament the number of stones in the range, from 1 to n, and calculate
+  the best scores the person is playing can get for the stones in the considered range.
   '''
   def stoneGameVII(self, s: List[int]) -> int:
     n = len(s)

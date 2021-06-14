@@ -30,7 +30,8 @@ from collections import defaultdict
 
 class Solution:
   def palindromePairs(self, words: List[str]) -> List[List[int]]:
-    # 0 means the word is not reversed, 1 means the word is reversed
+    # 0 means the word is not reversed, 1 means the word is reversed; sort to bring
+    # shared suffix/prefix words together
     w = sorted([(w, 0, i, len(w)) for i, w in enumerate(words)] +
                [(w[::-1], 1, i, len(w)) for i, w in enumerate(words)])
     
@@ -40,12 +41,12 @@ class Solution:
     for i, (word1, rev1, ind1, len1) in enumerate(w):
       for j in range(i+1, length):
         word2, rev2, ind2, _ = w[j]
-        
+
         # early short-circuit if we're not going to find any more "shared" 
         # prefix/suffix
         if not word2.startswith(word1):
           break
-          
+
         # check if different words and can form a palindrome
         if ind1 != ind2 and rev1 ^ rev2:
           rest = word2[len1:]
@@ -54,7 +55,8 @@ class Solution:
             result.append([ind1, ind2] if rev2 else [ind2, ind1])
 
     return result
-  
+
+
   def palindromePairs0(self, words: List[str]) -> List[List[int]]:
     def is_pal(w: str) -> bool:
       n = len(w)
@@ -138,32 +140,32 @@ class Solution:
           # print('adding 1:', i, j, words[j][n0:])
       
     return ans
-  
-    
+
+
   def palindromePairs1(self, words: List[str]) -> List[List[int]]:
     # compare = [w[::-1] for w in words]
-    
+
     def is_pal(w: str) -> bool:
       n = len(w)
       if n <= 1:
         return True
-      
+
       for i in range(n//2):
         if w[i] != w[n-i-1]:
           return False
-        
+
       return True
-    
+
     ans = []
-    
+
     def pal_check(w0: str, w1: str, i: int, j: int) -> bool:
       n0, n1 = len(w0), len(w1)
       if n0 == 0 or n1 == 0:
         if (n0 == 0 and is_pal(w1)) or (n1 == 0) and is_pal(w0):
           ans.append([i, j])
-          
+
         return
-      
+
       if n0 == n1 and w0 == w1:
         ans.append([i, j])
       elif n0 < n1:
@@ -172,13 +174,12 @@ class Solution:
       else:
         if w0[:n1] == w1 and is_pal(w0[n1:]):
           ans.append([i, j])
-          
+
       return
-    
+
     for i, w0 in enumerate(words[:len(words)-1]):
       for j, w1 in enumerate(words[i+1:]):          
         pal_check(w0, w1[::-1], i, j+i+1)
         pal_check(w1, w0[::-1], j+i+1, i)
-          
-    return ans          
-          
+
+    return ans

@@ -102,6 +102,8 @@ class Solution:
     done = set()
 
     def dfs(i, rem):
+      nonlocal side
+      
       # the match can't fit into any side, fail
       if A[i] > side:
         return False

@@ -52,7 +52,7 @@ class Solution:
         if pos >= len(src):
           return False
         
-        # print(w, ch, curr, pos)        
+        # print(w, ch, curr, pos)
         curr = src[pos]
       
       return True

@@ -24,7 +24,34 @@ from typing import List
 
 
 class Solution:
+  '''
+  the idea is that we keep track of the tallest wall from left and from right, and all height locations at i
+  must have water level of `min(max_l, max_r) - height[i]`; and we keep updating the tallest wall from left
+  and from right, until the 2 pointers iterated the entire `height` array.
+  '''
   def trap(self, height: List[int]) -> int:
+    if len(height) <= 1:
+      return 0
+    
+    ln = len(height)
+    l, r = 0, ln-1
+    ans = 0
+    max_l, max_r = height[0], height[r]
+    
+    while l < r:
+      if max_l < max_r:
+        ans += max_l - height[l]
+        l += 1
+        max_l = max(max_l, height[l])
+      else:
+        ans += max_r - height[r]
+        r -= 1
+        max_r = max(max_r, height[r])
+      
+    return ans
+
+
+  def trap0(self, height: List[int]) -> int:
     stack = []
     ln = len(height)
     start = 0

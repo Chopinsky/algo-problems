@@ -31,7 +31,7 @@ Every number and running calculation will fit in a signed 32-bit integer.
 
 
 class Solution:
-  def calculate(self, s: str) -> int:    
+  def calculate(self, s: str) -> int:
     def calc(expr) -> int:
       base = 0
       op = 1
@@ -78,7 +78,7 @@ class Solution:
         i += 1
         continue
         
-      # parse the int
+      # parse the int, add it to the branch stack
       val = 0
       sign = 1
       

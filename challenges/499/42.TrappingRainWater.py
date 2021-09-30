@@ -36,7 +36,7 @@ class Solution:
     ln = len(height)
     l, r = 0, ln-1
     ans = 0
-    max_l, max_r = height[0], height[r]
+    max_l, max_r = height[l], height[r]
     
     while l < r:
       if max_l < max_r:

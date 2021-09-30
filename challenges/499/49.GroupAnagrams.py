@@ -32,6 +32,22 @@ from typing import List
 
 class Solution:
   def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+    group = defaultdict(list)
+    
+    def serialize(src) -> str:
+      base = ""
+      for ch in sorted(src):
+        base += f'{ch},{src[ch]};'
+        
+      return base
+    
+    for s in strs:
+      c = serialize(Counter(s))
+      group[c].append(s)
+      
+    return [arr for arr in group.values()]
+
+  def groupAnagrams0(self, strs: List[str]) -> List[List[str]]:
     d = defaultdict(list)
     
     for w in strs:

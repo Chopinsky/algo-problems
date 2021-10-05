@@ -40,6 +40,69 @@ Constraints:
 
 class Solution:
   def crackSafe(self, n: int, k: int) -> str:
+    def de_bruijn(k: int, n: int) -> str:
+      """
+      de Bruijn sequence for alphabet k
+      and subsequences of length n.
+      """
+
+      alphabet = list(map(str, range(k)))
+      arr = [0] * (k*n)
+      seq = []
+
+      '''
+      build the de Bruijin sequence
+      '''
+      def db_seq(t, p):
+        if t <= n:
+          arr[t] = arr[t-p]
+          db_seq(t+1, p)
+
+          for j in range(arr[t-p]+1, k):
+            arr[t] = j
+            db_seq(t + 1, t)
+
+        elif n % p == 0:
+          seq.extend(arr[1:p+1])
+
+      db_seq(1, 1)
+      return "".join(alphabet[i] for i in seq)
+    
+    if n==1:
+      return "".join(str(j) for j in range(0,k))
+    
+    if k == 1:
+      return "".join(str(0) for j in range(0,n))
+    
+    z= de_bruijn(k, n)
+    
+    return z + z[:n-1]
+    
+  def crackSafe00(self, n: int, k: int) -> str:
+    m = k ** (n-1)
+    ans = ''
+    out = [0 for _ in range(k * m)]
+    
+    # build the graph
+    for i in range(k):
+      for j in range(m):
+        out[i*m+j] = j*k + i
+        
+    for i in range(len(out)):
+      curr = i
+      while out[curr] >= 0:
+        ans += str(curr // m)
+        nxt = out[curr]
+        out[curr] = -1
+        curr = nxt
+    
+    for i in range(n-1):
+      ans += '0'
+    
+    return ans
+    
+    
+  def crackSafe01(self, n: int, k: int) -> str:
     # use Eulerian path to format the string
     seen = set(['0'*n])
     stack = [['0'*n, 0]]
@@ -72,4 +135,3 @@ class Solution:
       base += s[-1]
     
     return base
-  

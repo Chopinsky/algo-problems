@@ -31,6 +31,9 @@ p and q will exist in the tree.
 '''
 
 
+from typing import Optional, Tuple
+
+
 class TreeNode:
   def __init__(self, x):
     self.val = x
@@ -39,7 +42,39 @@ class TreeNode:
 
 
 class Solution:
-  def lowestCommonAncestor(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+  def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+    if not root:
+      return root
+    
+    def walk(root: TreeNode) -> Tuple[int, Optional[TreeNode]]:
+      if not root:
+        return (0, None)
+      
+      status = 0
+      if root.val == p.val or root.val == q.val:
+        status += 1
+      
+      left, lp = walk(root.left)
+      right, rp = walk(root.right)
+      
+      if left == 2 and lp:
+        return (left, lp)
+      
+      if right == 2 and rp: 
+        return (right, rp)
+      
+      status += left + right
+      if status == 2:
+        return (2, root)
+      
+      return (status, None)
+    
+    _, parent = walk(root)
+    
+    return parent
+
+
+  def lowestCommonAncestor0(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
     def check(root: TreeNode):
       pf = (root.val == p.val)
       qf = (root.val == q.val)

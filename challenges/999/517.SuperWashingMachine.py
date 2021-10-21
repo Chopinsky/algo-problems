@@ -45,6 +45,24 @@ class Solution:
       return -1
     
     target = total // n
+    cnt = 0
+    steps = 0
+    
+    for machine in machines:
+      diff = machine - target
+      cnt += diff
+      steps = max(steps, abs(cnt), abs(diff))
+      
+    return steps
+  
+  
+  def findMinMoves1(self, machines: List[int]) -> int:
+    total = sum(machines)
+    n = len(machines)
+    if total % n != 0:
+      return -1
+    
+    target = total // n
     steps, carryover, takers = 0, 0, 0
     
     for i, val in enumerate(machines):

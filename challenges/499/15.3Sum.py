@@ -30,6 +30,43 @@ from typing import List
 
 class Solution:
   def threeSum(self, nums: List[int]) -> List[List[int]]:
+    nums.sort()
+    n = len(nums)
+    seen = set()
+    ans = []
+    
+    for j in range(1, n-1):
+      if j > 1 and nums[j] == nums[j-1] and nums[j] == nums[j-2]:
+        continue
+        
+      i, k = j-1, j+1
+      v0 = nums[j]
+      
+      while i >= 0 and k < n:
+        v1, v2 = nums[i], nums[k]
+        val = v1 + v0 + v2
+        
+        if val == 0:
+          if (v1, v0, v2) not in seen:
+            ans.append([v1, v0, v2])
+            seen.add((v1, v0, v2))
+
+          i -= 1
+          k += 1
+          continue
+          
+        if val > 0:
+          i -= 1
+          continue
+          
+        if val < 0:
+          k += 1
+          continue
+      
+    return ans
+      
+        
+  def threeSum0(self, nums: List[int]) -> List[List[int]]:
     c = {}
     for n in nums:
       if n in c:

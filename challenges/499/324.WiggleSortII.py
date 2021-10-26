@@ -26,6 +26,9 @@ Follow Up: Can you do it in O(n) time and/or in-place with O(1) extra space?
 '''
 
 
+from typing import List
+
+
 class Solution:
   def wiggleSort(self, nums: List[int]) -> None:
     """
@@ -43,4 +46,3 @@ class Solution:
         nums[i] = src[r]
         r -= 1
     
-        

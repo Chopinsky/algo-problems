@@ -30,12 +30,16 @@ p and q will exist in the BST.
 '''
 
 
+import math
+
+
 # Definition for a binary tree node.
 class TreeNode:
   def __init__(self, x):
     self.val = x
     self.left = None
     self.right = None
+
 
 class Solution:
   def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
@@ -51,3 +55,28 @@ class Solution:
       break
     
     return root
+
+    # Definition for a binary tree node.
+
+
+  def lowestCommonAncestor0(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+    def iterate(root: TreeNode, p: TreeNode, q: TreeNode, l: int, h: int) -> TreeNode:
+      if p.val > h or q.val < l:
+        return None
+      
+      if q.val == root.val or q.val == root.val:
+        return root
+      
+      if q.val < root.val:
+        return iterate(root.left, p, q, l, root.val)
+      
+      if p.val > root.val:
+        return iterate(root.right, p, q, root.val, h)
+      
+      return root
+    
+    if p.val > q.val:
+      p, q = q, p
+      
+    return iterate(root, p, q, -math.inf, math.inf)
+        

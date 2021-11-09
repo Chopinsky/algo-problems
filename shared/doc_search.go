@@ -6,7 +6,7 @@ import (
 )
 
 // SearchKeywords ...
-func SearchKeywords(doc string, keywords string) string {
+func SearchKeywords(doc string, keywords []string) string {
 	wordIdx := make(map[string][]int)
 	for _, w := range strings.Split(keywords, " ") {
 		wordIdx[w] = make([]int, 0, 16)

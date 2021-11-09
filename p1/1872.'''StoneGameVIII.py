@@ -12,23 +12,25 @@ class Solution:
   we only update the `max(...)` part becomes dp(i) = sum(...) - 
   max(i+1...), and max(i...) = max(dp(i), max(i+1...)).
   '''
-  def stone_game_vii(self, stones: List[int]) -> int:
-    ln = len(stones)
-    if ln <= 2:
+  def stoneGameVIII(self, stones: List[int]) -> int:
+    n = len(stones)
+    if n <= 2:
       return sum(stones)
-
-    for i in range(1, ln):
-      stones[i] += stones[i-1]
-
-    dp = stones[-1]
-    for i in range(ln-1, 1, -1):
-      # `stones` is the presum, dp is the best score diff
-      # the last play can get by playing optimally, dp essentially
-      # is max(dp(i+1), dp(i+2), ..., dp(n))
-      dp = max(dp, stones[i-1] - dp)
-
-    return dp
-
+    
+    presum = [val for val in stones]
+    for i in range(1, n):
+      presum[i] += presum[i-1]
+      
+    # the final state of the game -- only 1 stone left
+    diff = presum[-1]
+    
+    # the curr player can have the score of presum[i-1], and minus the 
+    # best score diff the next player can get, which is dp, is the best
+    # score the curr player can obtain
+    for i in range(n-1, 1, -1):
+      diff = max(diff, presum[i-1] - diff)
+      
+    return diff
 
   def stone_game_vii0(self, stones: List[int]) -> int:
     def calc(stones: List[int], start: int) -> int:

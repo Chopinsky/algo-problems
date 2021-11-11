@@ -39,7 +39,23 @@ All the values of coins are unique.
 from typing import List
 
 class Solution:
+  '''
+  idea is to accumulate possible ways with addition of each coin to the
+  collection
+  '''
   def change(self, amount: int, coins: List[int]) -> int:
+    dp = [0 if i > 0 else 1 for i in range(amount+1)]
+    
+    for c in coins:
+      for amnt in range(amount-c+1):
+        # accumulate existing ways
+        if dp[amnt]:
+          dp[amnt+c] += dp[amnt]
+    
+    return dp[amount]
+
+
+  def change0(self, amount: int, coins: List[int]) -> int:
     if amount == 0:
       return 1
 

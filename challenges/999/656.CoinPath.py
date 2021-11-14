@@ -1,7 +1,13 @@
 '''
-Given an array A (index starts at 1) consisting of N integers: A1, A2, ..., AN and an integer B. The integer B denotes that from any place (suppose the index is i) in the array A, you can jump to any one of the place in the array A indexed i+1, i+2, …, i+B if this place can be jumped to. Also, if you step on the index i, you have to pay Ai coins. If Ai is -1, it means you can’t jump to the place indexed i in the array.
+Given an array A (index starts at 1) consisting of N integers: A1, A2, ..., An
+and an integer B. The integer B denotes that from any place (suppose the index is i) 
+in the array A, you can jump to any one of the place in the array A indexed i+1, i+2, …, 
+i+B if this place can be jumped to. Also, if you step on the index i, you have to pay 
+Ai coins. If Ai is -1, it means you can’t jump to the place indexed i in the array.
 
-Now, you start from the place indexed 1 in the array A, and your aim is to reach the place indexed N using the minimum coins. You need to return the path of indexes (starting from 1 to N) in the array you should take to get to the place indexed N using minimum coins.
+Now, you start from the place indexed 1 in the array A, and your aim is to reach the 
+place indexed N using the minimum coins. You need to return the path of indexes (starting 
+from 1 to N) in the array you should take to get to the place indexed N using minimum coins.
 
 If there are multiple paths with the same cost, return the lexicographically smallest such path.
 
@@ -17,8 +23,11 @@ Input: [1,2,4,-1,2], 1
 Output: []
 Note:
 
-Path Pa1, Pa2, ..., Pan is lexicographically smaller than Pb1, Pb2, ..., Pbm, if and only if at the first i where Pai and Pbi differ, Pai < Pbi; when no such i exists, then n < m.
-A1 >= 0. A2, ..., AN (if exist) will in the range of [-1, 100].
+Path Pa1, Pa2, ..., Pan is lexicographically smaller than Pb1, Pb2, ..., Pbm, if 
+and only if at the first i where Pai and Pbi differ, Pai < Pbi; when no such i 
+exists, then n < m.
+
+A1 >= 0. A2, ..., An (if exist) will in the range of [-1, 100].
 Length of A is in the range of [1, 1000].
 B is in the range of [1, 100].
 '''
@@ -31,14 +40,20 @@ import math
 class Solution():
   def coin_path(self, coins: List[int], k: int) -> List[int]:
     n = len(coins)
+    
+    # dp == [total cost, last coin index from, number of jumps]
     dp = [[math.inf, -1, math.inf] if i else [coins[0], -1, 0] for i in range(n)]
 
     for i in range(1, n):
-      for j in range(i-1, max(0, i-k)-1, -1):
+      for j in range(max(0, i-k), i):
+        # unable to jump from coin j
         if coins[j] < 0:
           continue
 
-        if dp[i][0] > dp[j][0] or (dp[i][0] == dp[j][0] and dp[i][2] > dp[j][2]):
+        # if we find a better solution (i.e. less payment or shorter path), note here
+        # we do in-place comparison, i.e. the cost is fixed for any-prev-index to i, so
+        # we only need to know the index with the min prev-cost, or with shorter path
+        if dp[j][0] < dp[i][0] or (dp[i][0] == dp[j][0] and dp[j][2] < dp[i][2]):
           dp[i][0] = dp[j][0]
           dp[i][1] = j
           dp[i][2] = dp[j][2]
@@ -58,7 +73,6 @@ class Solution():
       i = dp[i][1]
 
     ans.reverse()
-
     return ans
 
 

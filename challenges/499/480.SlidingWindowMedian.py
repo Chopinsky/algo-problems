@@ -34,12 +34,52 @@ Constraints:
 
 
 from typing import List
-from heapq import heapify, heappop, heappush
+from heapq import heapify, heappop, heappush, heappushpop
 from collections import defaultdict
 
 
 class Solution:
   def medianSlidingWindow(self, nums: List[int], k: int) -> List[float]:
+    large, small = [], []
+    ans = []
+    removed = defaultdict(int)
+
+    def median():
+      return (large[0]-small[0]) / 2.0 if k%2 == 0 else large[0]
+
+    # build the init stacks
+    for i in range(k):
+      if len(large) == len(small):
+        heappush(large, -heappushpop(small, -nums[i]))
+      else:
+        heappush(small, -heappushpop(large, nums[i]))
+    
+    ans.append(median())
+
+    for i in range(k, len(nums)):
+      heappush(small, -heappushpop(large, nums[i]))
+      
+      remove = nums[i-k]
+      removed[remove] += 1
+
+      # removed 1 element from the large stack
+      if remove > -small[0]:
+        heappush(large, -heappop(small))
+
+      while small and removed[-small[0]] > 0:
+          removed[-small[0]] -= 1
+          heappop(small)
+      
+      while large and removed[large[0]] > 0:
+          removed[large[0]] -= 1
+          heappop(large)
+
+      ans.append(median())
+
+    return ans
+
+
+  def medianSlidingWindow0(self, nums: List[int], k: int) -> List[float]:
     ans = []
     
     # no array, done    

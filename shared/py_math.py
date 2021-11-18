@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 
 def fib(self, n: int) -> int:
@@ -38,8 +38,21 @@ def gcd(a: int, b: int) -> int:
   return a
 
 
-def matr_mult(a: List[List[int]], x: List[List[int]], mod: int) -> List[List[int]]:
-  return x
+def matr_mult(a: List[List[int]], b: List[List[int]]) -> Optional[List[List[int]]]:
+  ma, na = len(a), len(a[0])
+  mb, nb = len(b), len(b[0])
+
+  if na != mb:
+    return None
+
+  res = [[0]*nb for _ in range(ma)]
+  
+  for i in range(ma):
+    for j in range(nb):
+      for k in range(na):
+        res[i][j] += a[i][k] * b[k][j]
+
+  return res
 
 
 def fast_power(x: List[List[int]], n: int, mod: int) -> List[List[int]]:

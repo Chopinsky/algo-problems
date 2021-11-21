@@ -21,15 +21,33 @@ Constraints:
 
 from typing import List
 from collections import defaultdict
+from itertools import combinations
 
 
 class Solution:
+  def subsetsWithDup0(self, nums: List[int]) -> List[List[int]]:
+    ans = [[]]
+    n = len(nums)
+    nums = sorted(nums)
+    base = [i for i in range(n)]
+    seen = set()
+    
+    for l in range(1, n+1):
+      for sub in combinations(base, l):
+        arr = [nums[i] for i in sub]
+        if tuple(arr) in seen:
+          continue
+          
+        ans.append(arr)
+        seen.add(tuple(arr))
+        
+    return ans
+
   def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
     if not len(nums):
       return []
     
     nums = sorted(nums)
-    n = list(set(nums))
     var = defaultdict(int)
     ans = [[]]
     batch = []

@@ -1,5 +1,44 @@
+from typing import List
+from functools import lru_cache
+
+
 class Solution:
   def stoneGameV(self, stones: List[int]) -> int:
+    n = len(stones)
+    if n < 2:
+      return 0
+
+    presum = [val for val in stones]
+    for i in range(1, n):
+      presum[i] += presum[i-1]
+
+    @lru_cache(None)
+    def dp(i: int, j: int) -> int:
+      if i == j:
+        return 0
+
+      if i == j-1:
+        return min(stones[i:j+1])
+
+      score = 0
+
+      for k in range(i, j):
+        sl = presum[k] - (presum[i-1] if i > 0 else 0)
+        sr = presum[j] - presum[k]
+
+        if sl > sr:
+          score = max(score, sr + dp(k, j))
+        elif sr > sl:
+          score = max(score, sl + dp(i, k))
+        else:
+          score = max(score, sl + dp(k, j), sr + dp(i, k))
+
+      return score
+
+    return dp(0, n-1)
+
+
+  def stoneGameV0(self, stones: List[int]) -> int:
     n = len(stones)
     if n < 2:
       return 0
@@ -7,40 +46,6 @@ class Solution:
     presum = [val for val in stones]
     for i in range(1, n):
       presum[i] += presum[i-1]
-    
-    
-    '''
-    @lru_cache(None)
-    def dp(i: int, j: int) -> int:
-      if i+2 == j:
-        return min(stones[i:j])
-      
-      best = 0
-      base_sum = (presum[i-1] if i > 0 else 0)
-      total = presum[j-1] - base_sum
-      mid_sum = base_sum + total//2
-      idx = max(0, bisect_right(presum[i:j+1], mid_sum)-1)
-      
-      # print(i, j, total)
-      
-      for k in range(i+idx, j-1):
-        l = presum[k] - base_sum
-        r = presum[j-1] - presum[k]
-        
-        if l <= r:
-          lscore = l + (dp(i, k+1) if k > i else 0)
-          best = max(best, lscore)
-        
-        if l >= r:
-          rscore = r + (dp(k+1, j) if k+1 < j-1 else 0)
-          best = max(best, rscore)
-          
-        if r < l:
-          break
-        
-      # print(i, j, best)
-      return best
-    '''
     
     dp = [[0 for _ in range(n)] for _ in range(n)]
     top = [[stones[i] if i == j else 0 for j in range(n)] for i in range(n)]

@@ -26,6 +26,10 @@ positioni < positioni+1
 '''
 
 
+from typing import List
+from collections import deque
+
+
 class Solution:
   def getCollisionTimes0(self, cars: List[List[int]]) -> List[float]:
     n = len(cars)
@@ -42,11 +46,8 @@ class Solution:
       p0, s0 = cars[i]
       # print(i, s0, p0, stack)
       
-      # no collisions
-      if not stack:
-        stack.clear()
-      
-      else:
+      # if a collision can happen
+      if stack:
         while len(stack) >= 2 and collision(p0, s0, stack[-1][0], stack[-1][1]) >= collision(p0, s0, stack[-2][0], stack[-2][1]):
           stack.pop()
           
@@ -79,7 +80,7 @@ class Solution:
           stack.pop()
           continue
           
-        time = (p1 - p0) / (s0 - s1)
+        time = (p1-p0) / (s0-s1)
         
         # this one has already collided, skip it since it's merged with
         # the car it runs into already

@@ -54,10 +54,14 @@ class Solution:
       # build the n-floors state 1 at a time
       for n in range(1, n+1):
         # if moving the dividing point, i.e. the floor to drop the egg,
-        # we can obtain less steps, move the floor now
+        # we can obtain less steps, move the floor now. last[floor-1] means the numbers
+        # of steps if the current egg break at `floor`, and curr[n-floor] is if the egg
+        # does not break, we still have k' eggs
         while (floor < n) and (max(last[floor-1], curr[n-floor]) > max(last[floor], curr[n-floor-1])):
           floor += 1
       
+        # drop from `floor`, and it takes:
+        # 1 + most_steps_from_possible_scenarios(dp_break(floor-1, k-1), dp_not_break(n-floor, k))
         steps = 1 + max(last[floor-1], curr[n-floor])
         curr.append(steps)
         

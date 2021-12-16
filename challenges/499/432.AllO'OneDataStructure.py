@@ -69,7 +69,7 @@ class AllOne:
       self.keys.insert(idx, key)
       self.index[key] = idx
 
-      for i in range(idx + 1, len(self.counts)):
+      for i in range(idx+1, len(self.counts)):
         self.index[self.keys[i]] += 1
         
     else:

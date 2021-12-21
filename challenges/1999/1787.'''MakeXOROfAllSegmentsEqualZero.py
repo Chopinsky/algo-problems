@@ -34,7 +34,7 @@ from collections import defaultdict
 
 
 class Solution:
-  def minChanges(self, nums: List[int], k: int) -> int:        
+  def minChanges(self, nums: List[int], k: int) -> int:
     freq = [defaultdict(int) for _ in range(k)]
     for i, val in enumerate(nums):
       freq[i%k][val] += 1

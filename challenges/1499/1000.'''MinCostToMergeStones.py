@@ -45,7 +45,7 @@ import math
 
 
 class Solution:
-  def mergeStones(self, stones: List[int], k: int) -> int:
+  def mergeStones0(self, stones: List[int], k: int) -> int:
     n = len(stones)
     if (n-1) % (k-1) != 0:
       return -1
@@ -61,7 +61,7 @@ class Solution:
         # now consider combining the stones[i:j+1]
         # into 1 pile, set init score to math.inf
         j = i + length - 1
-        dp[i][j] = math.inf
+        # dp[i][j] = math.inf
         
         # min scores to form piles within the current
         # section, with the head pile from stones[i:t+1]
@@ -75,7 +75,7 @@ class Solution:
     return dp[0][n-1]
 
 
-  def mergeStones0(self, stones: List[int], k: int) -> int:
+  def mergeStones(self, stones: List[int], k: int) -> int:
     if len(stones) == 1:
       return 0
     

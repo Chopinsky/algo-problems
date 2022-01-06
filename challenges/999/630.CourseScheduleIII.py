@@ -1,4 +1,7 @@
 from functools import cmp_to_key
+from heapq import heappop, heappush
+from typing import List
+
 
 class Solution:
   '''
@@ -35,6 +38,24 @@ class Solution:
   1 <= durationi, lastDayi <= 10 ** 4
   '''
 
+  def scheduleCourse(self, courses: List[List[int]]) -> int:
+    courses.sort(key = lambda x:x[1])
+    time = 0
+    hq = []
+
+    for (duration, end) in courses:
+      if time + duration <= end:
+        time += duration
+        heappush(hq, -duration)
+
+      else:
+        if hq and -hq[0] > duration:
+            time += duration + heappop(hq)
+            heappush(hq, -duration)
+
+    return len(hq)
+
+
   # idea is that stack contains all courses that can meet the requirements,
   # then for the latest course, it can either be added to the stack if
   # the added deadline meets the course deadline; otherwise, it can always
@@ -42,7 +63,7 @@ class Solution:
   # the requirements, because the replaced course met the deadline of an
   # earlier dates, hence swapping will maintain the legilibility of the
   # latest course.
-  def scheduleCourse(self, courses: List[List[int]]) -> int:
+  def scheduleCourse0(self, courses: List[List[int]]) -> int:
     c = []
     for (dur, dl) in courses:
       if dl >= dur:
@@ -61,11 +82,11 @@ class Solution:
 
     for (dur, dl) in c:
       if total+dur <= dl:
-        heapq.heappush(stack, -dur)
+        heappush(stack, -dur)
         total += dur
       elif stack and dur < -stack[0]:
-        top = -heapq.heappop(stack)
-        heapq.heappush(stack, -dur)
+        top = -heappop(stack)
+        heappush(stack, -dur)
         total += (dur-top)
 
     return len(stack)

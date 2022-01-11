@@ -88,15 +88,12 @@ class Solution:
       evil_idx = ord(evil[evil_pos]) - ord('a')
       
       for idx in range(l, r+1):
-        if idx == evil_idx:
-          if evil_pos == m-1:
-            continue
-            
-          cnt += dp(pos+1, evil_pos+1, equal1 and idx == l, equal2 and idx == r)
-          
-        else:
-          nxt_evil_pos = nxt_prefix_ln(evil_pos, idx)
-          cnt += dp(pos+1, nxt_evil_pos, equal1 and idx == l, equal2 and idx == r)
+        nxt_evil_pos = evil_pos+1 if (idx == evil_idx) else nxt_prefix_ln(evil_pos, idx)
+        if nxt_evil_pos >= m:
+          # if a full match to the evil string, skip this char choice
+          continue
+        
+        cnt += dp(pos+1, nxt_evil_pos, equal1 and idx == l, equal2 and idx == r)
           
       return cnt % mod
     

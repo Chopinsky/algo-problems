@@ -77,13 +77,17 @@ class Solution:
       r = 25 if not equal2 else (ord(s2[pos])-ord('a'))
       # print(pos, evil_pos, equal1, equal2, l, r)
       
+      # if we're at the end of the string matching, count and done
       if pos == n-1:
         cnt = r-l+1
+
+        # exclude the full evil string match choice
         if evil_pos == m-1 and l <= evil_tail_idx <= r:
           cnt -= 1
           
         return cnt
         
+      # try all possible combinations
       cnt = 0
       evil_idx = ord(evil[evil_pos]) - ord('a')
       
@@ -97,6 +101,7 @@ class Solution:
           
       return cnt % mod
     
+    # find the initial evil string partial matching with the prefix
     evil_ln = min(m-1, start)
     while evil_ln > 0 and s1[start-evil_ln:start] != evil[:evil_ln]:
       evil_ln -= 1

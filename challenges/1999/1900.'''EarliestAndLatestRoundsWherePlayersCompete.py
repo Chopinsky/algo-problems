@@ -49,29 +49,30 @@ import math
 
 
 class Solution:
-  def earliestAndLatest(self, n: int, first: int, second: int) -> List[int]:
-    @lru_cache
-    def solve(n, f, s):
-      if f > n+1-s:
-        return solve(n, n+1-s, n+1-f)
-      
-      if f == n+1-s:
-        return (1, 1)
+  '''
+  the state is (total_number_players, first_player_from_left, second_player_from_right),
+  and we only care about which position the first player and the second player is at
+  '''
+  def earliestAndLatest(self, n, first, second):
+    ans = set()
 
-      ans_mn, ans_mx = math.inf, -math.inf
+    @lru_cache(None)
+    def dp(m: int, l: int, r: int, q: int):
+      if l > r:
+        dp(m, r, l, q)
       
-      for i in range(1, f+1):
-        must_lose = max(0, s-1-(n-1)//2)
-        must_win = max(0, must_lose-1 + (n%2))
+      if l == r: 
+        ans.add(q)
         
-        for j in range(i+must_win+1, i+s-f-must_lose+1):
-          mn, mx = solve((n+1)//2, i, j)
-          ans_mn = min(ans_mn, mn)
-          ans_mx = max(ans_mx, mx)
-          
-      return (ans_mn+1, ans_mx+1)
+      for i in range(1, l + 1):
+        for j in range(l-i+1, r-i+1):
+          if (i+j > (m+1)//2) or (i+j < (l+r-m//2)):
+            continue
 
-    return list(solve(n, first, second))
+          dp((m+1)//2, i, j, q+1)
+    
+    dp(n, first, n-second+1, 1)
+    return [min(ans), max(ans)]
     
     
   def earliestAndLatest0(self, n: int, first: int, second: int) -> List[int]:

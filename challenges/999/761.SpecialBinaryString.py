@@ -30,6 +30,8 @@ s is a special binary string.
 
 from functools import lru_cache
 
+from numpy import math
+
 
 class Solution:
   def makeLargestSpecial(self, s: str) -> str:
@@ -110,3 +112,26 @@ class Solution:
     
     return update(s)
   
+  def makeLargestSpecial0(self, s: str) -> str:
+    '''
+    the idea is to find all special bin substr, and sort them 
+    all, and then rejoin the result
+    '''
+    def make_str(s: str) -> str:
+      balance, l = 0, 0
+      res = []
+      
+      for r in range(len(s)):
+        if s[r] == '0':
+          balance -= 1
+        else:
+          balance += 1
+
+        if balance == 0:
+          res.append("1" + make_str(s[l+1:r]) + "0")
+          l = r + 1
+          
+      res.sort(reverse = True)
+      return ''.join(res)
+
+    return make_str(s)

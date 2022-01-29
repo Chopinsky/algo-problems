@@ -39,6 +39,11 @@ slices.length % 3 == 0
 1 <= slices[i] <= 1000
 '''
 
+
+from typing import List
+from functools import lru_cache
+
+
 class Solution:
   def maxSizeSlices(self, slices: List[int]) -> int:
     @lru_cache(None)
@@ -56,10 +61,10 @@ class Solution:
       
       return max(
         # if we take pizza at j
-        slices[j] + dp(i, j-2, rem-1),  
+        slices[j] + dp(i, j-2, rem-1),
         # if we don't take pizza at j, take all 
         # remainders from the nums[i:j-1] range
-        dp(i, j-1, rem),                
+        dp(i, j-1, rem),
       )
       
     ln = len(slices)

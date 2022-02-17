@@ -45,10 +45,33 @@ All elements of candidates are distinct.
 
 
 from typing import List
+from functools import lru_cache
 
 
 class Solution:
   def combinationSum(self, cand: List[int], target: int) -> List[List[int]]:
+    n = len(cand)
+    c = set(cand)
+    cand.sort()
+    
+    @lru_cache(None)
+    def dp(t: int, i: int) -> List[List[int]]:
+      ans = []
+      if t in c:
+        ans.append([t])
+        
+      for j in range(i, n):
+        if cand[j] >= t or t-cand[j] < cand[j]:
+          break
+          
+        for res in dp(t-cand[j], j):
+          ans.append([cand[j]]+res)
+          
+      return ans
+    
+    return dp(target, 0)
+
+  def combinationSum0(self, cand: List[int], target: int) -> List[List[int]]:
     cand.sort()
     nums, ans = [], []
     n = len(cand)

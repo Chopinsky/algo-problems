@@ -69,7 +69,7 @@ class Solution:
           dp[i][j] = min(dp[i][j], dp[i][t] + dp[t+1][j])
           
         # we can form a pile from stones[i:j+1]
-        if (j-i)%(k-1) == 0:
+        if (j-i) % (k-1) == 0:
           dp[i][j] += prefix[j+1] - prefix[i]
           
     return dp[0][n-1]

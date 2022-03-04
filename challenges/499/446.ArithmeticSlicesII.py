@@ -36,16 +36,36 @@ Constraints:
 '''
 
 
-from collections import defaultdict
+from collections import defaultdict, Counter
 from typing import List
 
 
 class Solution:
   def numberOfArithmeticSlices(self, nums: List[int]) -> int:
+    n = len(nums)
+    res = 0
+    counts = [{} for _ in range(n)]
+
+    for i in range(1, n):
+      for j in range(i):
+        diff = nums[i] - nums[j]
+        base = counts[j][diff] if diff in counts[j] else 0
+
+        if diff not in counts[i]:
+          counts[i][diff] = 0
+          
+        counts[i][diff] += base + 1
+        res += base
+
+    return res
+
+
+  def numberOfArithmeticSlices0(self, nums: List[int]) -> int:
     ln = len(nums)
-    init_chains = [defaultdict(int) for _ in range(ln)]
+    chain_heads = [defaultdict(int) for _ in range(ln)]
     chains = [defaultdict(int) for _ in range(ln)]
-    pos = defaultdict(list)
+    # pos = defaultdict(int)
+    c = defaultdict(int)
     total = 0
     
     # idea is to save the number of chains ending at position i under 
@@ -53,15 +73,15 @@ class Solution:
     # and update the number of chains under `diff`; also need to build
     # up chains with 2 elements for future iterations.
     for i, n0 in enumerate(nums):
+      c[n0] += 1
+
       # add up all possible chains from a previous position
       for j in range(i):
-        n1 = nums[j]
+        diff = n0 - nums[j]
 
         # n0 == n1 will be evaluated at the end
-        if n0 == n1:
+        if diff == 0:
           continue
-          
-        diff = n0 - n1
 
         # appending n0 to all the chains with the diff and 
         # ending previously at position j
@@ -70,27 +90,28 @@ class Solution:
           total += chains[j][diff]
           
         # adding all the new chains with 3 elements
-        if diff in init_chains[j]:
-          chains[i][diff] += init_chains[j][diff]
-          total += init_chains[j][diff]
+        if diff in chain_heads[j]:
+          chains[i][diff] += chain_heads[j][diff]
+          total += chain_heads[j][diff]
+
+        chain_heads[i][diff] += 1
       
+      '''
       # update init chains for n0 (i.e. chain with 2 elements)
       for n1, p in pos.items():
         if n0 == n1:
           continue
           
         diff = n0 - n1
-        init_chains[i][diff] += len(p)
+        chain_heads[i][diff] += len(p)
       
-      pos[n0].append(i)
+      pos[n0] += 1
+      '''
         
-    # print(pos, init_chains, chains)
-    
     # adding all the 0-diff chains
-    for p in pos.values():
-      cnt = len(p)
+    for cnt in c.values():
       if cnt > 2:
-        total += (1 << cnt) - 1 - cnt - cnt*(cnt-1)//2
+        total += (1 << cnt) - (1+cnt+cnt*(cnt-1)//2)
         
     return total
     

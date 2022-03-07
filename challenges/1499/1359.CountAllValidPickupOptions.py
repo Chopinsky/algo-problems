@@ -35,6 +35,19 @@ from math import comb
 class Solution:
   def countOrders(self, n: int) -> int:
     mod = 10**9 + 7
+    res = 1
+    
+    # pick 1 p/d pair from i-counts of the choices, then
+    # place the p service at the front, and choose 2*i-1 
+    # positions for the d service
+    for i in range(2, n+1):
+      res = (res * i * (2*i-1)) % mod
+    
+    return res
+
+
+  def countOrders(self, n: int) -> int:
+    mod = 10**9 + 7
     
     @lru_cache(None)
     def dp(n: int) -> int:

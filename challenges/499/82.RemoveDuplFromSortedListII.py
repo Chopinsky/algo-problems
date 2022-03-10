@@ -30,6 +30,29 @@ class ListNode:
 
 
 class Solution:
+  def deleteDuplicates0(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    fake = ListNode(-1)
+    curr = head
+    chain = fake
+    
+    while curr:
+      if not curr.next or curr.val != curr.next.val:
+        chain.next = curr
+        chain = chain.next
+        curr = curr.next
+        chain.next = None
+        continue
+        
+      val = curr.val
+      while curr.next and curr.next.val == val:
+        curr = curr.next
+        
+      if curr:
+        curr = curr.next
+      
+    return fake.next
+
+
   def deleteDuplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
     if not head:
       return head

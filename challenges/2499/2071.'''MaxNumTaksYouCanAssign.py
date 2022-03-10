@@ -58,12 +58,55 @@ m == workers.length
 
 from typing import List
 from collections import deque
-from bisect import bisect_right
+from bisect import bisect_right, bisect_left
 import math
 
 
 class Solution:
   def maxTaskAssign(self, tasks: List[int], workers: List[int], pills: int, strength: int) -> int:
+    tasks.sort()
+    workers.sort()
+    
+    # check if workers can finish `cnt` tasks
+    def can_finish(cnt: int) -> bool:
+      if cnt == 0:
+        return True
+      
+      strong_workers = workers[-cnt:]
+      p = pills
+      
+      for i in range(cnt-1, -1, -1):
+        t = tasks[i]
+        
+        # the last worker is capable of complete task `t`
+        if t <= strong_workers[-1]:
+          strong_workers.pop()
+          continue
+          
+        # the worker-idx can just complete the task with the pill
+        if t <= strong_workers[-1] + strength and p > 0:
+          p -= 1
+          idx = bisect_left(strong_workers, t-strength)
+          strong_workers.pop(idx)
+          continue
+        
+        # no more workers can take this task, fail
+        return False
+      
+      return True
+    
+    l, r = 0, min(len(tasks), len(workers))
+    while l < r:
+      mid = (l + r + 1) // 2
+      if can_finish(mid):
+        l = mid
+      else:
+        r = mid - 1
+        
+    return l
+  
+
+  def maxTaskAssign0(self, tasks: List[int], workers: List[int], pills: int, strength: int) -> int:
     tasks.sort()
     workers.sort()
     m, n = len(tasks), len(workers)

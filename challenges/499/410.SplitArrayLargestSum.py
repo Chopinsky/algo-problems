@@ -50,9 +50,35 @@ class Solution:
     r = presum[-1]
     last = r
     
+    def check(arr_sum: int) -> bool:
+      count = 0
+      curr = 0
+      i = 0
+
+      while i <= n:
+        if i == n:
+          if curr > arr_sum:
+            return False
+
+          count += 1
+          break
+
+        if nums[i] > arr_sum:
+          return False
+
+        if curr+nums[i] > arr_sum:
+          count += 1
+          curr = nums[i]
+        else:
+          curr += nums[i]
+
+        i += 1
+
+      return count <= m
+
     # check if we can find less than `m` subarrays whose
     # sum is equal to or less than `sub_sum`, taking 
-    def check(sub_sum: int) -> bool:
+    def check0(sub_sum: int) -> bool:
       count = 1
       idx = bisect_right(presum, sub_sum) - 1
       
@@ -95,37 +121,33 @@ class Solution:
     return l if (l < last and check(l)) else last
     
     
-  def splitArray0(self, nums: List[int], m: int) -> int:
+  def splitArray(self, nums: List[int], m: int) -> int:
+    prefix = [val for val in nums]
     n = len(nums)
-    if m == n:
-      return max(nums)
-      
-    presum = [nums[i] for i in range(n)]
-    top = [nums[i] for i in range(n)]
-    dp, nxt = [], []
     
     for i in range(1, n):
-      presum[i] += presum[i-1]
-      top[i] = max(top[i], top[i-1])
-    
-    # print(presum, top)
-    
+      prefix[i] += prefix[i-1]
+      
     @lru_cache(None)
-    def dp(seg: int, size: int) -> int:
-      if seg == size:
-        return top[size-1]
+    def dp(i: int, rem: int) -> int:
+      if n-i == rem:
+        return max(nums[i:])
       
-      if seg == 1:
-        return presum[size-1]
+      if rem == 1:
+        return prefix[-1] - (prefix[i-1] if i > 0 else 0)
       
-      low = math.inf
+      right = n - rem
+      curr = prefix[right] - (prefix[i-1] if i > 0 else 0)
+      max_val = math.inf
       
-      for i in range(seg-1, size):
-        # if seg == 3:
-        #   print(seg, size, i, curr, presum[size-1]-presum[i-1])
-        low = min(low, max(dp(seg-1, i), presum[size-1]-presum[i-1]))
-      
-      return low
+      for j in range(right, i-1, -1):
+        nxt_val = dp(j+1, rem-1)
+        max_val = min(max_val, max(curr, nxt_val))
+        if curr < nxt_val:
+          break
+          
+        curr -= nums[j]
+        
+      return max_val
     
-    return dp(m, n)
-  
+    return dp(0, m)

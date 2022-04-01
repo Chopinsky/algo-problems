@@ -51,7 +51,7 @@ import math
 import random
 
 
-class Node:
+class Tower:
   def __init__(self, val: int, levels: int):
     self.val = val
     self.levels = [None] * levels
@@ -59,7 +59,7 @@ class Node:
 
 class Skiplist:
   def __init__(self):
-    self.head = Node(-1, 16)
+    self.head = Tower(-1, 16)
     
     
   def _iter(self, num: int):
@@ -77,20 +77,20 @@ class Skiplist:
         
       yield curr, level
     
+    
   def search(self, target: int) -> bool:
     # iterate till the node whose value is 
     # strictly smaller than the target
-    for prev, level in self._iter(target):
-      pass
+    for tower, _ in self._iter(target):
+      curr = tower.levels[0]
     
-    curr = prev.levels[0]
     return curr and curr.val == target
 
 
   def add(self, num: int) -> None:
     # create the node with a random height
     node_level = min(16, 1+int(math.log2(1.0/random.random())))
-    node = Node(num, node_level)
+    node = Tower(num, node_level)
     
     for curr, level in self._iter(num):
       if level < node_level:

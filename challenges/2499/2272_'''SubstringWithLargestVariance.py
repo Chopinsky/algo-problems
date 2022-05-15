@@ -46,69 +46,51 @@ class Solution:
     
     for i, ch in enumerate(s):
       pos[ch].append(i)
-      
+    
+    # a refined and easier to understan solution
     def find_var(p0: List[int], p1: List[int]) -> int:
+      # pointers and states
       i, j = 0, 0
-      c0, c1 = 0, 0
+      bal, var = 0, 0
       
-      b0, b1 = [], []
-      v0 = [math.inf, -math.inf]
-      v1 = [math.inf, -math.inf]
-      vc0 = [math.inf, -math.inf]
-      vc1 = [math.inf, -math.inf]
-      var = 0
+      # the high / low balance states
+      high, max_bal = -math.inf, -math.inf
+      low, min_bal = math.inf, math.inf
       
       while i < len(p0) or j < len(p1):
+        # append the p0 char
         if j >= len(p1) or (i < len(p0) and p0[i] < p1[j]):
-          c0 += 1
+          bal += 1
           i += 1
-          ch = 0
-          v1[0], v1[1] = vc1
           
+          # update the usable high and the maximum high
+          high = max_bal
+          max_bal = max(max_bal, bal)
+          
+          # if p0 has shown up before that can be trimmed
+          if low != math.inf and bal > low:
+            var = max(var, abs(bal - low))
+          
+        # append the p1 char
         else:
-          c1 += 1
+          bal -= 1
           j += 1
-          ch = 1
-          v0[0], v0[1] = vc0
-
-        # balance check 
-        bal = c0 - c1
-        if c0 > 0 and c1 > 0:
+          
+          # update the usable low and the minimum low
+          low = min_bal
+          min_bal = min(min_bal, bal)
+          
+          # if p1 has shown up before that can be trimmed
+          if high != -math.inf and bal < high:
+            var = max(var, abs(bal - high))
+      
+        # if a 2-chars substring has been formed, check if 
+        # the entire substring is the optimal solution
+        if i > 0 and j > 0:
           var = max(var, abs(bal))
-          
-          if bal >= 0:
-            if v0[0] != math.inf and bal > v0[0]:
-              var = max(var, abs(bal - v0[0]) + 1)
-              
-            if v1[0] != math.inf and bal > v1[0]:
-              var = max(var, abs(bal - v1[0]))
-            
-          elif bal <= 0:
-            if v0[1] != -math.inf and bal < v0[1]:
-              var = max(var, abs(bal - v0[1]))
-              
-            if v1[1] != -math.inf and bal < v1[1]:
-              var = max(var, abs(bal - v1[1]) + 1)
-          
-          # print(bal, c0, c1, v0, v1, var)
-          if ch == 0:
-            vc0[0] = min(vc0[0], bal)
-            vc0[1] = max(vc0[1], bal)
-
-          else:
-            vc1[0] = min(vc1[0], bal)
-            vc1[1] = max(vc1[1], bal)
-        
-      # no p1 appears later
-      if v0[0] == math.inf:
-        var = max(var, c1-1)
-        
-      # no p0 appears later
-      if v1[0] == math.inf:
-        var = max(var, c0-1)
         
       return var
-      
+    
     max_var = 0
     for i in range(25):
       for j in range(i+1, 26):

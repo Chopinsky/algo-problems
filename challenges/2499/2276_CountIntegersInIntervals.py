@@ -65,19 +65,19 @@ class Node:
 
       return root, r-l+1
         
-    # update leaf leaf
+    # update the range of this node
     old_cnt = self.r - self.l + 1
     self.l = min(self.l, l)    
     self.r = max(self.r, r)
-    
+
+    # current node is a leaf, update and done
     if self.is_leaf:
-      delta = (self.r-self.l+1) - old_cnt 
-      return self, delta
+      return self, (self.r-self.l+1) - old_cnt 
     
     left = self.left
     right = self.right
     
-    # not in either segment
+    # not intersected with either segment
     if l > left.r + 1 and r < right.l - 1:
       # add the range to the left/right if it's shorter
       if r-left.l >= right.r-l:
@@ -95,6 +95,7 @@ class Node:
       
     # intersect with both segment
     else:
+      # split evenly to add to both left and right segment
       m = (left.r + right.l) // 2
       self.left, d0 = left.insert(l, m)
       
@@ -106,7 +107,7 @@ class Node:
       d = d0 + d1
       
     # if we can merge the leaves
-    if left.is_leaf and right.is_leaf and left.r+1 >= right.l:
+    if self.left.is_leaf and self.right.is_leaf and self.left.r+1 >= self.right.l:
       self.is_leaf = True
       self.left = None
       self.right = None

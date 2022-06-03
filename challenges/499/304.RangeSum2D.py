@@ -32,7 +32,43 @@ n == matrix[i].length
 At most 104 calls will be made to sumRegion.
 '''
 
+from typing import List
+
+
 class NumMatrix:
+  def __init__(self, matrix: List[List[int]]):
+    m, n = len(matrix), len(matrix[0])
+    self.prefix = [[matrix[i][j] for j in range(n)] for i in range(m)]
+    
+    for i in range(m):
+      row = 0
+      for j in range(n):
+        row += matrix[i][j]
+        self.prefix[i][j] = row + (self.prefix[i-1][j] if i > 0 else 0)
+    
+    # print(self.prefix)
+
+    
+  def sumRegion(self, r1: int, c1: int, r2: int, c2: int) -> int:
+    a0 = self.prefix[r2][c2]
+    a3 = self.prefix[r1-1][c1-1] if r1 > 0 and c1 > 0 else 0
+    
+    a1 = self.prefix[r1-1][c2] if r1 > 0 else 0
+    a2 = self.prefix[r2][c1-1] if c1 > 0 else 0
+    
+    # print('='*8)
+    # print(r1, c1, r2, c2)
+    # print(a0, a3, a1, a2)
+    
+    return a0 + a3 - a1 - a2
+  
+
+# Your NumMatrix object will be instantiated and called as such:
+# obj = NumMatrix(matrix)
+# param_1 = obj.sumRegion(row1,col1,row2,col2)
+
+
+class NumMatrix0:
   def __init__(self, m: List[List[int]]):
     self.presum = [[0 for _ in range(len(m[0]))] for _ in range(len(m))]
     for i, row in enumerate(m):

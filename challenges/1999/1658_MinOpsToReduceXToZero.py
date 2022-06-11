@@ -27,10 +27,49 @@ Constraints:
 '''
 
 from typing import List
+import math
 
 
 class Solution:
   def minOperations(self, nums: List[int], x: int) -> int:
+    prefix = {0: 0}
+    n = len(nums)
+    ops = math.inf
+    sums = 0
+    
+    for i in range(n):
+      sums += nums[i]
+      if sums > x:
+        break
+        
+      if sums == x:
+        ops = min(ops, i+1)
+        # print('prefix:', i)
+        
+      if sums not in prefix:
+        prefix[sums] = i + 1
+        
+    sums = 0
+    for i in range(n-1, -1, -1):
+      sums += nums[i]
+      if sums > x:
+        break
+        
+      if sums == x:
+        ops = min(ops, n-i)
+        
+      if x-sums in prefix:
+        ln = prefix[x-sums]
+        if ln-1 >= i:
+          break
+        
+        ops = min(ops, n-i+prefix[x-sums])
+        # print('mix:', i, n-i, prefix[x-sums])
+        
+    return -1 if ops == math.inf else ops
+
+
+  def minOperations0(self, nums: List[int], x: int) -> int:
     dic = {}
     prefix = 0
     long = -1

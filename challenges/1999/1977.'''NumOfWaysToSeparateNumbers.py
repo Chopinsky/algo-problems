@@ -34,8 +34,11 @@ Constraints:
 num consists of digits '0' through '9'.
 '''
 
-
 import numpy as np
+from bisect import bisect_left
+from itertools import zip_longest, islice
+from math import floor, log2
+
 
 class Solution:
   # "hacking" solution

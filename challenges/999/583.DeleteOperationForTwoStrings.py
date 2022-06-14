@@ -20,11 +20,46 @@ Constraints:
 word1 and word2 consist of only lowercase English letters.
 '''
 
+from collections import defaultdict
+from functools import lru_cache
+from bisect import bisect_left
+
+
 class Solution:
+  def minDistance(self, word1: str, word2: str) -> int:
+    n1, n2 = len(word1), len(word2)
+    
+    @lru_cache(None)
+    def match(i: int, j: int) -> int:
+      if i >= n1:
+        return n2 - j
+      
+      if j >= n2:
+        return n1 - i
+      
+      cnt = 2 + match(i+1, j+1)
+      for k in range(j, n2):
+        if word1[i] == word2[k]:
+          cnt = min(cnt, k-j+match(i+1, k+1))
+          break
+      
+      for k in range(i, n1):
+        if word1[k] == word2[j]:
+          cnt = min(cnt, k-i+match(k+1, j+1))
+          break
+      
+      return cnt
+      
+    return match(0, 0)
+  
+
   def minDistance1(self, word1: str, word2: str) -> int:
     n1, n2 = len(word1), len(word2)
     dp = [[0 for _ in range(n1)] for _ in range(n2)]
 
+    # build LCS -- longest common sequence, then the deletion operations
+    # equals the sum of the string lengths minus twice the longest common
+    # sequence length (keeping the sequence from both strings)
     for i in range(n2):
       for j in range(n1):
         match = 1 if (word1[j] == word2[i]) else 0

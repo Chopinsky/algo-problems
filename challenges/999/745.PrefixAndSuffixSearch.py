@@ -27,7 +27,33 @@ words[i], prefix and suffix consist of lower-case English letters only.
 At most 15000 calls will be made to the function f.
 '''
 
+from typing import List, Set
+
+
 class WordFilter:
+  def __init__(self, words: List[str]):
+    self.dict = {}
+    
+    for i, w in enumerate(words):
+      n = len(w)
+      
+      #prefix
+      for j in range(1, n+1):
+        #suffix
+        for k in range(1, n+1):
+          s = f'{w[-k:]}#{w[:j]}'
+          self.dict[s] = i
+          
+
+  def f(self, prefix: str, suffix: str) -> int:
+    w = f'{suffix}#{prefix}'
+    if w not in self.dict:
+      return -1
+    
+    return self.dict[w]
+
+
+class WordFilter0:
   def __init__(self, words: List[str]):
     self.pre = Trie()
     self.suf = Trie()

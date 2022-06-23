@@ -37,6 +37,35 @@ class Solution:
   1 <= courses.length <= 10 ** 4
   1 <= durationi, lastDayi <= 10 ** 4
   '''
+  
+  def scheduleCourse(self, courses: List[List[int]]) -> int:
+    c = []
+    for d, last in courses:
+      if d <= last:
+        c.append((d, last))
+      
+    c.sort(key=lambda x: (x[1], x[0]))
+    stack = []
+    curr = 0
+    # print(courses)
+    
+    for d, last in c:
+      if not stack or curr+d <= last:
+        curr += d
+        heappush(stack, -d)
+        continue
+        
+      top = -stack[0]
+      # print(curr, stack, f, d)
+      
+      if curr-top+d <= last and d < top:
+        curr += d - top
+        heappop(stack)
+        heappush(stack, -d)
+
+    # print(stack)
+    return len(stack)
+    
 
   def scheduleCourse(self, courses: List[List[int]]) -> int:
     courses.sort(key = lambda x:x[1])

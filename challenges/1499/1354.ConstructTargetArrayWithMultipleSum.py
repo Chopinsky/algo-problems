@@ -36,7 +36,45 @@ N == target.length
 1 <= target[i] <= 10^9
 '''
 
+from heapq import heappush, heappop
+from typing import List
+
+
 class Solution:
+  def isPossible(self, target: List[int]) -> bool:
+    s = 0
+    stack = []
+    
+    for val in target:
+      s += val
+      heappush(stack, -val)
+      
+    while stack[0] != -1:
+      val = -heappop(stack)
+      rest = s - val
+      if rest <= 0:
+        # print('1', rest)
+        return False
+      
+      if rest == 1 and val >= 1:
+        break
+      
+      cnt = val // rest
+      if cnt < 1 or val == rest:
+        # print('2', cnt)
+        return False
+      
+      nxt_val = val - rest*cnt
+      if nxt_val <= 0:
+        # print('3', nxt_val, val, rest, cnt)
+        return False
+      
+      heappush(stack, -nxt_val)
+      s += nxt_val - val
+      
+    return True
+    
+
   def isPossible(self, arr: List[int]) -> bool:
     if len(arr) == 1:
       return True if arr[0] == 1 else False

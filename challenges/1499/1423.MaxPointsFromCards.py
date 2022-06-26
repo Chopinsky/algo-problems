@@ -45,7 +45,27 @@ Constraints:
 1 <= k <= cardPoints.length
 '''
 
+from typing import List
+
+
 class Solution:
+  def maxScore(self, cards: List[int], k: int) -> int:
+    n = len(cards)
+    if k >= n:
+      return sum(cards)
+    
+    right = sum(cards[-k:])
+    left = 0
+    high_score = right
+    
+    for i in range(k):
+      left += cards[i]
+      right -= cards[i-k]
+      high_score = max(high_score, left+right)
+    
+    return high_score
+
+
   def maxScore(self, cards: List[int], k: int) -> int:
     n = len(cards)
     if k >= n:

@@ -28,6 +28,10 @@ n does not contain any leading zeros and represents a positive integer.
 
 class Solution:
   def minPartitions(self, n: str) -> int:
+    return max([int(ch) for ch in n])
+
+
+  def minPartitions(self, n: str) -> int:
     arr = list(n)
     big = 0
 

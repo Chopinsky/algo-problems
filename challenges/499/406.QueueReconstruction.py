@@ -31,7 +31,36 @@ It is guaranteed that the queue can be reconstructed.
 
 from typing import List
 
+
 class Solution:
+  def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
+    people.sort()
+    n = len(people)
+    ans = [None] * n
+    idx = [i for i in range(n)]
+    # print(people)
+    
+    last = -1
+    last_cnt = 0
+    
+    for h, k in people:
+      # print(h, k, idx)
+      if h == last:
+        k0 = k - last_cnt
+        last_cnt += 1
+        
+      else:
+        k0 = k
+        last = h
+        last_cnt = 1
+        
+      pos = idx.pop(k0)
+      ans[pos] = [h, k]
+      # print(pos, ans)
+    
+    return ans
+
+
   def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
     people.sort(key=lambda p: (-p[0], p[1]))
 

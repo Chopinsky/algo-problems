@@ -25,8 +25,24 @@ n == nums.length
 '''
 
 from typing import List
+import math
+
 
 class Solution:
+  def minMoves2(self, nums: List[int]) -> int:
+    nums.sort()
+    n = len(nums)
+    ls, rs = 0, sum(nums)
+    moves = math.inf
+    
+    for i, val in enumerate(nums):
+      ls += val
+      rs -= val
+      moves = min(moves, abs(ls - (i+1)*val) + abs(rs - (n-i-1)*val))
+    
+    return moves
+    
+
   def minMoves2(self, nums: List[int]) -> int:
     n = len(nums)
     nums.sort()

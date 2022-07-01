@@ -32,7 +32,22 @@ Constraints:
 
 from typing import List
 
+
 class Solution:
+  def maximumUnits(self, boxTypes: List[List[int]], truckSize: int) -> int:
+    boxTypes.sort(key=lambda x: (x[1], x[0]))
+    total = 0
+    # print(boxTypes)
+    
+    while boxTypes and truckSize > 0:
+      b, u = boxTypes.pop()
+      cnt = min(b, truckSize)
+      truckSize -= cnt
+      total += cnt * u
+      
+    return total
+  
+  
   def maximumUnits(self, boxTypes: List[List[int]], truckSize: int) -> int:
     boxTypes.sort(key=lambda x: -x[1])
     # print(boxTypes)

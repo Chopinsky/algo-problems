@@ -34,6 +34,25 @@ It is guaranteed that all elements in verticalCuts are distinct.
 from typing import List
 
 class Solution:
+  def maxArea(self, h: int, w: int, h_cuts: List[int], v_cuts: List[int]) -> int:
+    h_cuts = [0] + h_cuts + [h]
+    v_cuts = [0] + v_cuts + [w]
+    h_cuts.sort()
+    v_cuts.sort()
+    
+    m, n = len(h_cuts), len(v_cuts)
+    h_max, v_max = 0, 0
+    
+    for i in range(1, max(m, n)):
+      if i < m:
+        h_max = max(h_max, h_cuts[i]-h_cuts[i-1])
+        
+      if i < n:
+        v_max = max(v_max, v_cuts[i]-v_cuts[i-1])
+    
+    return (h_max * v_max) % (10 ** 9 + 7)
+
+    
   def maxArea(self, h: int, w: int, hcuts: List[int], vcuts: List[int]) -> int:
     hcuts.sort()
     vcuts.sort()

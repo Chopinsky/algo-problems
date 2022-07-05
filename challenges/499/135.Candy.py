@@ -29,9 +29,48 @@ n == ratings.length
 
 from collections import defaultdict
 from typing import List
+from heapq import heappop, heappush
 
 
 class Solution:
+  def candy(self, ratings: List[int]) -> int:
+    n = len(ratings)
+    if n == 1:
+      return 1
+    
+    cnt = [0] * n
+    cand = []
+    
+    for i, r in enumerate(ratings):
+      heappush(cand, (r, i))
+      
+    small = cand[0][0]
+    while cand:
+      curr, i = heappop(cand)
+      if curr == small:
+        cnt[i] = 1
+        continue
+        
+      if i == 0:
+        cnt[i] = 1 if ratings[i+1] == curr else cnt[i+1] + 1
+        
+      elif i == n-1:
+        cnt[i] = 1 if ratings[i-1] == curr else cnt[i-1] + 1
+          
+      else:
+        min_cnt = 1
+        if ratings[i-1] < curr:
+          min_cnt = max(min_cnt, cnt[i-1]+1)
+          
+        if ratings[i+1] < curr:
+          min_cnt = max(min_cnt, cnt[i+1]+1)
+          
+        cnt[i] = min_cnt
+        
+    # print(cnt)
+    return sum(cnt)
+    
+
   def candy(self, ratings: List[int]) -> int:
     nums = []
     n = len(ratings)

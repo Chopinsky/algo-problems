@@ -21,8 +21,54 @@ Constraints:
 '''
 
 from typing import List
+from collections import defaultdict
+
 
 class Solution:
+  def longestConsecutive(self, nums: List[int]) -> int:
+    if not nums:
+      return 0
+    
+    nums = list(set(nums))
+    seen = {}
+    n = len(nums)
+    g = [i for i in range(n)]
+    
+    def find(i):
+      while g[i] != i:
+        i = g[i]
+        
+      return i
+    
+    def union(x, y):
+      ii, jj = find(x), find(y)
+      if ii < jj:
+        g[jj] = ii
+      else:
+        g[ii] = jj
+    
+    for i, val in enumerate(nums):
+      if val-1 in seen:
+        # print('union', val, val-1, i, seen[val-1])
+        union(i, seen[val-1])
+        
+      if val+1 in seen:
+        # print('union', val, val+1, i, seen[val+1])
+        union(i, seen[val+1])
+      
+      seen[val] = i
+      
+    counter = defaultdict(int)
+    # print(g)
+
+    for i in range(n):
+      root = find(i)
+      counter[root] += 1
+      
+    # print(counter)
+    return max(counter.values())
+    
+
   def longestConsecutive(self, nums: List[int]) -> int:
     if len(nums) == 0:
       return 0

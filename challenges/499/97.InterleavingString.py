@@ -33,7 +33,39 @@ s1, s2, and s3 consist of lowercase English letters.
 Follow up: Could you solve it using only O(s2.length) additional memory space?
 '''
 
+from functools import lru_cache
+
+
 class Solution:
+  def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+    m, n, l = len(s1), len(s2), len(s3)
+    
+    @lru_cache(None)
+    def test(i: int, j: int, k: int) -> bool:
+      # print(i, j, k)
+      if k >= l:
+        return i == m and j == n
+      
+      if i >= m:
+        return s2[j:] == s3[k:]
+        
+      if j >= n:
+        return s1[i:] == s3[k:]
+      
+      if s1 + s2 == s3 or s2 + s1 == s3:
+        return True
+      
+      if s1[i] == s3[k] and test(i+1, j, k+1):
+        return True
+      
+      if s2[j] == s3[k] and test(i, j+1, k+1):
+        return True
+      
+      return False
+      
+    return test(0, 0, 0)
+
+
   def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
     n0, n1, n2 = len(s1), len(s2), len(s3)
 

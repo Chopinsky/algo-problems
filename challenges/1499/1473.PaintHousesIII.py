@@ -49,8 +49,50 @@ n == cost[i].length
 1 <= cost[i][j] <= 10^4
 '''
 
+from typing import List
+from functools import lru_cache
+import math
+
 
 class Solution:
+  def minCost(self, houses: List[int], cost: List[List[int]], m: int, n: int, target: int) -> int:
+    last_color = -1
+    cnt = [0] * m
+    
+    for i in range(m-1, -1, -1):
+      if houses[i] != 0 and houses[i] != last_color:
+        cnt[i] = (0 if i == m-1 else cnt[i+1]) + 1
+        last_color = houses[i]
+      else:
+        cnt[i] = 0 if i == m-1 else cnt[i+1]
+        
+    # print(cnt)
+    
+    @lru_cache(None)
+    def score(i: int, prev: int, t: int) -> int:
+      if i >= m:
+        return 0 if t == 0 else math.inf
+        
+      if t < 0:
+        return math.inf
+        
+      if cnt[i] > t+1:
+        return math.inf
+      
+      if houses[i] > 0:
+        return score(i+1, houses[i], t - (0 if houses[i] == prev else 1))
+      
+      c = math.inf
+      for j in range(1, n+1):
+        nxt_cost = score(i+1, j, t - (0 if j == prev else 1))
+        c = min(c, cost[i][j-1] + nxt_cost)
+        
+      return c
+      
+    s = score(0, -1, target)
+    return -1 if s == math.inf else s
+
+
   def minCost(self, houses: List[int], cost: List[List[int]], m: int, n: int, target: int) -> int:
     @lru_cache(None)
     def dp(i: int, curr: int, t: int) -> int:

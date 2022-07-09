@@ -35,6 +35,27 @@ from heapq import heappop, heappush
 
 class Solution:
   def maxResult(self, nums: List[int], k: int) -> int:
+    stack = []
+    n = len(nums)
+    score = nums[0]
+    
+    for i, val in enumerate(nums):
+      while stack and stack[0][1] < i-k:
+        heappop(stack)
+        
+      if stack:
+        top, _ = stack[0]
+      else:
+        top = 0
+        
+      # print(i, val, top, stack)
+      score = val - top
+      heappush(stack, (-score, i))
+        
+    return score
+  
+  
+  def maxResult(self, nums: List[int], k: int) -> int:
     n = len(nums)
     dp = [0] * n
 

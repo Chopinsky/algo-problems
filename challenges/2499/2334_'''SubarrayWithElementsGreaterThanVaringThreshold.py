@@ -34,7 +34,7 @@ from typing import List
 class Solution:
   '''
   the trick is to find the longest subarray (assuming with length k) for each index of the 
-  array, such that the element at this index is the minimum element of the subarray; then
+  source array, such that the element at this index is the minimum element of the subarray; then
   we can compare the threshold of the longest subarray at each index: if `nums[i] > threshold / k`,
   then `k` is a subarray length that will satisfy the requirement. 
 
@@ -50,7 +50,7 @@ class Solution:
     stack, size = [], [1]*n
     
     for i, val in enumerate(nums):
-      # pop all elements that are greater or equal to `val`
+      # pop all elements to the left that are greater or equal to `val`
       while stack and stack[-1][0] >= val:
         stack.pop()
     
@@ -59,6 +59,8 @@ class Solution:
 
       # add # of elements between
       size[i] += i-j-1
+      if val > th/size[i]:
+        return size[i]
 
       # push the element to the stack
       stack.append((val, i))
@@ -69,7 +71,7 @@ class Solution:
     for i in range(n-1, -1, -1):
       val = nums[i]
 
-      # pop all elements that are greater or equal to `val`
+      # pop all elements to the right that are greater or equal to `val`
       while stack and stack[-1][0] >= val:
         stack.pop()
         
@@ -78,18 +80,13 @@ class Solution:
 
       # add # of elements between
       size[i] += j-i-1
+      if val > th/size[i]:
+        return size[i]
 
       # push the element to the stack
       stack.append((val, i))
       
     # print('fin:', size)
-    # loop through all indexs and find the elements that is the smallest
-    # element in the subarray with length of size[i], and compare it with
-    # the threshold requirements.
-    for i, k in enumerate(size):
-      if nums[i] > th/k:
-        return k
-    
     # no element satisfy the requirements, fail
     return -1
     

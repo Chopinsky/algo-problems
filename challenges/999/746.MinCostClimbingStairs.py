@@ -27,6 +27,15 @@ from typing import List
 
 class Solution:
   def minCostClimbingStairs(self, cost: List[int]) -> int:
+    s0, s1 = cost[0], cost[1]
+    
+    for c in cost[2:]:
+      s0, s1 = s1, min(s0, s1) + c
+      
+    return min(s0, s1)
+    
+    
+  def minCostClimbingStairs(self, cost: List[int]) -> int:
     n = len(cost)
 
     # dp = [math.inf] * n

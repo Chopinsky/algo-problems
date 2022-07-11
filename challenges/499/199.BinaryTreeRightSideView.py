@@ -22,7 +22,6 @@ The number of nodes in the tree is in the range [0, 100].
 -100 <= Node.val <= 100
 '''
 
-
 from typing import Optional, List
 
 
@@ -35,6 +34,28 @@ class TreeNode:
 
 
 class Solution:
+  def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+    if not root:
+      return []
+    
+    stack = []
+    level, nxt = [root], []
+    
+    while level:
+      stack.append(level[-1].val)
+      for node in level:
+        if node.left:
+          nxt.append(node.left)
+          
+        if node.right:
+          nxt.append(node.right)
+          
+      level, nxt = nxt, level
+      nxt.clear()
+      
+    return stack
+
+
   def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
     if not root:
       return []

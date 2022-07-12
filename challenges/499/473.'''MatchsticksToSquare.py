@@ -26,6 +26,58 @@ from typing import List
 from collections import defaultdict
 
 class Solution:
+  def makesquare(self, sticks: List[int]) -> bool:
+    total = sum(sticks)
+    if total < 4 or total % 4 != 0:
+      return False
+    
+    sticks.sort(reverse=True)
+    n = len(sticks)
+    avg = total // 4
+    
+    suffix = [val for val in sticks]
+    for i in range(n-2, -1, -1):
+      suffix[i] += suffix[i+1]
+    
+    # print(sticks, avg)
+    cand = [set(), set(), set(), set()]
+    
+    def find_match(rem: int, last: int, mask: int):
+      if rem == 0:
+        for c0 in cand[0]:
+          if mask & c0 == 0:
+            cand[1].add(mask|c0)
+            
+        for c1 in cand[1]:
+          if mask & c1 == 0:
+            cand[2].add(mask|c1)
+            
+        for c2 in cand[2]:
+          if mask & c2 == 0:
+            cand[3].add(mask|c2)
+        
+        cand[0].add(mask)
+        return
+      
+      if rem > suffix[i] or rem < 0 or last >= n-1:
+        return
+      
+      for j in range(last+1, n):
+        if sticks[j] > rem:
+          continue
+          
+        nxt_mask = mask | (1 << j)
+        find_match(rem-sticks[j], j, nxt_mask)
+        
+    for i in range(n):
+      find_match(avg-sticks[i], i, 1<<i)
+      if len(cand[3]) > 0:
+        return True
+      
+    # print(cand, len(cand[0]))
+    return False
+
+
   def makesquare0(self, m: List[int]) -> bool:
     n = len(m)
     if n < 4:
@@ -89,7 +141,8 @@ class Solution:
         return False
       
     return True
-  
+
+
   def makesquare(self, A: List[int]) -> bool:
     sm = sum(A)
     n = len(A)
@@ -133,7 +186,6 @@ class Solution:
         
         # don't use the match for this side
         done.remove(i)
-        return dfs(i+1, rem)
 
       # match is too long to fit into the remainder requirements,
       # must move on

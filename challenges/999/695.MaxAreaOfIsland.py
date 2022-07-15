@@ -29,6 +29,40 @@ from typing import List
 
 class Solution:
   def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+    seen = set()
+    m, n = len(grid), len(grid[0])
+    mx_area = 0
+    
+    def get_area(x0: int, y0: int) -> int:
+      cnt = 1
+      stack = [(x0, y0)]
+      seen.add((x0, y0))
+      
+      while stack:
+        x1, y1 = stack.pop()
+        
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+          x2, y2 = x1+dx, y1+dy
+          if x2 < 0 or x2 >= m or y2 < 0 or y2 >= n or (x2, y2) in seen or grid[x2][y2] == 0:
+            continue
+            
+          stack.append((x2, y2))
+          seen.add((x2, y2))
+          cnt += 1
+      
+      return cnt
+    
+    for x in range(m):
+      for y in range(n):
+        if (x, y) in seen or grid[x][y] == 0:
+          continue
+          
+        mx_area = max(mx_area, get_area(x, y))
+    
+    return mx_area
+
+    
+  def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
     dirs = [-1, 0, 1, 0, -1]
     h, w = len(grid), len(grid[0])
     ans = 0

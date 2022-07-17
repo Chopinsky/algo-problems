@@ -31,20 +31,34 @@ class Solution:
   Then the sum of (n, k) arrays will be sum((n-1, k-i) where i >= 0 and i <= k).
   '''
   def kInversePairs(self, n: int, k: int) -> int:
-    dp = [[0 for _ in range(k+1)] for _ in range(n)]
-    dp[0][0] = 1
+    # dp stores
+    mod = 10**9 + 7
+    dp = [[0]*(k+1) for _ in range(n+1)]
+
+    # init condition: if n==1, only k==0 has 1 solution
+    dp[1][0] = 1
     
-    for i in range(1, n):
-      s = 0
+    # looping through all (n, k) problems
+    for i in range(2, n+1):
+      # initial count is 0
+      cnt = 0
+
+      # for each (n-1, j) solution, we can shift number `n` by j times to
+      # generate the answer for the (n, k) solution
       for j in range(0, k+1):
-        s += dp[i-1][j]
-        if j > i:
-          s -= dp[i-1][j-i-1]
+        # all previous solutions (e.g. j0 inverse pairs), just
+        # shift number (j-j0) times to create total of `j` inverse
+        # pairs, so we just add them to the running sum
+        cnt += dp[i-1][j] 
+
+        # minus the illicit cases -- even `i` swaps won't yield j more
+        # reverse pairs from these base cases
+        if j >= i:
+          cnt -= dp[i-1][j-i]
           
-        dp[i][j] = s
+        dp[i][j] = cnt % mod
         if dp[i][j] == 0:
           break
     
-    # print(dp)    
-    
-    return dp[n-1][k] % (10**9+7)
+    # print(dp)
+    return dp[n][k]

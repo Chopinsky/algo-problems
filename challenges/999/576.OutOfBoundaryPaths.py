@@ -22,8 +22,39 @@ Constraints:
 '''
 
 from collections import defaultdict
+from functools import lru_cache
+
 
 class Solution:
+  def findPaths(self, m: int, n: int, maxMove: int, startRow: int, startColumn: int) -> int:
+    mod = 10**9 + 7
+    
+    @lru_cache(None)
+    def find_moves(x: int, y: int, moves: int) -> int:
+      if moves <= 0:
+        return 0
+      
+      base = (1 if x == 0 else 0) + (1 if x == m-1 else 0) + (1 if y == 0  else 0) + (1 if y == n-1 else 0)
+      if moves == 1:
+        return base
+      
+      if x > 0:
+        base += find_moves(x-1, y, moves-1)
+        
+      if x < m-1:
+        base += find_moves(x+1, y, moves-1)
+        
+      if y > 0:
+        base += find_moves(x, y-1, moves-1)
+        
+      if y < n-1:
+        base += find_moves(x, y+1, moves-1)
+        
+      return base % mod
+      
+    return find_moves(startRow, startColumn, maxMove)
+      
+
   def findPaths(self, m: int, n: int, maxMove: int, sr: int, sc: int) -> int:
     moves = defaultdict(int)
     moves[(sr, sc)] = 1

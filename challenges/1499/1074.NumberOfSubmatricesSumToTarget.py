@@ -30,7 +30,38 @@ Constraints:
 -10^8 <= target <= 10^8
 '''
 
+from collections import defaultdict
+from typing import List
+
+
 class Solution:
+  def numSubmatrixSumTarget(self, matrix: List[List[int]], target: int) -> int:
+    m, n = len(matrix), len(matrix[0])
+    row_sums = [[0]*n for _ in range(m)]
+    count = 0
+    
+    for i in range(m):
+      for j in range(n):
+        row_sums[i][j] = matrix[i][j] + (0 if j == 0 else row_sums[i][j-1])
+    
+    for l in range(n):
+      for r in range(l, n):
+        col_sums = defaultdict(int)
+        curr = 0
+        
+        for i in range(m):
+          curr += row_sums[i][r] - (row_sums[i][l-1] if l > 0 else 0)
+          if curr == target:
+            count += 1
+          
+          if curr-target in col_sums:
+            count += col_sums[curr-target]
+          
+          col_sums[curr] += 1
+    
+    return count
+    
+
   # Time complexity: O(MN^2)
   # 1) calculate prefix sum for each row
   # 2) then from col-i to col-j where j >= i, we calculate sum
@@ -56,7 +87,7 @@ class Solution:
     for i in range(w):
       for j in range(i, w):
         # dict to store prefix sums of the sub-matrix
-        sumDict = collections.defaultdict(int)
+        sumDict = defaultdict(int)
         sumDict[0] = 1   # submatrix itself == 1 count
         currSum = 0
 
@@ -70,43 +101,3 @@ class Solution:
           sumDict[currSum] += 1
 
     return ans
-
-
-  def numSubmatrixSumTarget1(self, mat: List[List[int]], target: int) -> int:
-    h, w = len(mat), len(mat[0])
-    ans = 0
-
-    dp = [[0 for _ in range(w)] for _ in range(h)]
-    for i in range(h):
-      row = 0
-      for j in range(w):
-        row += mat[i][j]
-        dp[i][j] = dp[i-1][j] + row
-
-        res = self.count(dp, target, i, j, h, w)
-        # print(i, j, res, dp[i][j])
-        ans += res
-
-    # print(dp)
-
-    return ans
-
-
-  def count(self, dp: List[List[int]], target: int, x: int, y: int, h: int, w: int) -> int:
-    base = dp[x][y]
-    count = 1 if base == target else 0
-
-    for j in range(y):
-      if target == base - dp[x][j]:
-        count += 1
-
-    for i in range(x):
-      if target == base - dp[i][y]:
-        count += 1
-
-    for i in range(x):
-      for j in range(y):
-        if target == base + dp[i][j] - dp[x][j] - dp[i][y]:
-          count += 1
-
-    return count

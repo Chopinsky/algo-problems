@@ -25,11 +25,44 @@ Constraints:
 s and words[i] consist of only lowercase English letters.
 '''
 
-from bisect import bisect_left
+from bisect import bisect_left, bisect_right
 from collections import defaultdict
 from typing import List
 
+
 class Solution:
+  def numMatchingSubseq(self, s: str, words: List[str]) -> int:
+    chars = defaultdict(list)
+    for i, ch in enumerate(s):
+      chars[ch].append(i)
+      
+    # print(chars)
+    count = 0
+    n = len(s)
+    
+    for w in words:
+      i = -1
+      found = True
+      
+      for ch in w:
+        if ch not in chars:
+          found = False
+          break
+          
+        idx = bisect_right(chars[ch], i)
+        if idx >= len(chars[ch]):
+          found = False
+          break
+          
+        i = chars[ch][idx]
+      
+      if found:
+        count += 1
+        # print(w)
+        
+    return count
+
+
   def numMatchingSubseq(self, s: str, words: List[str]) -> int:
     count = 0
     n = len(s)

@@ -22,6 +22,8 @@ The number of nodes in the list is n.
 Follow up: Could you do it in one pass?
 '''
 
+from typing import Optional
+
 
 class ListNode:
   def __init__(self, val=0, next=None):
@@ -30,6 +32,38 @@ class ListNode:
 
 
 class Solution:
+  def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+    fake_head = ListNode(val=-1, next=head)
+    idx = 0
+    last = None 
+    curr = fake_head
+    
+    while idx < left:
+      last = curr
+      curr = curr.next
+      idx += 1
+      
+    # print(last.val, curr.val)
+    stack = [curr]
+    tail = curr.next
+    
+    while idx < right and curr:
+      curr = curr.next
+      stack.append(curr)
+      tail = curr.next
+      idx += 1
+      
+    # print(curr.val, tail)
+    for i in range(len(stack)):
+      if i == 0:
+        stack[i].next = tail
+      else:
+        stack[i].next = stack[i-1]
+        
+    last.next = stack[-1]
+    return fake_head.next
+
+
   def reverseBetween(self, head: ListNode, left: int, right: int) -> ListNode:
     if left == right or not head or not head.next:
       return head

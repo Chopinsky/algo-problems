@@ -21,12 +21,54 @@ The number of nodes in the list is in the range [0, 200].
 -200 <= x <= 200
 '''
 
+from typing import Optional
+
+
 # Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
+class ListNode:
+  def __init__(self, val=0, next=None):
+    self.val = val
+    self.next = next
+
+
 class Solution:
+  def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+    small_head = ListNode()
+    small = small_head
+    large_head = ListNode()
+    large = large_head
+    curr = head
+    
+    while curr:
+      nxt = curr.next
+      if curr.val < x:
+        small.next = curr
+        small = small.next
+        small.next = None
+        
+      else:
+        large.next = curr
+        large = large.next
+        large.next = None
+        
+      curr = nxt
+    
+    if not small_head.next:
+      return large_head.next
+    
+    if not large_head.next:
+      return small_head.next
+    
+    if small:
+      small.next = large_head.next
+      large_head.next = None
+      
+    head = small_head.next
+    small_head.next = None
+    
+    return head
+    
+
   def partition(self, head: ListNode, x: int) -> ListNode:
     if head is None:
       return head

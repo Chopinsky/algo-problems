@@ -28,9 +28,52 @@ Constraints:
 
 
 from typing import List
+import math
 
 
 class Solution:
+  def countSmaller(self, nums: List[int]) -> List[int]:
+    n = len(nums)
+    idx = [0] * (n+1)
+    ans = [0] * n
+    nums = sorted((val, i) for i, val in enumerate(nums))
+    # print(idx, nums)
+    
+    last = math.inf
+    stack = []
+    
+    def update(i: int):
+      i += 1
+      while i < len(idx):
+        idx[i] += 1
+        i += (i & -i)
+        
+    def query(i: int):
+      cnt = 0
+      i += 1
+      
+      while i > 0:
+        cnt += idx[i]
+        i -= (i & -i)
+        
+      return cnt
+    
+    total = 0
+    for val, i in nums:
+      if val != last:
+        for j in stack:
+          update(j)
+          total += 1
+          
+        last = val
+        stack.clear()
+        
+      ans[i] = total - query(i)
+      stack.append(i)
+    
+    return ans
+
+
   def countSmaller(self, nums: List[int]) -> List[int]:
     n = len(nums)
     ans = [0 for _ in range(n)]

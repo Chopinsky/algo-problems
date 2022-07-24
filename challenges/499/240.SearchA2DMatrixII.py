@@ -20,13 +20,33 @@ Constraints:
 m == matrix.length
 n == matrix[i].length
 1 <= n, m <= 300
--109 <= matrix[i][j] <= 109
+-10^9 <= matrix[i][j] <= 10^9
 All the integers in each row are sorted in ascending order.
 All the integers in each column are sorted in ascending order.
--109 <= target <= 109
+-10^9 <= target <= 10^9
 '''
 
+from typing import List
+from bisect import bisect_left, bisect_right
+
+
 class Solution:
+  def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+    m, n = len(matrix), len(matrix[0])
+    for i in range(m):
+      if target > matrix[i][-1]:
+        continue
+        
+      if target < matrix[i][0]:
+        break
+        
+      j = bisect_left(matrix[i], target)
+      if j < n and matrix[i][j] == target:
+        return True
+      
+    return False
+
+    
   def searchMatrix(self, mat: List[List[int]], t: int) -> bool:
     if t < mat[0][0] or t > mat[-1][-1]:
       return False

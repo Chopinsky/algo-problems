@@ -22,11 +22,15 @@ Output: [-1,-1]
 
 Constraints:
 
-0 <= nums.length <= 105
--109 <= nums[i] <= 109
+0 <= nums.length <= 10^5
+-10^9 <= nums[i] <= 10^9
 nums is a non-decreasing array.
--109 <= target <= 109
+-10^9 <= target <= 10^9
 '''
+
+from typing import List
+import bisect
+
 
 class Solution:
   def searchRange(self, nums: List[int], target: int) -> List[int]:

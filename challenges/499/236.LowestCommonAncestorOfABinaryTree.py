@@ -30,7 +30,6 @@ p != q
 p and q will exist in the tree.
 '''
 
-
 from typing import Optional, Tuple
 
 
@@ -42,6 +41,41 @@ class TreeNode:
 
 
 class Solution:
+  def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+    found = False
+    
+    def find(root):
+      nonlocal found
+      
+      if not root or found:
+        return None
+      
+      l = find(root.left)
+      r = find(root.right)
+      cnt = 1 if (root.val == p.val or root.val == q.val) else 0
+      
+      if l:
+        cnt += 1
+        
+      if r:
+        cnt += 1
+        
+      # print(root.val, cnt)
+      if cnt == 2:
+        found = True
+        return root
+      
+      if cnt == 1:
+        if not l and not r:
+          return root
+        
+        return l if l is not None else r
+        
+      return None
+    
+    return find(root)
+
+
   def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
     if not root:
       return root

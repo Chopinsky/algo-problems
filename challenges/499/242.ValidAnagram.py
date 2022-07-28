@@ -19,7 +19,24 @@ s and t consist of lowercase English letters.
 Follow up: What if the inputs contain Unicode characters? How would you adapt your solution to such a case?
 '''
 
+from typing import Counter
+
+
 class Solution:
+  def isAnagram(self, s: str, t: str) -> bool:
+    c0 = Counter(s)
+    c1 = Counter(t)
+    
+    if set(c0) != set(c1):
+      return False
+    
+    for ch in c0:
+      if c0[ch] != c1[ch]:
+        return False
+      
+    return True
+
+
   def isAnagram(self, s: str, t: str) -> bool:
     if len(s) != len(t):
       return False

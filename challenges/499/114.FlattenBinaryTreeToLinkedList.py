@@ -30,13 +30,43 @@ The number of nodes in the tree is in the range [0, 2000].
 Follow up: Can you flatten the tree in-place (with O(1) extra space)?
 '''
 
+from typing import Union, Tuple, Optional
+
+
 # Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+class TreeNode:
+  def __init__(self, val=0, left=None, right=None):
+    self.val = val
+    self.left = left
+    self.right = right
+
+
 class Solution:
+  def flatten(self, root: Optional[TreeNode]) -> None:
+    """
+    Do not return anything, modify root in-place instead.
+    """
+    last = None
+    
+    def iterate(root):
+      nonlocal last
+      
+      if not root:
+        return
+      
+      # stack.append(root)
+      l, r = root.left, root.right
+      if last:
+        last.left = None
+        last.right = root
+        
+      last = root
+      iterate(l)
+      iterate(r)
+      
+    iterate(root)
+
+
   def flatten(self, root: TreeNode) -> None:
     """
     Do not return anything, modify root in-place instead.

@@ -26,8 +26,39 @@ pattern and words[i] are lowercase English letters.
 '''
 
 from typing import List
+from functools import lru_cache
+
 
 class Solution:
+  def findAndReplacePattern(self, words: List[str], pattern: str) -> List[str]:
+    chars = 'abcdefghijklmnopqrstuvwxyz'
+    
+    @lru_cache(None)
+    def build_pattern(s: str) -> str:
+      idx = 0
+      seen = {}
+      pt = ''
+      
+      for ch in s:
+        if ch not in seen:
+          seen[ch] = chars[idx]
+          idx += 1
+          
+        pt += seen[ch]
+      
+      return pt
+    
+    base = build_pattern(pattern)
+    # print(base)
+    ans = []
+    
+    for w in words:
+      if build_pattern(w) == base:
+        ans.append(w)
+        
+    return ans
+
+
   def findAndReplacePattern(self, words: List[str], pattern: str) -> List[str]:
     n = len(pattern)
     ans = []

@@ -35,7 +35,49 @@ At most 3 * 104 calls will be made to update and sumRange.
 
 from typing import List
 
+
 class NumArray:
+  def __init__(self, nums: List[int]):
+    n = len(nums)
+    self.nums = nums
+    self.arr = [0] * (n+1)
+    
+    for idx, val in enumerate(nums):
+      self.fenwick_update(idx, val)
+    
+    
+  def fenwick_update(self, idx: int, val: int) -> None:
+    idx += 1
+    
+    while idx < len(self.arr):
+      self.arr[idx] += val
+      idx += (idx & -idx)
+
+  
+  def fenwick_query(self, idx: int) -> int:
+    total = 0
+    idx += 1
+    
+    while idx > 0:
+      total += self.arr[idx]
+      idx -= (idx & -idx)
+      
+    return total
+  
+
+  def update(self, index: int, val: int) -> None:
+    delta = val - self.nums[index]
+    self.fenwick_update(index, delta)
+    self.nums[index] = val
+    
+
+  def sumRange(self, left: int, right: int) -> int:
+    s0 = self.fenwick_query(right)
+    s1 = 0 if left == 0 else self.fenwick_query(left-1)
+    return s0 - s1
+
+
+class NumArray0:
   def __init__(self, nums: List[int]):
     n = len(nums)
     self.fenwick = [0] * (n+1)

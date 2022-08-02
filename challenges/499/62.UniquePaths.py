@@ -39,6 +39,18 @@ It's guaranteed that the answer will be less than or equal to 2 * 109.
 
 class Solution:
   def uniquePaths(self, m: int, n: int) -> int:
+    p0, p1 = [1]*n, [0]*n
+    
+    for i in range(1, m):
+      for j in range(n):
+        p1[j] = (p1[j-1] if j > 0  else 0) + p0[j]
+      
+      p0, p1 = p1, p0
+    
+    return p0[-1]
+
+    
+  def uniquePaths(self, m: int, n: int) -> int:
     dp = [1 for _ in range(n)]
     nxt = []
     

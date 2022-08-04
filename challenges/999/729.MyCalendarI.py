@@ -27,6 +27,7 @@ In calls to MyCalendar.book(start, end), start and end are integers in the range
 
 from bisect import bisect_left
 
+
 class MyCalendar:
   def __init__(self):
     self.cal = []

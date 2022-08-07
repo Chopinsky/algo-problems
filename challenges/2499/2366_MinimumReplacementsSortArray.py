@@ -37,7 +37,7 @@ class Solution:
   i.e. minimize the necessity to further split nums[i-1]; to achieve this goal, we can maximize
   the average of the split numbers array: sum(arr) == v0, and len(arr) == div+1, then the max
   of the smallest number in this array is `v0 // (div+1)`, with `v0 % (div+1)` elements be +1 
-  bigger as the number.
+  bigger as the number (i.e. `1 + (v0 // (div+1))`).
   '''
   def minimumReplacement(self, nums: List[int]) -> int:
     cnt = 0
@@ -57,8 +57,8 @@ class Solution:
         nums[i] = v1
 
       # v0 will be split into [v0 // (div+1)] * div, with the v0 % (div+1) 
-      # evenly spreaded towards the tail end of the array, this will maximize
-      # the smallest number that will replace nums[i]
+      # count of numbers towards the tail end of the array be +1 bigger, this 
+      # will maximize the smallest number that will replace nums[i]
       else:
         nums[i] = v0 // (div+1)
         

@@ -46,8 +46,33 @@ class Solution:
     [0, 0, 1, 1, 0],
   ]
 
-  And we can calculate A ** n quickly with:
+  And we can calculate A ** n quickly with fast matrix multiplications
   '''
+  def countVowelPermutation(self, n: int) -> int:
+    rules = {
+      0: [1],
+      1: [0,2],
+      2: [0,1,3,4],
+      3: [2,4],
+      4: [0]
+    }
+    
+    curr, nxt = [1]*5, [0]*5
+    mod = 10 ** 9 + 7
+    
+    for _ in range(1, n):
+      for i in range(5):
+        for j in rules[i]:
+          nxt[j] = (nxt[j] + curr[i]) % mod
+          
+      curr, nxt = nxt, curr
+      for i in range(5):
+        nxt[i] = 0
+    
+    # print(curr)
+    return sum(curr) % mod
+
+
   def countVowelPermutation(self, n: int) -> int:
     v = [1] * 5
     temp = [0] * 5

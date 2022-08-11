@@ -39,6 +39,25 @@ class TreeNode:
 
 class Solution:
   def isValidBST(self, root: Optional[TreeNode]) -> bool:
+    def check(root, low, high):
+      if not root:
+        return True
+      
+      if root.val <= low or root.val >= high:
+        return False
+      
+      if root.left and root.val <= root.left.val:
+        return False
+      
+      if root.right and root.val >= root.right.val:
+        return False
+      
+      return check(root.left, low, root.val) and check(root.right, root.val, high)
+    
+    return check(root, -math.inf, math.inf)
+    
+
+  def isValidBST(self, root: Optional[TreeNode]) -> bool:
     def validate(root: Optional[TreeNode], low: int, high: int) -> bool:
       if not root:
         return True

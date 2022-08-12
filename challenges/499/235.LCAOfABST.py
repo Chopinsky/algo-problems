@@ -29,7 +29,6 @@ p != q
 p and q will exist in the BST.
 '''
 
-
 import math
 
 
@@ -42,6 +41,36 @@ class TreeNode:
 
 
 class Solution:
+  def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+    def lca(root):
+      if not root:
+        return None, None
+      
+      p0, q0 = None, None
+      if root.val == p.val:
+        p0 = root
+        
+      if root.val == q.val:
+        q0 = root
+      
+      pl, ql = lca(root.left)
+      pr, qr = lca(root.right)
+      
+      if not p0:
+        p0 = pl if pl else pr
+        
+      if not q0:
+        q0 = ql if ql else qr
+        
+      if p0 and q0:
+        return root, None
+      
+      return p0, q0
+      
+    p, q = lca(root)
+    return p if p else q
+
+
   def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
     while root:
       if root.val > p.val and root.val > q.val:

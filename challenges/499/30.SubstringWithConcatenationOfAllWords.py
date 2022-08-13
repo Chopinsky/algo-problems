@@ -31,10 +31,47 @@ words[i] consists of lower-case English letters.
 
 
 from typing import List
-from collections import defaultdict
+from collections import defaultdict, Counter, deque
 
 
 class Solution:
+  def findSubstring(self, s: str, words: List[str]) -> List[int]:
+    ans = []
+    n = len(s)
+    m = len(words)
+    k = len(words[0])
+    dic = Counter(words)
+    # print(dic)
+    
+    def search(idx: int):
+      stack = deque([])
+      seen = defaultdict(int)
+      
+      while idx+k <= n:
+        w = s[idx:idx+k]
+        if w not in dic:
+          stack.clear()
+          seen.clear()
+        
+        else:
+          while stack and seen[w] >= dic[w]:
+            w0, _ = stack.popleft()
+            seen[w0] -= 1
+            
+          stack.append((w, idx))
+          seen[w] += 1
+          # print(stack)
+          
+        idx += k
+        if len(stack) == m:
+          ans.append(stack[0][1])
+      
+    for i in range(k):
+      search(i)
+      
+    return ans
+
+
   def findSubstring(self, s: str, words: List[str]) -> List[int]:
     ans = []
     size = len(words[0])

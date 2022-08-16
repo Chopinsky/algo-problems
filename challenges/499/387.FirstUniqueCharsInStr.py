@@ -22,8 +22,23 @@ Constraints:
 s consists of only lowercase English letters.
 '''
 
+import math
+
 
 class Solution:
+  def firstUniqChar(self, s: str) -> int:
+    dic = {}
+    for i, ch in enumerate(s):
+      if ch in dic:
+        dic[ch] = math.inf
+      else:
+        dic[ch] = i
+        
+    idx = min(dic.values())    
+    
+    return -1 if idx == math.inf else idx
+
+
   def firstUniqChar(self, s: str) -> int:
     chars = [-1] * 26
     

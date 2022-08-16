@@ -35,9 +35,88 @@ All the words in wordList are unique.
 from typing import List
 from collections import defaultdict
 from string import ascii_lowercase
+from functools import lru_cache
+import math
 
 
 class Solution:
+  def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
+    if endWord not in wordList:
+      return []
+    
+    dic = defaultdict(list)
+    curr, nxt = [], []
+    m = len(endWord)
+    
+    @lru_cache(None)
+    def gen_key(w: str) -> List:
+      lst = []
+      for i in range(m):
+        lst.append(w[:i] + '*' + w[i+1:])
+        
+      return lst
+    
+    for w in wordList:
+      for key in gen_key(w):
+        dic[key].append(w)
+        
+    dist = {endWord: 0}
+    d = 1
+    curr, nxt = [endWord], []
+    
+    while curr:
+      for w in curr:
+        for key in gen_key(w):
+          for w0 in dic[key]:
+            if w0 in dist:
+              continue
+              
+            dist[w0] = d
+            nxt.append(w0)
+      
+      curr, nxt = nxt, curr
+      nxt.clear()
+      d += 1
+    
+    # print(dist)
+    total = math.inf
+    curr.clear()
+    
+    # init the answer seed array
+    for key in gen_key(beginWord):
+      for w in dic[key]:
+        # w is not reachable from the endWord
+        if w not in dist:
+          continue
+          
+        if dist[w] < total:
+          curr.clear()
+          total = dist[w]
+        
+        if dist[w] == total:
+          curr.append([beginWord, w])
+          
+    # print(total, curr)
+    if total == math.inf:
+      return []
+    
+    while curr[0][-1] != endWord:
+      total -= 1
+
+      for lst in curr:
+        for key in gen_key(lst[-1]):
+          for w in dic[key]:
+            if dist[w] != total:
+              continue
+              
+            nxt.append(lst + [w])
+        
+      curr, nxt = nxt, curr
+      nxt.clear()
+    
+    return curr
+    
+
   def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
     wordSet = set(wordList)
     

@@ -40,11 +40,25 @@ arr.length is even.
 '''
 
 
-from collections import defaultdict
+from collections import defaultdict, Counter
 from typing import List
 
 
 class Solution:
+  def minSetSize(self, arr: List[int]) -> int:
+    c = Counter(arr)
+    lst = sorted(cnt for cnt in c.values())
+    total = len(arr)
+    removed = 0
+    ans = 0
+    
+    while removed < total // 2:
+      removed += lst.pop()
+      ans += 1
+      
+    return ans
+
+
   def minSetSize(self, arr: List[int]) -> int:
     count = defaultdict(int)
     for num in arr:

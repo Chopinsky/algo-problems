@@ -44,6 +44,8 @@ Note:
 from heapq import heappush, heappop
 from bisect import bisect_left
 from typing import List
+from collections import defaultdict
+
 
 class Solution:
   def minRefuelStops(self, target: int, fuel: int, stations: List[List[int]]) -> int:
@@ -74,6 +76,42 @@ class Solution:
       
     # we've reached the target, done
     return count
+
+
+  def minRefuelStops(self, target: int, startFuel: int, stations: List[List[int]]) -> int:
+    curr, nxt = defaultdict(int), defaultdict(int)
+    curr[0] = startFuel
+    last = 0
+    
+    for p, f in stations:
+      if p >= target:
+        break
+      
+      cost = p - last
+      for cnt, rem in curr.items():
+        if rem < cost:
+          continue
+          
+        if rem > cost:
+          nxt[cnt] = max(nxt[cnt], rem-cost)
+          
+        nxt[cnt+1] = max(nxt[cnt+1], rem-cost+f)
+      
+      last = p
+      curr, nxt = nxt, curr
+      nxt.clear()
+      
+      # print(p, f, curr)
+      if not curr:
+        break
+        
+    if curr:
+      for cnt in sorted(curr):
+        if curr[cnt] >= target - last:
+          return cnt
+      
+    return -1
+
     
   def minRefuelStops1(self, t: int, s: int, stations: List[List[int]]) -> int:
     if s >= t:

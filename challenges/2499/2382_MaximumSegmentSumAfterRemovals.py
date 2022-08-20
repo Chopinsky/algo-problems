@@ -46,6 +46,59 @@ from bisect import insort, bisect_left, bisect_right
 
 
 class Solution:
+  '''
+  essentially the problem asks for the largest segment sums if we *add* numbers at the
+  indexs in the query back from tail to head; so we can use union-find algorithm for 
+  this job: after adding a number from index-i back into the array, union this number
+  with the segment that contains index-(i-1), and the segment that contains index-(i+1),
+  and we should also update the segment sums of the resulting segment from the unions;
+  and we can update the max segment sum in the process, which is the anser to (the next) query.
+  '''
+  def maximumSegmentSum(self, nums: List[int], removeQueries: List[int]) -> List[int]:
+    n = len(nums)
+    arr = [i for i in range(n)]
+    ans = [0] * n
+    seen = set()
+    curr_max = 0
+    
+    def find(x: int) -> int:
+      while arr[x] != x:
+        x = arr[x]
+        
+      return x
+    
+    def union(x: int, y: int) -> int:
+      xx, yy = find(x), find(y)
+      # print('union', (x, xx), (y, yy))
+      # print('before union:', nums)
+      
+      if xx <= yy:
+        arr[yy] = xx
+        nums[xx] += nums[yy]
+        
+      else:
+        arr[xx] = yy
+        nums[yy] += nums[xx]
+        
+      return max(nums[xx], nums[yy])
+    
+    curr_max = 0
+    for i in range(n-1, -1, -1):
+      q = removeQueries[i]
+      ans[i] = curr_max
+      curr_max = max(curr_max, nums[q])
+      
+      if q-1 in seen:
+        curr_max = max(curr_max, union(q, q-1))
+        
+      if q+1 in seen:
+        curr_max = max(curr_max, union(q, q+1))
+      
+      seen.add(q)
+      
+    return ans
+  
+  
   def maximumSegmentSum(self, nums: List[int], removeQueries: List[int]) -> List[int]:
     n = len(nums)
     prefix = [val for val in nums]

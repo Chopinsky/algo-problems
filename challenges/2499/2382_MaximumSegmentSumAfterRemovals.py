@@ -82,18 +82,27 @@ class Solution:
         
       return max(nums[xx], nums[yy])
     
+    # before executing the query, store the biggest segment sum in `curr_max`
     curr_max = 0
+
+    # add the numbers from the index back, the result will be for the next
+    # query post-execution
     for i in range(n-1, -1, -1):
-      q = removeQueries[i]
       ans[i] = curr_max
+      q = removeQueries[i]
+
+      # before the union, assuming the number is a segement of its own
       curr_max = max(curr_max, nums[q])
       
+      # if q-1 has been added to the array previously
       if q-1 in seen:
         curr_max = max(curr_max, union(q, q-1))
         
+      # if q+1 has been added to the array previously
       if q+1 in seen:
         curr_max = max(curr_max, union(q, q+1))
       
+      # add index-q to the seen set
       seen.add(q)
       
     return ans

@@ -26,14 +26,64 @@ n == matrix[i].length
 Follow up: What if the number of rows is much larger than the number of columns?
 '''
 
-
 import bisect
 import math
 from collections import defaultdict
 from typing import List
+from sortedcontainers import SortedList
 
 
 class Solution:
+  def maxSumSubmatrix(self, matrix: List[List[int]], k: int) -> int:
+    m, n = len(matrix), len(matrix[0])
+    prefix = [[val for val in matrix[i]] for i in range(m)]
+    
+    for i in range(m):
+      for j in range(1, n):
+        prefix[i][j] += prefix[i][j-1]
+        
+    # print(prefix)
+    max_val = -math.inf
+    lst = SortedList()
+    
+    def calc_sums(col: int, ln: int) -> int:
+      lst.clear()
+      max_sum = -math.inf
+      curr = 0
+      
+      for i in range(m):
+        if col == ln-1:
+          s = prefix[i][col]
+        else:
+          s = prefix[i][col] - prefix[i][col-ln]
+          
+        if s <= k:
+          max_sum = max(max_sum, s)
+
+        curr += s
+        if curr <= k:
+          max_sum = max(max_sum, curr)
+        
+        if lst:
+          idx = lst.bisect_left(curr-k)
+          if idx < len(lst):
+            max_sum = max(max_sum, curr-lst[idx])
+          
+        lst.add(curr)
+      
+      # print(col, ln, max_sum)
+      return max_sum
+    
+    for ln in range(1, n+1):
+      for j in range(ln-1, n):
+        max_val = max(max_val, calc_sums(j, ln))
+        if max_val == k:
+          return k
+    
+    return max_val
+    
+
+class Solution0:
   def maxSumSubmatrix0(self, matrix: List[List[int]], k: int) -> int:
     m, n = len(matrix), len(matrix[0])
     dp = [[0] * n for _ in range(m)]

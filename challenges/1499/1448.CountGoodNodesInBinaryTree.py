@@ -31,6 +31,9 @@ The number of nodes in the binary tree is in the range [1, 10^5].
 Each node's value is between [-10^4, 10^4].
 '''
 
+from heapq import heappush, heappop
+from collections import defaultdict
+
 
 # Definition for a binary tree node.
 class TreeNode:
@@ -38,6 +41,7 @@ class TreeNode:
     self.val = val
     self.left = left
     self.right = right
+
 
 class Solution:
   def goodNodes(self, root: TreeNode) -> int:
@@ -49,3 +53,33 @@ class Solution:
       return iterate(root.left, top) + iterate(root.right, top) + (1 if root.val >= top else 0)
     
     return iterate(root, root.val if root else 0)
+
+
+  def goodNodes(self, root: TreeNode) -> int:
+    h = []
+    store = defaultdict(int)
+    count = 0
+    
+    def iterate(root):
+      nonlocal count
+      if not root:
+        return
+      
+      # print(root.val, h)
+      if not h or -h[0] <= root.val:
+        count += 1
+        
+      store[root.val] += 1
+      if store[root.val] == 1:
+        heappush(h, -root.val)
+        
+      iterate(root.left)
+      iterate(root.right)
+      
+      store[root.val] -= 1
+      while h and store[-h[0]] == 0:
+        heappop(h)
+      
+    iterate(root)
+    return count
+      

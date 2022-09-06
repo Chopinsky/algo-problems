@@ -27,6 +27,9 @@ The number of nodes in the tree is in the range [1, 200].
 Node.val is either 0 or 1.
 '''
 
+from typing import Optional
+
+
 # Definition for a binary tree node.
 class TreeNode:
   def __init__(self, val=0, left=None, right=None):
@@ -36,6 +39,29 @@ class TreeNode:
 
 
 class Solution:
+  def pruneTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+    def prune(root) -> bool:
+      if not root:
+        return False
+      
+      l = prune(root.left)
+      r = prune(root.right)
+      
+      if not l:
+        root.left = None
+        
+      if not r:
+        root.right = None
+        
+      return root.val == 1 or l or r
+    
+    res = prune(root)
+    if not res:
+      return None
+    
+    return root
+
+
   def pruneTree(self, root: TreeNode) -> TreeNode:
     def check(root: TreeNode) -> bool:
       if not root or (root.val != 1 and not root.left and not root.right):

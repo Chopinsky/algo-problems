@@ -30,8 +30,32 @@ properties[i].length == 2
 1 <= attacki, defensei <= 10^5
 '''
 
+from typing import List
+from collections import defaultdict
+
 
 class Solution:
+  def numberOfWeakCharacters(self, properties: List[List[int]]) -> int:
+    chars = defaultdict(list)
+    count = 0
+    large = -1
+    
+    for a, d in properties:
+      chars[a].append(d)
+    
+    for a in sorted(chars, reverse=True):
+      nxt_large = -1
+      for d in chars[a]:
+        if d < large:
+          count += 1
+          
+        nxt_large = max(nxt_large, d)
+        
+      large = max(large, nxt_large)
+    
+    return count
+    
+
   def numberOfWeakCharacters(self, properties: List[List[int]]) -> int:
     properties.sort(reverse=True)
     hd, count = 0, 0

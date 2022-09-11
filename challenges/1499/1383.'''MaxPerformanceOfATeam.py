@@ -36,9 +36,37 @@ efficiency.length == n
 '''
 
 from typing import List
-from heapq import heappush, heappop
+from heapq import heappush, heappop, heappushpop
+
 
 class Solution:
+  def maxPerformance(self, n: int, speed: List[int], efficiency: List[int], k: int) -> int:
+    mod = 10**9 + 7
+    perf = sorted([(e, s) for s, e in zip(speed, efficiency)], reverse=True)
+    res = 0
+    speed_sum = 0
+    q = []
+    # print(perf)
+    
+    for e, s in perf:
+      if len(q) < k:
+        heappush(q, s)
+        speed_sum += s
+        res = max(res, speed_sum * e)
+        continue
+        
+      if s <= q[0]:
+        continue
+        
+      removed = heappushpop(q, s)
+      # print(e, s, removed)
+      
+      speed_sum += (s - removed)
+      res = max(res, speed_sum * e)
+    
+    return res % mod
+    
+
   def maxPerformance(self, n: int, speed: List[int], efficiency: List[int], k: int) -> int:
     if k == 1:
       return max([efficiency[i] * speed[i] for i in range(n)])

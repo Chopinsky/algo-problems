@@ -27,8 +27,51 @@ words[i] consists of lower-case English letters.
 
 from typing import List
 from collections import defaultdict
+from functools import lru_cache
+
 
 class Solution:
+  def palindromePairs(self, words: List[str]) -> List[List[int]]:
+    src = sorted([(w, len(w), i, 0) for i, w in enumerate(words)] + [(w[::-1], len(w), i, 1) for i, w in enumerate(words)])
+    # print(src)
+    
+    n = len(src)
+    ans = []
+    
+    @lru_cache(None)
+    def is_pal(w: str) -> bool:
+      # print('check:', w)
+      i, j = 0, len(w)-1
+      
+      while i < j:
+        if w[i] != w[j]:
+          return False
+        
+        i += 1
+        j -= 1
+        
+      return True
+    
+    for i in range(n-1):
+      w0, ln0, i0, t0 = src[i]
+      
+      for j in range(i+1, n):
+        w1, _, i1, t1 = src[j]
+        if not w1.startswith(w0):
+          break
+        
+        # print('pair:', w0, w1)
+        if i0 == i1 or t0 == t1 or not is_pal(w1[ln0:]):
+          continue
+          
+        if t0 == 0:
+          ans.append([i0, i1])
+        else:
+          ans.append([i1, i0])
+    
+    return ans
+    
+
   def palindromePairs(self, words: List[str]) -> List[List[int]]:
     # 0 means the word is not reversed, 1 means the word is reversed; sort to bring
     # shared suffix/prefix words together

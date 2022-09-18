@@ -51,8 +51,6 @@ class Solution:
       if cost > disc:
         deficit += cost-disc
 
-      min_req += cost
-
     for cost, disc in t:
       curr_deficit = deficit if cost <= disc else deficit-(cost-disc)
       min_req = max(min_req, cost + curr_deficit)

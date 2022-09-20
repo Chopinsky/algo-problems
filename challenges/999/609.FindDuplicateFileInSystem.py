@@ -34,8 +34,38 @@ You may assume each given directory info represents a unique directory. A single
 
 from collections import defaultdict
 from typing import List
+from functools import lru_cache
+
 
 class Solution:
+  def findDuplicate(self, paths: List[str]) -> List[List[str]]:
+    store = defaultdict(list)
+    
+    @lru_cache(None)
+    def parse_file(src):
+      content = src.split('.txt(')
+      return content[0]+'.txt', content[1][:-1]
+    
+    @lru_cache(None)
+    def parse(src):
+      arr = src.split(' ')
+      dir_name = arr[0]
+      
+      for file in arr[1:]:
+        file_name, content = parse_file(file)
+        store[content].append(f"{dir_name}/{file_name}")
+        
+    for path in paths:
+      parse(path)
+    
+    ans = []
+    for files in store.values():
+      if len(files) > 1:
+        ans.append(files)
+      
+    return ans
+      
+
   def findDuplicate(self, paths: List[str]) -> List[List[str]]:
     ans = []
     contents = defaultdict(list)

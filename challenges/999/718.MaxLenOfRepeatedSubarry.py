@@ -77,4 +77,62 @@ class Solution:
     # print(dp)
     
     return longest
+
+
+  def findLength00(self, nums1: List[int], nums2: List[int]) -> int:
+    m, n = len(nums1), len(nums2)
+    dp = {}
+    
+    def match(i: int, j: int) -> int:
+      if (i, j) in dp:
+        return dp[i, j]
+            
+      stack = []
+      while i < m and j < n and (i, j) not in dp and nums1[i] == nums2[j]:
+        stack.append((i, j))
+        i += 1
+        j += 1
+        
+      if i == m or j == n or nums1[i] != nums2[j]:
+        cnt = 0
+      
+      else:
+        cnt = dp[i, j]
+      
+      while stack:
+        i, j = stack.pop()
+        cnt += 1
+        dp[i, j] = cnt
+      
+      return cnt
+      
+    cand = set(nums2)
+    long = 0
+    
+    for i in range(m):
+      if nums1[i] not in cand:
+        continue
+        
+      j = 0
+      while j < n:
+        if long >= n-j:
+          break
+        
+        if nums1[i] != nums2[j]:
+          j += 1
+          continue
+          
+        ln = match(i, j)
+        long = max(long, ln)
+        # print(i, j, ln)
+        
+        if long == m or long == n:
+          return long
+        
+        j += 1
+        
+      if long >= m-i:
+        break
+    
+    return long
   

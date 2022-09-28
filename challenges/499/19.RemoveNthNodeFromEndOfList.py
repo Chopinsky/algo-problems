@@ -26,12 +26,34 @@ The number of nodes in the list is sz.
 1 <= n <= sz
 '''
 
+from typing import Optional
+
+
 # Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
+class ListNode:
+  def __init__(self, val=0, next=None):
+    self.val = val
+    self.next = next
+
+
 class Solution:
+  def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+    stack = []
+    curr = head
+    
+    while curr:
+      stack.append(curr)
+      curr = curr.next
+    
+    if n == len(stack):
+      return head.next
+    
+    idx = len(stack)-n
+    stack[idx-1].next = stack[idx+1] if idx+1 < len(stack) else None
+    
+    return head
+
+
   def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
     back, front = head, head
 

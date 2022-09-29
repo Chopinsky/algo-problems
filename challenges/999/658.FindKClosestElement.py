@@ -26,10 +26,42 @@ arr is sorted in ascending order.
 
 
 from typing import List
-from bisect import bisect_left
+from bisect import bisect_left, bisect_right
 
 
 class Solution:
+  def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
+    n = len(arr)
+    if k >= n:
+      return arr
+    
+    l = bisect_right(arr, x)-1
+    r = l+1
+    ans = []
+    # print(l, r, arr[l])
+    
+    while len(ans) < k:
+      if l < 0:
+        ans.append(arr[r])
+        r += 1
+        continue
+        
+      if r >= n:
+        ans.append(arr[l])
+        l -= 1
+        continue
+        
+      if x-arr[l] <= arr[r]-x:
+        ans.append(arr[l])
+        l -= 1
+      else:
+        ans.append(arr[r])
+        r += 1
+    
+    ans.sort()
+    return ans
+
+
   '''
   idea is to find the left bound for the window, where we can run a binary search to 
   quickly locate. The initial left bound's range must fall in the [0, len(arr)-k-1],

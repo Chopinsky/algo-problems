@@ -42,7 +42,42 @@ Constraints:
 1 <= target <= 1000
 '''
 
+from functools import lru_cache
+
+
 class Solution:
+  def numRollsToTarget(self, n: int, k: int, target: int) -> int:
+    mod = 10**9 + 7
+    
+    @lru_cache(None)
+    def dp(t: int, rem: int) -> int:
+      if t < 0:
+        return 0
+      
+      if t == 0:
+        return 1 if rem == 0 else 0
+        
+      if rem == 0:
+        return 1 if t == 0 else 0
+      
+      if rem*k < t:
+        return 0
+      
+      if rem == 1:
+        return 1 if 1 <= t <= k else 0
+      
+      cnt = 0
+      for val in range(1, k+1):
+        if val > t:
+          break
+          
+        cnt += dp(t-val, rem-1)
+        
+      return cnt % mod
+    
+    return dp(target, n)
+  
+
   def numRollsToTarget(self, d: int, f: int, target: int) -> int:
     if (d == 1 and target <= f) or (target == d):
       return 1

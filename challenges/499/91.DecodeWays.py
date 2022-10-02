@@ -53,6 +53,29 @@ from functools import lru_cache
 
 class Solution:
   def numDecodings(self, s: str) -> int:
+    n = len(s)
+    
+    @lru_cache(None)
+    def decode(i: int) -> int:
+      if i >= n:
+        return 0
+      
+      if s[i] == '0':
+        return 0
+      
+      if i == n-1:
+        return 1
+      
+      count = decode(i+1)
+      if int(s[i:i+2]) <= 26:
+        count += 1 if i == n-2 else decode(i+2)
+
+      return count
+    
+    return decode(0)
+
+    
+  def numDecodings(self, s: str) -> int:
     @lru_cache(None)
     def dp(idx: int) -> int:
       if idx < 0:

@@ -37,6 +37,26 @@ from typing import List
 
 
 class Solution:
+  def minCost(self, colors: str, time: List[int]) -> int:
+    last = ''
+    last_total = 0
+    max_time = 0
+    total = 0
+    
+    for i, c in enumerate(colors):
+      if c == last:
+        max_time = max(max_time, time[i])
+        last_total += time[i]
+        continue
+        
+      total += last_total - max_time
+      last = c
+      last_total = time[i]
+      max_time = time[i]
+      
+    return total + (last_total - max_time)
+   
+   
   def minCost(self, s: str, cost: List[int]) -> int:
     ch = s[0]
     total, n = 0, len(s)

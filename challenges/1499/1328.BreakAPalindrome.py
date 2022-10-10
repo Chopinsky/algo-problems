@@ -36,6 +36,21 @@ palindrome consists of only lowercase English letters.
 
 
 class Solution:
+  def breakPalindrome(self, p: str) -> str:
+    n = len(p)
+    if n == 1:
+      return ''
+    
+    for i in range(n):
+      if n%2 == 1 and 2*i+1 == n:
+        continue
+        
+      if p[i] != 'a':
+        return p[:i] + 'a' + p[i+1:]
+      
+    return p[:n-1] + 'b'
+
+
   def breakPalindrome(self, palindrome: str) -> str:
     n = len(palindrome)
     if n == 1:

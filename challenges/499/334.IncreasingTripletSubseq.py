@@ -21,13 +21,37 @@ Explanation: The triplet (3, 4, 5) is valid because nums[3] == 0 < nums[4] == 4 
 
 Constraints:
 
-1 <= nums.length <= 5 * 105
--231 <= nums[i] <= 231 - 1
+1 <= nums.length <= 5 * 10^5
+-2^31 <= nums[i] <= 2^31 - 1
 
 Follow up: Could you implement a solution that runs in O(n) time complexity and O(1) space complexity?
 '''
 
+from typing import List
+import math
+
+
 class Solution:
+  def increasingTriplet(self, nums: List[int]) -> bool:
+    stack = []
+    n = len(nums)
+    small = math.inf
+    big = -math.inf
+    
+    for val in nums:
+      stack.append(val > small)
+      small = min(small, val)
+      
+    for i in range(n-1, 0, -1):
+      val = nums[i]
+      if val < big and small[i]:
+        return True
+
+      big = max(big, val)
+      
+    return False
+    
+
   def increasingTriplet(self, nums: List[int]) -> bool:
     p0 = None
     p1 = None

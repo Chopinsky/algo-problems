@@ -50,6 +50,7 @@ class Solution:
     node.val = node.next.val
     node.next = node.next.next
 
+
   def deleteNode1(self, node):
     """
     :type node: ListNode

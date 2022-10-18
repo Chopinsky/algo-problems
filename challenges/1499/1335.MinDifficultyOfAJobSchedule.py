@@ -39,6 +39,40 @@ import math
 
 
 class Solution:
+  def minDifficulty(self, dif: List[int], d: int) -> int:
+    n = len(dif)
+    
+    @lru_cache(None)
+    def dp(i: int, d: int) -> int:
+      if i < 0 and d == 0:
+        return 0
+      
+      if i < 0 or d <= 0 or d > i+1:
+        return -1
+      
+      if d == i+1:
+        return sum(dif[:i+1])
+      
+      min_dif = math.inf
+      curr_dif = -1
+      
+      for j in range(i, -1, -1):
+        # more days then remaining jobs
+        if d-1 > j:
+          break
+          
+        # assuming we take job [j, i] on this day
+        curr_dif = max(curr_dif, dif[j])
+        nxt_dif = dp(j-1, d-1)
+        
+        if nxt_dif >= 0:
+          min_dif = min(min_dif, curr_dif+nxt_dif)
+      
+      return -1 if min_dif == math.inf else min_dif
+      
+    return dp(n-1, d)
+
+    
   def minDifficulty(self, jobs: List[int], d: int) -> int:
     n = len(jobs)
     prefix = [d for d in jobs]

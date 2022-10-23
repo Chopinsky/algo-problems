@@ -35,10 +35,84 @@ Follow up: Could you find an algorithm that runs in O(m + n) time?
 '''
 
 
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 
 class Solution:
+  def minWindow(self, s: str, t: str) -> str:
+    c = Counter(s)
+    tgt = Counter(t)
+    
+    def match() -> bool:
+      for ch, cnt in tgt.items():
+        if ch not in c or cnt > c[ch]:
+          return False
+        
+      return True
+    
+    if not match():
+      return ''
+      
+    c = defaultdict(int)
+    l, r, n = 0, 0, len(s)
+    
+    '''
+    cnt = 0
+
+    while r < n and cnt < len(tgt):
+      ch = s[r]
+      if ch in tgt:
+        c[ch] += 1
+        if c[ch] == tgt[ch]:
+          cnt += 1
+          
+      r += 1
+      
+    while l < r:
+      ch = s[l]
+      if ch in tgt:
+        if c[ch] == tgt[ch]:
+          break
+          
+        c[ch] -= 1
+        
+      l += 1
+
+    res = s[l:r]
+    '''
+
+    res = s
+    # print(res, l, r)
+    
+    while r < n:
+      # start by removing a must-have char from the substring
+      while l < r and (s[l] not in tgt or match()):
+        if s[l] in tgt:
+          c[s[l]] -= 1
+          
+        l += 1
+        
+      # expand the substring until we have enough required chars
+      while r < n and not match():
+        if s[r] in tgt:
+          c[s[r]] += 1
+          
+        r += 1
+        
+      # popping unnecessary chars that exceeds the expectations
+      while l < r and (s[l] not in tgt or c[s[l]] > tgt[s[l]]):
+        if s[l] in tgt:
+          c[s[l]] -= 1
+          
+        l += 1
+          
+      # print('run', l, r, s[l:r])
+      if match() and r-l < len(res):
+        res = s[l:r]
+    
+    return res
+
+
   def minWindow(self, s: str, t: str) -> str:
     ls, lt = len(s), len(t)
     if lt > ls:

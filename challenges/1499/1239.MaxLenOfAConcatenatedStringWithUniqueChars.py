@@ -26,8 +26,59 @@ Constraints:
 arr[i] contains only lower case English letters.
 '''
 
+from typing import List
+
 
 class Solution:
+  def maxLength(self, arr: List[str]) -> int:
+    arr = [s for s in arr if len(set(s)) == len(s)]
+    if not arr:
+      return 0
+    
+    arr.sort(reverse=True)
+    masks = []
+    
+    for s in arr:
+      mask = 0
+      for ch in s:
+        mask |= 1 << (ord(ch) - ord('a'))
+        
+      masks.append(mask)
+      
+    n = len(arr)
+    pairs = [0] * len(arr)
+    
+    for i in range(n-1):
+      for j in range(i+1, n):
+        if masks[i] & masks[j] > 0:
+          pairs[i] |= 1 << j
+          pairs[j] |= 1 << i
+    
+    # print(arr, masks)
+    # print(pairs)
+    
+    def dp(i: int, mask: int) -> int:
+      if i >= n:
+        ln = 0
+        idx = 0
+        
+        while mask > 0:
+          if mask & 1:
+            ln += len(arr[idx])
+          
+          mask >>= 1
+          idx += 1
+          
+        return ln
+      
+      if pairs[i] & mask > 0:
+        return dp(i+1, mask)
+      
+      return max(dp(i+1, mask | (1 << i)), dp(i+1, mask))
+    
+    return dp(0, 0)
+    
+
   def maxLength(self, arr: List[str]) -> int:
     n = len(arr)
     data = [[0, 0] for _ in range(n)]

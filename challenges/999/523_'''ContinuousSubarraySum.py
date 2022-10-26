@@ -31,6 +31,26 @@ from typing import List
 
 
 class Solution:
+  def checkSubarraySum(self, nums: List[int], k: int) -> bool:
+    prefix = nums[0]
+    store = {0: -1}
+    if prefix%k > 0:
+      store[prefix%k] = 0
+    
+    for i in range(1, len(nums)):
+      prefix += nums[i]
+      mod = prefix % k
+      # print(i, nums[i], prefix, mod, store)
+      
+      if mod in store and i-store[mod] >= 2:
+        return True
+            
+      if mod not in store:
+        store[mod] = i
+      
+    return False
+    
+    
   '''
   the trick is that if the sum(nums[i:j+1]) % k == 0, then sum(nums[:i])%k == sum(nums[:j+1])%k, i.e. the
   mod of the head and tail part that intersects to form the subarray must have the same mod value to k,

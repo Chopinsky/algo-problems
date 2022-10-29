@@ -32,6 +32,17 @@ from typing import List
 
 class Solution:
   def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+    store = defaultdict(list)
+    for word in strs:
+      c = Counter(word)
+      h = ''.join(f"{ch}{c[ch]}" for ch in sorted(c))
+      # print(word, h)
+      store[h].append(word)
+      
+    return list(store.values())
+      
+
+  def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
     group = defaultdict(list)
     
     def serialize(src) -> str:

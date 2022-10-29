@@ -7,10 +7,7 @@ From the beginning of day 0, you can plant the seeds in any order.
 
 Return the earliest possible day where all seeds are blooming.
 
- 
-
 Example 1:
-
 
 Input: plantTime = [1,4,3], growTime = [2,3,1]
 Output: 9
@@ -21,7 +18,6 @@ On days 1, 2, 3, and 4, plant the 1st seed. The seed grows for 3 full days and b
 On days 5, 6, and 7, plant the 2nd seed. The seed grows for 1 full day and blooms on day 9.
 Thus, on day 9, all the seeds are blooming.
 Example 2:
-
 
 Input: plantTime = [1,2,3,2], growTime = [2,1,2,1]
 Output: 9
@@ -38,7 +34,6 @@ Input: plantTime = [1], growTime = [1]
 Output: 2
 Explanation: On day 0, plant the 0th seed. The seed grows for 1 full day and blooms on day 2.
 Thus, on day 2, all the seeds are blooming.
- 
 
 Constraints:
 
@@ -47,10 +42,24 @@ n == plantTime.length == growTime.length
 1 <= plantTime[i], growTime[i] <= 10^4
 '''
 
+from typing import List
+
 
 class Solution:
   def earliestFullBloom(self, plantTime: List[int], growTime: List[int]) -> int:
-    n = len(plantTime)
+    curr = 0
+    final_time = 0
+    arr = sorted(zip(plantTime, growTime), key=lambda x: (-x[1], -x[0]))
+    # print(arr)
+    
+    for p, g in arr:
+      curr += p
+      final_time = max(final_time, curr+g)
+    
+    return final_time
+  
+
+  def earliestFullBloom(self, plantTime: List[int], growTime: List[int]) -> int:
     last_date, plant_date = 0, 0
     
     f = list(zip(plantTime, growTime))

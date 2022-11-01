@@ -47,6 +47,40 @@ from typing import List
 
 class Solution:
   def shortestPath(self, grid: List[List[int]], k: int) -> int:
+    m, n = len(grid), len(grid[0])
+    if m == 1 or n == 1:
+      total = sum(sum(r) for r in grid)
+      return max(m-1, n-1) if total <= k else -1
+      
+    curr, nxt = set([(0, 0, k)]), set()
+    steps = 0
+    seen = {(0, 0): k}
+    
+    while curr:
+      steps += 1
+      for x, y, r in curr:
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+          x0, y0 = x+dx, y+dy
+          if x0 < 0 or x0 >= m or y0 < 0 or y0 >= n:
+            continue
+            
+          r0 = r - grid[x0][y0]
+          if r0 < 0 or ((x0, y0) in seen and r0 <= seen[x0, y0]):
+            continue
+            
+          if x0 == m-1 and y0 == n-1:
+            return steps
+            
+          seen[x0, y0] = r0
+          nxt.add((x0, y0, r0))
+      
+      curr, nxt = nxt, curr
+      nxt.clear()
+      
+    return -1
+    
+
+  def shortestPath(self, grid: List[List[int]], k: int) -> int:
     h, w = len(grid), len(grid[0])
     if h == 1 and w == 1:
       return 0 if grid[0][0] <= k else -1

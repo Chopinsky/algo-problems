@@ -44,6 +44,35 @@ from functools import lru_cache
 
 class Solution:
   def findBall(self, grid: List[List[int]]) -> List[int]:
+    ans = []
+    m, n = len(grid), len(grid[0])
+    
+    for i in range(n):
+      x, y, s = 0, i, 0
+      
+      while x < m-1 or s != 1:
+        if s == 0:
+          if (grid[x][y] == 1 and (y == n-1 or grid[x][y+1] == -1)) or (grid[x][y] == -1 and (y == 0 or grid[x][y-1] == 1)):
+            y = -1
+            break
+          
+          if grid[x][y] == 1:
+            y += 1
+            
+          else:
+            y -= 1
+          
+        else:
+          x += 1
+          
+        s = 1 - s
+        
+      ans.append(y)
+    
+    return ans
+      
+      
+  def findBall(self, grid: List[List[int]]) -> List[int]:
     m, n = len(grid), len(grid[0])
     
     @lru_cache(None)

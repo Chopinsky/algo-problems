@@ -39,6 +39,34 @@ from collections import Counter
 
 class Solution:
   def longestPalindrome(self, words: List[str]) -> int:
+    c = Counter(words)
+    ln = 0
+    double = False
+    seen = set()
+    # print(c)
+    
+    for w, cnt in c.items():
+      if w in seen:
+        continue
+        
+      rev = w[::-1]
+      if w == rev:
+        ln += 4 * (cnt // 2)
+        # print("same", w, cnt)
+        
+        if not double and cnt % 2 == 1:
+          double = True
+          ln += 2
+        
+      elif rev in c:
+        seen.add(rev)
+        ln += 4 * min(cnt, c[rev])
+        # print("match", w, cnt, rev, c[rev])
+        
+    return ln
+
+    
+  def longestPalindrome(self, words: List[str]) -> int:
     counter = Counter(words)
     checked = set()
     cnt = 0

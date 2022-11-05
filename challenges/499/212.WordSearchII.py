@@ -23,6 +23,23 @@ board[i][j] is a lowercase English letter.
 1 <= words[i].length <= 10
 words[i] consists of lowercase English letters.
 All the strings of words are unique.
+
+Test cases:
+
+[["o","a","b","n"],["o","t","a","e"],["a","h","k","r"],["a","f","l","v"]]
+["oa","oaa"]
+
+[["b","a"],["b","b"]]
+["bb","bab","b","ba","bba"]
+
+[["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]]
+["oath","pea","eat","rain"]
+
+[["a","b"],["c","d"]]
+["abcb"]
+
+[["a","a","a","a","a","a","a","a","a","a","a","a"],["a","a","a","a","a","a","a","a","a","a","a","a"],["a","a","a","a","a","a","a","a","a","a","a","a"],["a","a","a","a","a","a","a","a","a","a","a","a"],["a","a","a","a","a","a","a","a","a","a","a","a"],["a","a","a","a","a","a","a","a","a","a","a","a"],["a","a","a","a","a","a","a","a","a","a","a","a"],["a","a","a","a","a","a","a","a","a","a","a","a"],["a","a","a","a","a","a","a","a","a","a","a","a"],["a","a","a","a","a","a","a","a","a","a","a","a"],["a","a","a","a","a","a","a","a","a","a","a","a"],["a","a","a","a","a","a","a","a","a","a","a","a"]]
+["lllllll","fffffff","ssss","s","rr","xxxx","ttt","eee","ppppppp","iiiiiiiii","xxxxxxxxxx","pppppp","xxxxxx","yy","jj","ccc","zzz","ffffffff","r","mmmmmmmmm","tttttttt","mm","ttttt","qqqqqqqqqq","z","aaaaaaaa","nnnnnnnnn","v","g","ddddddd","eeeeeeeee","aaaaaaa","ee","n","kkkkkkkkk","ff","qq","vvvvv","kkkk","e","nnn","ooo","kkkkk","o","ooooooo","jjj","lll","ssssssss","mmmm","qqqqq","gggggg","rrrrrrrrrr","iiii","bbbbbbbbb","aaaaaa","hhhh","qqq","zzzzzzzzz","xxxxxxxxx","ww","iiiiiii","pp","vvvvvvvvvv","eeeee","nnnnnnn","nnnnnn","nn","nnnnnnnn","wwwwwwww","vvvvvvvv","fffffffff","aaa","p","ddd","ppppppppp","fffff","aaaaaaaaa","oooooooo","jjjj","xxx","zz","hhhhh","uuuuu","f","ddddddddd","zzzzzz","cccccc","kkkkkk","bbbbbbbb","hhhhhhhhhh","uuuuuuu","cccccccccc","jjjjj","gg","ppp","ccccccccc","rrrrrr","c","cccccccc","yyyyy","uuuu","jjjjjjjj","bb","hhh","l","u","yyyyyy","vvv","mmm","ffffff","eeeeeee","qqqqqqq","zzzzzzzzzz","ggg","zzzzzzz","dddddddddd","jjjjjjj","bbbbb","ttttttt","dddddddd","wwww...
 '''
 
 
@@ -93,6 +110,84 @@ class Trie:
 
 
 class Solution:
+  def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+    root = {}
+    path = set()
+    stack = []
+    ans = set()
+    m, n = len(board), len(board[0])
+    
+    def insert(word):
+      if not word:
+        return
+      
+      curr = root
+      for ch in word:
+        if ch not in curr:
+          curr[ch] = {}
+        
+        curr = curr[ch]
+        
+      curr['$'] = None
+      
+    def remove(word):
+      if not word:
+        return
+      
+      curr = root
+      cand = []
+      
+      for ch in word:
+        cand.append((curr, ch))
+        curr = curr[ch]
+        
+      curr.pop('$', None)
+      while cand:
+        curr, ch = cand.pop()
+        if curr[ch]:
+          break
+          
+        curr.pop(ch, None)
+      
+    def check(x, y, node):
+      ch = board[x][y]
+      if ch not in node:
+        return
+      
+      stack.append(ch)
+      path.add((x, y))
+      
+      if '$' in node[ch] and stack:
+        w = ''.join(stack)
+        ans.add(w)
+        remove(w)
+
+      for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        x0, y0 = x+dx, y+dy
+        if x0 < 0 or x0 >= m or y0 < 0 or y0 >= n or (x0, y0) in path:
+          continue
+
+        check(x0, y0, node[ch])
+        
+        # if this node has been eliminated because of the matches, done
+        if ch not in node:
+          break
+        
+      stack.pop()
+      path.discard((x, y))
+    
+    for w in words:
+      insert(w)
+      
+    # print(root)
+    for i in range(m):
+      for j in range(n):
+        check(i, j, root)
+    
+    return list(ans)
+    
+
+class Solution0:
   def findWords(self, b: List[List[str]], words: List[str]) -> List[str]:
     m, n = len(b), len(b[0])
     chars = defaultdict(int)

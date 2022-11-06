@@ -163,15 +163,15 @@ class Solution:
         remove(w)
 
       for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        # if this node has been eliminated because of the matches, done
+        if ch not in node:
+          break
+
         x0, y0 = x+dx, y+dy
         if x0 < 0 or x0 >= m or y0 < 0 or y0 >= n or (x0, y0) in path:
           continue
 
         check(x0, y0, node[ch])
-        
-        # if this node has been eliminated because of the matches, done
-        if ch not in node:
-          break
         
       stack.pop()
       path.discard((x, y))

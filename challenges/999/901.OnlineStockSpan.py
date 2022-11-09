@@ -37,6 +37,28 @@ At most 104 calls will be made to next.
 class StockSpanner:
   def __init__(self):
     self.stack = []
+    self.store = []
+    self.day = 0
+
+
+  def next(self, price: int) -> int:
+    count = 1
+    # print(price, self.stack)
+    
+    while self.stack and price >= self.stack[-1][0]:
+      _, d = self.stack.pop()
+      count += self.store[d]
+      
+    self.stack.append((price, self.day))
+    self.store.append(count)
+    self.day += 1
+    
+    return count
+
+
+class StockSpanner0:
+  def __init__(self):
+    self.stack = []
     self.day = 0
 
 

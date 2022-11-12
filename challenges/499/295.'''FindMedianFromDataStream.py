@@ -1,6 +1,34 @@
 from heapq import heappush, heappushpop
 
 class MedianFinder:
+  def __init__(self):
+    self.small = []
+    self.big = []
+    
+
+  def addNum(self, num: int) -> None:    
+    if len(self.small) < len(self.big):
+      if num <= self.big[0]:
+        heappush(self.small, -num)
+        
+      else:
+        heappush(self.small, -heappushpop(self.big, num))
+        # heappush(self.small, -heappop(self.big))
+      
+    else:
+      heappush(self.big, -heappushpop(self.small, -num))
+      
+    # print(num, self.small, self.big)
+    
+
+  def findMedian(self) -> float:
+    if len(self.small) < len(self.big):
+      return self.big[0]
+    
+    # print('find:', self.small, self.big)
+    return (self.big[0] - self.small[0]) / 2.0
+
+
   '''
   The idea is to create 2 halves: smaller ones and larger ones.
   When adding a number, either the largest in the smaller half
@@ -29,12 +57,6 @@ class MedianFinder:
     
 
   def findMedian(self) -> float:
-#     ln = len(self.nums)
-#     if ln % 2 == 0:
-#       r = ln // 2
-#       return (self.nums[r-1] + self.nums[r]) / 2
-#     return self.nums[ln//2]
-
     if len(self.small) == len(self.large):
       return (self.large[0] - self.small[0]) / 2
     

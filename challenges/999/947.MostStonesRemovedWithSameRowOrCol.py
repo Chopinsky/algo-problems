@@ -47,6 +47,58 @@ from collections import defaultdict
 
 class Solution:
   def removeStones(self, stones: List[List[int]]) -> int:
+    if len(stones) <= 1:
+      return 0
+    
+    m, n = 1+max(x for x, _ in stones), 1+max(y for _, y in stones)
+    keys = {}
+    rows = defaultdict(list)
+    cols = defaultdict(list)
+    
+    def find(x, y):
+      k = x*n + y
+      while keys[k] != k:
+        k = keys[k]
+      
+      return k
+    
+    def union(x0, y0, x1, y1):
+      k0 = find(x0, y0)
+      k1 = find(x1, y1)
+      if k0 <= k1:
+        keys[k1] = k0
+      else:
+        keys[k0] = k1
+      
+    for x0, y0 in stones:
+      k = x0 * n + y0
+      keys[k] = k
+      
+      for x1 in cols[y0]:
+        union(x0, y0, x1, y0)
+        # print('union', (x0, y0), (x1, y0))
+        
+      for y1 in rows[x0]:
+        union(x0, y0, x0, y1)
+        # print('union', (x0, y0), (x0, y1))
+        
+      rows[x0].append(y0)
+      cols[y0].append(x0)
+      
+    counter = defaultdict(int)
+    for x, y in stones:
+      # print('key:', (x, y), find(x, y), x*n+y)
+      counter[find(x, y)] += 1
+
+    # print(rows, cols, counter)  
+    total = 0
+    for cnt in counter.values():
+      total += cnt - 1
+      
+    return total
+    
+    
+  def removeStones(self, stones: List[List[int]]) -> int:
     n = len(stones)
     idx = [i for i in range(n)]
     

@@ -42,6 +42,47 @@ class Solution:
     if not root:
       return 0
     
+    last_level = 0
+    last_cnt = 0
+    total = 0
+    
+    def walk(root, lvl):
+      nonlocal last_level, last_cnt, total
+      
+      # we're at a leaf
+      if not root.left and not root.right:
+        # we're at the true last level
+        if last_cnt > 0 and lvl != last_level:
+          full_cnt = (1 << lvl) - 1
+          total = full_cnt - 2*last_cnt
+          # print(0, lvl, full_cnt)
+          return False
+          
+        # we're at the right most leaf
+        last_level = lvl
+        last_cnt += 1
+        total = (1 << lvl) - 1
+          
+        return True
+      
+      # we're at a parent of the true leaf
+      if root.left and not root.right:
+        full_cnt = (1 << (lvl+1)) - 1
+        total = full_cnt - (2*last_cnt) - 1
+        # print(1, lvl, full_cnt)
+        return False
+      
+      return walk(root.right, lvl+1) and walk(root.left, lvl+1)
+      
+    walk(root, 1)
+    
+    return total
+    
+    
+  def countNodes(self, root: Optional[TreeNode]) -> int:
+    if not root:
+      return 0
+    
     curr = root
     depth = 0
     

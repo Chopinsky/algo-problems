@@ -36,16 +36,17 @@ class Solution:
     count = 0
     
     for i in range(len(nums)):
-      base = nums[i]
-      
+      lcm = nums[i]
       for j in range(i, len(nums)):
-        if nums[j] > k or k % nums[j] != 0:
+        if nums[j] > k or lcm > k or k % nums[j] != 0:
           break
-          
-        base = max(nums[j], base)
-        if base == k:
+
+        lcm = (nums[j] * lcm) // gcd(nums[j], lcm)
+        # print(i, j, lcm)
+
+        if lcm == k:
           count += 1
-          # print('matching:', i, j)
     
     return count
+    
     

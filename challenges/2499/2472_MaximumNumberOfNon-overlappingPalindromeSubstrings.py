@@ -41,7 +41,7 @@ class Solution:
 
     odd, even = [], []
     odd_padding = k // 2
-    even_padding = max(0, (k//2) - 1)
+    even_padding = max(0, (k-1)//2)
     
     def pal_size(i: int):
       o, e = 0, 0

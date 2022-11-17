@@ -26,9 +26,21 @@ Constraints:
 
 1 <= nums.length <= 1000
 1 <= nums[i], k <= 1000
+
+Test cases:
+
+[9,24]
+72
+
+[2,1,1,5]
+5
+
+[2,3]
+6
 '''
 
 from typing import List
+from math import gcd
 
 
 class Solution:

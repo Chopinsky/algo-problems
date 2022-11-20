@@ -32,6 +32,66 @@ Every number and running calculation will fit in a signed 32-bit integer.
 
 class Solution:
   def calculate(self, s: str) -> int:
+    stack = []
+    curr = []
+    val = ''
+    
+    def calc(arr, val):
+      if val:
+        arr.append(int(val))
+        val = ''
+
+      base = arr[0]
+      # print('calc:', base, arr)
+
+      for i in range(1, len(arr), 2):
+        if arr[i] == '+':
+          base += arr[i+1]
+
+        else:
+          base -= arr[i+1]
+      
+      return base
+    
+    for ch in s:
+      if ch == ' ':
+        if val:
+          curr.append(int(val))
+          val = ''
+        
+        continue
+        
+      if ch == '(':
+        stack.append(curr)
+        curr = []
+        continue
+        
+      if ch == ')':
+        base = calc(curr, val)
+        val = ''
+        curr = stack.pop()
+        curr.append(base)
+        
+        continue
+        
+      if ch == '-' or ch == '+':
+        if val:
+          curr.append(int(val))
+          val = ''
+          
+        if ch == '-' and not curr:
+          curr.append(0)
+          
+        curr.append(ch)
+        continue
+        
+      val += ch
+    
+    # print(stack, curr)
+    return calc(curr, val)
+  
+
+  def calculate(self, s: str) -> int:
     def calc(expr) -> int:
       base = 0
       op = 1

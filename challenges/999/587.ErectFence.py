@@ -30,6 +30,29 @@ from collections import defaultdict
 
 class Solution:
   def outerTrees(self, trees: List[List[int]]) -> List[List[int]]:
+    def ori(p, q, r):
+      return (q[1]-p[1]) * (r[0]-q[0]) - (q[0]-p[0]) * (r[1]-q[1])
+    
+    trees.sort()
+    stack = []
+    
+    for x, y in trees:
+      while len(stack) >= 2 and ori(stack[-2], stack[-1], (x, y)) > 0:
+        stack.pop()
+        
+      stack.append((x, y))
+      
+    stack.pop()
+    for i in range(len(trees)-1, -1, -1):
+      while len(stack) >= 2 and ori(stack[-2], stack[-1], trees[i]) > 0:
+        stack.pop()
+        
+      stack.append(tuple(trees[i]))
+      
+    return list(set(stack))
+
+
+  def outerTrees(self, trees: List[List[int]]) -> List[List[int]]:
     bounds = {}
     dots = defaultdict(list)
     l, r = 101, 0

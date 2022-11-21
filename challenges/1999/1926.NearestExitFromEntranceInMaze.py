@@ -50,6 +50,36 @@ from typing import List
 
 
 class Solution:
+  def nearestExit(self, maze: List[List[str]], entrance: List[int]) -> int:
+    m, n = len(maze), len(maze[0])
+    step = 0
+    curr, nxt = [tuple(entrance)], []
+    seen = set(curr)
+    
+    while curr:
+      step += 1
+      
+      for x, y in curr:
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+          xx, yy = x+dx, y+dy
+          if xx < 0 or xx >= m or yy < 0 or yy >= n:
+            continue
+            
+          if (xx, yy) in seen or maze[xx][yy] == '+':
+            continue
+            
+          if xx == 0 or xx == m-1 or yy == 0 or yy == n-1:
+            return step
+          
+          seen.add((xx, yy))
+          nxt.append((xx, yy))
+    
+      curr, nxt = nxt, curr
+      nxt.clear()
+    
+    return -1
+    
+
   def nearestExit(self, maze: List[List[str]], e: List[int]) -> int:
     h, w = len(maze)-1, len(maze[0])-1
     stack, nxt = set([(e[0], e[1])]), set()

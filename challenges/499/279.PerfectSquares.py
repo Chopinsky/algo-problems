@@ -19,21 +19,54 @@ Explanation: 13 = 4 + 9.
 
 Constraints:
 
-1 <= n <= 104
+1 <= n <= 10^4
 '''
+
+from math import isqrt
+from collections import deque
 
 
 class Solution:
   def numSquares(self, n: int) -> int:
+    base = set()
+    val = 1
+    root = isqrt(n)
+    if root*root == n:
+      return 1
+      
+    while val*val <= n:
+      if val*val == n:
+        return 1
+      
+      base.add(val*val)
+      if n - val*val in base:
+        return 2
+      
+      val += 1
+      
+    # print(base)
+    
+    #Legendre's three-square theorem O(log(n)) presumably
+    while n > 0 and n%4 == 0:
+      n //= 4
+        
+    if n % 8 != 7:
+      return 3
+    
+    #Lagrange's four-square theorem
+    return 4
+    
+
+  def numSquares(self, n: int) -> int:
     def is_square(n: int) -> bool:
-      s = math.isqrt(n)
+      s = isqrt(n)
       return s*s == n
     
     if is_square(n):
       return 1
     
     hashmap = set()
-    ceiling = math.isqrt(n)
+    ceiling = isqrt(n)
     
     for i in range(ceiling+1):
       hashmap.add(i*i)
@@ -55,7 +88,7 @@ class Solution:
     if n == 1:
       return 1
     
-    base = [i*i for i in range(1, math.isqrt(n)+1)]
+    base = [i*i for i in range(1, isqrt(n)+1)]
     stack = deque([(val, 1) for val in base[::-1]])
     count = {}
     

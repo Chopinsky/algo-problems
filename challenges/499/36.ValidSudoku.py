@@ -51,6 +51,60 @@ from typing import List
 
 class Solution:
   def isValidSudoku(self, board: List[List[str]]) -> bool:
+    if len(board) != 9 or len(board[0]) != 9:
+      return False
+    
+    store = set()
+    
+    # check rows
+    for r in range(9):
+      store.clear()
+      for c in range(9):
+        if board[r][c] == '.':
+          continue
+          
+        if board[r][c] in store:
+          # print(0, r, c)
+          return False
+        
+        store.add(board[r][c])
+        
+    for c in range(9):
+      store.clear()
+      for r in range(9):
+        if board[r][c] == '.':
+          continue
+          
+        if board[r][c] in store:
+          # print(1, r, c)
+          return False
+        
+        store.add(board[r][c])
+
+    base = [0, 3, 6, 9]
+    for i in range(3):
+      r0, r1 = base[i], base[i+1]
+      for j in range(3):
+        c0, c1 = base[j], base[j+1]
+        
+        # print(r0, r1, c0, c1)
+        store.clear()
+        
+        for r in range(r0, r1):
+          for c in range(c0, c1):
+            if board[r][c] == '.':
+              continue
+              
+            if board[r][c] in store:
+              # print(2, r, c)
+              return False
+            
+            store.add(board[r][c])
+    
+    return True
+  
+
+  def isValidSudoku(self, board: List[List[str]]) -> bool:
     blocks = [set() for _ in range(9)]
     rows = [set() for _ in range(9)]
     cols = [set() for _ in range(9)]

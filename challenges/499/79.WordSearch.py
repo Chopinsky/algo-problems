@@ -39,10 +39,56 @@ from collections import Counter, defaultdict
 
 class Solution:
   def exist(self, board: List[List[str]], word: str) -> bool:
-    stack = []
+    m, n = len(board), len(board[0])
+    c = Counter(word)
+    
+    base = defaultdict(int)
+    for x in range(m):
+      for y in range(n):
+        base[board[x][y]] += 1
+        
+    for ch, cnt in c.items():
+      if cnt > base[ch]:
+        return False
+    
+    k = len(word)
+    seen = set()
+    
+    # @lru_cache(None)
+    def search(x: int, y: int, i: int):
+      if i >= k:
+        return True
+      
+      if board[x][y] != word[i]:
+        return False
+      
+      if i == k-1:
+        return True
+      
+      seen.add((x, y))
+      
+      for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        xx, yy = x+dx, y+dy
+        if xx < 0 or xx >= m or yy < 0 or yy >= n or (xx, yy) in seen:
+          continue
+          
+        if search(xx, yy, i+1):
+          return True
+      
+      seen.discard((x, y))
+      return False
+    
+    for x in range(m):
+      for y in range(n):
+        if search(x, y, 0):
+          return True
+        
+    return False
+          
+
+  def exist(self, board: List[List[str]], word: str) -> bool:
     seen = set()
     m, n = len(board), len(board[0])
-    dirs = [(0, 1), (0, -1), (-1, 0), (1, 0)]
     
     if m*n < len(word):
       return False

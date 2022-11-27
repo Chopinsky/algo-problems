@@ -41,6 +41,7 @@ class Solution:
     lc, ls = defaultdict(int), defaultdict(int)
     n = len(s)
     
+    # add new right sequences into the right side store
     for i in range(n-1, 1, -1):
       v0 = s[i]
       for v1, c1 in rc.items():
@@ -55,7 +56,7 @@ class Solution:
     for i in range(n-2):
       v0 = s[i]
       if i >= 2:
-        # pop 
+        # pop right sequences
         rc[v0] -= 1
         for v1, c1 in rc.items():
           rs[v0+v1] -= c1
@@ -65,7 +66,8 @@ class Solution:
           s2 = s1[::-1]
           if s2 in rs and rs[s2] > 0:
             total = (total + c1*rs[s2]) % mod
-      
+
+      # add new left sequences into the left side store
       for v1, c1 in lc.items():
         ls[v1+v0] += c1
         

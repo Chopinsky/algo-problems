@@ -38,6 +38,48 @@ from random import randint
 
 class RandomizedSet:
   def __init__(self):
+    self.store = {}
+    self.lst = []
+
+
+  def insert(self, val: int) -> bool:
+    if val in self.store:
+      return False
+    
+    self.store[val] = len(self.lst)
+    self.lst.append(val)
+    
+    return True
+
+
+  def remove(self, val: int) -> bool:
+    if val not in self.store:
+      return False
+    
+    last_idx = len(self.lst) - 1
+    if self.store[val] != last_idx:
+      last_val = self.lst[-1]
+      replace_idx = self.store[val]
+      
+      self.store[last_val] = replace_idx
+      self.lst[replace_idx] = last_val
+      
+    self.lst.pop()
+    del self.store[val]
+    
+    return True
+
+
+  def getRandom(self) -> int:
+    n = len(self.lst) 
+    if n == 1:
+      return self.lst[0]
+    
+    idx = randint(0, n-1)
+    return self.lst[idx]
+
+    
+  def __init__(self):
     """
     Initialize your data structure here.
     """

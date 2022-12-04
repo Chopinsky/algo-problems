@@ -37,6 +37,17 @@ from collections import Counter
 class Solution:
   def frequencySort(self, s: str) -> str:
     c = Counter(s)
+    src = sorted(c, key=lambda x: (-c[x], x))
+    res = ''
+    
+    for ch in src:
+      res += ch * c[ch]
+      
+    return res
+    
+    
+  def frequencySort(self, s: str) -> str:
+    c = Counter(s)
     s = [(cnt, ch) for ch, cnt in c.items()]
     ans = ''
     

@@ -35,6 +35,24 @@ class ListNode:
 
 class Solution:
   def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    s, f = head, head
+    last = None
+    
+    while f:
+      # print(s.val, f.val)
+      last = s
+      s = s.next
+      f = f.next
+      if not f:
+        return last
+        
+      if f:
+        f = f.next
+      
+    return s
+    
+  
+  def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
     if not head:
       return None
     

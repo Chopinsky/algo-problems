@@ -39,6 +39,20 @@ class TreeNode:
 
 class Solution:
   def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:
+    def dive(root, s, b):
+      if not root:
+        return 0
+      
+      score = max(abs(root.val - s), abs(root.val - b))
+      s = min(s, root.val)
+      b = max(b, root.val)
+      
+      return max(score, dive(root.left, s, b), dive(root.right, s, b))
+      
+    return max(dive(root.left, root.val, root.val), dive(root.right, root.val, root.val))
+
+    
+  def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:
     max_diff = 0
     
     def walk(root: Optional[TreeNode], rng: Tuple[int, int]):

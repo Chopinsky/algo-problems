@@ -35,6 +35,7 @@ The number of nodes in the tree is in the range [2, 5 * 104].
 '''
 
 from typing import Optional
+from functools import lru_cache
 
 
 # Definition for a binary tree node.
@@ -46,6 +47,35 @@ class TreeNode:
 
 
 class Solution:
+  def maxProduct(self, root: Optional[TreeNode]) -> int:
+    @lru_cache(None)
+    def subtree_sum(root):
+      if not root:
+        return 0
+      
+      return root.val + subtree_sum(root.left) + subtree_sum(root.right)
+    
+    total = subtree_sum(root)
+    mod = 10**9+7
+    # print(total)
+    
+    def check(root):
+      base = 0
+      if root.left:
+        lt = subtree_sum(root.left)
+        # print('left', root.val, lt)
+        base = max(base, (total-lt)*lt, check(root.left))
+        
+      if root.right:
+        rt = subtree_sum(root.right)
+        # print('right', root.val, rt)
+        base = max(base, (total-rt)*rt, check(root.right))
+      
+      return base
+    
+    return check(root) % mod
+    
+
   def maxProduct(self, root: Optional[TreeNode]) -> int:
     if not root:
       return 0

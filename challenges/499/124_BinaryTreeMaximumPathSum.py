@@ -37,6 +37,27 @@ class TreeNode:
 
 class Solution:
   def maxPathSum(self, root: Optional[TreeNode]) -> int:
+    if not root:
+      return 0
+    
+    max_sum = root.val
+    
+    def dp(root):
+      nonlocal max_sum
+      if not root:
+        return -math.inf
+      
+      lm, rm = dp(root.left), dp(root.right)
+      max_sum = max(max_sum, lm, rm, root.val, root.val+lm, root.val+rm, root.val+lm+rm)
+      
+      return max(root.val, root.val+lm, root.val+rm)    
+      
+    dp(root)
+      
+    return max_sum
+
+
+  def maxPathSum(self, root: Optional[TreeNode]) -> int:
     max_val = -math.inf
     
     def iterate(root):

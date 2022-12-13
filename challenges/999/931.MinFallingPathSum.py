@@ -32,11 +32,32 @@ n == matrix[i].length
 -100 <= matrix[i][j] <= 100
 '''
 
-
 from typing import List
 
 
 class Solution:
+  def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+    curr, nxt = [val for val in matrix[0]], []
+    h, w = len(matrix), len(matrix[0])
+    
+    for r in range(1, h):
+      for c in range(w):
+        val = curr[c]
+        
+        if c > 0:
+          val = min(val, curr[c-1])
+          
+        if c < w-1:
+          val = min(val, curr[c+1])
+        
+        nxt.append(val + matrix[r][c])
+        
+      curr, nxt = nxt, curr
+      nxt.clear()
+    
+    return min(curr)
+    
+
   def minFallingPathSum(self, mat: List[List[int]]) -> int:
     h, w = len(mat), len(mat[0])
     dp = [[mat[i][j] if i == 0 else float('inf') for j in range(w)] for i in range(h)]

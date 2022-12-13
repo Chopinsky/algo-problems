@@ -32,6 +32,20 @@ class Solution:
     if n <= 3:
       return n
     
+    dp0, dp1 = 1, 2
+    step = 3
+    
+    while step <= n:
+      dp0, dp1 = dp1, dp0+dp1
+      step += 1
+    
+    return dp1
+    
+    
+  def climbStairs(self, n: int) -> int:
+    if n <= 3:
+      return n
+    
     dp = [0] * n
     dp[0] = 1
     dp[1] = 2

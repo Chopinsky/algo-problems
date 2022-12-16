@@ -38,6 +38,27 @@ from bisect import bisect_left
 class Solution:
   def longestCommonSubsequence(self, text1: str, text2: str) -> int:
     m, n = len(text1), len(text2)
+    lcs = [[0]*n for _ in range(m)]
+    longest = 0
+    
+    for i in range(m):
+      for j in range(n):
+        if i > 0:
+          lcs[i][j] = max(lcs[i][j], lcs[i-1][j])
+          
+        if j > 0:
+          lcs[i][j] = max(lcs[i][j], lcs[i][j-1])
+          
+        if text1[i] == text2[j]:
+          lcs[i][j] = max(lcs[i][j], 1 + (0 if i == 0 or j == 0 else lcs[i-1][j-1]))
+          
+        longest = max(longest, lcs[i][j])
+    
+    return longest
+    
+
+  def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+    m, n = len(text1), len(text2)
     if m > n:
       m, n = n, m
       text1, text2 = text2, text1

@@ -42,6 +42,32 @@ from typing import List
 class Solution:
   def evalRPN(self, tokens: List[str]) -> int:
     stack = []
+    op = set(['+', '-', '*', '/'])
+    
+    for s in tokens:
+      if s in op:
+        b = stack.pop()
+        a = stack.pop()
+        
+        if s == '-':
+          stack.append(a-b)
+        elif s == '*':
+          stack.append(a*b)
+        elif s == '/':
+          stack.append(int(a/b))
+        else:
+          stack.append(a+b)
+          
+      else:
+        stack.append(int(s))
+      
+      # print(s, stack)
+      
+    return stack[0]
+
+    
+  def evalRPN(self, tokens: List[str]) -> int:
+    stack = []
 
     for t in tokens:
       if t == '+' or t == '-' or t == '*' or t == '/':

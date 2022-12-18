@@ -18,12 +18,32 @@ Output: [1,1,0]
 
 Constraints:
 
-1 <= temperatures.length <= 105
+1 <= temperatures.length <= 10^5
 30 <= temperatures[i] <= 100
 '''
 
+from typing import List
+
 
 class Solution:
+  def dailyTemperatures(self, temp: List[int]) -> List[int]:
+    stack = []
+    temp = temp[::-1]
+    ans = []
+    # print(temp)
+    
+    for i in (range(len(temp))):
+      val = temp[i]
+      while stack and stack[-1][0] <= val:
+        stack.pop()
+        
+      ans.append(0 if not stack else i-stack[-1][1])
+      stack.append((val, i))
+      # print(val, stack, ans[-1])
+      
+    return ans[::-1]
+
+
   def dailyTemperatures(self, temp: List[int]) -> List[int]:
     n = len(temp)
     ans = [0] * n

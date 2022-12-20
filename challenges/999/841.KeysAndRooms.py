@@ -38,6 +38,19 @@ from typing import List
 
 class Solution:
   def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
+    seen = set()
+    keys = set([0])
+    
+    while keys:
+      u = keys.pop()
+      seen.add(u)
+      # print('visit:', u)
+      keys |= set(rooms[u]) - seen
+    
+    return len(seen) == len(rooms)
+
+    
+  def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
     n = len(rooms)
     r = set([i for i in range(1, n)])
     keys = rooms[0]

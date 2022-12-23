@@ -29,6 +29,29 @@ from typing import List
 
 class Solution:
   def maxProfit(self, prices: List[int]) -> int:
+    done = 0
+    stage = -math.inf
+    entry = -prices[0]
+    
+    for val in prices[1:]:
+      # if sell here, we finish 1 round trip, 
+      # update the profit to be staged
+      last_stage = stage
+      stage = val + entry
+      
+      # new entry is to buy here, compared with 
+      # previous max profit
+      entry = max(entry, done-val)
+      
+      # last staged value becomes available 
+      # for new entries
+      done = max(done, last_stage)
+    
+    # print(done, stage)
+    return max(done, stage)
+    
+    
+  def maxProfit(self, prices: List[int]) -> int:
     own = 0
     out = 0
     cd = 0

@@ -42,6 +42,52 @@ from collections import defaultdict
 
 class Solution:
   def sumOfDistancesInTree(self, n: int, edges: List[List[int]]) -> List[int]:
+    e = defaultdict(list)
+    down = {}
+    ans = [0] * n
+    
+    for u, v in edges:
+      e[u].append(v)
+      e[v].append(u)
+    
+    def count(u: int, p: int):
+      d0, c0 = 0, 1
+      
+      for v in e[u]:
+        if v == p:
+          continue
+          
+        # visit node v, parent is u
+        d1, c1 = count(v, u)
+        c0 += c1
+        d0 += c1 + d1
+      
+      down[u] = c0
+      # print(u, p, d0, c0)
+      
+      return d0, c0
+      
+    dist, total = count(0, -1)
+    ans[0] = dist
+    # print(down)
+    
+    def drill_down(u: int, p: int):
+      ans[u] = ans[p] + (total-down[u]) - down[u]
+      # print(u, p, ans[u])
+      
+      for v in e[u]:
+        if v == p:
+          continue
+          
+        drill_down(v, u)
+    
+    for v in e[0]:
+      drill_down(v, 0)
+    
+    return ans
+  
+  
+  def sumOfDistancesInTree(self, n: int, edges: List[List[int]]) -> List[int]:
     if n <= 2:
       return [0] if n == 1 else [1, 1]
     

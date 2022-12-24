@@ -21,11 +21,33 @@ Constraints:
 1 <= n <= 1000
 '''
 
-
 from functools import lru_cache
 
 
 class Solution:
+  def numTilings(self, n: int) -> int:
+    mod = 10**9 + 7
+
+    @lru_cache(None)
+    def partial(n):  
+      if n == 2:
+        return 1
+      
+      # 1 partial (add hor to flip side) + full with a tromino
+      return (partial(n - 1) + full(n - 2)) % mod
+
+    @lru_cache(None)
+    def full(n):  
+      if n <= 2:
+        return n
+      
+      # 1 ver + 1 hor (2 hor stacking on top of each other) + 2 
+      # partials (with opposite sides)
+      return (full(n - 1) + full(n - 2) + 2 * partial(n - 1)) % mod
+
+    return full(n)
+  
+
   def numTilings(self, n: int) -> int:
     mod = 1_000_000_007
 

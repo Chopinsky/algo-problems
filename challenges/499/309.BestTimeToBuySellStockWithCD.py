@@ -23,8 +23,8 @@ Constraints:
 0 <= prices[i] <= 1000
 '''
 
-
 from typing import List
+import math
 
 
 class Solution:
@@ -50,7 +50,7 @@ class Solution:
     # print(done, stage)
     return max(done, stage)
     
-    
+
   def maxProfit(self, prices: List[int]) -> int:
     own = 0
     out = 0

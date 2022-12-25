@@ -35,6 +35,25 @@ from bisect import bisect_right
 
 class Solution:
   def answerQueries(self, nums: List[int], queries: List[int]) -> List[int]:
+    ans = [0] * len(queries)
+    q = sorted([(query, i) for i, query in enumerate(queries)])
+    nums.sort()
+    # print(q)
+    
+    i = 0
+    curr = 0
+    
+    for upper, idx in q:
+      while i < len(nums) and curr+nums[i] <= upper:
+        curr += nums[i]
+        i += 1
+        
+      ans[idx] = i
+    
+    return ans
+
+    
+  def answerQueries(self, nums: List[int], queries: List[int]) -> List[int]:
     nums.sort()
     for i in range(1, len(nums)):
       nums[i] += nums[i-1]

@@ -39,6 +39,20 @@ from typing import List
 
 
 class Solution:
+  def maximumBags(self, capacity: List[int], rocks: List[int], additionalRocks: int) -> int:
+    n = len(capacity)
+    rem = sorted([capacity[i]-rocks[i] for i in range(n)])
+    # print(rem)
+    
+    for i in range(n):
+      if rem[i] > additionalRocks:
+        return i
+      
+      additionalRocks -= rem[i]
+    
+    return n
+
+    
   def maximumBags(self, capacity: List[int], rocks: List[int], extra: int) -> int:
     n = len(capacity)
     rem = [capacity[i] - rocks[i] for i in range(n)]

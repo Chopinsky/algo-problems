@@ -45,6 +45,19 @@ class Solution:
     heapify(piles)
     # print(piles)
     
+    for _ in range(k):
+      stones = -heappop(piles)
+      stones -= stones // 2
+      heappush(piles, -stones)
+      
+    return -sum(piles)
+    
+    
+  def minStoneSum(self, piles: List[int], k: int) -> int:
+    piles = [-p for p in piles]
+    heapify(piles)
+    # print(piles)
+    
     while k > 0:
       curr = -heappop(piles)
       while curr >= -piles[0]:

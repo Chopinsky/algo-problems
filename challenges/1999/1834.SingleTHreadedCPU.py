@@ -51,6 +51,37 @@ from heapq import heappop, heappush
 
 class Solution:
   def getOrder(self, tasks: List[List[int]]) -> List[int]:
+    tasks = sorted([(t[0], t[1], i) for i, t in enumerate(tasks)])  
+    # print(tasks)
+    
+    ans, q = [], []
+    time = -1
+    idx, n = 0, len(tasks)
+    
+    while q or idx < n:
+      # enqueue
+      while idx < n and tasks[idx][0] <= time:
+        _, pt, jdx = tasks[idx]
+        heappush(q, (pt, jdx))
+        idx += 1
+        
+      # no more tasks to process, pull the first one out
+      # of the remainder tasks and process it
+      if not q:
+        time = tasks[idx][0]+tasks[idx][1]
+        ans.append(tasks[idx][2])
+        idx += 1
+        continue
+        
+      # pull one out of the queue and process it
+      pt, jdx = heappop(q)
+      ans.append(jdx)
+      time += pt
+        
+    return ans
+    
+    
+  def getOrder(self, tasks: List[List[int]]) -> List[int]:
     src = sorted((s, p, i) for i, (s, p) in enumerate(tasks))
     idx = 1
     ans = []

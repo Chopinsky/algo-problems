@@ -50,6 +50,26 @@ class Solution:
     n = len(graph)
     
     @lru_cache(None)
+    def dfs(u: int):
+      if u == n-1:
+        return [[u]]
+      
+      res = []
+      for v in graph[u]:
+        paths = dfs(v)
+        for p in paths:
+          res.append([u]+p)
+          
+      # print(u, res)
+      return res
+      
+    return dfs(0)
+
+    
+  def allPathsSourceTarget(self, graph: List[List[int]]) -> List[List[int]]:
+    n = len(graph)
+    
+    @lru_cache(None)
     def dfs(u: int) -> List[List[int]]:
       path = []
       

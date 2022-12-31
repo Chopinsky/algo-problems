@@ -43,11 +43,73 @@ n == grid[i].length
 There is exactly one starting cell and one ending cell.
 '''
 
-
+from functools import lru_cache
 from typing import List
 
 
 class Solution:
+  def uniquePathsIII(self, grid: List[List[int]]) -> int:
+    m, n = len(grid), len(grid[0])
+    x0, y0, tkey = -1, -1, -1
+    target = 0
+    
+    def to_key(x: int, y: int) -> int:
+      return x*n + y
+    
+    @lru_cache(None)
+    def count_visited_nodes(mask: int) -> int:
+      cnt = 0
+      while mask > 0:
+        if mask & 1:
+          cnt += 1
+          
+        mask >>= 1
+          
+      return cnt
+    
+    for x in range(m):
+      for y in range(n):
+        if grid[x][y] == -1:
+          continue
+          
+        target += 1
+        if grid[x][y] == 1:
+          x0, y0 = x, y
+          
+        if grid[x][y] == 2:
+          tkey = 1 << to_key(x, y)
+          
+    # print((x0, y0), bin(tkey), target)
+    if x0 < 0 or y0 < 0 or tkey < 0:
+      return 0
+    
+    @lru_cache(None)
+    def dp(x: int, y: int, mask: int) -> int:
+      key = 1 << to_key(x, y)
+      # print('visit:', x, y, bin(key), bin(mask))
+      
+      # already visited
+      if key & mask > 0:
+        return 0
+      
+      mask |= key
+      if key == tkey:
+        # print('done:', x, y, count_visited_nodes(nxt_mask))
+        return 1 if count_visited_nodes(mask) == target else 0
+      
+      ways = 0
+      for dx, dy in [(-1, 0), (0, -1), (1, 0), (0, 1)]:
+        xx, yy = x+dx, y+dy
+        if xx < 0 or xx >= m or yy < 0 or yy >= n or grid[xx][yy] < 0:
+          continue
+          
+        ways += dp(xx, yy, mask)
+      
+      return ways
+    
+    return dp(x0, y0, 0)
+    
+
   def uniquePathsIII(self, grid: List[List[int]]) -> int:
     m, n = len(grid), len(grid[0])
     stack = []

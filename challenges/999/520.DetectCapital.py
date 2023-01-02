@@ -24,6 +24,21 @@ word consists of lowercase and uppercase English letters.
 
 class Solution:
   def detectCapitalUse(self, word: str) -> bool:
+    capital_letter = 0
+    for ch in word:
+      if 'A' <= ch <= 'Z':
+        capital_letter += 1
+        
+    if capital_letter == 0:
+      return True
+    
+    if capital_letter == 1:
+      return 'A' <= word[0] <= 'Z'
+      
+    return capital_letter == len(word)
+
+    
+  def detectCapitalUse(self, word: str) -> bool:
     c, l = 0, 0
     for ch in word:
       if 'a' <= ch <= 'z':

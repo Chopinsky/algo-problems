@@ -39,6 +39,26 @@ from typing import List
 class Solution:
   def findMinArrowShots(self, points: List[List[int]]) -> int:
     points.sort()
+    count, idx = 0, 0
+    n = len(points)
+    
+    while idx < n:
+      right = points[idx][1]
+      # print('start:', idx, points[idx])
+      
+      while idx+1 < n and points[idx+1][0] <= right:
+        idx += 1
+        right = min(right, points[idx][1])
+      
+      # print('end:', idx, points[idx])
+      count += 1
+      idx += 1
+    
+    return count
+
+    
+  def findMinArrowShots(self, points: List[List[int]]) -> int:
+    points.sort()
     lb, rb = points[0][0], points[0][1]
     count = 0
     

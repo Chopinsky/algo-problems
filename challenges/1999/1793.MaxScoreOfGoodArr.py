@@ -24,18 +24,57 @@ Constraints:
 0 <= k < nums.length
 '''
 
+from typing import List
+
 
 class Solution:
+  def maximumScore(self, nums: List[int], k: int) -> int:
+    score = nums[k]
+    left, right = [], []
+    
+    # subarray low to the left
+    curr_low = nums[k]
+    for i in range(k-1, -1, -1):
+      curr_low = min(curr_low, nums[i])
+      left.append(curr_low)
+      
+    # subarray low to the right
+    curr_low = nums[k]
+    for i in range(k+1, len(nums)):
+      curr_low = min(curr_low, nums[i])
+      right.append(curr_low)
+    
+    # print(left, right)
+    l, r = 0, 0
+    nl, nr = len(left), len(right)
+    
+    while l < nl:
+      while r < nr and right[r] >= left[l]:
+        r += 1
+      
+      # print('left:', l, r, left[l] * (l+r+2))
+      score = max(score, left[l] * (l+r+2))
+      l += 1
+      
+    l, r = 0, 0
+    while r < nr:
+      while l < nl and left[l] >= right[r]:
+        l += 1
+      
+      # print('right', l, r, right[l] * (l+r+2))
+      score = max(score, right[r] * (l+r+2))
+      r += 1
+    
+    return score
+
+   
   def maximumScore(self, nums: List[int], k: int) -> int:
     n = len(nums)
     l, r = k, k
     low = nums[k]
     score = low
   
-    while True:
-      if l == 0 and r == n-1:
-        break
-        
+    while l > 0 or r < n-1:
       if l == 0:
         r += 1
         low = min(low, nums[r])
@@ -48,22 +87,21 @@ class Solution:
         score = max(score, low*(n-l))
         continue
         
-      # only expanding in the direction that can yield a larger product
-      ll, rl = min(low, nums[l-1]), min(low, nums[r+1])
-      sl, sr = ll * (r-l+2), rl * (r-l+2)
+      left_low, right_low = min(low, nums[l-1]), min(low, nums[r+1])
+      score_left, score_right = left_low*(r-l+2), right_low*(r-l+2)
       
-      # moving 1 pointer at a time, this algo is correct because nums[r] > 0
-      if sl >= sr:
+      # extend to the left if left-side makes a higher score
+      # than the right side
+      if score_left >= score_right:
         l -= 1
-        score = max(score, sl)
-        low = ll
+        score = max(score, score_left)
+        low = left_low
         
+      # otherwise, extend to the right side
       else:
         r += 1
-        score = max(score, sr)
-        low = rl
-    
-      # print(l, r, nums[l:r+1], score, low)
-      
+        score = max(score, score_right)
+        low = right_low
+        
     return score
   

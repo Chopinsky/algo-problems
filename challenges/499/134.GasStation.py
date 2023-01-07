@@ -38,11 +38,33 @@ cost.length == n
 0 <= gas[i], cost[i] <= 10^4
 '''
 
-
 from typing import List
 
 
 class Solution:
+  def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+    n = len(gas)
+    gas += gas
+    cost += cost
+    i, j = 0, 0
+    tank = 0
+    
+    while j < len(gas) and j-i < n:
+      # moving to the next station
+      tank += gas[j] - cost[j]
+      j += 1
+
+      # moving starting point so we can have
+      # remaining gas left in the tank
+      while tank < 0:
+        tank -= (gas[i]-cost[i])
+        i += 1
+      
+      # print(i, j)
+      
+    return i if j-i == n else -1
+    
+
   def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
     if sum(gas) < sum(cost):
       return -1

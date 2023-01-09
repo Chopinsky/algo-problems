@@ -27,6 +27,46 @@ import math
 
 class Solution:
   def maxPoints(self, points: List[List[int]]) -> int:
+    n = len(points)
+    if n <= 2:
+      return n
+    
+    points.sort()
+    lines = defaultdict(set)
+    vert = defaultdict(set)
+    hon = defaultdict(set)
+    
+    for i in range(1, n):
+      x0, y0 = points[i]
+      
+      for j in range(i):
+        x1, y1 = points[j]
+        if x0 == x1:
+          vert[x0].add(y0)
+          vert[x0].add(y1)
+        
+        elif y0 == y1:
+          hon[y0].add(x0)
+          hon[y0].add(x1)
+          
+        else:
+          d = (y1-y0) / (x1-x0)
+          a = (x1*y0 - x0*y1) / (x1-x0)
+          # print((x0, y0), (x1, y1), d, a)
+          
+          lines[d, a].add(y0)
+          lines[d, a].add(y1)
+      
+    # print(lines, vert)
+    count = 0
+
+    for p in list(lines.values()) + list(vert.values()) + list(hon.values()):
+      count = max(count, len(p))
+      
+    return count
+
+
+  def maxPoints(self, points: List[List[int]]) -> int:
     slopes = defaultdict(set)
     top = 1
     

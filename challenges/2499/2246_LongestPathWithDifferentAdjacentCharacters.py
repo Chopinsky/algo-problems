@@ -29,9 +29,61 @@ s consists of only lowercase English letters.
 
 from typing import List
 from collections import defaultdict
+from bisect import insort
 
 
 class Solution:
+  def longestPath(self, parent: List[int], s: str) -> int:
+    n = len(parent)
+    subtree = defaultdict(list)
+    cand = set([i for i in range(n)])
+    count = defaultdict(int)
+    ans = 1
+    
+    for p in parent:
+      if p >= 0:
+        count[p] += 1
+        cand.discard(p)
+        
+    cand = list(cand)
+    # print('init:', cand)
+    
+    # use topological sort to move from down-side-up
+    while cand:
+      # get the current node and update the answer
+      u = cand.pop()
+      # print('visit:', u, subtree[u])
+      
+      if len(subtree[u]) >= 2:
+        ans = max(ans, sum(subtree[u][-2:]) - 1)
+        
+      elif len(subtree[u]) > 0:
+        ans = max(ans, subtree[u][-1])
+      
+      # get and update the parent info
+      p = parent[u]
+      count[p] -= 1
+      
+      # all children of this parent node is visited,
+      # push the parent node to the candidate queue
+      if not count[p]:
+        cand.append(p)
+      
+      # same char, chain break
+      if s[u] == s[p]:
+        continue
+        
+      # different char, update the chain length
+      chain_len = 1 + (subtree[u][-1] if subtree[u] else 1)
+      insort(subtree[p], chain_len)
+      
+      # only keep top 2 nodes
+      if len(subtree[p]) > 2:
+        subtree[p] = subtree[p][-2:]
+      
+    return ans
+    
+
   def longestPath(self, parent: List[int], s: str) -> int:
     chain = {}
     e = defaultdict(list)

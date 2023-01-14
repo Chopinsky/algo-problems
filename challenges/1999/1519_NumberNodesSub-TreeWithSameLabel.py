@@ -48,6 +48,34 @@ from collections import defaultdict
 
 class Solution:
   def countSubTrees(self, n: int, edges: List[List[int]], labels: str) -> List[int]:
+    e = defaultdict(list)
+    ans = [1] * n
+    
+    for u, v in edges:
+      e[u].append(v)
+      e[v].append(u)
+      
+    def dfs(u: int, p: int):
+      lbl = labels[u]
+      d0 = {lbl:1}
+      
+      for v in e[u]:
+        if v == p:
+          continue
+          
+        d1 = dfs(v, u)
+        for ch, cnt in d1.items():
+          d0[ch] = d0.get(ch, 0) + cnt
+      
+      ans[u] = d0[lbl]
+      return d0
+      
+    dfs(0, -1)
+      
+    return ans
+        
+        
+  def countSubTrees(self, n: int, edges: List[List[int]], labels: str) -> List[int]:
     ans = [1]*n
     conn = defaultdict(list)
     

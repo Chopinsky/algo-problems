@@ -43,6 +43,23 @@ edges[i].length == 2
 0 <= ai, bi < n
 ai != bi
 edges represents a valid tree.
+
+Test cases:
+
+[1,3,2,1,3]
+[[0,1],[0,2],[2,3],[2,4]]
+
+[1,1,2,2,3]
+[[0,1],[1,2],[2,3],[2,4]]
+
+[1]
+[]
+
+[2,5,5,1,5,2,3,5,1,5]
+[[0,1],[2,1],[3,2],[3,4],[3,5],[5,6],[1,7],[8,4],[9,7]]
+
+[2,1,1]
+[[0,1],[2,0]]
 '''
 
 from typing import List
@@ -50,6 +67,51 @@ from collections import defaultdict
 
 
 class Solution:
+  def numberOfGoodPaths(self, vals: List[int], edges: List[List[int]]) -> int:
+    e = defaultdict(set)
+    for u, v in edges:
+      e[u].add(v)
+      e[v].add(u)
+      
+    n = len(vals)
+    count = n
+    g = [i for i in range(n)]
+    groups = {i: (vals[i], 1) for i in range(n)}
+    
+    def find(u: int) -> int:
+      while g[u] != u:
+        u = g[u]
+      
+      return u
+    
+    cand = sorted((val, i) for i, val in enumerate(vals))
+    seen = set()
+    
+    for val, u in cand:
+      # print('visit:', u, val)
+      
+      for v in (e[u] & seen):
+        ru, rv = find(u), find(v)
+        r0, r1 = min(ru, rv), max(ru, rv)
+        g[r1] = r0
+        
+        # print('adding:', v)
+        # print('check:', (r0, groups[r0]), (r1, groups[r1]))
+        
+        if groups[r0][0] != groups[r1][0]:
+          if groups[r1][0] > groups[r0][0]:
+            groups[r0] = groups[r1]
+            
+          continue
+          
+        count += groups[r0][1] * groups[r1][1]
+        groups[r0] = (groups[r0][0], groups[r0][1] + groups[r1][1])
+        
+      seen.add(u)
+    
+    return count
+    
+
   '''
   this is not a tree problem, but a graph problem first and for most; if the
   goal is clear, the rest is more palpable -- we're implementing a derived version

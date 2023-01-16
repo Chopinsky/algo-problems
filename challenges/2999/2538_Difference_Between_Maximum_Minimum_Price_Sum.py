@@ -49,7 +49,6 @@ class Solution:
         
     e = defaultdict(set)
     cand = set([i for i in range(n)])
-    counts = defaultdict(int)
     
     for u, v in edges:
       e[u].add(v)
@@ -70,13 +69,6 @@ class Solution:
     
     # moving towards center
     while stack:
-      if len(stack) == 2:
-        u0, u1 = stack
-        if u0 in e[u1] or u1 in e[u0]:
-          # print((u0, full[u0], headless[u0]), (u1, full[u1], headless[u1]))
-          top_score = max(top_score, full[u0] + headless[u1], headless[u0] + full[u1])
-          break
-      
       # print(stack, top_score)
       for u in stack:
         if not e[u]:
@@ -86,14 +78,14 @@ class Solution:
         v = e[u].pop()
         # print(f'{u} -> {v}')
         
-        # check chains that meets @ v
+        # check chains that meets @ v on the visited half of the graph
         top_score = max(top_score, full[u]+headless[v], headless[u]+full[v])
         
         # update full chain:
-        full[v] = max(full[v], full[u] + price[v])
+        full[v] = max(full[v], full[u]+price[v])
         
         # update headless chain:
-        headless[v] = max(headless[v], headless[u] + price[v])
+        headless[v] = max(headless[v], headless[u]+price[v])
         
         # removing u from v's edges
         e[v].discard(u)

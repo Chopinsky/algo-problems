@@ -32,6 +32,40 @@ s[i] is either '0' or '1'.
 
 class Solution:
   def minFlipsMonoIncr(self, s: str) -> int:
+    n = len(s)
+    zeros, ones = [0]*n, [0]*n
+    ops = n
+    
+    for i in range(n):
+      last = ones[i-1] if i > 0 else 0
+      ones[i] = last + (1 if s[i] == '1' else 0)
+    
+    for i in range(n-1, -1, -1):
+      last = zeros[i+1] if i < n-1 else 0
+      zeros[i] = last + (1 if s[i] == '0' else 0)
+      
+    # print(ones, zeros)
+    for i in range(n):
+      # converting to all '1's
+      if i == 0:
+        ops = min(ops, zeros[i])
+        
+      # converting to all '0's
+      if i == n-1:
+        ops = min(ops, ones[i])
+        
+      # '0' for [0, i) and '1' for [i, n)
+      left_ops = ones[i-1] if i > 0 else 0
+      right_ops = zeros[i]
+      ops = min(ops, left_ops + right_ops)
+        
+      if ops == 0:
+        break
+    
+    return ops
+    
+    
+  def minFlipsMonoIncr(self, s: str) -> int:
     ln = len(s)
     count = [0] * ln
     running = 0

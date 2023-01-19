@@ -29,6 +29,21 @@ from collections import defaultdict
 
 class Solution:
   def subarraysDivByK(self, nums: List[int], k: int) -> int:
+    store = defaultdict(int)
+    store[0] += 1
+    prefix_sum = 0
+    count = 0
+    
+    for val in nums:
+      prefix_sum += val
+      mod = prefix_sum % k
+      count += store[mod]
+      store[mod] += 1
+      
+    return count
+    
+    
+  def subarraysDivByK(self, nums: List[int], k: int) -> int:
     prefix = 0
     mod_counter = defaultdict(int)
     count = 0

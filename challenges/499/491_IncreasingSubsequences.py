@@ -23,6 +23,22 @@ from typing import List
 
 
 class Solution:
+  def findSubsequences(self, nums: List[int]) -> List[List[int]]:
+    store = set()
+    nxt = set()
+    
+    for val in nums:
+      nxt.clear()
+      for arr in store:
+        if val >= arr[-1]:
+          nxt.add(arr + (val, ))
+      
+      store.add((val, ))
+      store |= nxt
+    
+    return [list(arr) for arr in store if len(arr) > 1]
+    
+    
   def findSubsequences(self, nums):
     subs = {()}
     for num in nums:

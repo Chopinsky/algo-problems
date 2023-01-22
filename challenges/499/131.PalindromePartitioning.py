@@ -27,6 +27,42 @@ from bisect import bisect_left
 
 class Solution:
   def partition(self, s: str) -> List[List[str]]:
+    n = len(s)
+    
+    @lru_cache(None)
+    def is_pal(i: int, j: int):
+      while i < j:
+        if s[i] != s[j]:
+          return False
+        
+        i += 1
+        j -= 1
+        
+      return True
+    
+    @lru_cache(None)
+    def dp(i: int):
+      if i >= n:
+        return [[]]
+      
+      if i == n-1:
+        return [[s[i]]]
+        
+      res = []
+      for j in range(i, n):
+        if not is_pal(i, j):
+          continue
+          
+        base = s[i:j+1]
+        for sub in dp(j+1):
+          res.append([base] + sub)
+        
+      return res
+    
+    return dp(0)
+    
+    
+  def partition(self, s: str) -> List[List[str]]:
     ch_pos = [[] for _ in range(26)]
     n = len(s)
     

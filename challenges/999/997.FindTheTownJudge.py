@@ -52,6 +52,30 @@ from collections import defaultdict
 
 class Solution:
   def findJudge(self, n: int, trust: List[List[int]]) -> int:
+    cand = set([i for i in range(n)])
+    c = [0] * n
+    judge = -1
+    
+    for a, b in trust:
+      a -= 1
+      b -= 1
+      
+      if a in cand:
+        cand.discard(a)
+        
+      c[b] += 1
+      
+    for j in cand:
+      if c[j] == n-1:
+        if judge >= 0:
+          return -1
+        
+        judge = j
+    
+    return judge+1 if judge >= 0 else -1
+    
+    
+  def findJudge(self, n: int, trust: List[List[int]]) -> int:
     if n == 1:
       return 1 if not trust else -1
       

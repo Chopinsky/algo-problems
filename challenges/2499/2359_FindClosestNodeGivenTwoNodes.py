@@ -37,6 +37,39 @@ import math
 
 
 class Solution:
+  def closestMeetingNode(self, edges: List[int], node1: int, node2: int) -> int:
+    n = len(edges)
+    
+    def calc_dist(src: int) -> List[int]:
+      d = [math.inf] * n
+      if src < 0 or src >= n:
+        return d
+      
+      curr = src
+      step = 0
+      
+      while 0 <= curr < n and d[curr] > step:
+        d[curr] = step
+        curr = edges[curr]
+        step += 1
+      
+      return d
+    
+    d1 = calc_dist(node1)
+    d2 = calc_dist(node2)
+    dist = math.inf
+    idx = -1
+    # print(d1, d2)
+    
+    for i in range(n):
+      d0 = max(d1[i], d2[i])
+      if d0 < dist:
+        dist = d0
+        idx = i
+    
+    return idx
+    
+    
   def closestMeetingNode(self, edges: List[int], n1: int, n2: int) -> int:
     d0 = {}
     curr, c0 = n1, 0

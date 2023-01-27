@@ -81,6 +81,40 @@ class Solution:
     return ans
     
     
+  def findAllConcatenatedWordsInADict(self, words: List[str]) -> List[str]:
+    start, end = 30, 0
+    words.sort(key=lambda x: len(x))
+    seen = set()
+    start_char = set()
+    # print(words)
+    
+    def search(w: str) -> bool:
+      if not w or w in seen:
+        return True
+      
+      if start >= len(w) or w[0] not in start_char:
+        return False
+      
+      for i in range(start, min(end+1, len(w))):
+        if (w[:i] in seen) and search(w[i:]):
+          seen.add(w)
+          return True
+        
+      return False
+    
+    ans = []
+    for word in words:
+      if search(word):
+        ans.append(word)
+      
+      start = min(start, len(word))
+      end = max(end, len(word))
+      seen.add(word)
+      start_char.add(word[0])
+      
+    return ans
+
+
   def findAllConcatenatedWordsInADict0(self, words: List[str]) -> List[str]:
     words.sort(key=lambda x: (len(x), x))
     # print(words)

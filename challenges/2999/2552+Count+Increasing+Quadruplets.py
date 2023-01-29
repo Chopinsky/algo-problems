@@ -34,11 +34,30 @@ from bisect import bisect_left, insort
 
 
 class Solution:
+  '''
+  to find the (a, c, b, d) pairs, we will use value `c` as the anchor, and for 
+  the outter-loop, we check all possible anchor value `c` in nums[1:n-1] (as 
+  we need at least 1 value for `a` and `d`)
+
+  for the inner loop, we scan from right to left (i.e., n-1 ==> i+1), in the
+  process, the right index will serve as value `b`, but only if it's smaller 
+  than value `c`, otherwise, this will be used as value`d` for later scans; 
+  and we can use bisect_left to find the amount of values to the left of index-i
+  that's smaller than `b`, and left_count_b_minus * right_count_c_plus will yield
+  the number of Quadruplets with (c, b) as the center pair;
+
+  final step is to update the left numbers, that's to add the current value `c` 
+  into the sorted array for later scans and bisect searches.
+  '''
   def countQuadruplets(self, nums: List[int]) -> int:
     n = len(nums)
     left_vals = [nums[0]]
     cnt = 0
     
+    # base as the anchor for value c, scan from the right to index-i,
+    # and find all values that's greater than value c, and meanwhile
+    # use bisect_left to find out the number of elements to the left
+    # of index-i which is smaller than the right index value
     def count_pairs(i: int) -> int:
       base = nums[i]
       if base <= 2 or base == n:

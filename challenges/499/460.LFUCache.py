@@ -56,52 +56,62 @@ from collections import defaultdict, OrderedDict
 from heapq import heappush, heappop
 
 
-class LFUCache0:
-  '''
-  used internal library, i.e. OrderedDict, to help with the implementation
-  '''
+class LFUCache:
   def __init__(self, capacity: int):
-    self.capacity = capacity
-    self.freq_to_key = defaultdict(OrderedDict)
-    self.key_to_freq = defaultdict(int)
+    self.cap = capacity
+    self.key_freq = {}
+    self.store = defaultdict(OrderedDict)
     self.min_freq = 1
-
-
+    
+    
+  def touch(self, key: int):
+    if key not in self.key_freq:
+      return
+    
+    curr_freq = self.key_freq[key]
+    self.key_freq[key] += 1
+    
+    value = self.store[curr_freq].pop(key)
+    self.store[curr_freq+1][key] = value
+    
+    if curr_freq == self.min_freq and len(self.store[curr_freq]) == 0:
+      self.min_freq += 1
+    
+    
   def get(self, key: int) -> int:
-    if key not in self.key_to_freq:
+    if key not in self.key_freq:
       return -1
     
-    freq = self.key_to_freq[key]
-    self.key_to_freq[key] = freq + 1
+    self.touch(key)
+    freq = self.key_freq[key]
+    # print('get', key, self.key_freq)
     
-    value = self.freq_to_key[freq][key]
-    self.freq_to_key[freq].pop(key, None)
-    self.freq_to_key[freq+1][key] = value
+    return self.store[freq][key]
     
-    if self.min_freq == freq and not self.freq_to_key[freq]:
-      self.min_freq += 1
-      
-    return value
-
-
+    
   def put(self, key: int, value: int) -> None:
-    if key in self.key_to_freq:
-      # update the freq as well
-      self.get(key)
-      freq = self.key_to_freq[key]
-      self.freq_to_key[freq][key] = value
-
-    else:
-      self.capacity -= 1
-      self.key_to_freq[key] = 1
-      self.freq_to_key[1][key] = value
+    if self.cap == 0:
+      return
+    
+    # update the value and frequency
+    if key in self.key_freq:
+      freq = self.key_freq[key]
+      self.store[freq][key] = value
+      self.touch(key)
+      # print('put 0:', key, self.key_freq)
+      return
+    
+    # pop the LFU item
+    if len(self.key_freq) == self.cap:
+      pop_key, _ = self.store[self.min_freq].popitem(last=False)
+      # print('pop:', pop_key, self.key_freq)
+      self.key_freq.pop(pop_key)
       
-      if self.capacity < 0:
-        self.capacity += 1
-        k, v = self.freq_to_key[self.min_freq].popitem(False)
-        self.key_to_freq.pop(k, None)
-
-      self.min_freq = 1
+    # add the item
+    self.key_freq[key] = 1
+    self.store[1][key] = value
+    self.min_freq = 1
+    # print('put 1:', key, self.key_freq)
 
 
 class LFUCache:

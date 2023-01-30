@@ -28,6 +28,20 @@ The answer is guaranteed to fit within a 32-bit integer, ie. answer <= 2^31 - 1.
 
 class Solution:
   def tribonacci(self, n: int) -> int:
+    if n < 3:
+      return 0 if n == 0 else 1
+    
+    a, b, c = 0, 1, 1
+    i = 2
+    
+    while i < n:
+      a, b, c = b, c, a+b+c
+      i += 1
+      
+    return c
+    
+
+  def tribonacci(self, n: int) -> int:
     if n <= 3:
       return n if n <= 1 else n-1
       

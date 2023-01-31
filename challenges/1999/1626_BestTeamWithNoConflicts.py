@@ -34,22 +34,25 @@ from typing import List
 
 class Solution:
   def bestTeamScore(self, scores: List[int], ages: List[int]) -> int:
-    src = [(a, s) for s, a in zip(scores, ages)]
-    src.sort()
-    n = len(src)
-    scores = [0] * n
+    src = sorted((a, s) for a, s in zip(ages, scores))
+    n, max_score = len(src), max(scores)
+    dp = [src[i][1] for i in range(n)]
     # print(src)
     
-    for i in range(n):
-      age, base_score = src[i]
-      score = base_score
+    for i in range(n-1, -1, -1):
+      a0, s0 = src[i]
       
-      for j in range(i):
-        if src[j][1] <= base_score:
-          score = max(score, base_score+scores[j])
+      for j in range(i+1, n):
+        a1, s1 = src[j]
         
-      # print(age, score)
-      scores[i] = score
+        # no conflicts: 1) same age, or 2) equal 
+        # or less score
+        if a0 == a1 or s0 <= s1:
+          dp[i] = max(dp[i], s0+dp[j])
+          
+      # print(a0, s0, dp[i])
+      max_score = max(max_score, dp[i])
     
-    return max(scores)
+    return max_score
+    
   

@@ -29,7 +29,37 @@ order.length == 26
 All characters in words[i] and order are English lowercase letters.
 '''
 
-class VAAD:
+
+class Solution:
+  def isAlienSorted(self, words: List[str], order: str) -> bool:
+    dic = {ch: idx for idx, ch in enumerate(order)}
+    # print(dic)
+    
+    def is_correct_order(s1: str, s2: str) -> bool:
+      idx = 0
+      n1, n2 = len(s1), len(s2)
+      
+      while idx < n1 and idx < n2:
+        rank1, rank2 = dic[s1[idx]], dic[s2[idx]]
+        if rank1 > rank2:
+          # print((s1[idx], rank1), (s2[idx], rank2))
+          return False
+        
+        if rank1 < rank2:
+          return True
+        
+        idx += 1
+        
+      return idx == n1
+    
+    for i in range(1, len(words)):
+      if not is_correct_order(words[i-1], words[i]):
+        # print(words[i-1], words[i])
+        return False
+      
+    return True
+    
+    
   def isAlienSorted(self, words: List[str], order: str) -> bool:
     dict = {l: idx for idx, l in enumerate(order)}
 

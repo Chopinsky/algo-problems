@@ -39,6 +39,33 @@ s consists of English letters (lower-case and upper-case), ',' and '.'.
 
 
 class Solution:
+  def convert(self, s: str, num_rows: int) -> str:
+    if num_rows == 1:
+      return s
+    
+    stack = [[] for _ in range(num_rows)]
+    idx = 0
+    delta = 1
+    
+    for ch in s:
+      stack[idx].append(ch)
+      idx += delta
+      
+      if idx >= num_rows:
+        idx = num_rows - 2
+        delta = -1
+        
+      elif idx < 0:
+        idx = 1
+        delta = 1
+    
+    res = ''
+    for arr in stack:
+      res += ''.join(arr)
+      
+    return res
+    
+
   def convert(self, s: str, numRows: int) -> str:
     if numRows == 1:
       return s
@@ -54,6 +81,7 @@ class Solution:
       if rdx >= numRows:
         rdx -= 2
         dirs = -1
+        
       elif rdx < 0:
         rdx += 2
         dirs = 1

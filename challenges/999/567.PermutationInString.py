@@ -20,11 +20,43 @@ Constraints:
 s1 and s2 consist of lowercase English letters.
 '''
 
-
 from collections import Counter
 
 
 class Solution:
+  def checkInclusion(self, s1: str, s2: str) -> bool:
+    n1, n2 = len(s1), len(s2)
+    if n1 > n2:
+      return False
+    
+    base = Counter(s1)
+    running = Counter(s2[:n1])
+    
+    def compare(base, running):
+      for ch in base:
+        if ch not in running or running[ch] != base[ch]:
+          return False
+        
+      return True
+    
+    if compare(base, running):
+      return True
+    
+    # print('init:', running)
+    for i in range(n1, n2):
+      pop_ch = s2[i-n1]
+      add_ch = s2[i]
+      running[pop_ch] -= 1
+      running[add_ch] = running.get(add_ch, 0) + 1
+      # print(i, s2[i], running)
+      
+      if compare(base, running):
+        # print(i, s2[i], base, running)
+        return True
+      
+    return False
+    
+
   def checkInclusion(self, s1: str, s2: str) -> bool:
     n1, n2 = len(s1), len(s2)
     if n1 > n2:

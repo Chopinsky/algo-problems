@@ -32,6 +32,39 @@ from typing import List
 
 class Solution:
   def findAnagrams(self, s: str, p: str) -> List[int]:
+    ns, np = len(s), len(p)
+    if ns < np:
+      return []
+    
+    c0 = Counter(p)
+    c1 = Counter(s[:np])
+    ans = []
+    
+    def check(base, sub):
+      for ch in base:
+        if ch not in sub or base[ch] != sub[ch]:
+          return False
+        
+      return True
+    
+    if check(c0, c1):
+      ans.append(0)
+      
+    for i in range(np, ns):
+      j = i-np
+      pop_ch = s[j]
+      add_ch = s[i]
+      
+      c1[pop_ch] -= 1
+      c1[add_ch] = c1.get(add_ch, 0) + 1
+      
+      if check(c0, c1):
+        ans.append(i-np+1)
+        
+    return ans
+    
+    
+  def findAnagrams(self, s: str, p: str) -> List[int]:
     n = len(p)
     oa = ord('a')
     

@@ -24,7 +24,36 @@ Constraints:
 0 <= nums[i] <= 10 ** 5
 '''
 
+from typing import List
+from bisect import bisect_left
+import math
+
+
 class Solution:
+  def jump(self, nums: List[int]) -> int:
+    stack = []
+    i = 0
+    n = len(nums)
+    if n == 1:
+      return 0
+    
+    while i < n:
+      j = i + nums[i]
+      r = bisect_left(stack, i)
+      
+      if not stack or j > stack[-1]:
+        stack = stack[:r+1]
+        stack.append(j)
+        
+      # print(i, nums[i], j, stack)
+      if j >= n-1:
+        break
+      
+      i += 1
+      
+    return len(stack)
+    
+
   def jump(self, nums: List[int]) -> int:
     count = 0
     end = 0

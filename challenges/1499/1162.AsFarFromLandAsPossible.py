@@ -23,11 +23,55 @@ n == grid[i].length
 grid[i][j] is 0 or 1
 '''
 
-
 from typing import List
+import math
 
 
 class Solution:
+  def maxDistance(self, grid: List[List[int]]) -> int:
+    m, n = len(grid), len(grid[0])
+    dist = [[math.inf]*n for _ in range(m)]
+    curr, nxt = set(), set()
+    max_dist = -1
+    
+    for i in range(m):
+      for j in range(n):
+        if grid[i][j] == 1:
+          curr.add((i, j))
+          dist[i][j] = 0
+          
+    # print(curr)
+    
+    while curr:
+      for x, y in curr:
+        d = dist[x][y]
+        
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+          x0, y0 = x+dx, y+dy
+          
+          # out of bound
+          if x0 < 0 or x0 >= m or y0 < 0 or y0 >= n:
+            continue
+            
+          # not a water, or not to a closer land
+          if grid[x0][y0] != 0 or d+1 >= dist[x0][y0]:
+            continue
+            
+          dist[x0][y0] = d+1
+          nxt.add((x0, y0))
+          
+      curr, nxt = nxt, curr
+      nxt.clear()
+    
+    # print(dist)
+    for x in range(m):
+      for y in range(n):
+        if dist[x][y] != math.inf and dist[x][y] > 0:
+          max_dist = max(max_dist, dist[x][y])
+    
+    return max_dist
+  
+
   def maxDistance(self, grid: List[List[int]]) -> int:
     m, n = len(grid), len(grid[0])
     stack, nxt = [], []

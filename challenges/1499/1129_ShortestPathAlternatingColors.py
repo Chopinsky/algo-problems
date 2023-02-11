@@ -31,6 +31,48 @@ import math
 
 class Solution:
   def shortestAlternatingPaths(self, n: int, redEdges: List[List[int]], blueEdges: List[List[int]]) -> List[int]:
+    b = defaultdict(set)  
+    r = defaultdict(set)
+    curr, nxt = [], []
+    
+    for u, v in redEdges:
+      r[u].add(v)
+      if u == 0:
+        curr.append((v, 0))
+      
+    for u, v in blueEdges:
+      b[u].add(v)
+      if u == 0:
+        curr.append((v, 1))
+      
+    seen = set(curr)
+    dist = [math.inf] * n
+    dist[0] = 0
+    d = 0
+    
+    while curr:
+      d += 1
+      # print(curr, d)
+      
+      for u, c in curr:
+        dist[u] = min(dist[u], d)
+        children = b[u] if c == 0 else r[u]
+        nc = 1-c
+        
+        for v in children:
+          if (v, nc) in seen:
+            continue
+            
+          nxt.append((v, nc))
+          seen.add((v, nc))
+      
+      curr, nxt = nxt, curr
+      nxt.clear()
+      
+    return [d if d != math.inf else -1 for d in dist]
+  
+  
+  def shortestAlternatingPaths(self, n: int, redEdges: List[List[int]], blueEdges: List[List[int]]) -> List[int]:
     r, b = defaultdict(set), defaultdict(set)
     for u, v in redEdges:
       r[u].add(v)

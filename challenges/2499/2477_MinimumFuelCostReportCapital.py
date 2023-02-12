@@ -57,9 +57,43 @@ roads represents a valid tree.
 from collections import defaultdict
 from typing import List
 from heapq import heappush, heappop
+from math import ceil
 
 
 class Solution:
+  def minimumFuelCost(self, roads: List[List[int]], seats: int) -> int:
+    e = defaultdict(set)
+    for u, v in roads:
+      e[u].add(v)
+      e[v].add(u)
+      
+    cand = []
+    n = len(roads) + 1
+    count = [1] * n
+    costs = 0
+    
+    for u in e:
+      if u != 0 and len(e[u]) == 1:
+        cand.append(u)
+        
+    # print(cand)
+    
+    while cand:
+      u = cand.pop()
+      # print('check:', u)
+      
+      for v in e[u]:
+        count[v] += count[u]
+        costs += ceil(count[u] / seats)
+        e[v].discard(u)
+        
+        if len(e[v]) == 1 and v != 0:
+          # print(f'move: {u} ({count[u]}) -> {v}')
+          cand.append(v)
+    
+    return costs
+  
+
   def minimumFuelCost(self, roads: List[List[int]], seats: int) -> int:
     edges = defaultdict(list)
     n = len(roads)+1

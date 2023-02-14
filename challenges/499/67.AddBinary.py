@@ -21,6 +21,29 @@ Each string does not contain leading zeros except for the zero itself.
 
 class Solution:
   def addBinary(self, a: str, b: str) -> str:
+    carryover = 0
+    res = ''
+    i, j = len(a)-1, len(b)-1
+    
+    while i >= 0 or j >= 0:
+      va = int(a[i]) if i >= 0 else 0
+      vb = int(b[j]) if j >= 0 else 0
+      vc = va + vb + carryover
+      
+      res = str(vc % 2) + res
+      carryover = vc // 2
+      
+      i -= 1
+      j -= 1
+      
+    if carryover > 0:
+      res = '1' + res
+      
+    return res
+    
+
+
+  def addBinary(self, a: str, b: str) -> str:
     if a == '0':
       return b
     
@@ -52,7 +75,6 @@ class Solution:
           ans.append('1' if carryover == 1 else '0')
           carryover = 1
         else:
-          base = '1'
           if carryover == 1:
             ans.append('0')
             carryover = 1

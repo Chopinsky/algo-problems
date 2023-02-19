@@ -93,14 +93,14 @@ class SegTree:
     # update left segment: [sl, mid]
     ldx = 2*idx
     if ldx < self.size:
-      self.flag[ldx] = not self.flag[ldx]
       self.count[ldx] = (mid-sl+1) - self.count[ldx]
+      self.flag[ldx] = not self.flag[ldx]
     
     # update right segment: [mid+1, sr]
     rdx = 2*idx + 1
     if rdx < self.size:
-      self.flag[rdx] = not self.flag[rdx]
       self.count[rdx] = (sr-mid) - self.count[rdx]
+      self.flag[rdx] = not self.flag[rdx]
     
   
   def flip(self, l, r):

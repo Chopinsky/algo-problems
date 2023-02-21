@@ -41,6 +41,28 @@ from bisect import bisect_left
 
 class Solution:
   def searchInsert(self, nums: List[int], target: int) -> int:
+    n = len(nums)
+    l, r = 0, len(nums)
+    idx = r
+    
+    while l <= r:
+      mid = (l + r) // 2
+      # print(l, r)
+      
+      if mid >= n or nums[mid] == target:
+        idx = mid
+        break
+        
+      if nums[mid] < target:
+        l = mid + 1
+      else:
+        idx = mid
+        r = mid - 1
+    
+    return idx
+    
+    
+  def searchInsert(self, nums: List[int], target: int) -> int:
     if target <= nums[0]:
       return 0
 

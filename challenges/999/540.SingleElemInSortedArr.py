@@ -28,6 +28,60 @@ from typing import List
 class Solution:
   def singleNonDuplicate(self, nums: List[int]) -> int:
     n = len(nums)
+    if n <= 3:
+      if n == 1:
+        return nums[0]
+      
+      return nums[0] if nums[-1] == nums[-2] else nums[-1]
+
+    if nums[0] != nums[1]:
+      return nums[0]
+    
+    if nums[-1] != nums[-2]:
+      return nums[-1]
+      
+    def check(idx: int) -> bool:
+      val = nums[idx]
+      vl = -1 if idx == 0 else nums[idx-1]
+      vr = -1 if idx == n-1 else nums[idx+1]
+      return val == vl or val == vr
+      
+    l, r = 0, n-1
+    while l <= r:
+      if not check(l):
+        break
+        
+      if not check(r):
+        l = r
+        break
+        
+      mid = (l + r) // 2
+      if not check(mid):
+        l = mid
+        break
+      
+      lc, rc = mid-l, r-mid
+      
+      # if even count of numbers, shift boundry
+      # to make odd counts
+      if lc != rc:
+        if nums[l] == nums[l+1]:
+          r += 1
+        else:
+          l -= 1
+          
+        continue
+        
+      if (lc%2 == 0 and nums[mid] != nums[mid-1]) or (lc%2 == 1 and nums[mid] == nums[mid-1]):
+        l = mid+1
+      else:
+        r = mid-1
+      
+    return nums[l]
+    
+
+  def singleNonDuplicate(self, nums: List[int]) -> int:
+    n = len(nums)
     if n == 1:
       return nums[0]
     
@@ -44,7 +98,6 @@ class Solution:
       if check(m):
         return nums[m]
       
-      lc = m-l
       if (m-l) % 2 == 0:
         if nums[m] == nums[m+1]:
           l = m+2

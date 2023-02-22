@@ -48,6 +48,43 @@ from typing import List
 
 class Solution:
   def shipWithinDays(self, weights: List[int], days: int) -> int:
+    def check(limit: int) -> bool:
+      d = 0
+      curr = 0
+      
+      for w in weights:
+        if curr+w > limit:
+          d += 1
+          curr = w
+        else:
+          curr += w
+          
+        if d >= days:
+          break
+        
+      if curr > 0:
+        d += 1
+        
+      # print('check:', limit, d)
+      return d <= days
+        
+    l, r = max(weights), sum(weights)
+    weight_limit = r
+    # print('init', l, r)
+    
+    while l <= r:
+      mid = (l + r) // 2
+      
+      if check(mid):
+        weight_limit = min(weight_limit, mid)
+        r = mid-1
+      else:
+        l = mid+1
+        
+    return weight_limit
+  
+  
+  def shipWithinDays(self, weights: List[int], days: int) -> int:
     def calc_days(limit: int) -> int:
       curr = 0
       count = 0

@@ -104,6 +104,9 @@ class Solution:
         
         gc[root] = chr(base + cand)
         cand += 1
+            
+      if lcp[root][i] == 0:
+        return ""
       
       ans += gc[root]
       

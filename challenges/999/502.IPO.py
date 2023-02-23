@@ -27,17 +27,40 @@ Output: 6
 
 Constraints:
 
-1 <= k <= 105
-0 <= w <= 109
+1 <= k <= 10^5
+0 <= w <= 10^9
 n == profits.length
 n == capital.length
-1 <= n <= 105
-0 <= profits[i] <= 104
-0 <= capital[i] <= 109
+1 <= n <= 10^5
+0 <= profits[i] <= 10^4
+0 <= capital[i] <= 10^9
 '''
+
+from heapq import heappush, heappop
+from typing import List
 
 
 class Solution:
+  def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
+    src = sorted(zip(capital, profits), reverse=True)
+    cand = []
+    # print(src)
+    
+    while k > 0:
+      while src and src[-1][0] <= w:
+        _, p = src.pop()
+        heappush(cand, -p)
+          
+      # print(cand)
+      if not cand:
+        break
+        
+      w += -heappop(cand)
+      k -= 1
+      
+    return w
+    
+
   def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
     n = len(profits)
     prj = sorted((-capital[i], profits[i]) for i in range(n))

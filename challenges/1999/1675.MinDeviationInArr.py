@@ -42,6 +42,32 @@ import math
 
 class Solution:
   def minimumDeviation(self, nums: List[int]) -> int:
+    stack = []
+    min_val = math.inf
+    
+    for val in nums:
+      v0 = val if val%2 == 0 else 2*val
+      min_val = min(min_val, v0)
+      heappush(stack, -v0)
+      
+    min_diff = -stack[0] - min_val
+    # print(stack, min_val)
+    
+    while len(stack) > 1:
+      curr = -heappop(stack)
+      min_diff = min(min_diff, curr-min_val)
+      
+      if curr % 2 == 1:
+        break
+      
+      nxt_val = curr // 2
+      min_val = min(min_val, nxt_val)
+      heappush(stack, -nxt_val)
+    
+    return min_diff
+    
+    
+  def minimumDeviation(self, nums: List[int]) -> int:
     small = math.inf
     stack = []
     

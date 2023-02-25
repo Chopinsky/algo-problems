@@ -20,15 +20,25 @@ Explanation: In this case, no transactions are done and the max profit = 0.
 
 Constraints:
 
-1 <= prices.length <= 105
-0 <= prices[i] <= 104
+1 <= prices.length <= 10^5
+0 <= prices[i] <= 10^4
 '''
-
 
 from typing import List
 
 
 class Solution:
+  def maxProfit(self, prices: List[int]) -> int:
+    low = prices[0]
+    profit = 0
+    
+    for val in prices[1:]:
+      profit = max(profit, val-low)
+      low = min(low, val)
+    
+    return profit
+    
+
   def maxProfit(self, prices: List[int]) -> int:
     p = 0
     low = prices[0]

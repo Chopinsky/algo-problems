@@ -72,7 +72,6 @@ n == grid.length == grid[i].length
 n == 2^x where 0 <= x <= 6
 '''
 
-
 from typing import List
 
 
@@ -86,7 +85,40 @@ class Node:
     self.bottomLeft = bottomLeft
     self.bottomRight = bottomRight
 
+
 class Solution:
+  def construct(self, grid: List[List[int]]) -> 'Node':
+    n = len(grid)
+    
+    def build(x: int, y: int, s: int) -> 'Node':
+      val = grid[x][y]
+      done = True
+      
+      for i in range(x, x+s):
+        for j in range(y, y+s):
+          if grid[i][j] != val:
+            done = False
+            break
+            
+        if not done:
+          break
+          
+      if done:
+        return Node(val, True, None, None, None, None)
+      
+      root = Node(val, False, None, None, None, None)
+      s0 = s // 2
+      
+      root.topLeft = build(x, y, s0)
+      root.topRight = build(x, y+s0, s0)
+      root.bottomLeft = build(x+s0, y, s0)
+      root.bottomRight = build(x+s0, y+s0, s0)
+      
+      return root
+      
+    return build(0, 0, n)
+    
+
   def construct(self, grid: List[List[int]]) -> Node:
     n = len(grid)
     

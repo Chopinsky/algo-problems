@@ -23,10 +23,9 @@ Output: [[2,3],[3]]
 
 Constraints:
 
-The number of the nodes in the tree will be in the range [1, 10^4]
+The number of the nodes in the tree will be in the range [1, 5000]
 -200 <= Node.val <= 200
 '''
-
 
 from typing import Optional, List
 from collections import defaultdict
@@ -41,6 +40,29 @@ class TreeNode:
 
 
 class Solution:
+  def findDuplicateSubtrees(self, root: Optional[TreeNode]) -> List[Optional[TreeNode]]:
+    store = defaultdict(list)
+    
+    def ser(root):
+      if not root:
+        return ''
+      
+      hashCode = f'({ser(root.left)}{root.val}{ser(root.right)})'
+      store[hashCode].append(root)
+      
+      return hashCode
+        
+    ser(root)
+    ans = []
+    # print(store.keys())
+    
+    for lst in store.values():
+      if len(lst) > 1:
+        ans.append(lst[0])
+    
+    return ans
+  
+    
   def findDuplicateSubtrees(self, root: Optional[TreeNode]) -> List[Optional[TreeNode]]:
     trees = defaultdict(list)
     

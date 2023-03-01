@@ -61,6 +61,12 @@ class Solution:
     if not stack:
       return -1
     
+    if len(stack) < 2:
+      _, x, y = stack[0]
+      x0, y0 = 1-x, 1-y
+      t0 = 2*(grid[x0][y0]//2) + 1
+      heappush(stack, (t0, x0, y0))
+    
     while stack:
       t, x, y = heappop(stack)
       # print('curr:', (x, y), t)

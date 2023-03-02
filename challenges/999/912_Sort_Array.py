@@ -27,6 +27,49 @@ from typing import List
 
 class Solution:
   def sortArray(self, nums: List[int]) -> List[int]:
+    def mergeSort(i: int, j: int):
+      if i >= j:
+        return
+      
+      if i+1 == j:
+        if nums[i] > nums[j]:
+          nums[i], nums[j] = nums[j], nums[i]
+          
+        return
+      
+      # sort left and right
+      mid = (i + j) // 2
+      mergeSort(i, mid)
+      mergeSort(mid+1, j)
+      
+      # merge left/right
+      left = nums[i:mid+1].copy()
+      right = nums[mid+1:j+1].copy()
+      li, ri = 0, 0
+      ln, rn = len(left), len(right)
+      idx = i
+      
+      while li < ln or ri < rn:
+        if li >= ln:
+          nums[idx] = right[ri]
+          ri += 1
+          
+        elif ri >= rn or left[li] <= right[ri]:
+          nums[idx] = left[li]
+          li += 1
+          
+        else:
+          nums[idx] = right[ri]
+          ri += 1
+          
+        idx += 1
+        
+    mergeSort(0, len(nums)-1)
+    
+    return nums
+    
+
+  def sortArray(self, nums: List[int]) -> List[int]:
     def merge_sort(src: List[int]):
       n = len(src)
       if n <= 2:

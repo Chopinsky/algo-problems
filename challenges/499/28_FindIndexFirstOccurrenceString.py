@@ -22,6 +22,26 @@ haystack and needle consist of only lowercase English characters.
 '''
 
 class Solution:
+  def strStr(self, haystack: str, needle: str) -> int:
+    m, n = len(haystack), len(needle)
+    
+    def check(i: int) -> bool:
+      if i+n > m or haystack[i] != needle[0]:
+        return False
+      
+      for j in range(n):
+        if i+j >= m or haystack[i+j] != needle[j]:
+          return False
+        
+      return True
+      
+    for i in range(m):
+      if check(i):
+        return i
+      
+    return -1
+    
+    
   def strStr(self, s: str, p: str) -> int:
     m = len(s)
     n = len(p)

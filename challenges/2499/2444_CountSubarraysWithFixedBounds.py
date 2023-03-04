@@ -30,9 +30,58 @@ Constraints:
 
 from bisect import bisect_left
 from typing import List
+from math import comb
 
 
 class Solution:
+  def countSubarrays(self, nums: List[int], minK: int, maxK: int) -> int:
+    idx = 0
+    n = len(nums)
+    cnt = 0
+    
+    def count(i: int) -> int:
+      c, j = 0, i
+      low, high = [], []
+      
+      while i < n and minK <= nums[i] <= maxK:
+        if nums[i] == minK:
+          low.append(i)
+          
+        if nums[i] == maxK:
+          high.append(i)
+        
+        i += 1
+
+      if not low or not high:
+        return 0, i
+        
+      if minK == maxK:
+        # print(low)
+        return comb(len(low), 2) + len(low), i
+      
+      while j < i and j <= min(low[-1], high[-1]):
+        p0 = bisect_left(low, j)
+        p1 = bisect_left(high, j)
+        
+        if p0 >= len(low) or p1 >= len(high):
+          break
+          
+        c += i - max(low[p0], high[p1])
+        j += 1
+      
+      return c, i
+    
+    while idx < n:
+      if minK <= nums[idx] <= maxK:
+        c0, idx = count(idx)
+        cnt += c0
+        
+      else:
+        idx += 1
+        
+    return cnt
+    
+
   def countSubarrays(self, nums: List[int], minK: int, maxK: int) -> int:
     if minK > maxK:
       return 0

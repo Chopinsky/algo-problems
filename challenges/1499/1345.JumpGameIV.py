@@ -39,6 +39,47 @@ from collections import defaultdict
 
 class Solution:
   def minJumps(self, arr: List[int]) -> int:
+    n = len(arr)
+    if n == 1:
+      return 0
+    
+    curr, nxt = set([0]), set()
+    visited = set()
+    seen = set()
+    steps = 0
+    links = defaultdict(set)
+    
+    for i, val in enumerate(arr):
+      links[val].add(i)
+      
+    # print(links)
+    
+    while curr and n-1 not in curr:
+      # print(steps, curr)
+      steps += 1
+      visited |= curr
+      
+      for i in curr:
+        if i+1 < n and i+1 not in visited:
+          nxt.add(i+1)
+          
+        if i-1 >= 0 and i-1 not in visited:
+          nxt.add(i-1)
+        
+        val = arr[i]
+        if val in seen:
+          continue
+          
+        nxt |= links[val] - visited
+        seen.add(val)
+          
+      curr, nxt = nxt, curr
+      nxt.clear()
+    
+    return steps
+    
+    
+  def minJumps(self, arr: List[int]) -> int:
     group = defaultdict(list)
     for i, val in enumerate(arr):
       group[val].append(i)

@@ -37,6 +37,32 @@ from typing import List
 
 class Solution:
   def minimumTime(self, time: List[int], totalTrips: int) -> int:
+    def check(t: int) -> bool:
+      total = 0
+      
+      for t0 in time:
+        total += t // t0
+        
+      return total >= totalTrips
+    
+    l, r = 0, max(time)*totalTrips
+    lastValid = r
+    # print('init', l, r)
+    
+    while l <= r:
+      m = (l + r) // 2
+      # print('check:', m, check(m))
+      
+      if check(m):
+        lastValid = m
+        r = m-1
+      else:
+        l = m+1
+      
+    return lastValid
+    
+    
+  def minimumTime(self, time: List[int], totalTrips: int) -> int:
     if len(time) == 1:
       return time[0] * totalTrips
     

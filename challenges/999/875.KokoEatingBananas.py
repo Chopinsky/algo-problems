@@ -28,12 +28,43 @@ piles.length <= h <= 10^9
 1 <= piles[i] <= 10^9
 '''
 
-
 from typing import List
 from math import ceil
 
 
 class Solution:
+  def minEatingSpeed(self, piles: List[int], h: int) -> int:
+    n = len(piles)
+    if h == n:
+      return max(piles)
+    
+    def check(s: int) -> bool:
+      total = 0
+      
+      for p in piles:
+        total += ceil(p / s)
+        if total > h:
+          return False
+      
+      # print('check', s, total)
+      return total <= h
+    
+    low, high = 1, max(piles)+1
+    last = high
+    
+    while low <= high:
+      mid = (low + high) // 2
+      # print(mid, check(mid))
+      
+      if check(mid):
+        last = mid
+        high = mid-1
+      else:
+        low = mid+1
+        
+    return last
+    
+
   def minEatingSpeed(self, piles: List[int], h: int) -> int:
     n = len(piles)
     if h == n:

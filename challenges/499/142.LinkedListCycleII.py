@@ -34,6 +34,8 @@ pos is -1 or a valid index in the linked-list.
 Follow up: Can you solve it using O(1) (i.e. constant) memory?
 '''
 
+from typing import Optional
+
 
 class ListNode:
   def __init__(self, x):
@@ -42,6 +44,17 @@ class ListNode:
 
 
 class Solution:
+  def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    seen = set()
+    curr = head
+    
+    while curr and curr not in seen:
+      seen.add(curr)
+      curr = curr.next
+    
+    return curr
+  
+
   def detectCycle(self, head: ListNode) -> ListNode:
     s, f = head, head
     

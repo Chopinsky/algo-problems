@@ -54,6 +54,26 @@ class Solution:
   def __init__(self, head: Optional[ListNode]):
     self.head = head
     
+
+  def getRandom(self) -> int:
+    curr = self.head
+    scope = 1
+    val = 0 if not curr else curr.val
+    
+    while curr:
+      if random.random() < 1/scope:
+        val = curr.val
+        
+      curr = curr.next
+      scope += 1
+    
+    return val
+  
+
+class Solution0:
+  def __init__(self, head: Optional[ListNode]):
+    self.head = head
+    
     
   def getRandom(self) -> int:
     scope = 1

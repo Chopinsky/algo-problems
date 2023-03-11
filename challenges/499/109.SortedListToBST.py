@@ -30,6 +30,9 @@ The number of nodes in head is in the range [0, 2 * 104].
 -10^5 <= Node.val <= 10^5
 '''
 
+from typing import Optional
+
+
 # Definition for singly-linked list.
 class ListNode:
   def __init__(self, val=0, next=None):
@@ -46,6 +49,32 @@ class TreeNode:
 
 
 class Solution:
+  def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
+    stack = []
+    curr = head
+    
+    while curr:
+      stack.append(curr.val)
+      curr = curr.next
+      
+    def build_tree(i: int, j: int):
+      if i > j:
+        return None
+      
+      m = (i + j) // 2
+      root = TreeNode(stack[m])
+
+      if i <= m-1:
+        root.left = build_tree(i, m-1)
+
+      if j >= m+1:
+        root.right = build_tree(m+1, j)
+      
+      return root
+    
+    return build_tree(0, len(stack)-1)
+
+
   def sortedListToBST(self, head: ListNode) -> TreeNode:
     if not head:
       return None

@@ -49,6 +49,36 @@ class ListNode:
 
 class Solution:
   def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+    stack = []
+    
+    for i, h in enumerate(lists):
+      if not h:
+        continue
+        
+      heappush(stack, (h.val, i))
+      
+    fake = ListNode()
+    curr = fake
+    
+    while stack:
+      # pop and get
+      _, idx = heappop(stack)
+      node = lists[idx]
+      lists[idx] = node.next
+
+      # link
+      node.next = None
+      curr.next = node
+      curr = curr.next
+      
+      # push back
+      if lists[idx]:
+        heappush(stack, (lists[idx].val, idx))
+      
+    return fake.next
+    
+    
+  def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
     if not lists:
       return None
     

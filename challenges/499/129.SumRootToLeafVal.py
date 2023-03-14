@@ -36,6 +36,8 @@ The number of nodes in the tree is in the range [1, 1000].
 The depth of the tree will not exceed 10.
 '''
 
+from typing import Optional
+
 
 # Definition for a binary tree node.
 class TreeNode:
@@ -46,6 +48,20 @@ class TreeNode:
     
     
 class Solution:
+  def sumNumbers(self, root: Optional[TreeNode]) -> int:
+    def get_sum(root, val):
+      if not root:
+        return 0
+      
+      val = 10*val + root.val
+      if not root.left and not root.right:
+        return val
+      
+      return get_sum(root.left, val) + get_sum(root.right, val)
+    
+    return get_sum(root, 0)
+
+
   def sumNumbers(self, root: Optional[TreeNode]) -> int:
     total = 0
     

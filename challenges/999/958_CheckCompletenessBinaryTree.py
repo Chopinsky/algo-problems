@@ -39,6 +39,43 @@ class TreeNode:
 class Solution:
   def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
     if not root:
+      return True
+    
+    curr, nxt = [root], []
+    expected = 1
+    cc, nc = 0, 1
+    
+    while curr:
+      cc, nc = nc, 0
+
+      for node in curr:
+        if not node:
+          continue
+        
+        if node.left and nxt and nxt[-1] is None:
+          return False
+        
+        nxt.append(node.left)
+        nc += 1 if node.left else 0
+        
+        if node.right and nxt and nxt[-1] is None:
+          return False
+        
+        nxt.append(node.right)
+        nc += 1 if node.right else 0
+        
+      if cc != expected and nc > 0:
+        return False
+      
+      curr, nxt = nxt, curr
+      nxt.clear()
+      expected <<= 1
+      
+    return True
+    
+    
+  def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
+    if not root:
       return False
     
     curr, nxt = [root], []

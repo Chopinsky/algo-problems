@@ -36,6 +36,37 @@ class TreeNode:
 
 class Solution:
   def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+    ip = {}
+    n = len(inorder)
+    
+    for i, val in enumerate(inorder):
+      ip[val] = i
+      
+    def build(il, ir, pl, pr):
+      if il > ir or pl > pr:
+        return None
+      
+      if il == ir:
+        return TreeNode(inorder[il])
+      
+      val = postorder[pr]
+      root = TreeNode(val)
+      rp = ip[val]
+      
+      if rp > il:
+        lc = rp-il
+        root.left = build(il, rp-1, pl, pl+lc-1)
+        
+      if rp < ir:
+        rc = ir-rp
+        root.right = build(rp+1, ir, pr-rc, pr-1)
+      
+      return root
+      
+    return build(0, n-1, 0, n-1)
+    
+    
+  def buildTree(self, inorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
     idx_map = {val: idx for idx, val in enumerate(inorder)}
 
     def traverse(left: int, right: int):

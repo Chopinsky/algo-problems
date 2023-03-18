@@ -39,8 +39,31 @@ homepage and url consist of  '.' or lower case English letters.
 At most 5000 calls will be made to visit, back, and forward.
 '''
 
-
 class BrowserHistory:
+  def __init__(self, homepage: str):
+    self.stack = [homepage]
+    self.ptr = 0
+
+
+  def visit(self, url: str) -> None:
+    self.stack = self.stack[:self.ptr+1]
+    self.stack.append(url)
+    self.ptr += 1
+
+
+  def back(self, steps: int) -> str:
+    idx = max(0, self.ptr-steps)
+    self.ptr = idx
+    return self.stack[self.ptr]
+
+
+  def forward(self, steps: int) -> str:
+    idx = min(len(self.stack)-1, self.ptr+steps)
+    self.ptr = idx
+    return self.stack[self.ptr]
+        
+
+class BrowserHistory0:
   def __init__(self, homepage: str):
     self.stack = [homepage]
     self.ptr = 0

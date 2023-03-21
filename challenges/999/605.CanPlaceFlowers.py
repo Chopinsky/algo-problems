@@ -25,6 +25,25 @@ from typing import List
 
 
 class Solution:
+  def canPlaceFlowers(self, flowerbed: List[int], total: int) -> bool:
+    cnt = 0
+    n = len(flowerbed)
+    
+    for i in range(n):
+      if flowerbed[i] == 1:
+        continue
+        
+      if (i == 0 or flowerbed[i-1] == 0) and (i == n-1 or flowerbed[i+1] == 0):
+        cnt += 1
+        flowerbed[i] = 1
+        
+      if cnt >= total:
+        break
+    
+    # print(flowerbed)
+    return cnt >= total
+    
+    
   def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
     if len(flowerbed) == 1:
       return True if (flowerbed[0] == 0) else (n == 0)

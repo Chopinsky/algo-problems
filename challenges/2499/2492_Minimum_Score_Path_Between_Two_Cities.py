@@ -38,10 +38,38 @@ There is at least one path between 1 and n.
 '''
 
 from typing import List
+from collections import defaultdict
 import math
 
 
 class Solution:
+  def minScore(self, n: int, roads: List[List[int]]) -> int:
+    md = {1:math.inf, n:math.inf}
+    curr, nxt = set([1]), set()
+    conn = defaultdict(list)
+    
+    for u, v, d in roads:
+      u, v = min(u, v), max(u, v)
+      conn[u].append((v, d))
+      conn[v].append((u, d))
+    
+    # print(conn)
+    while curr:
+      for u in curr:
+        d0 = md[u]
+        for v, d1 in conn[u]:
+          dd = min(d0, d1)
+          if (v not in md) or (dd < md[v]):
+            md[v] = dd
+            nxt.add(v)
+        
+      # print(curr, nxt, md)
+      curr, nxt = nxt, curr
+      nxt.clear()
+      
+    return md[n]
+    
+
   def minScore(self, n: int, roads: List[List[int]]) -> int:
     group = [i for i in range(n+1)]
     dist = [math.inf] * (n+1)

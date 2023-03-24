@@ -41,6 +41,38 @@ from collections import defaultdict
 
 class Solution:
   def minReorder(self, n: int, connections: List[List[int]]) -> int:
+    curr, nxt = [0], []
+    cnt = 0
+    seen, conn = set(curr), set()
+    e = defaultdict(set)
+    
+    for u, v in connections:
+      e[u].add(v)
+      e[v].add(u)
+      conn.add((u, v))
+    
+    while curr:
+      # print(curr)
+      
+      for u in curr:
+        for v in e[u]:
+          if v in seen:
+            continue
+            
+          seen.add(v)
+          nxt.append(v)
+          # print('move:', v, u)
+          
+          if (v, u) not in conn:
+            cnt += 1
+      
+      curr, nxt = nxt, curr
+      nxt.clear()
+      
+    return cnt
+    
+    
+  def minReorder(self, n: int, connections: List[List[int]]) -> int:
     conn = defaultdict(list)
     routes = defaultdict(set)
     

@@ -32,6 +32,39 @@ from collections import defaultdict
 
 class Solution:
   def countPairs(self, n: int, edges: List[List[int]]) -> int:
+    g = {i:i for i in range(n)}
+    
+    def find(x: int) -> int:
+      while g[x] != x:
+        x = g[x]
+        
+      return x
+    
+    def union(x: int, y: int) -> int:
+      xr, yr = find(x), find(y)
+      if xr <= yr:
+        g[yr] = xr
+      else:
+        g[xr] = yr
+        
+    for u, v in sorted(edges):
+      union(u, v)
+      
+    groups = defaultdict(int)
+    for i in range(n):
+      r = find(i)
+      groups[r] += 1
+      
+    # print(groups)
+    cnt = 0
+    
+    for c in groups.values():
+      cnt += c * (n-c)
+      
+    return cnt // 2
+    
+    
+  def countPairs(self, n: int, edges: List[List[int]]) -> int:
     seen = set()
     e = defaultdict(list)
     total = 0

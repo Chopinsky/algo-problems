@@ -36,9 +36,23 @@ m == potions.length
 '''
 
 from typing import List
+from bisect import bisect_left
 
 
 class Solution:
+  def successfulPairs(self, spells: List[int], potions: List[int], success: int) -> List[int]:
+    n = len(potions)
+    potions.sort()
+    ans = []
+    
+    for s in spells:
+      p0 = success//s + (0 if success % s == 0 else 1)
+      idx = bisect_left(potions, p0)
+      ans.append(n-idx)
+    
+    return ans
+  
+
   def successfulPairs(self, spells: List[int], potions: List[int], success: int) -> List[int]:
     spells = sorted([(s, i) for i, s in enumerate(spells)])
     potions.sort()

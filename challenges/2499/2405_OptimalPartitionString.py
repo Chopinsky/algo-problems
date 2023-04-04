@@ -30,6 +30,21 @@ s consists of only English lowercase letters.
 
 class Solution:
   def partitionString(self, s: str) -> int:
+    cnt = 1
+    mask = 0
+    
+    for ch in s:
+      idx = ord(ch) - ord('a')
+      if (1 << idx) & mask > 0:
+        cnt += 1
+        mask = 0
+        
+      mask |= (1 << idx)
+    
+    return cnt
+  
+  
+  def partitionString(self, s: str) -> int:
     count = 0
     chars = set()
     

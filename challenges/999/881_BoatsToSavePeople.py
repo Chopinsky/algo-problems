@@ -31,6 +31,31 @@ from typing import List
 
 class Solution:
   def numRescueBoats(self, people: List[int], limit: int) -> int:
+    taken = set()
+    people.sort()
+    n = len(people)
+    l, r = 0, n-1
+    cnt = 0
+    
+    while l < n:
+      if l in taken:
+        l += 1
+        continue
+        
+      while r >= 0 and (people[l]+people[r] > limit or r in taken):
+        r -= 1
+        
+      taken.add(l)
+      if r >= 0:
+        taken.add(r)
+      
+      cnt += 1
+      l += 1
+    
+    return cnt
+  
+
+  def numRescueBoats(self, people: List[int], limit: int) -> int:
     people.sort()
     l, r = 0, len(people)-1
     cnt = 0
@@ -43,7 +68,7 @@ class Solution:
         break
         
       if people[r]+people[l] <= limit:
-        l += 1        
+        l += 1
 
       r -= 1
       

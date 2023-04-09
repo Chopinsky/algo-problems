@@ -23,17 +23,70 @@ Constraints:
 
 n == colors.length
 m == edges.length
-1 <= n <= 105
-0 <= m <= 105
+1 <= n <= 10^5
+0 <= m <= 10^5
 colors consists of lowercase English letters.
 0 <= aj, bj < n
 '''
 
-
+from collections import defaultdict
 from typing import List
 
 
 class Solution:
+  def largestPathValue(self, colors: str, edges: List[List[int]]) -> int:
+    cnt = defaultdict(int)
+    e = defaultdict(list)
+    n = len(colors)
+    store = {}
+    
+    for u, v in edges:
+      e[u].append(v)
+      cnt[v] += 1
+      
+    cand = []
+    for u in range(n):
+      if u not in cnt or cnt[u] == 0:
+        cand.append(u)
+        cnt.pop(u, None)
+        store[u] = {colors[u]:1}
+        
+    if not cand:
+      return -1
+
+    most = 1
+    # print(cand, store)
+    #todo: iter
+    
+    while cand:
+      u = cand.pop()
+      
+      for v in e[u]:
+        cv = colors[v]
+        
+        if v not in store:
+          store[v] = defaultdict(int)
+          store[v][cv] = 1
+          
+        cnt[v] -= 1
+        if cnt[v] == 0:
+          cand.append(v)
+          cnt.pop(v, None)
+          
+        for color, color_cnt in store[u].items():
+          if color == cv:
+            store[v][color] = max(store[v][color], 1+color_cnt)
+          else:
+            store[v][color] = max(store[v][color], color_cnt)
+            
+          most = max(most, store[v][color])
+      
+    if cnt:
+      return -1
+    
+    return most
+    
+
   def largestPathValue(self, colors: str, edges: List[List[int]]) -> int:
     e = defaultdict(list)
     n = len(colors)

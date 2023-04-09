@@ -41,6 +41,49 @@ class Solution:
   def closedIsland(self, grid: List[List[int]]) -> int:
     seen = set()
     m, n = len(grid), len(grid[0])
+    
+    def search(x, y):
+      seen.add((x, y))
+      if grid[x][y] == 1:
+        return False
+      
+      stack = [(x, y)]
+      isIsolated = True
+      
+      while stack:
+        x0, y0 = stack.pop()
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+          x1, y1 = x0+dx, y0+dy
+          if x1 < 0 or x1 >= m or y1 < 0 or y1 >= n:
+            isIsolated = False
+            continue
+            
+          if (x1, y1) in seen:
+            continue
+            
+          seen.add((x1, y1))
+          if grid[x1][y1] == 1:
+            continue
+            
+          stack.append((x1, y1))
+        
+      return isIsolated
+    
+    cnt = 0
+    for x in range(m):
+      for y in range(n):
+        if (x, y) in seen:
+          continue
+          
+        if search(x, y):
+          cnt += 1
+          
+    return cnt
+        
+  
+  def closedIsland(self, grid: List[List[int]]) -> int:
+    seen = set()
+    m, n = len(grid), len(grid[0])
     if m < 3 or n < 3:
       return 0
     

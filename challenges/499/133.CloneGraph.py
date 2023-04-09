@@ -9,7 +9,6 @@ class Node {
     public int val;
     public List<Node> neighbors;
 }
- 
 
 Test case format:
 
@@ -19,10 +18,7 @@ An adjacency list is a collection of unordered lists used to represent a finite 
 
 The given node will always be the first node with val = 1. You must return the copy of the given node as a reference to the cloned graph.
 
- 
-
 Example 1:
-
 
 Input: adjList = [[2,4],[1,3],[2,4],[1,3]]
 Output: [[2,4],[1,3],[2,4],[1,3]]
@@ -33,7 +29,6 @@ Explanation: There are 4 nodes in the graph.
 4th node (val = 4)'s neighbors are 1st node (val = 1) and 3rd node (val = 3).
 Example 2:
 
-
 Input: adjList = [[]]
 Output: [[]]
 Explanation: Note that the input contains one empty list. The graph consists of only one node with val = 1 and it does not have any neighbors.
@@ -42,7 +37,6 @@ Example 3:
 Input: adjList = []
 Output: []
 Explanation: This an empty graph, it does not have any nodes.
- 
 
 Constraints:
 
@@ -65,6 +59,35 @@ class Node:
 
 
 class Solution:
+  def cloneGraph(self, node: 'Node') -> 'Node':
+    seen = {}
+    
+    def copy(root):
+      if not root:
+        return None
+      
+      v0 = root.val
+      if v0 in seen:
+        return seen[v0]
+      
+      curr = Node(v0)
+      seen[v0] = curr
+      
+      for node in root.neighbors:
+        v1 = node.val
+        if v1 not in seen:
+          nn = copy(node)
+        else:
+          nn = seen[v1]
+          
+        if nn:
+          curr.neighbors.append(nn)
+      
+      return curr
+      
+    return copy(node)
+  
+
   def cloneGraph(self, node: 'Node') -> 'Node':
     nodes = {}
     

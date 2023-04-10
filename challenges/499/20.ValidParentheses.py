@@ -41,6 +41,25 @@ s consists of parentheses only '()[]{}'.
 class Solution:
   def isValid(self, s: str) -> bool:
     stack = []
+    for ch in s:
+      if ch == '[' or ch == '{' or ch == '(':
+        stack.append(ch)
+        continue
+        
+      if not stack:
+        return False
+      
+      if (ch == ']' and stack[-1] == '[') or (ch == '}' and stack[-1] == '{') or (ch == ')' and stack[-1] == '('):
+        stack.pop()
+        continue
+        
+      return False
+    
+    return len(stack) == 0
+    
+
+  def isValid(self, s: str) -> bool:
+    stack = []
     
     for ch in s:
       if ch == '(' or ch == '[' or ch == '{':

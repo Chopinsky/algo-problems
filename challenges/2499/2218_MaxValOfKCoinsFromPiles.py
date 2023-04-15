@@ -35,6 +35,36 @@ from functools import lru_cache
 class Solution:
   def maxValueOfCoins(self, piles: List[List[int]], k: int) -> int:
     n = len(piles)
+    rem = [len(piles[i]) for i in range(n)]
+    for i in range(n-2, -1, -1):
+      rem[i] += rem[i+1]
+    
+    # print('remain:', rem)
+    
+    @lru_cache(None)
+    def dp(i, m):
+      if i >= n or m <= 0:
+        return 0
+      
+      if m >= rem[i]:
+        return sum(sum(piles[j]) for j in range(i, n))
+      
+      score = 0
+      bound = min(len(piles[i]), m)
+      curr = 0
+      
+      for j in range(bound+1):
+        score = max(score, curr + dp(i+1, m-j))
+        if j < len(piles[i]):
+          curr += piles[i][j]
+        
+      return score
+      
+    return dp(0, k)
+      
+      
+  def maxValueOfCoins(self, piles: List[List[int]], k: int) -> int:
+    n = len(piles)
     count = [[len(piles[i]), sum(piles[i])] for i in range(n)]
     
     for i in range(n-2, -1, -1):

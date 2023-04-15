@@ -38,6 +38,26 @@ path is a valid absolute Unix path.
 
 class Solution:
   def simplifyPath(self, path: str) -> str:
+    stack = path.split('/')
+    arr = []
+    
+    for d in stack:
+      if d == '' or d == '.':
+        continue
+        
+      if d == '..':
+        if arr:
+          arr.pop()
+          
+        continue
+        
+      arr.append(d)
+    
+    # print(stack, arr)
+    return '/' + '/'.join(arr)
+    
+    
+  def simplifyPath(self, path: str) -> str:
     src = path.split('/')
     tgt = []
     # print(src)

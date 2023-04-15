@@ -34,6 +34,23 @@ from typing import List
 
 class Solution:
   def validateStackSequences(self, pushed: List[int], popped: List[int]) -> bool:
+    if len(pushed) != len(popped):
+      return False
+    
+    idx = 0
+    stack = []
+    n = len(popped)
+    
+    for val in pushed:
+      stack.append(val)
+      while stack and idx < n and popped[idx] == stack[-1]:
+        stack.pop()
+        idx += 1
+        
+    return idx == n
+    
+    
+  def validateStackSequences(self, pushed: List[int], popped: List[int]) -> bool:
     i, stack = 0, []
     for x in pushed:
       while stack and stack[-1] == popped[i]:

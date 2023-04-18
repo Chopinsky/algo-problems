@@ -31,6 +31,48 @@ from typing import List
 
 class Solution:
   def numEnclaves(self, grid: List[List[int]]) -> int:
+    m, n = len(grid), len(grid[0])
+    seen = set()
+    
+    def mark(x, y):
+      if (x, y) in seen:
+        return
+        
+      stack = [(x, y)]
+      while stack:
+        x, y = stack.pop()
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+          x0, y0 = x+dx, y+dy
+          if x0 < 0 or x0 >= m or y0 < 0 or y0 >= n or grid[x0][y0] == 0:
+            continue
+            
+          if (x0, y0) not in seen:
+            stack.append((x0, y0))
+            seen.add((x0, y0))
+    
+    for i in range(m):
+      if i == 0 or i == m-1:
+        for j in range(n):
+          if grid[i][j] == 1:
+            mark(i, j)
+          
+      else:
+        if grid[i][0] == 1:
+          mark(i, 0)
+          
+        if grid[i][n-1] == 1:
+          mark(i, n-1)
+          
+    cnt = 0
+    for i in range(1, m-1):
+      for j in range(1, n-1):
+        if grid[i][j] == 1 and (i, j) not in seen:
+          cnt += 1
+          
+    return cnt
+    
+    
+  def numEnclaves(self, grid: List[List[int]]) -> int:
     dirs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     m, n = len(grid), len(grid[0])
     

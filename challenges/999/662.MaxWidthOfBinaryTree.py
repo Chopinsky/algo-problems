@@ -32,7 +32,7 @@ The number of nodes in the tree is in the range [1, 3000].
 -100 <= Node.val <= 100
 '''
 
-
+import math
 from typing import Optional
 
 
@@ -43,13 +43,36 @@ class TreeNode:
     self.left = left
     self.right = right
 
-    
+
 class Solution:
+  def widthOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+    max_id, min_id = {}, {}
+    
+    def dp(root, level, idx):
+      if not root:
+        return 
+      
+      max_id[level] = max(max_id.get(level, 0), idx)
+      min_id[level] = min(min_id.get(level, math.inf), idx)
+      
+      dp(root.left, level+1, 2*idx)
+      dp(root.right, level+1, 2*idx+1)
+      
+    dp(root, 0, 0)
+    max_width = 0
+    # print(max_id, min_id)
+    
+    for lvl in max_id:
+      max_width = max(max_width, max_id[lvl] - min_id[lvl])
+      
+    return max_width+1
+  
+
   def widthOfBinaryTree(self, root: Optional[TreeNode]) -> int:
     if not root:
       return 0
     
-    stack, nxt = [(0, root)],  []
+    stack, nxt = [(0, root)], []
     width = 0
     
     while stack:

@@ -31,13 +31,43 @@ Output: 34
 
 Constraints:
 
-1 <= s.length <= 105
+1 <= s.length <= 10^5
 s consists of only digits and does not contain leading zeros.
-1 <= k <= 109
+1 <= k <= 10^9
 '''
+
+from functools import lru_cache
 
 
 class Solution:
+  def numberOfArrays(self, s: str, k: int) -> int:
+    mod = 10**9 + 7
+    n = len(s)
+    
+    @lru_cache(None)
+    def dp(i: int):
+      if i >= n:
+        return 1
+      
+      if s[i] == '0':
+        return 0
+      
+      cnt = 0
+      base = 0
+      
+      for j in range(i, n):
+        base = 10*base + int(s[j])
+        if base > k:
+          break
+          
+        # print((i,j,s[i:j]), base, dp(j+1))
+        cnt = (cnt + dp(j+1)) % mod
+        
+      return cnt
+    
+    return dp(0)
+      
+
   def numberOfArrays(self, s: str, k: int) -> int:
     if s[0] == '0':
       return 0

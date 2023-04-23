@@ -46,6 +46,28 @@ class TreeNode:
 
 class Solution:
   def longestZigZag(self, root: Optional[TreeNode]) -> int:
+    depth = 0
+    
+    def walk(root, isLeft):
+      nonlocal depth
+      
+      if not root:
+        return 0
+      
+      dl = 1 + walk(root.left, True)
+      dr = 1 + walk(root.right, False)
+      depth = max(depth, dl, dr)
+      # print(root.val, dl, dr)
+    
+      return dr if isLeft else dl
+    
+    walk(root, True)
+    walk(root, False)
+    
+    return depth-1
+  
+  
+  def longestZigZag(self, root: Optional[TreeNode]) -> int:
     long = 0
     
     def iterate(node):

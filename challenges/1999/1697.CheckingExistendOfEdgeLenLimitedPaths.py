@@ -32,12 +32,42 @@ pj != qj
 There may be multiple edges between two nodes.
 '''
 
-
 from typing import List
+from heapq import heappop
 import math
 
 
 class Solution:
+  def distanceLimitedPathsExist(self, n: int, edges: List[List[int]], queries: List[List[int]]) -> List[bool]:
+    src = sorted([(e[2], min(e[0], e[1]), max(e[0], e[1])) for e in edges])
+    q = sorted([l, u, v, i] for i, (u, v, l) in enumerate(queries))
+    ans = [False] * len(q)
+    g = [i for i in range(n)]
+    
+    def find(x):
+      while g[x] != x:
+        x = g[x]
+        
+      return x
+    
+    def union(x, y):
+      rx, ry = find(x), find(y)
+      if rx <= ry:
+        g[ry] = rx
+      else:
+        g[rx] = ry
+    
+    # print(src, q)
+    for limit, u, v, i in q:
+      while src and src[0][0] < limit:
+        _, x, y = heappop(src)
+        union(x, y)
+        
+      ans[i] = find(u) == find(v)
+    
+    return ans
+        
+
   def distanceLimitedPathsExist(self, n: int, edges: List[List[int]], queries: List[List[int]]) -> List[bool]:
     nodes = [i for i in range(n)]
     

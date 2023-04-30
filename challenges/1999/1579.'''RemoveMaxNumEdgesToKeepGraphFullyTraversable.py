@@ -42,6 +42,81 @@ from typing import List
 
 class Solution:
   def maxNumEdgesToRemove(self, n: int, edges: List[List[int]]) -> int:
+    parents = [-1 for _ in range(n + 1)]
+    res = 0
+    
+    for t, s, e in edges:
+      if t == 3:
+        if self.find(s, parents) == self.find(e, parents):
+          res += 1
+          continue
+
+        self.union(s, e, parents)
+
+    alice = [val for val in parents]
+    for t, s, e in edges:
+      if t == 1:
+        if self.find(s, alice) == self.find(e, alice):
+          res += 1
+          continue
+          
+        self.union(s, e, alice)
+        
+    bob = [val for val in parents]
+    for t, s, e in edges:
+      if t == 2:
+        if self.find(s, bob) == self.find(e, bob):
+          res += 1
+          continue
+          
+        self.union(s, e, bob)
+
+    tot = 0
+    for val in alice[1:]:
+      if val < 0:
+        tot += 1
+        
+    if tot > 1:
+      return -1
+    
+    tot = 0
+    for val in bob[1:]:
+      if val < 0:
+        tot += 1
+        
+    if tot > 1:
+      return -1
+
+    return res
+    
+
+  def find(self, node, parents):
+    while parents[node] >= 0:
+      node = parents[node]
+      
+    return node
+
+
+  def union(self, s, e, group):
+    fP = self.find(s, group)
+    if fP != s:
+      group[s] = fP
+
+    sP = self.find(e, group)
+    if sP != e:
+      group[e] = sP
+
+    if fP == sP:
+      return
+
+    if sP < fP:
+      fP, sP = sP, fP
+
+    group[fP] += group[sP]
+    group[sP] = fP
+        
+        
+  def maxNumEdgesToRemove(self, n: int, edges: List[List[int]]) -> int:
     arr = [i for i in range(n+1)]
     
     def find(x: int) -> int:

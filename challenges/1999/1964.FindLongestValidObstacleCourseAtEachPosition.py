@@ -55,6 +55,23 @@ from bisect import bisect_right
 
 class Solution:
   def longestObstacleCourseAtEachPosition(self, obstacles: List[int]) -> List[int]:
+    stack = []
+    ans = []
+    
+    for val in obstacles:
+      if not stack or val >= stack[-1]:
+        stack.append(val)
+        ans.append(len(stack))
+        continue
+        
+      j = bisect_right(stack, val)
+      stack[j] = val
+      ans.append(j+1)
+      
+    return ans
+    
+    
+  def longestObstacleCourseAtEachPosition(self, obstacles: List[int]) -> List[int]:
     n = len(obstacles)
     ans = [1] * n
     seqlen = []

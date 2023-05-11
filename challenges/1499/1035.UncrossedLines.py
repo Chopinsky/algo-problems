@@ -36,9 +36,27 @@ Constraints:
 from typing import List
 from collections import defaultdict
 from bisect import bisect_left
+from functools import lru_cache
 
 
 class Solution:
+  def maxUncrossedLines(self, nums1: List[int], nums2: List[int]) -> int:
+    n1, n2 = len(nums1), len(nums2)
+    
+    @lru_cache(None)
+    def dp(i: int, j: int) -> int:
+      if i >= n1 or j >= n2:
+        return 0
+      
+      base = max(dp(i+1, j), dp(i, j+1))
+      if nums1[i] != nums2[j]:
+        return base
+      
+      return max(base, 1+dp(i+1, j+1))
+      
+    return dp(0, 0)
+        
+
   def maxUncrossedLines(self, n1: List[int], n2: List[int]) -> int:
     if len(n1) > len(n2):
       n1, n2 = n2, n1
@@ -62,9 +80,10 @@ class Solution:
     for i in arr:
       if len(res) == 0 or i > res[-1]:
         res.append(i)
-      else:
-        idx = bisect_left(res, i)
-        res[idx] = i
+        continue
+      
+      idx = bisect_left(res, i)
+      res[idx] = i
 
     return len(res)
       

@@ -34,6 +34,30 @@ Constraints:
 
 class Solution:
   def countGoodStrings(self, low: int, high: int, zero: int, one: int) -> int:
+    o, z = [0]*(high+1), [0]*(high+1)
+    total = 0
+    mod = 10**9 + 7
+    
+    for ln in range(1, high+1):
+      if ln >= one:
+        if ln == one:
+          o[ln] = 1
+        else:
+          o[ln] = (o[ln] + o[ln-one] + z[ln-one]) % mod
+        
+      if ln >= zero:
+        if ln == zero:
+          z[ln] = 1
+        else:
+          z[ln] = (z[ln] + z[ln-zero] + o[ln-zero]) % mod
+        
+      if ln >= low:
+        total = (total + o[ln] + z[ln]) % mod
+      
+    return total
+        
+        
+  def countGoodStrings(self, low: int, high: int, zero: int, one: int) -> int:
     mod = 10**9 + 7
     total = 0
     dp = [0] * (high + 1)

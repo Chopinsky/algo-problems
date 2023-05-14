@@ -45,6 +45,32 @@ from collections import defaultdict
 
 class Solution:
   def maxScore(self, nums: List[int]) -> int:
+    n = len(nums)
+    limit = int('1'*n, 2)
+    # print(n, limit)
+    
+    @lru_cache(None)
+    def dp(i: int, mask: int) -> int:
+      if mask == limit or i >= 1+n//2:
+        return 0
+      
+      score = 0
+      for a in range(n-1):
+        if (1<<a) & mask > 0:
+          continue
+          
+        for b in range(a+1, n):
+          if (1<<b) & mask > 0:
+            continue
+            
+          score = max(score, i*gcd(nums[a], nums[b]) + dp(i+1, mask | (1<<a) | (1<<b)))
+          
+      return score
+        
+    return dp(1, 0)
+  
+  
+  def maxScore(self, nums: List[int]) -> int:
     pairs = []
     n = len(nums)
     

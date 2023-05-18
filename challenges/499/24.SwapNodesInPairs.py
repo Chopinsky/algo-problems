@@ -38,6 +38,28 @@ class Solution:
     if not head:
       return head
     
+    curr = head
+    fake_head = ListNode(next=head)
+    last = fake_head
+    
+    while curr and curr.next:
+      nxt = curr.next
+      tail = nxt.next
+      
+      last.next = nxt
+      nxt.next = curr
+      curr.next = tail
+      
+      last = curr
+      curr = tail
+      
+    return fake_head.next
+    
+    
+  def swapPairs(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    if not head:
+      return head
+    
     fake = ListNode(next=head)
     curr = fake
     

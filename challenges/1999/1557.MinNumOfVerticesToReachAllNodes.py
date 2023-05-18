@@ -36,7 +36,7 @@ class Solution:
     nodes = set([i for i in range(n)])
     
     for _, v in edges:
-      nodes.discard(v)      
+      nodes.discard(v)
       
-    return list(nodes)  
+    return list(nodes)
       

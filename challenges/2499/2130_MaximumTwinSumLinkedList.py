@@ -51,6 +51,25 @@ class ListNode:
 
 class Solution:
   def pairSum(self, head: Optional[ListNode]) -> int:
+    lst = []
+    curr = head
+    
+    while curr:
+      lst.append(curr)
+      curr = curr.next
+      
+    i, j = 0, len(lst)-1
+    val = 0
+    
+    while i < j:
+      val = max(val, (lst[i].val+lst[j].val))
+      i += 1
+      j -= 1
+      
+    return val
+        
+
+  def pairSum(self, head: Optional[ListNode]) -> int:
     fast, slow, prev = head, head, None
     max_val = 0
     

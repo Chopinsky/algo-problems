@@ -38,6 +38,40 @@ from typing import List
 
 
 class Solution:
+  def isBipartite(self, graph: List[List[int]]) -> bool:
+    color = {}
+    n = len(graph)
+    
+    def dfs(u: int, p: int) -> bool:
+      c = color[u]
+      
+      for v in graph[u]:
+        if v == p:
+          continue
+          
+        if v in color:
+          if color[v] == c:
+            return False
+          
+          continue
+          
+        color[v] = 1-c
+        if not dfs(v, p):
+          return False
+        
+      return True
+      
+    for u in range(n):
+      if u in color:
+        continue
+        
+      color[u] = 0
+      if not dfs(u, -1):
+        return False;
+      
+    return True
+      
+      
   '''
   the problem essentially asks if we can dye all nodes with 2 colors, such that
   each node's neighbors are all of a different color.

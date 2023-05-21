@@ -35,6 +35,80 @@ from typing import List
 
 class Solution:
   def shortestBridge(self, grid: List[List[int]]) -> int:
+    m, n = len(grid), len(grid[0])
+    island = [[0]*n for _ in range(m)]
+    idx = 0
+    
+    def dfs(x, y):
+      stack = [(x, y)]
+      points = set()
+      
+      while stack:
+        x, y = stack.pop()
+        island[x][y] = idx
+        points.add((x, y))
+        
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+          x0, y0 = x+dx, y+dy
+          if x0 < 0 or x0 >= m or y0 < 0 or y0 >= n or grid[x0][y0] == 0 or island[x0][y0] != 0:
+            continue
+            
+          island[x0][y0] = idx
+          stack.append((x0, y0))
+        
+      return points
+      
+    s = []
+    for x in range(m):
+      for y in range(n):
+        if grid[x][y] == 0 or island[x][y] != 0:
+          continue
+          
+        idx += 1
+        s.append(dfs(x, y))
+        
+    # print(s)
+    # for r in island:
+    #   print(r)
+    
+    steps = 0
+    done = False
+    
+    def search(src, f1, f2):
+      base = [[island[x][y] for y in range(n)] for x in range(m)]
+      steps = 0
+      done = False
+      nxt = set()
+      
+      while steps < max(m, n) and not done:
+        # print(steps, src)
+        
+        for x, y in src:
+          if done:
+            break
+
+          for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            x0, y0 = x+dx, y+dy
+
+            if x0 < 0 or x0 >= m or y0 < 0 or y0 >= n or base[x0][y0] == f1:
+              continue
+
+            if base[x0][y0] == f2:
+              return steps
+
+            base[x0][y0] = f1
+            nxt.add((x0, y0))
+
+        src, nxt = nxt, src
+        nxt.clear()
+        steps += 1
+        
+      return steps
+    
+    return min(search(s[0], 1, 2), search(s[1], 2, 1))
+        
+        
+  def shortestBridge(self, grid: List[List[int]]) -> int:
     n = len(grid)
     island = set()
     

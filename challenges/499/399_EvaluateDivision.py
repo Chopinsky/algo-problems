@@ -43,6 +43,51 @@ from collections import defaultdict
 
 class Solution:
   def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+    root = {}
+    
+    def find(x):
+      if x not in root:
+        root[x] = (x, 1)
+      
+      coeff = 1
+      while root[x][0] != x:
+        coeff *= root[x][1]
+        x = root[x][0]
+        
+      return x, coeff
+    
+    def union(x, y, c):
+      rx, cx = find(x)
+      ry, cy = find(y)
+      
+      if rx < ry:
+        root[ry] = (rx, cx/(cy*c))
+      elif ry < rx:
+        root[rx] = (ry, (cy*c)/cx)
+        
+    for [u, v], c in zip(equations, values):
+      union(u, v, c)
+        
+    # print(root)
+    ans = []  
+      
+    for x, y in queries:
+      if x not in root or y not in root:
+        ans.append(-1.0)
+        continue
+        
+      rx, cx = find(x)
+      ry, cy = find(y)
+      
+      if rx != ry:
+        ans.append(-1.0)
+      else:
+        ans.append(cx/cy)
+      
+    return ans
+      
+      
+  def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
     e = defaultdict(dict)
     
     for i in range(len(equations)):

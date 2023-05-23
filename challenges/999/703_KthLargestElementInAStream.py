@@ -38,6 +38,21 @@ from heapq import heappushpop, heappush
 
 
 class KthLargest:
+  def __init__(self, k: int, nums: List[int]):
+    nums.sort()
+    self.stack = nums[-k:]
+    self.k = k
+
+
+  def add(self, val: int) -> int:
+    if len(self.stack) < self.k:
+      heappush(self.stack, val)
+    elif val > self.stack[0]:
+      heappushpop(self.stack, val)
+      
+    return self.stack[0]
+        
+
   def __init__(self, k: int, nums: List[int]):    
     self.heap = sorted(nums)[-k:] if nums else []
     self.k = k

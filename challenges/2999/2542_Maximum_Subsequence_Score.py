@@ -38,9 +38,36 @@ n == nums1.length == nums2.length
 '''
 
 from typing import List
+from heapq import heapify, heappushpop
 
 
 class Solution:
+  '''
+  maintain the max-heap for sum(nums1[...]), then keep adding elements into
+  nums1[...] and pop out smaller values from the top-k array
+  '''
+  def maxScore(self, nums1: List[int], nums2: List[int], k: int) -> int:
+    if not nums1 or not nums2:
+      return 0
+
+    pairs = [(a, b) for a, b in zip(nums1, nums2)]
+    pairs.sort(key=lambda x: -x[1])
+    print(pairs)
+    
+    topK = [x[0] for x in pairs[:k]]
+    heapify(topK)
+    topKSum = sum(topK)
+
+    res = pairs[k-1][1] * topKSum
+    
+    for i in range(k, len(pairs)):
+      smallest = heappushpop(topK, pairs[i][0])
+      topKSum += pairs[i][0] - smallest
+      res = max(res, topKSum * pairs[i][1])
+
+    return res
+  
+
   def maxScore(self, nums1: List[int], nums2: List[int], k: int) -> int:
     if k == 1:
       return max(v0*v1 for v0, v1 in zip(nums1, nums2))

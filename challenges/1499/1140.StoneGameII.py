@@ -26,37 +26,40 @@ Constraints:
 1 <= piles[i] <= 10 ** 4
 '''
 
+from typing import List
+from functools import lru_cache
+
+
 class Solution:
   def stoneGameII(self, piles: List[int]) -> int:
+    suffix = [p for p in piles]
     n = len(piles)
-    if n <= 2:
-      return sum(piles)
-
-    presum = [v for v in piles]
-    for i in range(1, n):
-      presum[i] += presum[i-1]
-
-    cache = [{} for i in range(n)]
-
-    def pick(idx: int, m: int) -> int:
-      if idx >= n:
-        return 0
-
-      if m in cache[idx]:
-        return cache[idx][m]
-
-      # all the remainder piles
-      rest = (presum[n-1] - presum[idx-1]) if idx > 0 else presum[n-1]
-
-      if n-idx <= 2*m:
-        cache[idx][m] = rest
-        return rest
-
-      ans = 0
-      for i in range(1, 2*m+1):
-        ans = max(ans, rest - pick(idx+i, max(m, i)))
-
-      cache[idx][m] = ans
-      return ans
-
-    return count
+    for i in range(n-2, -1, -1):
+      suffix[i] += suffix[i+1]
+      
+    @lru_cache(None)
+    def dp(i: int, m: int) -> tuple:
+      if i >= n:
+        return 0, 0
+      
+      if n-i <= 2*m:
+        return suffix[i], 0
+      
+      curr = 0
+      s0, s1 = 0, 0
+      
+      for x in range(0, 2*m):
+        if i+x >= n:
+          break
+          
+        curr += piles[i+x]
+        b, a = dp(i+x+1, max(m, x+1))
+        if curr+a > s0:
+          s0 = curr+a
+          s1 = b
+      
+      return s0, s1
+    
+    a, _ = dp(0, 1)
+    
+    return a

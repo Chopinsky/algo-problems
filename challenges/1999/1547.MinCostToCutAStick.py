@@ -41,6 +41,31 @@ import math
 
 class Solution:
   def minCost(self, n: int, cuts: List[int]) -> int:
+    cuts = [0] + sorted(cuts) + [n]
+    ln = len(cuts)
+    # print(cuts)
+    
+    @lru_cache(None)
+    def dp(l: int, r: int) -> int:
+      if l+1 >= r:
+        return 0
+      
+      cost = cuts[r] - cuts[l]
+      if l+2 == r:
+        return cost
+      
+      extra = math.inf
+      for i in range(l+1, r):
+        extra = min(extra, dp(l, i)+dp(i, r))
+        # if l==0 and r==ln-1:
+        #   print(cost, extra, i, dp(l, i), dp(i, r))
+        
+      return cost + extra
+      
+    return dp(0, ln-1)
+        
+        
+  def minCost(self, n: int, cuts: List[int]) -> int:
     if len(cuts) <= 1:
       return n
 

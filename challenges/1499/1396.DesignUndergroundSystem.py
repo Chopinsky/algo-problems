@@ -70,6 +70,38 @@ There will be at most 2 * 104 calls in total to checkIn, checkOut, and getAverag
 Answers within 10-5 of the actual value will be accepted.
 '''
 
+from collections import defaultdict
+
+
+class UndergroundSystem:
+  def __init__(self):
+    self.store = {}
+    self.travel = defaultdict(int)
+
+
+  def checkIn(self, id: int, name: str, t: int) -> None:
+    self.travel[id] = (name, t)
+
+
+  def checkOut(self, id: int, n1: str, t: int) -> None:
+    n0, t0 = self.travel.pop(id)
+    key = f'{n0},{n1}'
+    # print(n0, t0, name, t)
+    
+    if key not in self.store:
+      self.store[key] = [0, 0]
+      
+    self.store[key][0] += t - t0
+    self.store[key][1] += 1
+
+
+  def getAverageTime(self, n0: str, n1: str) -> float:
+    key = f'{n0},{n1}'
+    if key not in self.store or self.store[key][1] == 0:
+      return -1
+    
+    return self.store[key][0] / self.store[key][1]
+
 
 class UndergroundSystem:
   def __init__(self):

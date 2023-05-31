@@ -37,6 +37,23 @@ from bisect import bisect_left
 
 class MyHashSet:
   def __init__(self):
+    self.nums = [0]*(10**6+1)
+
+
+  def add(self, key: int) -> None:
+    self.nums[key] |= 1
+
+
+  def remove(self, key: int) -> None:
+    self.nums[key] = 0
+
+
+  def contains(self, key: int) -> bool:
+    return self.nums[key] == 1
+        
+
+class MyHashSet:
+  def __init__(self):
     self.buckets = [[]] * 1009
 
 

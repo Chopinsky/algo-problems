@@ -37,6 +37,40 @@ from typing import List
 
 class Solution:
   def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
+    if grid[0][0] != 0 or grid[-1][-1] != 0:
+      return -1
+
+    m, n = len(grid), len(grid[0])
+    if m == 1 and n == 1:
+      return 1
+    
+    curr, nxt = [(0, 0)], []
+    seen = set(curr)
+    ln = 1
+    
+    while curr:
+      # print(ln, curr)
+      ln += 1
+      
+      for x0, y0 in curr:
+        for dx, dy in [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]:
+          x1, y1 = x0+dx, y0+dy
+          if x1 < 0 or x1 >= m or y1 < 0 or y1 >= n or grid[x1][y1] != 0 or (x1, y1) in seen:
+            continue
+          
+          if x1 == m-1 and y1 == n-1:
+            return ln
+          
+          seen.add((x1, y1))
+          nxt.append((x1, y1))
+          
+      curr, nxt = nxt, curr
+      nxt.clear()
+    
+    return -1
+          
+        
+  def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
     m, n = len(grid), len(grid[0])
     if grid[m-1][n-1] == 1 or grid[0][0] == 1:
       return -1

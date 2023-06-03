@@ -61,8 +61,30 @@ informTime[i] == 0 if employee i has no subordinates.
 It is guaranteed that all the employees can be informed.
 '''
 
+from collections import defaultdict
+from typing import List
+
 
 class Solution:
+  def numOfMinutes(self, n: int, headID: int, manager: List[int], informTime: List[int]) -> int:
+    c = defaultdict(list)
+    for i in range(n):
+      if manager[i] >= 0:
+        c[manager[i]].append(i)
+        
+    stack = [(headID, 0)]
+    time = 0
+    
+    while stack:
+      i, t = stack.pop()
+      time = max(time, t)
+      
+      for j in c[i]:
+        stack.append((j, t+informTime[i]))
+    
+    return time
+        
+
   def numOfMinutes(self, n: int, headID: int, manager: List[int], informTime: List[int]) -> int:
     sub = defaultdict(list)
     for i, m in enumerate(manager):

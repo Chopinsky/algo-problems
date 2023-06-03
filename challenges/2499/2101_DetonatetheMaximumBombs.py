@@ -42,9 +42,48 @@ bombs[i].length == 3
 
 from typing import List
 from collections import defaultdict
+from math import sqrt
 
 
 class Solution:
+  def maximumDetonation(self, bombs: List[List[int]]) -> int:
+    g = defaultdict(set)
+    n = len(bombs)
+    
+    for i in range(n):
+      x, y, r = bombs[i]
+      
+      for j in range(n):
+        if i == j:
+          continue
+          
+        x0, y0, _ = bombs[j]
+        d = sqrt((x-x0)**2 + (y-y0)**2)
+        
+        if d <= r:
+          g[i].add(j)
+          
+    # print(g)
+    seen = set()
+    count = 1
+    
+    def dfs(i: int) -> int:
+      if i in seen:
+        return 0
+      
+      seen.add(i)
+      for j in g[i]:
+        dfs(j)
+      
+    for i in range(n):
+      seen.clear()
+      dfs(i)
+      count = max(count, len(seen))
+      # print(i, seen)
+    
+    return count
+        
+
   def maximumDetonation(self, bombs: List[List[int]]) -> int:
     n = len(bombs)
     seen = set()

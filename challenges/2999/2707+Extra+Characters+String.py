@@ -26,6 +26,9 @@ dictionary[i] and s consists of only lowercase English letters
 dictionary contains distinct words
 '''
 
+from typing import List
+from functools import lru_cache
+
 
 class Solution: 
   def minExtraChar(self, s: str, dictionary: List[str]) -> int:

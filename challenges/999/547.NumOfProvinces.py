@@ -33,6 +33,38 @@ from collections import defaultdict
 
 class Solution:
   def findCircleNum(self, isConnected: List[List[int]]) -> int:
+    seen = set()
+    n = len(isConnected)
+    
+    def bfs(i: int):
+      stack = [i]
+      seen.add(i)
+      
+      while stack:
+        i = stack.pop()
+        
+        for j in range(n):
+          if j == i or j in seen or isConnected[i][j] != 1:
+            continue
+          
+          seen.add(j)
+          stack.append(j)
+          # print('add', i, j)
+    
+    n = len(isConnected)
+    count = 0
+    
+    for i in range(n):
+      if i in seen:
+        continue
+      
+      count += 1
+      bfs(i)
+      
+    return count
+          
+          
+  def findCircleNum(self, isConnected: List[List[int]]) -> int:
     n = len(isConnected)
     e = defaultdict(list)
     

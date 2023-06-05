@@ -37,8 +37,13 @@ class Solution:
   2) to calculate `count(top: int)`, we need to go through each digit-position: for position-j, if all
      previous digits are the top-digit, then we can't go above digit[j] at this position, or we go over
      the top bound; so we check:
-       `dp(j+1, running_sums+digit[j], isBounded) + sum([0, j) as k, dp(j+1, running_sums+digit[k], notBounded))`
-     and for the notBounded iterations, just ignore the 1st part of the equal above.
+       `dp(j+1, running_sums+digit[j], isBounded) + 
+        [0..digit[j]-1].reduce(
+          init: 0, 
+          reducer: (k, prev) => prev+dp(j+1, running_sums+k, notBounded),
+        )`
+     and for the notBounded iterations, just ignore the 1st part of the equation above, the allowed digits
+     for this position are [0, 10).
   '''
   def count(self, num1: str, num2: str, min_sum: int, max_sum: int) -> int:
     upper, lower = max_sum, min_sum

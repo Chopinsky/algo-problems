@@ -31,6 +31,39 @@ Constraints:
 
 class Solution:
   def maxValue(self, n: int, index: int, maxSum: int) -> int:
+    def check(val: int) -> bool:
+      if val*n <= maxSum:
+        return True
+      
+      val -= 1
+      
+      lc = index
+      lv = max(1, val-lc)
+      ls = ((lv+val-1) * (val-lv)) // 2
+      
+      rc = n-1-index
+      rv = max(0, val-rc)
+      rs = ((rv+val-1) * (val-rv)) // 2
+      
+      # print('check:', val+1, (lc, lv, ls), (rc, rv, rs))
+      
+      return ls + rs + val + n <= maxSum
+    
+    l, r = 0, maxSum
+    res = 0
+    
+    while l <= r:
+      mid = (l+r)//2
+      if check(mid):
+        res = max(res, mid)
+        l = mid + 1
+      else:
+        r = mid - 1
+        
+    return res
+    
+        
+  def maxValue(self, n: int, index: int, maxSum: int) -> int:
     if n == 1:
       return maxSum
     

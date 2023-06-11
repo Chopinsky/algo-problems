@@ -29,7 +29,38 @@ At most 50000 calls will be made to set, snap, and get.
 
 from collections import defaultdict
 from bisect import bisect_right
+import math
 
+
+class SnapshotArray:
+  def __init__(self, length: int):
+    self.store = {}
+    self.version = 0
+
+
+  def set(self, index: int, val: int) -> None:
+    if index not in self.store:
+      self.store[index] = [(0, 0)]
+      
+    if self.store[index][-1][0] == self.version:
+      self.store[index].pop()
+      
+    self.store[index].append((self.version, val))
+    
+
+  def snap(self) -> int:
+    ver = self.version
+    self.version += 1
+    return ver
+
+
+  def get(self, index: int, snap_id: int) -> int:
+    if index not in self.store:
+      self.store[index] = [(0, 0)]
+      
+    pos = bisect_right(self.store[index], (snap_id, math.inf)) - 1
+    return self.store[index][pos][1]
+    
 
 class SnapshotArray:
   def __init__(self, length: int):

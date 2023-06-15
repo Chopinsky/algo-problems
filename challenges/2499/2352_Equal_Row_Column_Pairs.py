@@ -34,6 +34,24 @@ from collections import defaultdict
 
 class Solution:
   def equalPairs(self, grid: List[List[int]]) -> int:
+    n = len(grid)
+    cnt = defaultdict(int)
+    
+    for i in range(n):
+      key = ','.join(str(val) for val in grid[i])
+      cnt[key] += 1
+      
+    # print(cnt)
+    pairs = 0
+    
+    for i in range(n):
+      key = ','.join(str(grid[j][i]) for j in range(n))
+      pairs += cnt[key]
+    
+    return pairs
+        
+        
+  def equalPairs(self, grid: List[List[int]]) -> int:
     r = defaultdict(int)
     n = len(grid)
     total = 0

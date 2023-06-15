@@ -43,6 +43,26 @@ from typing import List
 class Solution:
   def summaryRanges(self, nums: List[int]) -> List[str]:
     if not nums:
+      return ''
+    
+    start, end = nums[0], nums[0]
+    res = []
+    
+    for val in nums[1:]:
+      if val != end+1:
+        res.append(f'{start}' if start == end else f'{start}->{end}')
+        start = val
+        end = val
+      else:
+        end = val
+      
+    res.append(f'{start}' if start == end else f'{start}->{end}')
+    
+    return res
+        
+        
+  def summaryRanges(self, nums: List[int]) -> List[str]:
+    if not nums:
       return []
       
     s, e = nums[0], nums[0]

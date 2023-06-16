@@ -43,6 +43,33 @@ class Solution:
     if not root:
       return 0
     
+    level = defaultdict(int)
+    max_level = 1
+    max_sum = root.val
+    
+    def dfs(root, l):
+      if not root:
+        return
+      
+      level[l] += root.val
+        
+      dfs(root.left, l+1)
+      dfs(root.right, l+1)
+    
+    dfs(root, 1)
+    
+    for i in level:
+      if level[i] > max_sum:
+        max_sum = level[i]
+        max_level = i
+
+    return max_level
+  
+  
+  def maxLevelSum(self, root: Optional[TreeNode]) -> int:
+    if not root:
+      return 0
+    
     sums = defaultdict(int)
     
     def add(root, level):

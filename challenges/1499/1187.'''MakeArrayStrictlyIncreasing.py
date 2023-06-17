@@ -31,13 +31,47 @@ Constraints:
  
 '''
 
-
 from typing import List
 from collections import defaultdict
 from bisect import bisect_right
+from functools import lru_cache
+import math
 
 
 class Solution:
+  def makeArrayIncreasing(self, arr1: List[int], arr2: List[int]) -> int:
+    n1, n2 = len(arr1), len(arr2)
+    arr2.sort()
+    
+    @lru_cache(None)
+    def dp(i: int, prev: int) -> int:
+      if i >= n1 or (i == n1-1 and arr1[i] > prev):
+        return 0
+      
+      ops = math.inf
+      
+      # no way to get a larger number to satisfy
+      # the requirements, fail
+      if arr1[i] <= prev and prev >= arr2[-1]:
+        return ops
+        
+      # can use i-th number from arr1
+      if arr1[i] > prev:
+        ops = min(ops, dp(i+1, arr1[i]))
+        
+      # replace with a number barely larger than the
+      # last number
+      j = bisect_right(arr2, prev)
+      if j < n2:
+        ops = min(ops, 1+dp(i+1, arr2[j]))
+        
+      return ops
+      
+    res = dp(0, -1)
+    
+    return -1 if res == math.inf else res
+      
+
   '''
   the idea is that we don't need to keep all possible increamental 
   arrays up to position-i, we just need to keep the ending number,

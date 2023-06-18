@@ -40,6 +40,29 @@ from heapq import heappush, heappop
 class Solution:
   def countPaths(self, grid: List[List[int]]) -> int:
     m, n = len(grid), len(grid[0])
+    mod = 10**9 + 7
+    stack = sorted([(grid[x][y], x, y) for y in range(n) for x in range(m)])
+    count = {(x, y): 1 for x in range(m) for y in range(n)}
+    # print(stack, count)
+    
+    for val, x, y in stack:
+      for dx, dy in [(-1, 0), (1, 0), (0, 1), (0, -1)]:
+        x0, y0 = x+dx, y+dy
+        if x0 < 0 or x0 >= m or y0 < 0 or y0 >= n or grid[x0][y0] >= val:
+          continue
+          
+        count[x, y] = (count[x, y] + count[x0, y0]) % mod
+    
+    total = 0
+    for x in range(m):
+      for y in range(n):
+        total = (total + count[x, y]) % mod
+        
+    return total
+        
+        
+  def countPaths(self, grid: List[List[int]]) -> int:
+    m, n = len(grid), len(grid[0])
     dp = [[1]*n for _ in range(m)]
     cand = []
     cnt = 0

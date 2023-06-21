@@ -38,6 +38,30 @@ from typing import List
 
 class Solution:
   def minCost(self, nums: List[int], cost: List[int]) -> int:
+    n = len(nums)
+    if n <= 1:
+      return 0
+    
+    src = sorted(zip(nums, cost))
+    ops = sum(src[i][1]*(src[i][0] - src[0][0]) for i in range(n))
+    total = sum(cost)
+    prefix = src[0][1]
+    curr = ops
+    # print(src, ops)
+      
+    for i in range(1, n):
+      suffix = total - prefix
+      diff = src[i][0] - src[i-1][0]
+      curr += diff * (prefix - suffix)
+      # print(i, diff, diff*(prefix-suffix))
+      
+      ops = min(curr, ops)
+      prefix += src[i][1]
+      
+    return ops
+        
+        
+  def minCost(self, nums: List[int], cost: List[int]) -> int:
     if len(set(nums)) == 1:
       return 0
     

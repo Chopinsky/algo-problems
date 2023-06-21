@@ -48,6 +48,32 @@ from typing import List
 class Solution:
   def getAverages(self, nums: List[int], k: int) -> List[int]:
     n = len(nums)
+    s = sum(nums[:k])
+    ln = 2*k + 1
+    ans = []
+    
+    for i in range(n):
+      if i+k >= n:
+        ans.append(-1)
+        continue
+        
+      s += nums[i+k]
+      if i == k:
+        ans.append(s // ln)
+        continue
+        
+      if i < k:
+        ans.append(-1)
+        continue
+        
+      s -= nums[i-k-1]
+      ans.append(s // ln)
+      
+    return ans
+      
+      
+  def getAverages(self, nums: List[int], k: int) -> List[int]:
+    n = len(nums)
     if n <= 2*k:
       return [-1] * n
     

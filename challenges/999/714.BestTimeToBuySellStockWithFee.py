@@ -34,6 +34,19 @@ from typing import List
 
 class Solution:
   def maxProfit(self, prices: List[int], fee: int) -> int:
+    profit = 0
+    prev_open = -prices[0]-fee
+    prev_profit = 0
+    
+    for p in prices[1:]:
+      prev_profit = profit
+      profit = max(profit, p+prev_open)
+      prev_open = max(prev_open, prev_profit-p-fee)
+    
+    return profit
+        
+        
+  def maxProfit(self, prices: List[int], fee: int) -> int:
     own = -prices[0] - fee
     sold = 0
     

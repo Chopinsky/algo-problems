@@ -36,6 +36,23 @@ from collections import Counter, defaultdict
 
 class Solution:
   def longestArithSeqLength(self, nums: List[int]) -> int:
+    seen = []
+    long = 1
+    
+    for v0 in nums:
+      s0 = {v0:1}
+      for (v1, s1) in seen:
+        diff = v0-v1
+        s0[diff] = max(s0.get(diff, 0), 1+s1.get(diff, 1))
+        
+      long = max(long, max(s0.values()))
+      seen.append((v0, s0))
+
+    # print(seen)
+    return long
+  
+  
+  def longestArithSeqLength(self, nums: List[int]) -> int:
     n = len(nums)
     if n <= 2:
       return n

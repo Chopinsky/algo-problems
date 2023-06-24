@@ -34,33 +34,23 @@ from typing import List
 
 class Solution:
   def tallestBillboard(self, rods: List[int]) -> int:
-    dp = {0:0}
+    n = len(rods)
+    if n == 1:
+      return 0
     
-    for h in rods:
-      # if we don't use the rods, nothing is changed, so we
-      # keep all the previous calculations
+    dp = {0:0}
+    for ln in rods:
       nxt = dp.copy()
       
-      # diff is the height difference between the tall/short legs,
-      # and curr is the current height of the shorter leg, loop to
-      # find the tallest short leg for a given diff between the 
-      # short/tall legs
-      for diff, short in dp.items():
-        # put the rod on the taller leg
-        nxt[diff+h] = max(
-          nxt.get(diff+h, 0),
-          short,
-        )
+      for diff, h in dp.items():
+        # if placed on the taller side
+        d0 = diff+ln 
+        nxt[d0] = max(nxt.get(d0, 0), h)
         
-        # put the rod on the shorter leg
-        nxt[abs(diff-h)] = max(
-          nxt.get(abs(diff-h), 0),
-          # if h <= diff, short leg remain short, i.e. `short+h`, otherwise, 
-          # switch, long leg's height is not affected and remains `short+diff`
-          # but it becomes the short leg of the pair
-          short + min(h, diff),
-        )
-      
+        # if placed on the shorter side
+        d1 = abs(diff-ln)
+        nxt[d1] = max(nxt.get(d1, 0), h+min(ln, diff))
+        
       dp = nxt
       
     return dp[0]

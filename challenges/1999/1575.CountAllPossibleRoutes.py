@@ -51,6 +51,28 @@ from functools import lru_cache
 
 class Solution:
   def countRoutes(self, locations: List[int], start: int, finish: int, fuel: int) -> int:
+    mod = 10**9+7
+    n = len(locations)
+    
+    @lru_cache(None)
+    def dp(u: int, f: int) -> int:
+      if f <= 0:
+        return 1 if u == finish and f >= 0 else 0
+      
+      cnt = 1 if u == finish else 0
+      for v in range(n):
+        cost = abs(locations[v] - locations[u])
+        if u == v or f < cost:
+          continue
+          
+        cnt = (cnt + dp(v, f-cost)) % mod
+      
+      return cnt
+    
+    return dp(start, fuel)
+        
+
+  def countRoutes(self, locations: List[int], start: int, finish: int, fuel: int) -> int:
     d = {}
     n = len(locations)
     mod = 10**9 + 7
@@ -79,7 +101,6 @@ class Solution:
         count += dp(j, f-cost)
         
       return count % mod
-      
       
     return dp(start, fuel)
       

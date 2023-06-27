@@ -44,6 +44,53 @@ from typing import List
 
 
 class Solution:
+  def totalCost(self, costs: List[int], k: int, candidates: int) -> int:
+    n = len(costs)
+    if k >= n:
+      return sum(costs)
+    
+    left, right = [], []
+    l, r = 0, n-1
+    
+    while l <= r and len(left) < candidates:
+      heappush(left, costs[l])
+      l += 1
+      
+    while l <= r and len(right) < candidates:
+      heappush(right, costs[r])
+      r -= 1
+      
+    total = 0
+    # print(l, r, left, right)
+    
+    while k > 0:
+      # print(k, left, right)
+      k -= 1
+      
+      if left and not right:
+        # print('from left', left[0])
+        total += heappop(left)
+      elif right and not left:
+        # print('from right', right[0])
+        total += heappop(right)
+      elif left[0] <= right[0]:
+        # print('from left', left[0])
+        total += heappop(left)
+      else:
+        # print('from right', right[0])
+        total += heappop(right)
+      
+      if l <= r and len(left) < candidates:
+        heappush(left, costs[l])
+        l += 1
+        
+      if l <= r and len(right) < candidates:
+        heappush(right, costs[r])
+        r -= 1
+      
+    return total
+      
+      
   def totalCost(self, costs: List[int], k: int, m: int) -> int:
     total = 0
     stack = []

@@ -37,6 +37,26 @@ from heapq import heappop, heappush
 
 class Solution:
   def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
+    ans = []
+    n1, n2 = len(nums1), len(nums2)
+    stack = sorted([(nums1[i]+nums2[0], i, 0) for i in range(n1)])
+    idx = [1]*n1
+    
+    while len(ans) < k and stack:
+      _, i, j = heappop(stack)
+      ans.append((nums1[i], nums2[j]))
+      # print('add', (i, j), (nums1[i], nums2[j]))
+      
+      if idx[i] < n2:
+        heappush(stack, (nums1[i]+nums2[idx[i]], i, idx[i]))
+        idx[i] += 1
+        
+      # print(stack)
+      
+    return ans
+    
+    
+  def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
     m, n = len(nums1), len(nums2)
     if m == 1:
       return [[nums1[0], nums2[j]] for j in range(min(n, k))]

@@ -38,10 +38,116 @@ cells.length == row * col
 All the values of cells are unique.
 '''
 
+from typing import List
+from collections import defaultdict
+
 
 class Solution:
   def latestDayToCross(self, row: int, col: int, cells: List[List[int]]) -> int:
-    ln = len(cells)
+    g = [[0]*col for _ in range(row)]
+    for x, y in cells:
+      g[x-1][y-1] = 1
+      
+    gdx = 1
+    gc = {}
+    gr = {}
+    
+    def bfs(x, y):
+      stack = [(x, y)]
+      gc[x, y] = gdx
+      rows = set()
+      
+      while stack:
+        x0, y0 = stack.pop()
+        rows.add(x0)
+        
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+          x1, y1 = x+dx, y+dy
+          if x1 < 0 or x1 >= row or y1 < 0 or y1 >= col:
+            continue
+            
+          if g[x1][y1] == 1 or (x1, y1) in gc:
+            continue
+            
+          gc[x1][y1] = gdx
+          stack.append((x1, y1))
+          
+      return rows
+    
+    for x in range(row):
+      for y in range(col):
+        if (x, y) in gc or g[x][y] == 1:
+          continue
+          
+        gr[gdx] = bfs(x, y)
+        if len(gr[gdx]) == row:
+          return len(cells)
+        
+        gdx += 1
+          
+    # print('init:', gc, gr)
+    groups = [i for i in range(gdx)]
+    
+    def find(x: int) -> int:
+      while groups[x] != x:
+        x = groups[x]
+        
+      return x
+    
+    def union(x: int, y: int):
+      rx, ry = find(x), find(y)
+      if rx <= ry:
+        groups[ry] = rx
+      else:
+        groups[rx] = ry
+        
+    cand = set()
+    while cells:
+      cand.clear()
+      x, y = cells.pop()
+      x -= 1
+      y -= 1
+      g[x][y] = 0
+      group_root = gdx
+      
+      for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        x0, y0 = x+dx, y+dy
+        if x0 < 0 or x0 >= row or y0 < 0 or y0 >= col:
+          continue
+          
+        if g[x0][y0] == 1:
+          continue
+        
+        root = find(gc[x0, y0])
+        group_root = min(group_root, root)
+        cand.add(root)
+
+      base = set([x])
+      
+      if not cand:
+        # print('add:', x+1, y+1, gdx)
+        gc[x, y] = gdx
+        gr[group_root] = base
+        groups.append(gdx)
+        gdx += 1
+        continue
+        
+      for r0 in cand:
+        union(r0, group_root)
+        base |= gr[r0]
+      
+      if len(base) == row:
+        # print('fin:', x, y, cells)
+        return len(cells)
+      
+      # print('union:', x+1, y+1, group_root, base)
+      gc[x, y] = group_root
+      gr[group_root] = base
+        
+    return 0
+        
+
+  def latestDayToCross(self, row: int, col: int, cells: List[List[int]]) -> int:
     arr = [i for i in range(row*col)]
     mat = [[0 for _ in range(col)] for _ in range(row)]
     walls = defaultdict(set)
@@ -49,9 +155,6 @@ class Solution:
     
     def key(x: int, y: int, c: int) -> int:
       return x*c + y
-    
-    def coord(k: int, c: int) -> Tuple[int, int]:
-      return k//c, k%c
     
     def find(i: int) -> int:
       while i != arr[i]:

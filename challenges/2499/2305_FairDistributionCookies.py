@@ -35,11 +35,41 @@ Constraints:
 '''
 
 from typing import List
+import math
 
 
 class Solution:
   def distributeCookies(self, cookies: List[int], k: int) -> int:
-    n = len(cookies)        
+    def add(src, val):
+      src = list(src)
+      res = set()
+      
+      for i in range(k):
+        src[i] += val
+        res.add(tuple(sorted(src)))
+        src[i] -= val
+      
+      return res
+    
+    last = set([(0,)*k])
+    nxt = set()
+    
+    for c in cookies:
+      for s in last:
+        nxt |= add(s, c)
+        
+      last, nxt = nxt, last
+      nxt.clear()
+      
+    diff = math.inf
+    for s in last:
+      diff = min(diff, max(s))
+      
+    return diff
+        
+
+  def distributeCookies(self, cookies: List[int], k: int) -> int:
+    n = len(cookies)
     if k == n:
       return max(cookies)
     
@@ -58,7 +88,7 @@ class Solution:
           
         return
       
-      if max(dist) >= self.ret: 
+      if max(dist) >= self.ret:
         return 
       
       for j in range(k):

@@ -47,6 +47,42 @@ from heapq import heappush, heappop
 
 class Solution:
   def maxProbability(self, n: int, edges: List[List[int]], succProb: List[float], start: int, end: int) -> float:
+    p = [-1] * n
+    s = {}
+    nb = defaultdict(list)
+    
+    for [u, v], prob in zip(edges, succProb):
+      nb[u].append(v)
+      nb[v].append(u)
+      
+      if u > v:
+        u, v = v, u
+        
+      s[u, v] = prob
+      
+    # print(s, nb)
+    p[start] = 1
+    stack = [(-p[start], start)]
+    
+    while stack:
+      p0, u = heappop(stack)
+      p0 = -p0
+      
+      if u == end:
+        return p0
+      
+      for v in nb[u]:
+        p1 = p0 * s[min(u, v), max(u, v)]
+        if p1 <= p[v]:
+          continue
+          
+        p[v] = p1
+        heappush(stack, (-p[v], v))
+      
+    return 0
+        
+        
+  def maxProbability(self, n: int, edges: List[List[int]], succProb: List[float], start: int, end: int) -> float:
     g = defaultdict(list)
     for i, e in enumerate(edges):
       g[e[0]].append((e[1], succProb[i]))

@@ -40,6 +40,34 @@ from typing import List
 
 class Solution:
   def longestSubarray(self, nums: List[int]) -> int:
+    n = len(nums)
+    if nums.count(0) == 0:
+      return n-1
+      
+    prev = 0
+    curr = 0
+    long = 0
+    
+    for i in range(n):
+      # print((i, nums[i]), curr, prev)
+      if nums[i] == 1:
+        curr += 1
+        continue
+
+      if i > 0:
+        if nums[i-1] == 0:
+          prev = 0
+        else:
+          long = max(long, prev+curr)
+          prev = curr
+          curr = 0
+    
+    long = max(long, prev+curr)
+    
+    return long
+        
+        
+  def longestSubarray(self, nums: List[int]) -> int:
     zeros = []
     size = 0
     curr_size = 0

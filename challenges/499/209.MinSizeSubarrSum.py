@@ -33,6 +33,37 @@ from typing import List
 
 class Solution:
   def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+    if not nums or sum(nums) < target:
+      return 0
+    
+    if max(nums) >= target:
+      return 1
+    
+    l, r = 0, 0
+    s = 0
+    n = len(nums)
+    ln = n
+    
+    while r < n:
+      s += nums[r]
+      r += 1
+      
+      while r < n and s < target:
+        s += nums[r]
+        r += 1
+        
+      while l < r and s-nums[l] >= target:
+        s -= nums[l]
+        l += 1
+        
+      # print(l, r, s)
+      if s >= target:
+        ln = min(ln, r-l)
+    
+    return ln
+        
+        
+  def minSubArrayLen(self, target: int, nums: List[int]) -> int:
     if sum(nums) < target:
       return 0
     

@@ -40,6 +40,39 @@ from bisect import bisect_left
 
 
 class Solution:
+  def maxConsecutiveAnswers(self, keys: str, k: int) -> int:
+    n = len(keys)
+    if k >= keys.count('T') or k >= keys.count('F'):
+      return n
+    
+    def max_count(key: str) -> int:
+      longest = 0
+      count = 0
+      l, r = 0, 0
+      
+      while r < n:
+        if keys[r] == key:
+          count += 1
+          
+        r += 1
+        ln = r-l
+        
+        while l < r and ln-count > k:
+          if keys[l] == key:
+            count -= 1
+            
+          l += 1
+          ln -= 1
+            
+        # print(key, (l, r), ln, count)
+        if ln-count <= k:
+          longest = max(longest, ln)
+      
+      return longest
+      
+    return max(max_count('T'), max_count('F'))
+        
+
   def maxConsecutiveAnswers(self, answerKey: str, k: int) -> int:
     left, longest = 0, 0
     tcnt, fcnt = 0, 0

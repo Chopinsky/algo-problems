@@ -37,6 +37,24 @@ from typing import List
 
 
 class Solution:
+  def putMarbles(self, weights: List[int], k: int) -> int:
+    n = len(weights)
+    if k == n or k == 1:
+      return 0
+    
+    stack = []
+    for i in range(n-1):
+      stack.append(weights[i]+weights[i+1])
+
+    stack.sort()
+    # print(stack)
+    
+    min_score = sum(stack[:k-1])
+    max_score = sum(stack[-(k-1):])
+    
+    return max_score - min_score
+        
+        
   def putMarbles(self, w: List[int], k: int) -> int:
     n = len(w)
     if n == k or k == 1:

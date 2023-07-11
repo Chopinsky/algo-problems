@@ -33,7 +33,63 @@ class TreeNode:
     self.right = None
 
 
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
 class Solution:
+  def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
+    stack = []
+    vals = set()
+    ans = []
+    
+    def collect(root, dist):
+      if dist < 0 or not root:
+        return
+      
+      if dist == 0:
+        ans.append(root.val)
+        return
+      
+      if root.left and root.left.val not in vals:
+        collect(root.left, dist-1)
+        
+      if root.right and root.right.val not in vals:
+        collect(root.right, dist-1)
+    
+    def walk(node):
+      if not node:
+        return False
+      
+      stack.append(node)
+      vals.add(node.val)
+      
+      if node.val == target.val:
+        idx = 0
+        while k+idx >= 0 and len(stack)+idx > 0:
+          # print('stack:', [n.val for n in stack])
+          # print('collect:', stack[idx-1].val, k+idx)
+          collect(stack[idx-1], k+idx)
+          idx -= 1
+          
+        return True
+      
+      if walk(node.left) or walk(node.right):
+        return True
+      
+      stack.pop()
+      vals.discard(node.val)
+      
+      return False
+      
+    walk(root)
+    
+    return ans
+        
+        
   def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
     stack = []
     ans = []

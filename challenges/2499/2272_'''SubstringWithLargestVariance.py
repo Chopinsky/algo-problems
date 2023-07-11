@@ -37,6 +37,54 @@ from typing import List
 
 class Solution:
   def largestVariance(self, s: str) -> int:
+    p = defaultdict(list)
+    chs = 'abcdefghijklmnopqrstuvwxyz'
+    
+    for i in range(len(s)):
+      p[s[i]].append(i)
+      
+    def count(c0, c1) -> int:
+      if c0 not in p or c1 not in p:
+        return 0
+      
+      arr = sorted([(pos, c0) for pos in p[c0]] + [(pos, c1) for pos in p[c1]])
+      # print('count:', arr)
+      
+      balance, max_var = 0, 0
+      prev0, curr0 = None, -math.inf
+      prev1, curr1 = None, math.inf
+      
+      for _, ch in arr:
+        if ch == c0:
+          balance += 1
+          prev0 = curr0
+          curr0 = max(curr0, balance)
+          
+          if prev1 != None and balance > prev1:
+            max_var = max(max_var, abs(balance - prev1))
+          
+        else:
+          balance -= 1
+          prev1 = curr1
+          curr1 = min(curr1, balance)
+          
+          if prev0 != None and balance < prev0:
+            max_var = max(max_var, abs(prev0 - balance))
+            
+        if prev0 != None and prev1 != None:
+          max_var = max(max_var, abs(balance))
+      
+      return max_var
+      
+    var = 0
+    for i in range(25):
+      for j in range(i+1, 26):
+        var = max(var, count(chs[i], chs[j]))
+        
+    return var
+        
+        
+  def largestVariance(self, s: str) -> int:
     n = len(s)
     if len(set(s)) == n:
       return 0

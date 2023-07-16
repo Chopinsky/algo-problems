@@ -26,6 +26,36 @@ from functools import lru_cache
 
 class Solution:
   def smallestSufficientTeam(self, req_skills: List[str], people: List[List[str]]) -> List[int]:
+    n = len(req_skills)
+    m = len(people)
+    skills = {}
+    seen = {0:tuple()}
+    mask, count = 1, m
+    
+    for s in req_skills:
+      skills[s] = mask
+      mask <<= 1  
+      
+    for i in range(m):
+      mask = 0
+      for s in people[i]:
+        mask |= skills[s]
+        
+      nxt = seen.copy()
+      # print(i, people[i], mask)
+      
+      for s, p in seen.items():
+        s0 = mask | s
+        if (s0 not in nxt) or (1+len(p) < len(nxt[s0])):
+          nxt[s0] = p + (i,)
+        
+      seen = nxt
+      # print(seen)
+      
+    return seen.get(((1<<n) - 1), [i for i in range(m)])
+  
+  
+  def smallestSufficientTeam(self, req_skills: List[str], people: List[List[str]]) -> List[int]:
     n = len(people)
     skill_id = { s: i for i, s in enumerate(req_skills)}
     

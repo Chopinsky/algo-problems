@@ -21,12 +21,37 @@ Explanation: You don't need to remove any of the intervals since they're already
 
 Constraints:
 
-1 <= intervals.length <= 105
+1 <= intervals.length <= 10^5
 intervals[i].length == 2
--5 * 104 <= starti < endi <= 5 * 104
+-5 * 10^4 <= starti < endi <= 5 * 10^4
 '''
 
+from typing import List
+from bisect import bisect_right
+
+
 class Solution:
+  def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
+    arr = sorted([(x, y) for x, y in intervals], key=lambda x: (x[1], x[0]))
+    end = [c[1] for c in arr]
+    n = len(arr)
+    ln = [1]*n
+    # print(arr, end)
+    
+    for i in range(1, n):
+      x, y = arr[i]
+      curr = ln[i-1]
+      idx = bisect_right(end, x) - 1
+      
+      if idx >= 0:
+        curr = max(curr, 1+ln[idx])
+        
+      ln[i] = curr
+      
+    # print('done:', ln)
+    return n - ln[-1]
+    
+
   def eraseOverlapIntervals(self, itvls: List[List[int]]) -> int:
     itvls.sort(key=lambda x: x[1])
     count = 0

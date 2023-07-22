@@ -31,8 +31,45 @@ Constraints:
 0 <= row, column <= n - 1
 '''
 
+from collections import defaultdict
+
 
 class Solution:
+  def knightProbability(self, n: int, k: int, row: int, column: int) -> float:
+    prob = 1
+    if k == 0:
+      return prob
+    
+    curr, nxt = defaultdict(int), defaultdict(int)
+    curr[row, column] = 1
+    delta = [(-2, 1), (-1, 2), (1, 2), (2, 1), (2, -1), (1, -2), (-1, -2), (-2, -1)]
+        
+    while k > 0 and prob > 0:
+      oc, ic = 0, 0
+      
+      for (x, y), cnt in curr.items():
+        # print((x, y), cnt)
+        for dx, dy in delta:
+          x0, y0 = x+dx, y+dy
+          if x0 < 0 or x0 >= n or y0 < 0 or y0 >= n:
+            oc += cnt
+          else:
+            ic += cnt
+            nxt[x0, y0] += cnt
+            
+      total = oc+ic
+      if total == 0:
+        prob = 0
+      else:
+        prob *= ic / total
+      
+      curr, nxt = nxt, curr
+      nxt.clear()
+      k -= 1
+    
+    return prob
+        
+
   def knightProbability(self, n: int, k: int, row: int, column: int) -> float:
     if k == 0:
       return 1

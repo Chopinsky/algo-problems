@@ -27,6 +27,50 @@ from typing import List
 
 class Solution:
   def findNumberOfLIS(self, nums: List[int]) -> int:
+    ln = {}
+    
+    for v0 in nums:
+      l0 = 1
+      c0 = 1
+      
+      for v1, [l1, c1] in ln.items():
+        if v1 >= v0 or 1+l1 < l0:
+          continue
+          
+        if 1+l1 == l0:
+          c0 += c1
+          continue
+          
+        l0 = 1+l1
+        c0 = c1
+        
+      # print(v0, (l0, c0), ln)
+      
+      if (v0 not in ln) or (l0 > ln[v0][0]):
+        ln[v0] = [l0, c0]
+        continue
+        
+      if l0 == ln[v0][0]:
+        ln[v0][1] += c0
+    
+    # print('fin:', ln)
+    count = 0
+    max_ln = 1
+    
+    for l, c in ln.values():
+      # print(l, c, count)
+      if l > max_ln:
+        max_ln = l
+        count = c
+        continue
+        
+      if l == max_ln:
+        count += c
+    
+    return count
+        
+        
+  def findNumberOfLIS(self, nums: List[int]) -> int:
     counter = []
     longest = [0, 0]
     

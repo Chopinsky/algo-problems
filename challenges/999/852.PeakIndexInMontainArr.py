@@ -39,6 +39,35 @@ class Solution:
     n = len(arr)
     
     def check(idx: int) -> int:
+      if arr[idx-1] < arr[idx] < arr[idx+1]:
+        return 1
+      
+      if arr[idx-1] > arr[idx] > arr[idx+1]:
+        return -1
+      
+      return 0
+    
+    l, r = 1, n-2
+    while l <= r:
+      mid = (l + r) // 2
+      res = check(mid)
+      # print((l, r), mid, res)
+      
+      if res == 0:
+        return mid
+      
+      if res > 0:
+        l = mid + 1
+      else:
+        r = mid - 1
+      
+    return l
+    
+    
+  def peakIndexInMountainArray(self, arr: List[int]) -> int:
+    n = len(arr)
+    
+    def check(idx: int) -> int:
       if idx == 0 or idx == n-1 or (arr[idx-1] < arr[idx] and arr[idx+1] < arr[idx]):
         return 0
       

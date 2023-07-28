@@ -34,6 +34,24 @@ from functools import lru_cache
 
 class Solution:
   def PredictTheWinner(self, nums: List[int]) -> bool:
+    n = len(nums)
+    if n <= 2:
+      return True
+    
+    @lru_cache(None)
+    def play(i: int, j: int) -> int:
+      if i == j:
+        return nums[i]
+      
+      s0 = nums[i] - play(i+1, j)
+      s1 = nums[j] - play(i, j-1)
+      
+      return max(s0, s1)
+        
+    return play(0, n-1) >= 0
+  
+  
+  def PredictTheWinner(self, nums: List[int]) -> bool:
     @lru_cache(None)
     def pick(i: int, j: int) -> Tuple:
       if i == j:

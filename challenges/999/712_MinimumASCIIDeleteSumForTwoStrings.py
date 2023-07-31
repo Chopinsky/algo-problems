@@ -28,6 +28,31 @@ s1 and s2 consist of lowercase English letters.
 class Solution:
   def minimumDeleteSum(self, s1: str, s2: str) -> int:
     n1, n2 = len(s1), len(s2)
+    
+    @lru_cache(None)
+    def dp(i: int, j: int) -> int:
+      if i == n1 and j == n2:
+        return 0
+      
+      if i >= n1:
+        return sum(ord(c) for c in s2[j:])
+      
+      if j >= n2:
+        return sum(ord(c) for c in s1[i:])
+      
+      if s1[i] == s2[j]:
+        return dp(i+1, j+1)
+      
+      return min(
+        ord(s1[i]) + dp(i+1, j),
+        ord(s2[j]) + dp(i, j+1),
+      )
+      
+    return dp(0, 0)
+        
+        
+  def minimumDeleteSum(self, s1: str, s2: str) -> int:
+    n1, n2 = len(s1), len(s2)
     dp = [[0]*n2 for _ in range(n1)]
     max_score = 0
     

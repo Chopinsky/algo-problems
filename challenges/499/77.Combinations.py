@@ -34,6 +34,29 @@ from functools import lru_cache
 
 class Solution:
   def combine(self, n: int, k: int) -> List[List[int]]:
+    @lru_cache(None)
+    def dp(n: int, k: int) -> List:
+      if k == 1:
+        return [(val, ) for val in range(1, n+1)]
+      
+      if k >= n:
+        return [tuple(val for val in range(1, n+1))] if k == n else []
+      
+      ans = []
+      for val in range(n, 0, -1):
+        lst = dp(val-1, k-1)
+        if not lst:
+          break
+        
+        for arr in lst:
+          ans.append(arr + (val, ))
+      
+      return ans
+    
+    return dp(n, k)
+    
+        
+  def combine(self, n: int, k: int) -> List[List[int]]:
     if n == k:
       return [[i+1 for i in range(k)]]
     

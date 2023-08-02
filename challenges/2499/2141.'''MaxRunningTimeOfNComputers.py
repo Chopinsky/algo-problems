@@ -47,6 +47,57 @@ class Solution:
     
     b.sort()
     total = sum(b)
+    m = len(b)
+    
+    def check(k: int) -> bool:
+      if k == b[0]:
+        return True
+      
+      if k*n > total:
+        return False
+      
+      # use the top batteries first, check the ones
+      # need refuels
+      stack = [val-k for val in b[-n:] if val < k]
+      
+      # can sustain k-runtime without refuel
+      if not stack:
+        return True
+      
+      for i in range(m-n-1, -1, -1):
+        rem = b[i]
+        while stack and rem > 0 and rem+stack[0] >= 0:
+          rem += heappop(stack)
+
+        if rem and stack:
+          heappushpop(stack, stack[0]+rem)
+          
+        if not stack or stack[0] >= 0:
+          break
+        
+      # print(k, stack)
+      return not stack or stack[0] >= 0
+    
+    low, high = 1, 1+total//n
+    last = low
+    
+    while low <= high:
+      mid = (low + high) // 2
+      if check(mid):
+        last = mid
+        low = mid + 1
+      else:
+        high = mid - 1
+        
+    return last
+    
+    
+  def maxRunTime(self, n: int, b: List[int]) -> int:
+    if n == len(b):
+      return min(b)
+    
+    b.sort()
+    total = sum(b)
     
     # if the richest batter is going to waste some energy,
     # take it out since it's going to power the n-th computer

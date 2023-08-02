@@ -22,11 +22,38 @@ Constraints:
 All the integers of nums are unique.
 '''
 
-
-from typing import List
+from functools import lru_cache
+from typing import List, Tuple
 
 
 class Solution:
+  def permute(self, nums: List[int]) -> List[List[int]]:
+    @lru_cache(None)
+    def dp(src: Tuple) -> List:
+      res = []
+      
+      if len(src) == 1:
+        res.append(src)
+        return res
+      
+      if len(src) == 2:
+        a, b = src
+        res.append((a, b))
+        res.append((b, a))
+        return res
+      
+      for i in range(len(src)):
+        nxt = tuple(src[:i] + src[i+1:])
+        val = src[i]
+        
+        for t in dp(nxt):
+          res.append((val, ) + t)
+      
+      return res
+    
+    return dp(tuple(nums))
+    
+
   def permute(self, nums: List[int]) -> List[List[int]]:
     comb, ans = [], []
     n = len(nums)

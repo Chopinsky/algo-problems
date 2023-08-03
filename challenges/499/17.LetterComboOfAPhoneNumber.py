@@ -24,7 +24,28 @@ Constraints:
 digits[i] is a digit in the range ['2', '9'].
 '''
 
+from typing import List
+
+
 class Solution:
+  def letterCombinations(self, digits: str) -> List[str]:
+    if len(digits) == 0:
+      return []
+    
+    stack, nxt = [""], []
+    chars = ["", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"]    
+    
+    for d in digits:
+      nxt.clear()
+      for ch in chars[int(d)]:
+        for s in stack:
+          nxt.append(s + ch)
+          
+      stack, nxt = nxt, stack
+    
+    return stack
+        
+
   def letterCombinations(self, digits: str) -> List[str]:
     ans = []
     keys = {
@@ -53,6 +74,5 @@ class Solution:
       # print(digits[i])
 
       ans = tmp
-
 
     return ans

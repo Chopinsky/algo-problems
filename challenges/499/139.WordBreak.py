@@ -33,7 +33,30 @@ All the strings of wordDict are unique.
 from functools import lru_cache
 from typing import List
 
+
 class Solution:
+  def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+    d = set(wordDict)
+    n = len(s)
+    ln = max(len(w) for w in wordDict)
+    
+    @lru_cache(None)
+    def dp(i: int) -> bool:
+      if i >= n:
+        return True
+      
+      for j in range(i, n):
+        if j-i+1 > ln:
+          return False
+        
+        if s[i:j+1] in d and dp(j+1):
+          return True
+        
+      return False
+    
+    return dp(0)
+        
+
   def wordBreak(self, s: str, wordDict: List[str]) -> bool:
     n = len(s)
     

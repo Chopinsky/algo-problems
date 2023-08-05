@@ -49,7 +49,40 @@ from math import ceil
 
 class Solution:
   def minSpeedOnTime(self, dist: List[int], hour: float) -> int:
-    n, high, total = len(dist), max(dist),sum(dist)
+    n = len(dist)
+    
+    def check(s: int) -> bool:
+      total = 0
+      
+      for i in range(n):
+        d = dist[i]
+        t0 = d/s
+        if i < n-1:
+          total += ceil(t0)
+        else:
+          total += t0
+      
+      return total <= hour
+    
+    l, r = 1, 10**7+1
+    last = r
+    
+    if not check(r):
+      return -1
+    
+    while l <= r:
+      mid = (l + r) // 2
+      if check(mid):
+        last = mid
+        r = mid - 1
+      else:
+        l = mid + 1
+      
+    return last
+        
+
+  def minSpeedOnTime(self, dist: List[int], hour: float) -> int:
+    n, high, total = len(dist), max(dist), sum(dist)
     if hour >= total:
         return 1
     

@@ -16,7 +16,7 @@ Constraints:
 1 <= n <= 8
 '''
 
-
+from functools import lru_cache
 from typing import List, Optional
 
 
@@ -27,7 +27,37 @@ class TreeNode:
     self.left = left
     self.right = right
 
+
 class Solution:
+  def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
+    @lru_cache(None)
+    def dp(l: int, h: int) -> List:
+      if l > h:
+        return [None]
+            
+      if l == h:
+        return [TreeNode(val=l)]
+      
+      if l+1 == h:
+        return [
+          TreeNode(val=l, right=TreeNode(val=h)), 
+          TreeNode(val=h, left=TreeNode(val=l)),
+        ]
+      
+      res = []
+      for m in range(l, h+1):
+        ln = dp(l, m-1)
+        rn = dp(m+1, h)
+        
+        for n0 in ln:
+          for n1 in rn:
+            res.append(TreeNode(val=m, left=n0, right=n1))
+      
+      return res
+      
+    return dp(1, n)
+        
+
   def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
     lst = [i for i in range(1, n+1)]
     

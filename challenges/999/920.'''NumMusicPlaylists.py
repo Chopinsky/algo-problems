@@ -40,36 +40,30 @@ class Solution:
     mod = 10**9 + 7
     
     @lru_cache(None)
-    def calc_fact(m: int) -> int:
-      f = m
-      for i in range(2, m):
-        f = (f * i) % mod
-
-      return f
-    
-    @lru_cache(None)
-    def dp(rem: int, unique: int) -> int:
-      if unique > rem:
-        return 0
-      
+    def dp(rem: int, not_played: int) -> int:
       if rem == 0:
-        return 1
+        return 1 if not_played == 0 else 0
       
-      if rem == unique:
-        return calc_fact(rem)
-      
-      # if the song is played only this once in the future, it will
-      # no longer be part of the future playlist again
-      count = dp(rem-1, unique-1) * unique
-      
-      # if the song can be played again in the future, assuming
-      # there're k-songs that will play next, then for each k-song
-      # list, we have only `unique - k` choices available, this song
-      # will remain in the future playlist
-      if unique > k:
-        count += dp(rem-1, unique) * (unique - k)
+      if rem == not_played:
+        cnt = 1
+        while rem > 1:
+          cnt = (cnt * rem) % mod
+          rem -= 1
+          
+        return cnt
         
-      return count % mod
+      if rem < not_played:
+        return 0
+        
+      # play a song from the `not_played` list
+      cnt = (not_played * dp(rem-1, not_played-1)) % mod
       
+      # choose a song from the played list
+      if n - not_played > k:
+        cnt = (cnt + (n - not_played - k) * dp(rem-1, not_played)) % mod
+      
+      return cnt
+
     return dp(goal, n)
+        
   

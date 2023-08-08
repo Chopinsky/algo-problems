@@ -38,6 +38,79 @@ from bisect import bisect_left
 
 class Solution:
   def search(self, nums: List[int], target: int) -> int:
+    n = len(nums)
+    if n == 1:
+      return 0 if nums[0] == target else -1
+    
+    if n == 2:
+      if nums[0] == target:
+        return 0
+      
+      if nums[1] == target:
+        return 1
+      
+      return -1
+
+    if target == nums[0]:
+      return 0
+    
+    if target == nums[-1]:
+      return n-1
+
+    if nums[0] < nums[-1]:
+      idx = bisect_left(nums, target)
+      if idx < n and nums[idx] == target:
+        return idx
+      
+      return -1
+      
+    def find_pvt() -> int:
+      if nums[0] > nums[1]:
+        return 0
+      
+      if nums[-1] < nums[-2]:
+        return n-2
+
+      l, r = 1, n-2
+      pvt = -1
+
+      while l <= r:
+        mid = (l + r) // 2
+        if nums[mid] > nums[mid-1] and nums[mid] > nums[mid+1]:
+          pvt = mid
+          break
+        
+        if nums[mid] > nums[0]:
+          pvt = mid
+          l = mid + 1
+        else:
+          r = mid - 1
+        
+      return pvt
+      
+    if nums[-1] < target < nums[0]:
+      return -1
+    
+    p = find_pvt()
+    offset = 0
+    # print('pivot:', p, nums[:p+1], nums[p+1:])
+    
+    if nums[0] < target <= nums[p]:
+      base = nums[:p+1]
+    else:
+      base = nums[p+1:]
+      offset = p+1
+      
+    idx = bisect_left(base, target)
+    # print('search:', base, idx)
+
+    if idx < len(base) and base[idx] == target:
+      return offset+idx
+
+    return -1
+        
+        
+  def search(self, nums: List[int], target: int) -> int:
     if nums[0] <= nums[-1]:
       idx = bisect_left(nums, target)
       return idx if (idx < len(nums) and nums[idx] == target) else -1

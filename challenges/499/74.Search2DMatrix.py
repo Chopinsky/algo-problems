@@ -22,11 +22,34 @@ n == matrix[i].length
 -10^4 <= matrix[i][j], target <= 10^4
 '''
 
-
 from typing import List
 
 
 class Solution:
+  def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+    m, n = len(matrix), len(matrix[0])
+    if target < matrix[0][0] or target > matrix[m-1][n-1]:
+      return False
+    
+    l, r = 0, m*n
+    
+    while l <= r:
+      mid = (l + r) // 2
+      x, y = mid//n, mid%n
+      val = matrix[x][y]
+      # print(x, y)
+      
+      if val == target:
+        return True
+      
+      if val < target:
+        l = mid + 1
+      else:
+        r = mid - 1
+        
+    return False
+        
+
   def searchMatrix(self, mat: List[List[int]], target: int) -> bool:
     if not mat:
       return False

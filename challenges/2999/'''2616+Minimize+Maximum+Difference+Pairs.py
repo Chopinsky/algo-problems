@@ -30,6 +30,35 @@ from typing import List
 
 
 class Solution:
+  def minimizeMax(self, nums: List[int], p: int) -> int:
+    nums.sort()
+    l, h = 0, nums[-1]-nums[0]
+    last = h
+    
+    def check(d: int) -> bool:
+      idx = 1
+      cnt = 0
+      
+      while idx < len(nums) and cnt < p:
+        if nums[idx]-nums[idx-1] <= d:
+          cnt += 1
+          idx += 2
+        else:
+          idx += 1
+      
+      return cnt >= p
+    
+    while l <= h:
+      m = (l + h) // 2
+      if check(m):
+        last = m
+        h = m - 1
+      else:
+        l = m + 1
+        
+    return last
+        
+
   '''
   use greedy to check if we can get p-pairs that satisfy the max-diff value,
   and we can use binary search to figure out the max-diff value.

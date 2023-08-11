@@ -37,6 +37,8 @@ All the values of coins are unique.
 '''
 
 from typing import List
+from functools import lru_cache
+
 
 class Solution:
   '''
@@ -53,6 +55,45 @@ class Solution:
           dp[amnt+c] += dp[amnt]
     
     return dp[amount]
+
+
+class Solution:
+  def change(self, amount: int, coins: List[int]) -> int:
+    if amount == 0:
+      return 1
+    
+    cnt = [0] * (amount+1)
+    coins.sort()
+    
+    while coins and coins[-1] > amount:
+      coins.pop()
+      
+    if not coins:
+      return 0
+        
+    n = len(coins)
+    
+    @lru_cache(None)
+    def cnt(amount: int, i: int) -> int:
+      c = coins[i]
+      # print(amount, i, c)
+      
+      if i == 0:
+        return 1 if (amount % c == 0) else 0
+      
+      if amount == 0:
+        return 1
+      
+      total = cnt(amount, i-1)
+      num = 1
+      
+      while c*num <= amount:
+        total += cnt(amount-c*num, i-1)
+        num += 1
+      
+      return total
+      
+    return cnt(amount, n-1)
 
 
   def change0(self, amount: int, coins: List[int]) -> int:

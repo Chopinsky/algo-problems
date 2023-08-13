@@ -34,6 +34,25 @@ from typing import List
 class Solution:
   def validPartition(self, nums: List[int]) -> bool:
     n = len(nums)
+    if n < 2:
+      return False
+    
+    states = [False]*n
+    states[-2] = nums[-1] == nums[-2]
+    
+    for i in range(n-3, -1, -1):
+      if nums[i] == nums[i+1]:
+        states[i] |= states[i+2]
+        
+      if (nums[i] == nums[i+1] and nums[i] == nums[i+2]) or (nums[i]+1 == nums[i+1] and nums[i]+2 == nums[i+2]):
+        states[i] |= states[i+3] if i+3 < n else True
+       
+    # print(states)
+    return states[0]
+        
+        
+  def validPartition(self, nums: List[int]) -> bool:
+    n = len(nums)
     dp = [False] * n
     
     for i in range(n-2, -1, -1):

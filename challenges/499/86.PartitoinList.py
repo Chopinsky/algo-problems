@@ -33,6 +33,31 @@ class ListNode:
 
 class Solution:
   def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+    large_head = ListNode()
+    large = large_head
+    
+    fake_head = ListNode()
+    fake_head.next = head
+    curr = fake_head
+    
+    while curr.next:
+      nxt = curr.next
+      
+      if nxt.val >= x:
+        large.next = nxt
+        large = large.next
+        nnxt = nxt.next
+        nxt.next = None
+        curr.next = nnxt
+      else:
+        curr = curr.next
+    
+    curr.next = large_head.next
+    
+    return fake_head.next
+  
+        
+  def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
     small_head = ListNode()
     small = small_head
     large_head = ListNode()

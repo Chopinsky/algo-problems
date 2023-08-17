@@ -23,11 +23,70 @@ mat[i][j] is either 0 or 1.
 There is at least one 0 in mat.
 '''
 
-
+import math
 from typing import List
 
 
 class Solution:
+  def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+    m, n = len(mat), len(mat[0])
+    d = [[math.inf]*n for _ in range(m)]
+    
+    def is_edge(x: int, y: int) -> bool:
+      if mat[x][y] == 0:
+        return False
+      
+      if x-1 >= 0 and mat[x-1][y] == 0:
+        return True
+      
+      if x+1 < m and mat[x+1][y] == 0:
+        return True
+      
+      if y-1 >= 0 and mat[x][y-1] == 0:
+        return True
+      
+      if y+1 < n and mat[x][y+1] == 0:
+        return True
+      
+      return False
+    
+    curr, nxt = set(), set()
+    seen = set()
+    
+    for x in range(m):
+      for y in range(n):
+        val = mat[x][y]
+        if val == 0:
+          d[x][y] = 0
+          continue
+          
+        if is_edge(x, y):
+          d[x][y] = 1
+          curr.add((x, y))
+          
+    # print(curr)
+    while curr:
+      seen |= curr
+      # print("iter:", curr)
+      
+      for x, y in curr:
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+          x0, y0 = x+dx, y+dy
+          if x0 < 0 or x0 >= m or y0 < 0 or y0 >= n:
+            continue
+            
+          if mat[x0][y0] != 1 or ((x0, y0) in seen):
+            continue
+            
+          d[x0][y0] = min(d[x0][y0], d[x][y] + 1)
+          nxt.add((x0, y0))
+      
+      curr, nxt = nxt, curr
+      nxt.clear()
+          
+    return d
+  
+
   def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
     h, w = len(mat), len(mat[0])
     dist = [[0 if mat[i][j] == 0 else -1 for j in range(w)] for i in range(h)]

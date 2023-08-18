@@ -40,6 +40,33 @@ from collections import defaultdict
 
 class Solution:
   def maximalNetworkRank(self, n: int, roads: List[List[int]]) -> int:
+    cnt = defaultdict(int)
+    conn = set()
+    
+    for a, b in roads:
+      cnt[a] += 1
+      cnt[b] += 1
+      conn.add((a, b))
+      conn.add((b, a))
+      
+    arr = sorted(cnt, key=lambda x: cnt[x])
+    rank = 0
+    # print(arr, cnt)
+    
+    while len(arr) > 1:
+      u = arr.pop()
+      for i in range(len(arr)-1, -1, -1):
+        v = arr[i]
+        if cnt[u] + cnt[v] <= rank:
+          break
+          
+        adjust = -1 if (u, v) in conn else 0
+        rank = max(rank, cnt[u]+cnt[v]+adjust)
+      
+    return rank
+        
+        
+  def maximalNetworkRank(self, n: int, roads: List[List[int]]) -> int:
     e = defaultdict(set)
     for u, v in roads:
       u, v = min(u, v), max(u, v)

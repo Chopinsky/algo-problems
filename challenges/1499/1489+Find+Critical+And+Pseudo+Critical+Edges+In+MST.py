@@ -36,6 +36,87 @@ import math
 
 
 class Solution:
+  def findCriticalAndPseudoCriticalEdges(self, n: int, edges: List[List[int]]) -> List[List[int]]:
+    min_score = math.inf
+    src = sorted((w, i, u, v) for i, (u, v, w) in enumerate(edges))
+    m = len(edges)
+    # print(src)
+    
+    def find(arr, i):
+      while arr[i] != i:
+        i = arr[i]
+      
+      return i
+    
+    def union(arr, i, j):
+      ri, rj = find(arr, i), find(arr, j)
+      if ri <= rj:
+        arr[rj] = ri
+      else:
+        arr[ri] = rj
+    
+    def calc_mst(exc: int, inc: int) -> int:
+      score = 0
+      g = [i for i in range(n)]
+      cnt = 0
+      
+      if inc >= 0:
+        w, _, u, v = src[inc]
+        union(g, u, v)
+        score += w
+        cnt += 1  
+      
+      for i in range(m):
+        # won't finish
+        if cnt+(m-i) < n-1:
+          return math.inf
+
+        w, _, u, v = src[i]
+        if i == inc or i == exc:
+          continue
+        
+        # cycle
+        if find(g, u) == find(g, v):
+          continue
+
+        union(g, u, v)
+        cnt += 1
+        score += w
+        
+        # above min-mst
+        if score > min_score:
+          break
+      
+      if cnt < n-1:
+        return math.inf
+      
+      return score
+      
+    min_score = calc_mst(-1, -1)
+    # print('base score:', min_score)
+    req = []
+    opt = []
+    
+    for i in range(m):
+      s0 = calc_mst(-1, i)
+      idx = src[i][1]
+      # print('@', (i, idx))
+      # print('inc', s0)
+      
+      if s0 > min_score:
+        continue
+        
+      s1 = calc_mst(i, -1)
+      # print('exc', s1)
+      
+      if s1 == min_score:
+        opt.append(idx)
+      else:
+        req.append(idx)
+    
+    return [req, opt]
+    
+    
   '''
   the trick is to check what's a critical edge, and what's a pseudo one:
     * critical edge: if *excluded* from the MST, the total score will rise, or the graph

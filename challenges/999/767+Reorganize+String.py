@@ -26,6 +26,33 @@ from collections import Counter
 class Solution:
   def reorganizeString(self, s: str) -> str:
     c = Counter(s)
+    n = len(s)
+    ans = ""
+    lst = sorted(s, key=lambda x: (c[x], x))
+    a = lst[n//2:]
+    b = lst[:n//2]
+    # print(lst, a, b)
+    
+    while a or b:
+      if a:
+        ch = a.pop()
+        if ans and ch == ans[-1]:
+          return ""
+        
+        ans += ch
+        
+      if b:
+        ch = b.pop()
+        if ans and ch == ans[-1]:
+          return ""
+        
+        ans += ch
+    
+    return ans
+        
+        
+  def reorganizeString(self, s: str) -> str:
+    c = Counter(s)
     total = sum(c.values())
     top = max(c.values())
     if top > (total-top) + 1:

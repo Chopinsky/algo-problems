@@ -57,11 +57,63 @@ words[i] consists of only English letters and symbols.
 words[i].length <= maxWidth
 '''
 
-
 from typing import List
 
 
 class Solution:
+  def fullJustify(self, words: List[str], max_width: int) -> List[str]:
+    def build_string(src: List[str], words_ln: int) -> str:
+      if not src:
+        return " " * max_width
+      
+      n = len(src)
+      spaces = max_width - words_ln
+      
+      if n == 1:
+        return src[0] + " "*spaces
+      
+      if n == 2:
+        return src[0] + " "*spaces + src[1]
+      
+      result = src[0]
+      between = spaces // (n-1)
+      padding_count = spaces % (n-1)
+      
+      for word in src[1:]:
+        spaces = " " * between
+        if padding_count > 0:
+          spaces += " "
+          padding_count -= 1
+          
+        result += spaces + word
+      
+      return result
+    
+    curr = []
+    ans = []
+    words_ln = 0
+    
+    for word in words:
+      total_len = words_ln + len(word) + len(curr)
+      if total_len > max_width:
+        s = build_string(curr, words_ln)
+        ans.append(s)
+        # print(s)
+        
+        curr.clear()
+        words_ln = 0
+        
+      curr.append(word)
+      words_ln += len(word)
+      
+    if curr:
+      s = " ".join(curr)
+      paddings = max_width - len(s)
+      ans.append(s + " "*paddings)
+      
+    return ans
+        
+
   def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
     ans = []
     line_words = []

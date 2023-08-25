@@ -38,6 +38,36 @@ from functools import lru_cache
 
 class Solution:
   def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+    n1, n2, n3 = len(s1), len(s2), len(s3)
+    if n3 != n1+n2:
+      return False
+    
+    @lru_cache(None)
+    def dp(i: int, j: int, k: int) -> bool:
+      if k >= n3:
+        return i >= n1 and j >= n2
+      
+      if i >= n1 and j >= n2:
+        return k >= n3
+      
+      if i >= n1:
+        return s2[j:] == s3[k:]
+      
+      if j >= n2:
+        return s1[i:] == s3[k:]
+      
+      if s1[i] == s3[k] and dp(i+1, j, k+1):
+        return True
+      
+      if s2[j] == s3[k] and dp(i, j+1, k+1):
+        return True
+      
+      return False
+    
+    return dp(0, 0, 0)
+        
+        
+  def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
     m, n, l = len(s1), len(s2), len(s3)
     
     @lru_cache(None)

@@ -35,6 +35,89 @@ from collections import defaultdict
 
 
 class Solution:
+  def sortItems(self, n: int, m: int, group: List[int], beforeItems: List[List[int]]) -> List[int]:
+    groups = defaultdict(list)
+    free = set()
+    
+    for i, g in enumerate(group):
+      if g == -1:
+        free.add(i)
+      else:
+        groups[g].append(i)
+    
+    dep_cnt = defaultdict(int)
+    gdep_cnt = defaultdict(set)
+    
+    remove = defaultdict(set)
+    gremove = defaultdict(set)
+    
+    for u, lst in enumerate(beforeItems):
+      dep_cnt[u] = len(lst)
+      g = group[u]
+      
+      for v in lst:
+        remove[v].add(u)
+        
+        # external group dependency
+        if g != group[v]:
+          gdep_cnt[g].add(v)
+          gremove[v].add(g)
+    
+    # print('init setting:', groups, gdep_cnt, dep_cnt, remove, gremove)
+    ans = []
+    cand_groups = set()
+    
+    def update(u, cand):
+      ans.append(u)
+      
+      for v in remove[u]:
+        dep_cnt[v] -= 1
+        if not dep_cnt[v] and (group[u] == group[v]):
+          cand.append(v)
+        
+      for gv in gremove[u]:
+        gdep_cnt[gv].discard(u)
+        if not gdep_cnt[gv]:
+          cand_groups.add(gv)
+
+    def update_group(items):
+      cand = []
+      for u in items:
+        if dep_cnt[u] == 0:
+          cand.append(u)
+          
+      while cand:
+        u = cand.pop()
+        update(u, cand)
+      
+    for i in free:
+      if dep_cnt[i] == 0:
+        update(i, [])
+    
+    for i in ans:
+      free.discard(i)
+      
+    for i in range(m):
+      if len(gdep_cnt[i]) > 0:
+        continue
+        
+      cand_groups.add(i)
+    
+    # print('init:', ans, cand_groups)
+    while cand_groups:
+      g = cand_groups.pop()
+      items = groups.pop(g, None)
+      if not items:
+        continue
+        
+      update_group(items)
+    
+    update_group(list(free))
+      
+    # print('fin:', ans, dep_cnt)
+    return ans if len(ans) == n else []
+        
+        
   def sortItems0(self, n: int, m: int, group: List[int], beforeItems: List[List[int]]) -> List[int]:
     prior = defaultdict(set)
     dependency = [len(beforeItems[i]) for i in range(n)]

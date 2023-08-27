@@ -25,13 +25,44 @@ stones[0] == 0
 stones is sorted in a strictly increasing order.
 '''
 
-
 from typing import List
 from heapq import heappush, heappop
 from bisect import bisect_left
+from functools import lru_cache
 
 
 class Solution:
+  def canCross(self, stones: List[int]) -> bool:
+    n = len(stones)
+    
+    @lru_cache(None)
+    def dp(i: int, k: int) -> bool:
+      if i >= n-1:
+        return True
+      
+      pos = stones[i]
+      cand = [k-1, k, k+1] if i > 0 else [k]
+      # print('at', (i, pos), k)
+      
+      for k0 in cand:
+        if k0 <= 0 or pos+k0 > stones[-1]:
+          continue
+          
+        target = pos + k0
+        j = bisect_left(stones, target)
+        # print(k0, target, j, stones[j])
+        
+        if j >= n or stones[j] != target:
+          continue
+          
+        if dp(j, k0):
+          return True
+        
+      return False
+      
+    return dp(0, 1)
+        
+
   def canCross(self, stones: List[int]) -> bool:
     i = 0
     while stones[i] == 0:

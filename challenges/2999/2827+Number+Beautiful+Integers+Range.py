@@ -46,20 +46,17 @@ from functools import lru_cache
 class Solution:
   def numberOfBeautifulIntegers(self, low: int, high: int, k: int) -> int:
     @lru_cache(None)
-    def dp(val: str, i: int, b: int, mod: int, zero: bool) -> int:
+    def dp(val: str, i: int, balance: int, mod: int, zero: bool) -> int:
       if i < 0:
-        return 1 if b == 0 and mod == 0 and not zero else 0
+        return 1 if balance == 0 and mod == 0 and not zero else 0
       
       # won't balance
-      if abs(b) > i+1:
+      if abs(balance) > i+1:
         return 0
       
       # top lines won't make the balance even
       if i == len(val)-1 and len(val) % 2 == 1:
-        if i == 0:
-          return 0
-        
-        return dp('', i-1, b, mod, True)
+        return dp('', i-1, balance, mod, True) if i > 0 else 0
       
       cnt = 0
       top = int(val[i]) if val else 10
@@ -73,16 +70,12 @@ class Solution:
           bc = 1 if num % 2 == 0 else -1
           mc = (num*base) % k
           
-        c0 = dp('', i-1, b+bc, (mod + mc) % k, zero and num == 0)
-        # if val == '02':
-        #   print('in:', top, zero, num, bc, mc, c0)
-        
-        cnt += c0
+        cnt += dp('', i-1, balance+bc, (mod + mc) % k, zero and num == 0)
       
       if val:
         bc = 1 if top%2 == 0 else -1
         mc = (top*base) % k
-        cnt += dp(val, i-1, b+bc, (mod + mc) % k, False)
+        cnt += dp(val, i-1, balance+bc, (mod + mc) % k, False)
         
       # print('done:', (val, i, b, mod, zero), top, cnt)
       return cnt

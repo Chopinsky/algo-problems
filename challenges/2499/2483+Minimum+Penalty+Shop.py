@@ -44,6 +44,27 @@ customers consists only of characters 'Y' and 'N'.
 
 class Solution:
   def bestClosingTime(self, customers: str) -> int:
+    n = len(customers)
+    nc, yc = 0, sum(1 if ch == 'Y' else 0 for ch in customers)
+    penalty = yc
+    hour = 0
+    # print('init', yc)
+    
+    for i in range(1, n+1):
+      if customers[i-1] == 'Y':
+        yc -= 1
+      else:
+        nc += 1
+        
+      # print(i, yc, nc, yc+nc)
+      if nc+yc < penalty:
+        penalty = nc+yc
+        hour = i
+    
+    return hour
+        
+        
+  def bestClosingTime(self, customers: str) -> int:
     yes_count = customers.count('Y')
     no_count = 0
     n = len(customers)

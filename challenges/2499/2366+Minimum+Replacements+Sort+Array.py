@@ -26,9 +26,42 @@ Constraints:
 '''
 
 from typing import List
+from functools import lru_cache
+from math import ceil
 
 
 class Solution:
+  def minimumReplacement(self, nums: List[int]) -> int:
+    n = len(nums)
+    if n == 1:
+      return 0
+    
+    @lru_cache(None)
+    def calc_ops(cnt: int) -> int:
+      if cnt <= 1:
+        return 0
+      
+      ops = cnt // 2
+      
+      return ops + calc_ops(ops + (cnt % 2))
+    
+    last = nums[-1]
+    ops = 0
+    
+    for i in range(n-2, -1, -1):
+      val = nums[i]
+      if val <= last:
+        last = val
+        continue
+      
+      cnt = ceil(val/last)
+      ops += calc_ops(cnt)
+      last = val // cnt 
+      # print('add:', val, last, cnt, calc_ops(cnt))
+      
+    return ops
+        
+
   '''
   since we can only split a number and make the replacement numbers only smaller,
   the idea is that in the end, nums[i] <= nums[i+1] must be satisfied, and we can

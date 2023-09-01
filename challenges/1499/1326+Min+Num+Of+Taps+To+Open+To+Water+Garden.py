@@ -40,6 +40,36 @@ from bisect import bisect_left
 
 class Solution:
   def minTaps(self, n: int, ranges: List[int]) -> int:
+    arr = []
+    
+    for p0, ln in enumerate(ranges):
+      if ln <= 0:
+        continue
+        
+      arr.append((p0-ln, p0+ln))
+      
+    arr.sort()
+    cnt = 0
+    idx = 0
+    curr, last = 0, 0
+    # print(arr)
+    
+    while idx < len(arr) and last < n:
+      if arr[idx][0] > last:
+        break
+      
+      cnt += 1
+      while idx < len(arr) and arr[idx][0] <= last:
+        curr = max(curr, arr[idx][1])
+        idx += 1
+        
+      last = curr
+      # print(cnt, last)
+    
+    return cnt if last >= n else -1
+        
+        
+  def minTaps(self, n: int, ranges: List[int]) -> int:
     ends = [0] * (n+1)
     for x, r in enumerate(ranges):
       l = max(0, x-r)

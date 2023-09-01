@@ -37,6 +37,27 @@ from typing import List
 
 class Solution:
   def countBits(self, n: int) -> List[int]:
+    base = [0, 1, 1, 2]
+    if n <= 3:
+      return base[:n+1]
+    
+    th = 2
+    curr = 4
+    
+    while curr <= n:
+      if curr == 2*th:
+        base.append(1)
+        th = curr
+      else:
+        prev = base[curr-th]
+        base.append(1+prev)
+        
+      curr += 1
+    
+    return base
+    
+        
+  def countBits(self, n: int) -> List[int]:
     if n == 0:
       return [0]
     

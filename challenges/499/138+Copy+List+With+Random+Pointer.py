@@ -48,6 +48,36 @@ class Node:
 
 
 class Solution:
+  def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+    if not head:
+      return head
+    
+    curr = head
+    while curr:
+      nxt = curr.next
+      copy = Node(x=curr.val, next=nxt, random=curr.random)
+      curr.next = copy
+      curr = nxt
+      
+    curr = head
+    while curr:
+      curr = copy.next
+      copy = curr.next
+      if copy.random:
+        copy.random = copy.random.next
+        
+    copyHead = head.next
+    curr = copyHead
+    
+    while curr:
+      if curr.next:
+        curr.next = curr.next.next
+        
+      curr = curr.next
+      
+    return copyHead
+      
+
   '''
   attach the copied nodes next to the current nodes, such that we can build
   random nodes reference using: `copy.random = curr.random.next`, then detach

@@ -1,4 +1,6 @@
 '''
+725. Split Linked List in Parts
+
 Given the head of a singly linked list and an integer k, split the linked list into k consecutive linked list parts.
 
 The length of each part should be as equal as possible: no two parts should have a size differing by more than one. This may lead to some parts being null.
@@ -31,6 +33,7 @@ The number of nodes in the list is in the range [0, 1000].
 
 from typing import Optional, List
 
+
 # Definition for singly-linked list.
 class ListNode:
   def __init__(self, val=0, next=None):
@@ -39,6 +42,38 @@ class ListNode:
 
 
 class Solution:
+  def splitListToParts(self, head: Optional[ListNode], k: int) -> List[Optional[ListNode]]:
+    def get_len(curr):
+      ln = 0
+      while curr:
+        ln += 1
+        curr = curr.next
+        
+      return ln
+    
+    ans = [None for _ in range(k)]
+    ln = get_len(head)
+    c0 = ln // k
+    rem = ln % k
+    curr = head
+    prev = None
+    
+    for i in range(k):
+      ans[i] = curr
+      c1 = c0 + (1 if i < rem else 0)
+      # print('add', i, c1)
+      
+      while c1 > 0 and curr:
+        prev = curr
+        curr = curr.next
+        c1 -= 1
+        
+      if prev:
+        prev.next = None
+    
+    return ans
+      
+
   def splitListToParts(self, head: Optional[ListNode], k: int) -> List[Optional[ListNode]]:
     ans = [None for _ in range(k)]
     if not head:

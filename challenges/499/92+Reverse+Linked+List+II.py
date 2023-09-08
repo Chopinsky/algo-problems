@@ -33,6 +33,46 @@ class ListNode:
 
 class Solution:
   def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+    if left == right:
+      return head
+    
+    def reverse(head, count):
+      if not head:
+        return head
+      
+      curr, tail = head, head
+      prev = None
+      
+      while curr and count > 0:
+        # print('iter:', curr.val, count)
+        nxt = curr.next
+        curr.next = prev
+        prev = curr
+        curr = nxt
+        count -= 1
+        
+      tail.next = curr
+      # print('end:', prev.val, tail.val, curr.val if curr else None)
+      
+      return prev
+    
+    if left == 1:
+      return reverse(head, right-left+1)
+    
+    curr = head
+    idx = 1
+    
+    while idx+1 < left:
+      curr = curr.next
+      idx += 1
+    
+    # print('curr:', curr.val)
+    curr.next = reverse(curr.next, right-left+1)
+    
+    return head
+  
+
+  def reverseBetween(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
     fake_head = ListNode(val=-1, next=head)
     idx = 0
     last = None 

@@ -33,29 +33,26 @@ All the elements of nums are unique.
 Follow up: What if negative numbers are allowed in the given array? How does it change the problem? What limitation we need to add to the question to allow negative numbers?
 '''
 
+from typing import List
+from collections import defaultdict
+
+
 class Solution:
   def combinationSum4(self, nums: List[int], target: int) -> int:
     nums.sort()
     if target < nums[0]:
       return 0
-
-    idx = 0
-    counts = collections.defaultdict(int)
+    
+    counts = defaultdict(int)
     counts[0] = 1
-
-    for i in range(nums[0], target+1):
-      cnt = 0
-
-      if idx < len(nums) and i == nums[idx]:
-        idx += 1
-
-      for j in range(idx+1):
-        if j >= len(nums):
+    
+    for val in range(nums[0], target+1):
+      # append number v0 to the end of previous array
+      for v0 in nums:
+        if v0 > val:
           break
 
-        n = counts[i-nums[j]]
-        cnt += n if n > 0 else 0
-
-      counts[i] = cnt
-
+        counts[val] += counts[val-v0]
+    
     return counts[target]
+  

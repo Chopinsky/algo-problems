@@ -47,14 +47,14 @@ class Solution:
 
 
   def countOrders(self, n: int) -> int:
-    mod = 10**9 + 7
+    mod = 10**9+7
     
     @lru_cache(None)
     def dp(n: int) -> int:
       if n == 1:
         return 1
       
-      return (comb(2*n, 2) * dp(n-1)) % mod
+      return (comb(2*n,2) * dp(n-1)) % mod
       
     return dp(n)
   

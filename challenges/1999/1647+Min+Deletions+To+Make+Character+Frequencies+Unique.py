@@ -37,6 +37,23 @@ class Solution:
   def minDeletions(self, s: str) -> int:
     c = Counter(s)
     arr = sorted(c.values())
+    deletes = 0
+    n = len(c)
+    # print(arr)
+    
+    for i in range(n-2, -1, -1):
+      if arr[i] >= arr[i+1]:
+        original = arr[i]
+        arr[i] = max(0, arr[i+1] - 1)
+        # print('d:', original, arr[i])
+        deletes += original - arr[i]
+    
+    return deletes
+        
+        
+  def minDeletions(self, s: str) -> int:
+    c = Counter(s)
+    arr = sorted(c.values())
     rem = sorted(set([val for val in range(1, arr[-1]+1)]) - set(arr))
     count = 0
     seen = set()

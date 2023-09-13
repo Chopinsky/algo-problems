@@ -38,6 +38,42 @@ class Solution:
     if n == 1:
       return 1
     
+    if n == 2:
+      return 2 if ratings[0] == ratings[1] else 3
+    
+    stack = sorted([(r, i) for i, r in enumerate(ratings)])
+    candies = [1] * n
+    # print(stack)
+    
+    for _, idx in stack:
+      if idx == 0:
+        if ratings[idx] > ratings[idx+1]:
+          candies[idx] += candies[idx+1]
+          
+        continue
+        
+      if idx == n-1:
+        if ratings[idx] > ratings[idx-1]:
+          candies[idx] += candies[idx-1]
+          
+        continue
+        
+      if ratings[idx] > ratings[idx-1] and ratings[idx] > ratings[idx+1]:
+        candies[idx] = 1 + max(candies[idx-1], candies[idx+1])
+      elif ratings[idx] > ratings[idx-1]:
+        candies[idx] = 1 + candies[idx-1]
+      elif ratings[idx] > ratings[idx+1]:
+        candies[idx] = 1 + candies[idx+1]
+      
+    # print(candies)
+    return sum(candies)
+        
+
+  def candy(self, ratings: List[int]) -> int:
+    n = len(ratings)
+    if n == 1:
+      return 1
+    
     cnt = [0] * n
     cand = []
     

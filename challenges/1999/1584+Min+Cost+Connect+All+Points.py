@@ -34,6 +34,50 @@ from heapq import heappush, heappop
 class Solution:
   def minCostConnectPoints(self, points: List[List[int]]) -> int:
     n = len(points)
+    arr = list(range(n))
+    
+    def find(x: int) -> int:
+      while arr[x] != x:
+        x = arr[x]
+        
+      return x
+        
+    def dist(i: int, j: int) -> int:
+      x0, y0 = points[i]
+      x1, y1 = points[j]
+      
+      return abs(x0-x1) + abs(y0-y1)
+    
+    d = []
+    for i in range(n-1):
+      for j in range(i+1, n):
+        d.append((dist(i, j), i, j))
+        
+    d.sort()
+    ans, cnt = 0, 0
+    # print(d)
+    
+    for d0, i, j in d:
+      ri, rj = find(i), find(j)
+      if ri == rj:
+        continue
+        
+      ans += d0
+      cnt += 1
+      
+      if ri <= rj:
+        arr[rj] = ri
+      else:
+        arr[ri] = rj
+        
+      if cnt == n-1:
+        break
+    
+    return ans
+        
+        
+  def minCostConnectPoints(self, points: List[List[int]]) -> int:
+    n = len(points)
     cand = []
     groups = [i for i in range(n)]
     score, edges = 0, 0

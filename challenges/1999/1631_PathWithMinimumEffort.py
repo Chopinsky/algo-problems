@@ -39,6 +39,32 @@ import math
 class Solution:
   def minimumEffortPath(self, heights: List[List[int]]) -> int:
     m, n = len(heights), len(heights[0])
+    store = [[float('inf')]*n for _ in range(m)]
+    store[0][0] = 0
+    stack = [(0, 0, 0)]
+
+    while stack:
+      d, x, y = heappop(stack)
+      # print('iter:', (x, y), d)
+      
+      if x == m-1 and y == n-1:
+        return d
+
+      for dx, dy in [(1, 0), (0, 1), (-1, 0), (0, -1)]:
+        x0, y0 = x+dx, y+dy
+        if x0 < 0 or x0 >= m or y0 < 0 or y0 >= n:
+          continue
+
+        d0 = max(d, abs(heights[x0][y0] - heights[x][y]))
+        if d0 < store[x0][y0]:
+          store[x0][y0] = d0
+          heappush(stack, (d0, x0, y0))
+              
+    return -1
+
+
+  def minimumEffortPath(self, heights: List[List[int]]) -> int:
+    m, n = len(heights), len(heights[0])
     if m == 1:
       if n == 1:
         return 0

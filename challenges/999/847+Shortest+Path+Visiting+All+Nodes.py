@@ -35,6 +35,44 @@ from heapq import heappush, heappop
 class Solution:
   def shortestPathLength(self, graph: List[List[int]]) -> int:
     n = len(graph)
+    if n == 0 or not graph[0]:
+      return 0
+    
+    cnt = math.inf
+    m0 = (1<<n) - 1
+    
+    def bfs(root: int):
+      curr, nxt = [(root, 1<<root)], []
+      seen = set(curr)
+      steps = 0
+      
+      while curr:
+        steps += 1
+        for i, m in curr:
+          for j in graph[i]:
+            nm = m | (1 << j)
+            if nm == m0:
+              return steps
+            
+            if (j, nm) in seen:
+              continue
+              
+            nxt.append((j, nm))
+            seen.add((j, nm))
+        
+        curr, nxt = nxt, curr
+        nxt.clear()
+        
+      return math.inf
+    
+    for i in range(n):
+      cnt = min(cnt, bfs(i))
+    
+    return cnt
+        
+        
+  def shortestPathLength(self, graph: List[List[int]]) -> int:
+    n = len(graph)
     q = deque([(i, 1<<i) for i in range(n)])
     states = [set([1<<i]) for i in range(n)]
     steps = 0

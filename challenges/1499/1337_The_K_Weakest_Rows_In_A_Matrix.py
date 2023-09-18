@@ -59,6 +59,22 @@ from typing import List
 
 class Solution:
   def kWeakestRows(self, mat: List[List[int]], k: int) -> List[int]:
+    def count(arr):
+      cnt = 0
+      for val in arr:
+        if val != 1:
+          break
+          
+        cnt += 1
+      
+      return cnt
+    
+    src = sorted((count(mat[i]), i) for i in range(len(mat)))
+    
+    return [idx for _, idx in src[:k]]
+        
+        
+  def kWeakestRows(self, mat: List[List[int]], k: int) -> List[int]:
     rows = [(r.count(1), i) for i, r in enumerate(mat)]
     rows.sort()
     # print(rows)

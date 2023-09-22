@@ -29,8 +29,37 @@ Constraints:
 from typing import List
 import math
 
-
 class Solution:
+  def minOperations(self, nums: List[int], x: int) -> int:
+    n = len(nums)
+    total = sum(nums)
+    
+    if total <= x:
+      return n if total == x else -1
+    
+    target = total - x
+    if nums[0] == target:
+      return n-1
+    
+    l, r = 0, 0
+    sums = 0
+    ops = math.inf
+    
+    while l < n:
+      while r < n and sums < target:
+        sums += nums[r]
+        r += 1
+      
+      if sums == target:
+        # print(sums, (l, r))
+        ops = min(ops, n-(r-l))
+        
+      sums -= nums[l]
+      l += 1
+    
+    return -1 if ops == math.inf else ops
+        
+
   def minOperations(self, nums: List[int], x: int) -> int:
     prefix = {0: 0}
     n = len(nums)

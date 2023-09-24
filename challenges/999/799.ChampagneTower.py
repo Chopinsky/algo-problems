@@ -31,6 +31,27 @@ Constraints:
 
 
 class Solution:
+  def champagneTower(self, poured: int, r: int, c: int) -> float:
+    if r == 0:
+      return min(1, poured)
+    
+    curr = [poured]
+    idx = 0
+    
+    while idx < r:
+      idx += 1
+      nxt = [0] * (idx+1)
+      
+      for i in range(idx):
+        overflow = max(0, curr[i]-1) / 2.0
+        nxt[i] += overflow
+        nxt[i+1] += overflow
+      
+      curr = nxt
+      
+    return min(1, curr[c])
+        
+        
   def champagneTower(self, poured: int, query_row: int, query_glass: int) -> float:
     if not query_row:
       return poured if poured <= 1 else 1

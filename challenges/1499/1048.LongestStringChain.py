@@ -27,8 +27,45 @@ words[i] only consists of English lowercase letters.
 
 from collections import defaultdict
 from typing import List
+from functools import lru_cache
+
 
 class Solution:
+  def longestStrChain(self, words: List[str]) -> int:
+    dic = defaultdict(list)
+    n = len(words)
+    words.sort(key=lambda x: (len(x), x))
+    
+    for i, w in enumerate(words):
+      for j in range(len(w)):
+        w0 = w[:j] + "*" + w[j+1:]
+        dic[w0].append(i)
+        
+    # print(words, dic)
+    
+    @lru_cache(None)
+    def dp(i: int):
+      if i >= n:
+        return 0
+      
+      w = words[i]
+      if len(w) == len(words[-1]):
+        return 1
+      
+      cnt = 1
+      for i in range(len(w)):
+        w0 = w[:i] + "*" + w[i:]
+        for j in dic[w0]:
+          cnt = max(cnt, 1+dp(j))
+          
+      for j in dic[w+"*"]:
+        cnt = max(cnt, 1+dp(j))
+      
+      return cnt
+    
+    return max(dp(i) for i in range(n))
+        
+
   def longestStrChain(self, words: List[str]) -> int:
     words.sort(key=lambda x: len(x))
 

@@ -24,6 +24,31 @@ from typing import List
 
 class Solution:
   def sortArrayByParity(self, nums: List[int]) -> List[int]:
+    l, r = 0, len(nums)-1
+    
+    while l < r:
+      while l < r:
+        if nums[l] % 2 == 1:
+          break
+          
+        l += 1
+        
+      while l < r:
+        if nums[r] % 2 == 0:
+          break
+          
+        r -= 1
+        
+      if l < r:
+        nums[l], nums[r] = nums[r], nums[l]
+        
+      l += 1
+      r -= 1
+      
+    return nums
+        
+        
+  def sortArrayByParity(self, nums: List[int]) -> List[int]:
     i, j = 0, len(nums)-1
     while i < j:
       while i < j and nums[i]%2 == 0:

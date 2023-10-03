@@ -58,6 +58,34 @@ colors consists of only the letters 'A' and 'B'
 
 class Solution:
   def winnerOfGame(self, colors: str) -> bool:
+    last = ''
+    last_count = 0
+    counter = [0, 0]
+    
+    def update():
+      nonlocal last, last_count
+      
+      if last == 'A':
+        counter[0] += max(0, last_count - 2)
+      
+      if last == 'B':
+        counter[1] += max(0, last_count - 2)
+    
+    for ch in colors:
+      if ch != last:
+        update()
+        last = ch
+        last_count = 1
+      else:
+        last_count += 1
+        
+    update()
+    # print('fin', counter)
+    
+    return counter[0] > counter[1]
+
+ 
+  def winnerOfGame(self, colors: str) -> bool:
     a = 0
     b = 0
     last = ''

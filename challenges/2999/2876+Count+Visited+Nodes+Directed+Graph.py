@@ -38,6 +38,13 @@ from typing import List
 
 
 class Solution:
+  '''
+  the idea is to remember the number of steps to revisit the entry node in the circle (the 
+  test case guarantees that there's one or more circle that every node shall enter); then
+  if the node is inside a circle, the steps == size of the circle; if the node is not in 
+  a circle, the steps == size of the circle the path will lead to, plus the steps in the path
+  to enter the circle
+  '''
   def countVisitedNodes(self, edges: List[int]) -> List[int]:
     n = len(edges)
     ans = [0]*n
@@ -71,4 +78,3 @@ class Solution:
       iterate(u)
       
     return ans
-        

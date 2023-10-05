@@ -29,6 +29,12 @@ from collections import Counter
 
 class Solution:
   def majorityElement(self, nums: List[int]) -> List[int]:
+    n = len(nums)
+    c = Counter(nums)
+    return [val for val in c if c[val] > n/3.0]
+        
+        
+  def majorityElement(self, nums: List[int]) -> List[int]:
     if not nums:
       return []
 

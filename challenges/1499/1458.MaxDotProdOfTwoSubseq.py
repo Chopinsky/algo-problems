@@ -39,6 +39,28 @@ from functools import lru_cache
 
 class Solution:
   def maxDotProduct(self, nums1: List[int], nums2: List[int]) -> int:
+    n1 = len(nums1)
+    n2 = len(nums2)
+    
+    @lru_cache(None)
+    def dp(i: int, j: int) -> int:
+      if i == n1-1:
+        return max(nums1[i]*nums2[k] for k in range(j, n2))
+      
+      if j == n2-1:
+        return max(nums2[j]*nums1[k] for k in range(i, n1))
+      
+      v0 = nums1[i]*nums2[j]
+      v1 = dp(i+1, j+1)
+      v3 = dp(i, j+1)
+      v4 = dp(i+1, j)
+      
+      return max(v0, v0+v1, v3, v4)
+    
+    return dp(0, 0)
+        
+        
+  def maxDotProduct(self, nums1: List[int], nums2: List[int]) -> int:
     l1, l2 = len(nums1), len(nums2)
     if l1 == 1 and l2 == 1:
       return nums1[0] * nums2[0]

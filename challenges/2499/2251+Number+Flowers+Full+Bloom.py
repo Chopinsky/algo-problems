@@ -29,6 +29,34 @@ from typing import List
 
 
 class Solution:
+  def fullBloomFlowers(self, flowers: List[List[int]], people: List[int]) -> List[int]:
+    arr = []
+    for s, e in flowers:
+      arr.append((s, 'f', 1))
+      arr.append((e+1, 'f', -1))
+      
+    for i, t in enumerate(people):
+      arr.append((t, 'p', i))
+      
+    ans = [0]*len(people)
+    arr.sort()
+    idx, cnt = 0, 0
+    n = len(arr)
+    
+    while idx < n:
+      t = arr[idx][0]
+      while idx < n and arr[idx][0] == t:
+        _, typ, val = arr[idx]
+        if typ == 'f':
+          cnt += val
+        else:    
+          ans[val] = cnt
+          
+        idx += 1
+    
+    return ans
+    
+    
   def fullBloomFlowers(self, flowers: List[List[int]], persons: List[int]) -> List[int]:
     evt = []
     

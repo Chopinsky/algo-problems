@@ -32,16 +32,45 @@ The resulting array is [1,2,3,4], which is continuous.
 
 Constraints:
 
-1 <= nums.length <= 105
-1 <= nums[i] <= 109
+1 <= nums.length <= 10^5
+1 <= nums[i] <= 10^9
 '''
 
-
+from bisect import bisect_left
 from typing import List
 from collections import deque
 
 
 class Solution:
+  def minOperations(self, nums: List[int]) -> int:
+    n = len(nums)
+    if n == 1:
+      return 0
+    
+    nums = sorted(set(nums))
+    ops = n-1
+    
+    for i, val in enumerate(nums):
+      # if val is the right bound
+      left = val-n+1
+      j = bisect_left(nums, left)
+      cnt = i-j+1
+      ops = min(ops, n-cnt)
+      # print((i, val), ops)
+      
+      # if val is the left bound
+      right = val+n
+      j = bisect_left(nums, right) - 1
+      cnt = j-i+1
+      ops = min(ops, n-cnt)
+      # print((i, val), ops)
+      
+      if ops == 0:
+        break
+    
+    return ops
+        
+
   def minOperations(self, nums: List[int]) -> int:
     nums.sort()
     n = len(nums)
@@ -49,7 +78,7 @@ class Solution:
     stack = deque([])
     
     for val in nums:
-      if not stack:    
+      if not stack:
         stack.append(val)
         continue
         

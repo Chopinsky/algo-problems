@@ -31,6 +31,37 @@ import math
 
 
 class Solution:
+  def paintWalls(self, cost: List[int], time: List[int]) -> int:
+    n = len(time)
+    suffix = [t for t in time]
+    
+    for i in range(n-2, -1, -1):
+      suffix[i] += suffix[i+1]
+    
+    @lru_cache(None)
+    def dp(i: int, t: int) -> int:
+      if i >= n:
+        return 0 if t >= 0 else math.inf
+      
+      if t >= n-i:
+        return 0
+      
+      if t+suffix[i] < 0:
+        return math.inf
+      
+      # use free painter
+      c0 = dp(i+1, t-1)
+      
+      # use paid painter
+      c1 = cost[i] + dp(i+1, t+time[i])
+      
+      # print((i, cnt, t), c0, c1)
+      
+      return min(c0, c1)
+      
+    return dp(0, 0)
+  
+  
   '''
   the idea is that `time` is also an translatable value to `cost`: for job-i, a paid labor will
   make it possible to finish `time[i]+1` walls, as the paid labor finish wall-i, then free

@@ -27,6 +27,7 @@ cost.length == time.length
 '''
 
 from typing import List
+from functools import lru_cache
 import math
 
 
@@ -61,7 +62,7 @@ class Solution:
       
     return dp(0, 0)
   
-  
+
   '''
   the idea is that `time` is also an translatable value to `cost`: for job-i, a paid labor will
   make it possible to finish `time[i]+1` walls, as the paid labor finish wall-i, then free

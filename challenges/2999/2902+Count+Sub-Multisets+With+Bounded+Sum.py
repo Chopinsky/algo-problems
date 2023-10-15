@@ -52,7 +52,6 @@ class Solution:
       del c[0]
     
     def update(v0: int, cnt: int):
-      stack = [[dp[i]] for i in range(v0)]
       s = [dp[i] for i in range(v0)]
       
       for v1 in range(v0, r+1):
@@ -60,13 +59,12 @@ class Solution:
         nxt[v1] = s[idx]
         
         # update prefix-accumulations
-        stack[idx].append(dp[v1])
         s[idx] = (s[idx] + dp[v1]) % mod
         
         # pop left
-        if len(stack[idx]) > cnt:
-          popped, stack[idx] = stack[idx][0], stack[idx][1:]
-          s[idx] = (s[idx] - popped) % mod
+        left_val = v1 - v0*(cnt+1)
+        if left_val >= 0:
+          s[idx] = (s[idx]+mod-dp[left_val]) % mod
         
       # merge back
       for i in range(len(nxt)):

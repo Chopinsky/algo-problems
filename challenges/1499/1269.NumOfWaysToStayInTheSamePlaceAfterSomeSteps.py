@@ -37,6 +37,36 @@ from functools import lru_cache
 
 class Solution:
   def numWays(self, steps: int, arrLen: int) -> int:
+    if arrLen == 1:
+      return 1
+    
+    mod = 10**9 + 7
+    size = min(2*steps, arrLen)
+    curr = [0] * size
+    curr[0] = 1
+    # print('init', curr, size)
+    
+    for _ in range(steps):
+      nxt = [0] * size
+      
+      for i in range(size):
+        if i == 0:
+          # stay or move left from i+1
+          nxt[i] = (curr[i]+curr[i+1]) % mod
+        elif i == size-1:
+          # stay or move right from i-1
+          nxt[i] = (curr[i]+curr[i-1]) % mod
+        else:
+          # staye, or move right from i-1, or move left from i+1
+          nxt[i] = (curr[i+1]+curr[i]+curr[i-1]) % mod
+      
+      curr = nxt
+      # print('done:', curr)
+    
+    return curr[0]
+        
+        
+  def numWays(self, steps: int, arrLen: int) -> int:
     # has to stay
     if steps == 1:
       return 1

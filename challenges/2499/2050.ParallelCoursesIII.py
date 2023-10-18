@@ -42,13 +42,43 @@ time.length == n
 The given graph is a directed acyclic graph.
 '''
 
-
 from typing import List
 from collections import defaultdict
 from heapq import heappush, heappop
 
 
 class Solution:
+  def minimumTime(self, n: int, relations: List[List[int]], time: List[int]) -> int:
+    forward = defaultdict(list)
+    dep = defaultdict(int)
+    cand = set(i for i in range(n))
+    start = [0]*n
+    
+    for u, v in relations:
+      forward[u-1].append(v-1)
+      dep[v-1] += 1
+      cand.discard(v-1)
+      
+    finish = max(time)
+    stack = [(u, time[u]) for u in cand]
+    idx = 0
+    # print(forward, stack)
+
+    while idx < len(stack):
+      u, t = stack[idx]
+      idx += 1
+      finish = max(finish, t)
+      
+      for v in forward[u]:
+        dep[v] -= 1
+        start[v] = max(start[v], t)
+        
+        if dep[v] == 0:
+          stack.append((v, start[v]+time[v]))
+    
+    return finish
+        
+
   def minimumTime(self, n: int, relations: List[List[int]], time: List[int]) -> int:
     dep = defaultdict(int)
     pre = defaultdict(list)

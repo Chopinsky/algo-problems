@@ -48,7 +48,60 @@ The values of the integers in the nested list is in the range [-106, 106].
 #        Return None if this NestedInteger holds a single integer
 #        """
 
+# """
+# This is the interface that allows for creating nested lists.
+# You should not implement it, or speculate about its implementation
+# """
+#class NestedInteger:
+#    def isInteger(self) -> bool:
+#        """
+#        @return True if this NestedInteger holds a single integer, rather than a nested list.
+#        """
+#
+#    def getInteger(self) -> int:
+#        """
+#        @return the single integer that this NestedInteger holds, if it holds a single integer
+#        Return None if this NestedInteger holds a nested list
+#        """
+#
+#    def getList(self) -> [NestedInteger]:
+#        """
+#        @return the nested list that this NestedInteger holds, if it holds a nested list
+#        Return None if this NestedInteger holds a single integer
+#        """
+
 class NestedIterator:
+  def __init__(self, nestedList: [NestedInteger]):
+    def flat(lst: NestedInteger):
+      if lst.isInteger():
+        return [lst.getInteger()]
+      
+      arr = []
+      for item in lst.getList():
+        arr += flat(item)
+        
+      return arr
+    
+    self.store = []
+    for item in nestedList:
+      self.store += flat(item)
+      
+    self.idx = 0
+    # print(self.store)
+
+
+  def next(self) -> int:
+    val = self.store[self.idx]
+    self.idx += 1
+    
+    return val
+  
+
+  def hasNext(self) -> bool:
+    return self.idx < len(self.store)
+         
+
+class NestedIterator0:
   def __init__(self, nestedList: [NestedInteger]):
     self._list = nestedList
     self._stack = []

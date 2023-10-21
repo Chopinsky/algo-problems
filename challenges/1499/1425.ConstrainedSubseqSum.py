@@ -35,6 +35,27 @@ from typing import List
 
 class Solution:
   def constrainedSubsetSum(self, nums: List[int], k: int) -> int:
+    ans = nums[0]
+    stack = []
+    
+    for i in range(len(nums)):
+      val = nums[i]
+      while stack and i-stack[0][1] > k:
+        heappop(stack)
+        
+      if stack:
+        val -= stack[0][0]
+        
+      ans = max(ans, val)
+      if val > 0:
+        heappush(stack, (-val, i))
+        
+      # print((i, val), stack)
+    
+    return ans
+        
+        
+  def constrainedSubsetSum(self, nums: List[int], k: int) -> int:
     if all(n >= 0 for n in nums):
       return sum(nums)
     

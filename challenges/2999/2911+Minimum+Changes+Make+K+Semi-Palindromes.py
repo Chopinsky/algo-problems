@@ -38,7 +38,7 @@ s consists only of lowercase English letters.
 '''
 
 from functools import lru_cache
-from math import isqrt
+from math import isqrt, inf
 
 
 class Solution:
@@ -61,11 +61,11 @@ class Solution:
       return sorted(arr)
     
     @lru_cache(None)
-    def calc_semi_pal(l: int, r: int, d: int):
+    def calc_semi_pal_cost(l: int, r: int, d: int):
       if l >= r:
         return 0
 
-      return (1 if s[l] != s[r] else 0) + calc_semi_pal(l+d, r-d, d)
+      return (1 if s[l] != s[r] else 0) + calc_semi_pal_cost(l+d, r-d, d)
     
     @lru_cache(None)
     def calc_cost(i: int, j: int, d: int):
@@ -73,15 +73,13 @@ class Solution:
         return 0
       
       ln = j-i+1
-      cnt = ln // d
-      c = 0
+      if ln == d:
+        return inf
       
+      cnt, c = ln//d, 0
       for l in range(i, i+d):
         r = l+(cnt-1)*d
-        if l == r:
-          continue
-          
-        c += calc_semi_pal(l, r, d)
+        c += calc_semi_pal_cost(l, r, d)
         
       return c
     
@@ -91,7 +89,7 @@ class Solution:
         return 0
       
       if i+1 == j:
-        return 0 if s[i] == s[j] else 1
+        return 1 if s[i] != s[j] else 0
       
       c0 = calc_cost(i, j, 1)
       for d in get_d_arr(j-i+1):

@@ -29,6 +29,44 @@ from typing import List
 
 class Solution:
   def maximumScore(self, nums: List[int], k: int) -> int:
+    ldx, rdx = k, k+1
+    low = nums[k]
+    ans = low
+    n = len(nums)
+    
+    # scan right
+    while rdx < n:
+      low = min(low, nums[rdx])
+      
+      while rdx < n and nums[rdx] >= low:
+        rdx += 1
+        
+      while ldx >= 0 and nums[ldx] >= low:
+        ldx -= 1
+        
+      # print('right:', low, (ldx, rdx), low*(rdx-ldx-1))
+      ans = max(ans, low * (rdx-ldx-1))
+      
+    ldx, rdx = k-1, k
+    low = nums[k]
+    
+    # scan left
+    while ldx >= 0:
+      low = min(low, nums[ldx])
+      
+      while ldx >= 0 and nums[ldx] >= low:
+        ldx -= 1
+        
+      while rdx < n and nums[rdx] >= low:
+        rdx += 1
+        
+      # print('left:', low, (ldx, rdx), low*(rdx-ldx-1))
+      ans = max(ans, low * (rdx-ldx-1))
+      
+    return ans
+        
+
+  def maximumScore(self, nums: List[int], k: int) -> int:
     score = nums[k]
     left, right = [], []
     

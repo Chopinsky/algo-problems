@@ -34,18 +34,18 @@ class Solution:
   def largestValues(self, root: Optional[TreeNode]) -> List[int]:
     stack = []
     
-    def iterate(root, level):
+    def dp(root, level):
       if not root:
-        return 
+        return
       
-      if level >= len(stack):
+      if level > len(stack):
         stack.append(root.val)
-      elif root.val > stack[level]:
-        stack[level] = root.val
-        
-      iterate(root.left, level+1)
-      iterate(root.right, level+1)
+      else:
+        stack[level-1] = max(stack[level-1], root.val)
       
-    iterate(root, 0)
+      dp(root.left, level+1)
+      dp(root.right, level+1)
+      
+    dp(root, 1)
+    
     return stack
-  

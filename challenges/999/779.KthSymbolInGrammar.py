@@ -33,6 +33,30 @@ Constraints:
 
 class Solution:
   def kthGrammar(self, n: int, k: int) -> int:
+    if n <= 2:
+      return 0 if k == 1 else 1
+    
+    mask = 1 << (n-2)
+    k -= 1
+    d = 0
+    
+    # print('bin:', bin(mask)[2:], bin(k)[2:])
+    
+    while mask > 0:
+      val = 1 if mask & k > 0 else 0
+      # print(bin(mask)[2:], val)
+      
+      if d == 0:
+        d = val
+      else:
+        d = 1 - val
+      
+      mask >>= 1
+    
+    return d
+        
+        
+  def kthGrammar(self, n: int, k: int) -> int:
     curr = 0
     k -= 1
     d = []

@@ -28,6 +28,28 @@ from typing import List
 
 class Solution:
   def numFactoredBinaryTrees(self, arr: List[int]) -> int:
+    counter = {val:1 for val in arr}
+    arr.sort()
+    mod = 10**9 + 7
+    
+    for v0 in arr:
+      if v0*v0 in counter:
+        counter[v0*v0] = (counter[v0*v0] + counter[v0]*counter[v0]) % mod
+      
+      for v1 in arr:
+        if v1 >= v0:
+          break
+          
+        val = v0*v1
+        if val not in counter:
+          continue
+          
+        counter[val] = (counter[val] + 2*counter[v0]*counter[v1]) % mod
+        
+    return sum(counter.values()) % mod
+        
+        
+  def numFactoredBinaryTrees(self, arr: List[int]) -> int:
     mod = 10**9 + 7
     subtree = {}
     arr.sort()

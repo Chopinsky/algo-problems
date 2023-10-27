@@ -31,6 +31,32 @@ s consist of only digits and English letters.
 
 class Solution:
   def longestPalindrome(self, s: str) -> str:
+    n = len(s)
+    def get_len(i: int, j: int):
+      while i >= 0 and j < n and s[i] == s[j]:
+        i -= 1
+        j += 1
+        
+      return s[i+1:j]
+    
+    s0 = s[0]
+    
+    for i in range(n):
+      s1 = get_len(i, i)
+      if len(s1) > len(s0):
+        s0 = s1
+        
+      if i == 0:
+        continue
+        
+      s2 = get_len(i-1, i)
+      if len(s2) > len(s0):
+        s0 = s2
+        
+    return s0
+        
+
+  def longestPalindrome(self, s: str) -> str:
     def count(i: int, j: int):
       c = 0
       if i == j:

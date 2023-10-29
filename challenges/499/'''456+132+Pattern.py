@@ -45,11 +45,10 @@ class Solution:
       if val < popped:
         return True
       
-      if val == stack[-1]:
-        continue
-        
-      if val < stack[-1]:
-        stack.append(val)
+      if val <= stack[-1]:
+        if val != stack[-1]:
+          stack.append(val)
+
         continue
         
       while stack and val > stack[-1]:

@@ -35,6 +35,17 @@ from typing import List
 
 class Solution:
   def findArray(self, pref: List[int]) -> List[int]:
+    n = len(pref)
+    ans = [0]*n
+    ans[0] = pref[0]
+    
+    for i in range(n-1, 0, -1):
+      ans[i] = pref[i] ^ pref[i-1]
+      
+    return ans
+        
+        
+  def findArray(self, pref: List[int]) -> List[int]:
     pref = [0] + pref
     res = []
     

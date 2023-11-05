@@ -34,6 +34,24 @@ Constraints:
 
 
 class Solution:
+  def countVowelPermutation(self, n: int) -> int:
+    m = [[1], [0, 2], [0, 1, 3, 4], [2, 4], [0]]
+    mod = 10**9 + 7
+    curr = [1] * 5
+    ln = 1
+
+    while ln < n:
+      nxt = [0] * 5
+      for i in range(5):
+        for j in m[i]:
+          nxt[j] = (nxt[j] + curr[i]) % mod
+      
+      curr = nxt
+      ln += 1
+    
+    return sum(curr) % mod
+        
+
   '''
   alt solution: essentially we calculate sum(arr), where arr = (A ** n) * [1, 1, 1, 1, 1], 
   and A is:

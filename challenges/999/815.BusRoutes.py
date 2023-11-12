@@ -26,12 +26,46 @@ sum(routes[i].length) <= 10^5
 0 <= source, target < 10^6
 '''
 
-
 from typing import List
 from collections import defaultdict, deque
 
 
 class Solution:
+  def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
+    buses = set()
+    b = []
+    s = defaultdict(set)
+    n = len(routes)
+    
+    for i, r in enumerate(routes):
+      b.append(set(r))
+      for s0 in r:
+        s[s0].add(i)
+        
+    # print(b, s)
+    curr, nxt = set([source]), set()
+    stations = set()
+    buses = set()
+    cand = set()
+    taken = 0
+    
+    while curr and target not in curr:
+      stations |= curr
+      
+      for s0 in curr:
+        cand |= s[s0] - buses
+        
+      for b0 in cand:
+        nxt |= b[b0] - stations
+      
+      curr, nxt = nxt, curr
+      nxt.clear()
+      cand.clear()
+      taken += 1
+    
+    return taken if target in curr else -1
+        
+        
   def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
     if source == target:
       return 0

@@ -41,8 +41,43 @@ from collections import defaultdict
 from heapq import heappush, heappop
 import math
 
-
 class Graph:
+  def __init__(self, n: int, edges: List[List[int]]):
+    self.n = n
+    self.c = defaultdict(list)
+    
+    for u, v, c in edges:
+      self.c[u].append((v, c))
+      
+
+  def addEdge(self, edge: List[int]) -> None:
+    u, v, c = edge
+    self.c[u].append((v, c))
+
+
+  def shortestPath(self, u: int, v: int) -> int:
+    stack = [(0, u)]
+    seen = set()
+    
+    while stack:
+      c0, w0 = heappop(stack)
+      if w0 == v:
+        return c0
+      
+      if w0 in seen:
+        continue
+        
+      seen.add(w0)
+      for w1, c1 in self.c[w0]:
+        if w1 in seen:
+          continue
+          
+        heappush(stack, (c0+c1, w1))
+      
+    return -1
+
+
+class Graph0:
   def __init__(self, n: int, edges: List[List[int]]):
     self.dist = {}
     self.e = defaultdict(list)

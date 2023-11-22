@@ -56,6 +56,35 @@ from typing import List
 
 class Solution:
   def garbageCollection(self, garbage: List[str], travel: List[int]) -> int:
+    total = 0
+    mt, pt, gt = 0, 0, 0
+    travel = [0] + travel
+    
+    for g, t in zip(garbage, travel):
+      mt += t
+      pt += t
+      gt += t
+      
+      mc = g.count('M')
+      pc = g.count('P')
+      gc = g.count('G')
+      
+      if mc > 0:
+        total += mt + mc
+        mt = 0
+        
+      if pc > 0:
+        total += pt + pc
+        pt = 0
+        
+      if gc > 0:
+        total += gt + gc
+        gt = 0
+    
+    return total
+        
+        
+  def garbageCollection(self, garbage: List[str], travel: List[int]) -> int:
     mt, gt, pt = 0, 0, 0
     me, ge, pe = 0, 0, 0
     n = len(garbage)

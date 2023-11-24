@@ -42,6 +42,31 @@ class TreeNode:
 
 class Solution:
   def averageOfSubtree(self, root: Optional[TreeNode]) -> int:
+    count = [0]
+    
+    def traverse(root):
+      if not root:
+        return 0, 0
+      
+      val = root.val
+      
+      s0, c0 = traverse(root.left)
+      s1, c1 = traverse(root.right)
+
+      val += s0 + s1
+      cnt = 1 + c0 + c1
+      
+      if root.val == val//cnt:
+        count[0] += 1
+        
+      return val, cnt
+      
+    traverse(root)
+        
+    return count[0]
+      
+
+  def averageOfSubtree(self, root: Optional[TreeNode]) -> int:
     count = 0
     
     def iterate(node) -> Tuple:

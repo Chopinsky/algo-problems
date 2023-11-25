@@ -43,6 +43,23 @@ from typing import List
 class Solution:
   def buildArray(self, target: List[int], n: int) -> List[str]:
     ans = []
+    idx = 0
+    curr = 0
+    
+    while idx < len(target):
+      curr += 1
+      ans.append('Push')
+      
+      if curr == target[idx]:
+        idx += 1
+      else:
+        ans.append('Pop')
+    
+    return ans
+        
+        
+  def buildArray(self, target: List[int], n: int) -> List[str]:
+    ans = []
     curr = 1
     idx = 0
     

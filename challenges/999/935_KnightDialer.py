@@ -39,6 +39,28 @@ from collections import defaultdict
 
 class Solution:
   def knightDialer(self, n: int) -> int:
+    jumps = [
+      [4, 6], [6, 8], [7, 9], [4, 8], [0, 3, 9], 
+      [], [0, 1, 7], [2, 6], [1, 3], [2, 4],
+    ]
+    
+    curr = [1]*10
+    mod = 10**9 + 7
+    
+    while n > 1:
+      nxt = [0]*10
+      for v0 in range(10):
+        for v1 in jumps[v0]:
+          nxt[v1] = (nxt[v1] + curr[v0]) % mod
+        
+      curr = nxt
+      n -= 1
+      # print(n, curr)
+      
+    return sum(curr) % mod
+        
+        
+  def knightDialer(self, n: int) -> int:
     mod = 10**9 + 7
     
     curr, nxt = defaultdict(int), defaultdict(int)

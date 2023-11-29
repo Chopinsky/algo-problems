@@ -35,8 +35,31 @@ n == corridor.length
 corridor[i] is either 'S' or 'P'.
 '''
 
-
 class Solution:
+  def numberOfWays(self, cor: str) -> int:
+    count = 1
+    sc, pc = 0, 0
+    mod = 10**9 + 7
+    
+    for i in range(len(cor)):
+      # is a plant
+      if cor[i] == 'P':
+        if sc == 2:
+          pc += 1
+          
+        continue
+        
+      # is a seat
+      if sc <= 1:
+        sc += 1
+        continue
+        
+      count = (count * pc) % mod
+      sc, pc = 1, 1
+    
+    return 0 if sc <= 1 else count
+        
+
   def numberOfWays(self, corridor: str) -> int:
     mod = 10**9+7
     seats = []

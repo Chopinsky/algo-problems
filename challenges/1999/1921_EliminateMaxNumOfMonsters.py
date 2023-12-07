@@ -43,11 +43,22 @@ n == dist.length == speed.length
 1 <= dist[i], speed[i] <= 10^5
 '''
 
-
 from typing import List
 
 
 class Solution:
+  def eliminateMaximum(self, dist: List[int], speed: List[int]) -> int:
+    n = len(dist)
+    d = sorted(divmod(dist[i], speed[i]) for i in range(n))
+    # print(d)
+    
+    for t0, (t1, mod) in enumerate(d):
+      if t0 > t1 or (t0 == t1 and mod == 0):
+        return t0
+    
+    return n
+        
+        
   def eliminateMaximum(self, dist: List[int], speed: List[int]) -> int:
     t = sorted([(d/s) for d, s in zip(dist, speed)])
     # print(t)

@@ -34,6 +34,8 @@ The number of nodes in the tree is in the range [0, 100].
 -100 <= Node.val <= 100
 '''
 
+from typing import Optional, List
+
 
 # Definition for a binary tree node.
 class TreeNode:
@@ -42,8 +44,24 @@ class TreeNode:
     self.left = left
     self.right = right
     
-    
+
 class Solution:
+  def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+    ans = []
+    
+    def travel(root):
+      if not root:
+        return
+      
+      travel(root.left)
+      ans.append(root.val)
+      travel(root.right)
+      
+    travel(root)
+    
+    return ans
+        
+        
   def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
     ans = []
     stack = [(root, 2)]

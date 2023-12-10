@@ -25,6 +25,17 @@ from typing import List
 
 
 class Solution:
+  def transpose(self, matrix: List[List[int]]) -> List[List[int]]:
+    m, n = len(matrix), len(matrix[0])
+    res = [[] for _ in range(n)]
+    
+    for i in range(m):
+      for j in range(n):
+        res[j].append(matrix[i][j])
+        
+    return res
+        
+        
   def transpose(self, mat: List[List[int]]) -> List[List[int]]:
     m, n = len(mat), len(mat[0])
     res = [[0]*m for _ in range(n)]

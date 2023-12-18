@@ -53,6 +53,31 @@ from typing import List
 class Solution:
   def onesMinusZeros(self, grid: List[List[int]]) -> List[List[int]]:
     m, n = len(grid), len(grid[0])
+    rows = [0]*m
+    cols = [0]*n
+    ans = [[] for _ in range(m)]
+    
+    for i in range(m):
+      for j in range(n):
+        if grid[i][j] == 0:
+          continue
+          
+        rows[i] += 1
+        cols[j] += 1
+        
+    # print(rows, cols)
+    
+    for i in range(m):
+      r = 2*rows[i] - n
+      for j in range(n):
+        c = 2*cols[j] - m
+        ans[i].append(r+c)
+    
+    return ans
+        
+        
+  def onesMinusZeros(self, grid: List[List[int]]) -> List[List[int]]:
+    m, n = len(grid), len(grid[0])
     rows, cols = [0]*m, [0]*n
     
     for x in range(m):

@@ -94,6 +94,7 @@ def getPlusSignCount(N: int, L: List[int], D: str) -> int:
   
   h_start, h_end = build_stacks(h_lines)
   add, remove = 0, 0
+  n = len(h_lines)
   points = SortedSet()
   #print('init:', h_start, h_end)
     

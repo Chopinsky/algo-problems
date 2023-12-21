@@ -35,11 +35,32 @@ m == r.length
 2 <= n <= 500
 1 <= m <= 500
 0 <= l[i] < r[i] < n
--105 <= nums[i] <= 105
+-10^5 <= nums[i] <= 10^5
 '''
 
 
 class Solution:
+  def checkArithmeticSubarrays(self, nums: List[int], l: List[int], r: List[int]) -> List[bool]:
+    def is_arith(arr):
+      n = len(arr)
+      if n <= 2:
+        return True
+      
+      d = arr[1] - arr[0]
+      for i in range(2, n):
+        if arr[i]-arr[i-1] != d:
+          return False
+        
+      return True
+    
+    ans = []
+    for i in range(len(l)):
+      arr = sorted(val for val in nums[l[i]:r[i]+1])
+      ans.append(is_arith(arr))
+      
+    return ans
+        
+        
   def checkArithmeticSubarrays(self, nums: List[int], l: List[int], r: List[int]) -> List[bool]:
     qn = len(l)
     q = [(l[i], r[i], i) for i in range(qn)]

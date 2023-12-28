@@ -36,6 +36,44 @@ from typing import List
 
 
 class Solution:
+  def maxFrequency(self, nums: List[int], k: int) -> int:
+    nums.sort()
+    freq = 1
+    n = len(nums)
+    
+    prefix = [val for val in nums]
+    for i in range(1, n):
+      prefix[i] += prefix[i-1]
+      
+    def is_valid(i: int, j: int) -> bool:
+      if j >= i:
+        return True
+      
+      target = (i-j+1) * nums[i]
+      curr = prefix[i] - (0 if j == 0 else prefix[j-1])
+      # print('valid:', (j, i), target, curr)
+      
+      return target-curr <= k
+    
+    idx = 0
+    jdx = 0
+    # print('init:', nums)
+    
+    while idx < n:
+      val = nums[idx]
+      while idx+1 < n and nums[idx+1] == val:
+        idx += 1
+        
+      while jdx < idx and not is_valid(idx, jdx):
+        jdx += 1
+
+      # print('f:', (jdx, idx))
+      freq = max(freq, idx-jdx+1)
+      idx += 1
+    
+    return freq
+        
+        
   '''
   check if we can add op to the smaller numbers in the window 
   to match the `n_win * nums[r]`

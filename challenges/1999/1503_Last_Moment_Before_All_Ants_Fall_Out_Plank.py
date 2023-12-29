@@ -45,6 +45,19 @@ from typing import List
 
 
 class Solution:
+  def getLastMoment(self, n: int, left: List[int], right: List[int]) -> int:
+    if not left:
+      left.append(0)
+      
+    if not right:
+      right.append(n)
+      
+    l = max(left)
+    r = max(n-val for val in right)
+    
+    return max(l, r)
+        
+        
   '''
   when 2 ants meet, the situation is equivalent to the 2 ants keep moving in the
   original directions w/o turning around -- just swap the "index" of the ants

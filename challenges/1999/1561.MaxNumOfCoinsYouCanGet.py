@@ -37,7 +37,21 @@ piles.length % 3 == 0
 
 from typing import List
 
-
+class Solution:
+  def maxCoins(self, piles: List[int]) -> int:
+    piles.sort()
+    count, total = 0, 0
+    n = len(piles)
+    idx = n - 2
+    
+    while idx >= 0 and count < n//3:
+      total += piles[idx]
+      idx -= 2
+      count += 1
+    
+    return total
+        
+        
 class Solution:
   def maxCoins(self, piles: List[int]) -> int:
     piles.sort()

@@ -42,6 +42,42 @@ from typing import List
 
 class Solution:
   def numberOfArithmeticSlices(self, nums: List[int]) -> int:
+    seq = defaultdict(int)
+    cnt = defaultdict(int)
+    pairs = defaultdict(int)
+    total = 0
+    
+    for v0 in nums:
+      for v1 in cnt:
+        if v0 == v1:
+          continue
+          
+        c = 0
+        diff = v0 - v1
+        c += seq[v1, diff]
+        c += pairs[v1, diff]
+        
+        total += c
+        # print('iter:', (v0, v1), c)
+        
+        seq[v0, diff] += c
+        pairs[v0, diff] += cnt[v1]
+        
+      # print('done:', seq, pairs)
+      cnt[v0] += 1
+      
+    # print('fin:', seq, cnt)
+    
+    for c in cnt.values():
+      if c < 3:
+        continue
+        
+      total += (1<<c) - c*(c-1)//2 - c - 1
+      
+    return total
+        
+
+  def numberOfArithmeticSlices(self, nums: List[int]) -> int:
     n = len(nums)
     res = 0
     counts = [{} for _ in range(n)]

@@ -34,6 +34,30 @@ class TreeNode:
 
 class Solution:
   def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
+    total = 0
+    # print('init:', low, high)
+    
+    def walk(node):
+      nonlocal total
+      if not node:
+        return
+      
+      # print('visit:', node.val)
+      if low <= node.val <= high:
+        total += node.val
+        
+      if low < node.val:
+        walk(node.left)
+        
+      if node.val < high:
+        walk(node.right)
+    
+    walk(root)
+    
+    return total
+    
+    
+  def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
     def sum_all(root) -> int:
       if not root:
         return 0

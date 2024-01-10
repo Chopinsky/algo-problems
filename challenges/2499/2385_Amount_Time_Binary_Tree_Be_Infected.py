@@ -51,6 +51,51 @@ class TreeNode:
 
 class Solution:
   def amountOfTime(self, root: Optional[TreeNode], start: int) -> int:
+    e = defaultdict(list)
+    
+    def conn(root):
+      if not root:
+        return
+      
+      val = root.val
+      if root.left:
+        lval = root.left.val
+        e[val].append(lval)
+        e[lval].append(val)
+        conn(root.left)
+        
+      if root.right:
+        rval = root.right.val
+        e[rval].append(val)
+        e[val].append(rval)
+        conn(root.right)
+      
+    conn(root)
+    # print(e)
+    
+    curr, nxt = [start], []
+    seen = set(curr)
+    time = 0
+    
+    while curr:
+      for u in curr:
+        for v in e[u]:
+          if v in seen:
+            continue
+            
+          nxt.append(v)
+          seen.add(v)
+      
+      curr, nxt = nxt, curr
+      nxt.clear()
+      
+      if curr:
+        time += 1
+    
+    return time
+  
+
+  def amountOfTime(self, root: Optional[TreeNode], start: int) -> int:
     graph = defaultdict(list)
     infected = set()
     

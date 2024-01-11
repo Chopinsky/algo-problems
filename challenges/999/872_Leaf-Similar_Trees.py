@@ -36,6 +36,34 @@ class TreeNode:
 
 class Solution:
   def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+    def preorder(root, leaves):
+      if not root:
+        return leaves
+      
+      if not root.left and not root.right:
+        leaves.append(root.val)
+        return leaves
+      
+      leaves = preorder(root.left, leaves)
+      leaves = preorder(root.right, leaves)
+      
+      return leaves
+      
+    l1 = preorder(root1, [])
+    l2 = preorder(root2, [])
+    # print(l1, l2)
+      
+    if len(l1) != len(l2):
+      return False
+    
+    for i in range(len(l1)):
+      if l1[i] != l2[i]:
+        return False
+      
+    return True
+        
+        
+  def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
     def collect(root, src):
       if not root:
         return src

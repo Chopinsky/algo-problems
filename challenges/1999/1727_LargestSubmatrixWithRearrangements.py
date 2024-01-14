@@ -34,6 +34,29 @@ from collections import defaultdict
 
 
 class Solution:
+  def largestSubmatrix(self, mat: List[List[int]]) -> int:
+    m, n = len(mat), len(mat[0])
+    row = [0]*n
+    area = 0
+    
+    for i in range(m):
+      for j in range(n):
+        if mat[i][j] == 0:
+          row[j] = 0
+        else:
+          row[j] += 1
+        
+      col = 0
+      for h in sorted(row, reverse=True):
+        if h == 0:
+          break
+          
+        col += 1
+        area = max(area, col*h)
+        
+    return area  
+        
+        
   def largestSubmatrix(self, matrix: List[List[int]]) -> int:
     m, n = len(matrix), len(matrix[0])
     row = [0] * n

@@ -34,6 +34,22 @@ from typing import Counter
 
 class Solution:
   def minSteps(self, s: str, t: str) -> int:
+    c0 = Counter(s) 
+    c1 = Counter(t)
+    cnt = 0
+    
+    for ch, c in c0.items():
+      if ch not in c1:
+        cnt += c
+        continue
+        
+      if c > c1[ch]:
+        cnt += c - c1[ch]
+    
+    return cnt
+        
+        
+  def minSteps(self, s: str, t: str) -> int:
     c1, c2 = Counter(s), Counter(t)
     cnt = 0
     

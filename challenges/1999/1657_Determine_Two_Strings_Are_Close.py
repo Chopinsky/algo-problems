@@ -42,6 +42,28 @@ from collections import Counter
 
 
 class Solution:
+  def closeStrings(self, w1: str, w2: str) -> bool:
+    if len(w1) != len(w2):
+      return False
+    
+    c1 = Counter(w1)
+    c2 = Counter(w2)
+    if len(c1) != len(c2):
+      return False
+    
+    a1 = sorted(c1.values())
+    a2 = sorted(c2.values())
+    for v1, v2 in zip(a1, a2):
+      if v1 != v2:
+        return False
+      
+    for ch in c1:
+      if ch not in c2:
+        return False
+      
+    return True
+    
+    
   def closeStrings(self, word1: str, word2: str) -> bool:
     if len(word1) != len(word2):
       return False

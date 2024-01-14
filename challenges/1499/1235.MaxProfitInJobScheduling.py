@@ -31,11 +31,34 @@ Constraints:
 1 <= profit[i] <= 10 ** 4
 '''
 
-
 from typing import List
+from bisect import bisect_right
 
 
 class Solution:
+  def jobScheduling(self, startTime: List[int], endTime: List[int], profit: List[int]) -> int:
+    src = sorted([(s, e, p) for s, e, p in zip(startTime, endTime, profit)], key=lambda x: (x[1], x[0]))
+    
+    t = [0]
+    p = [0]
+    
+    for s, e, p0 in src:
+      idx = bisect_right(t, s)-1
+      p1 = p0 + (p[idx] if idx >= 0 else 0)
+      p2 = max(p[-1], p1)
+      
+      # print('state', t, p)
+      # print((s, e, p0), idx, p1, p2)
+      
+      if e == t[-1]:
+        p[-1] = p2
+      else:
+        p.append(p2)
+        t.append(e)
+    
+    return p[-1]
+    
+
   def jobScheduling(self, startTime: List[int], endTime: List[int], profit: List[int]) -> int:
     best_profit = 0
     ln = len(startTime), len(endTime)
@@ -44,7 +67,7 @@ class Solution:
     events = [(endTime[i], i, 1) for i in range(ln)] + [(startTime[i], i, 0) for i in range(ln)]
     events.sort(key=lambda x: x[0])
     
-    for time, i, typ in events:
+    for _, i, typ in events:
       # print(time, i, typ)
       if typ == 0:
         dp[i] = best_profit + profit[i]

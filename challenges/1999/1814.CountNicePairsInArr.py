@@ -20,16 +20,48 @@ Output: 4
 
 Constraints:
 
-1 <= nums.length <= 105
-0 <= nums[i] <= 109
+1 <= nums.length <= 10^5
+0 <= nums[i] <= 10^9
 '''
 
-
+from functools import lru_cache
 from typing import List
 from collections import defaultdict
 
 
 class Solution:
+  def countNicePairs(self, nums: List[int]) -> int:
+    mod = 10**9 + 7
+    
+    @lru_cache(None)
+    def rev(val: int) -> int:
+      if val <= 0:
+        return val
+      
+      base = 0
+      while val > 0:
+        val, m = divmod(val, 10)
+        base = 10*base + m
+        
+      return base
+    
+    c = defaultdict(int)
+    for val in nums:
+      r = rev(val)
+      c[val-r] += 1
+      # print(val, r)
+
+    total = 0
+    for cnt in c.values():
+      if cnt == 1:
+        continue
+        
+      # print(cnt)
+      total = (total + cnt*(cnt-1)//2) % mod
+      
+    return total
+  
+
   def countNicePairs(self, nums: List[int]) -> int:
     diff = defaultdict(int)
     count = 0

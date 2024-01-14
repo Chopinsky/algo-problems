@@ -42,11 +42,10 @@ from bisect import bisect_left
 
 class Solution:
   def beautifulIndices(self, s: str, a: str, b: str, k: int) -> List[int]:
-    mod = 10**9 + 7
-    p = 31
+    mod, p = 10**9 + 7, 31
     powers = [1]
-    ls = len(s)
     hash_src = [0]
+    ls = len(s)
     oa = ord('a')
     
     def calc(s, i):
@@ -57,7 +56,7 @@ class Solution:
       nxt_power = (powers[-1] * p) % mod
       powers.append(nxt_power)
     
-    # build hash for s
+    # build hash-prefix for s
     for i in range(ls):
       nxt_hash = (hash_src[-1] + calc(s, i)) % mod
       hash_src.append(nxt_hash)
@@ -87,8 +86,6 @@ class Solution:
         if curr_hash == pad_hash:
           ans.append(i)
           # print(i, s[i:i+lp])
-          
-        # print('search:', curr_hash, pad_hash)
         
       # print('find:', ptn, ans)
       

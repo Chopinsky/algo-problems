@@ -31,6 +31,24 @@ from typing import List
 
 class Solution:
   def getSumAbsoluteDifferences(self, nums: List[int]) -> List[int]:
+    ls, rs = 0, sum(nums)
+    lc, rc = 0, len(nums)
+    ans = []
+    
+    for val in nums:
+      s = (lc*val-ls) + (rs-rc*val)
+      ans.append(s)
+      
+      ls += val
+      lc += 1
+      
+      rs -= val
+      rc -= 1
+      
+    return ans
+
+
+  def getSumAbsoluteDifferences(self, nums: List[int]) -> List[int]:
     suffix = sum(nums)
     prefix = 0
     n = len(nums)

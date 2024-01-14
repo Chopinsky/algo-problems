@@ -27,7 +27,6 @@ Example 3:
 
 Input: s = "zzzzz"
 Output: 15
- 
 
 Constraints:
 
@@ -35,8 +34,39 @@ Constraints:
 s consists of lowercase letters.
 '''
 
+from functools import lru_cache
+
 
 class Solution:
+  def countHomogenous(self, s: str) -> int:
+    last = ''
+    cnt = 0
+    
+    @lru_cache(None)
+    def get_cnt(c: int) -> int:
+      if c <= 1:
+        return c
+      
+      return c + c*(c-1)//2
+    
+    total = 0
+    mod = 10**9+7
+    
+    for ch in s:
+      if ch == last:
+        cnt += 1
+        continue
+        
+      # print(last, cnt, get_cnt(cnt))
+      total = (total + get_cnt(cnt)) % mod
+      last = ch
+      cnt = 1
+    
+    total = (total + get_cnt(cnt)) % mod
+    
+    return total
+        
+
   def countHomogenous(self, s: str) -> int:
     if len(s) == 1:
       return 1

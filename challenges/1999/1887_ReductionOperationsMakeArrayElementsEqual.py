@@ -38,10 +38,23 @@ Constraints:
 '''
 
 from typing import List
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 
 class Solution:
+  def reductionOperations(self, nums: List[int]) -> int:
+    c = Counter(nums)
+    cand = sorted(c)
+    ops = 0
+    
+    for i in range(len(cand)-1, 0, -1):
+      cnt = c[cand[i]]
+      ops += i*cnt
+      # print(cand[i])
+      
+    return ops
+  
+
   def reductionOperations(self, nums: List[int]) -> int:
     store = defaultdict(int)
     for val in nums:

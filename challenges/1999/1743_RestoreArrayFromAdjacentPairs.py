@@ -40,6 +40,38 @@ from collections import defaultdict
 
 class Solution:
   def restoreArray(self, adjacentPairs: List[List[int]]) -> List[int]:
+    e = defaultdict(list)
+    for u, v in adjacentPairs:
+      e[u].append(v)
+      e[v].append(u)
+    
+    curr, last = None, None
+    for u, neig in e.items():
+      if len(neig) == 1:
+        curr = u
+        break
+        
+    arr = []
+    # print(curr, e)
+    
+    while curr is not None:
+      arr.append(curr)
+      cand = e[curr]
+      tmp = curr
+      
+      if cand[0] != last:
+        curr = cand[0]
+      elif len(cand) > 1:
+        curr = cand[1]
+      else:
+        curr = None
+        
+      last = tmp
+
+    return arr
+        
+        
+  def restoreArray(self, adjacentPairs: List[List[int]]) -> List[int]:
     edges = defaultdict(list)
     for u, v in adjacentPairs:
       edges[u].append(v)

@@ -39,6 +39,38 @@ import math
 
 
 class Solution:
+  def minDifficulty(self, job: List[int], d: int) -> int:
+    n = len(job)
+    
+    @lru_cache(None)
+    def dp(i: int, rem: int):
+      if n-i < rem or rem <= 0:
+        return math.inf
+      
+      if n-i == rem:
+        return sum(job[i:])
+
+      if rem == 1:
+        return max(job[i:])
+      
+      curr = 0
+      cost = math.inf
+      
+      for j in range(i, n):
+        curr = max(curr, job[j])
+        rest = dp(j+1, rem-1)
+        if rest == math.inf:
+          break
+          
+        cost = min(cost, curr+rest)
+        
+      return cost
+      
+    cost = dp(0, d)
+    
+    return cost if cost != math.inf else -1  
+      
+      
   def minDifficulty(self, dif: List[int], d: int) -> int:
     n = len(dif)
     

@@ -32,6 +32,15 @@ from collections import Counter
 
 class Solution:
   def halvesAreAlike(self, s: str) -> bool:
+    cand = set(['A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'])
+    mid = len(s)//2
+    lc = sum(1 if ch in cand else 0 for ch in s[:mid])
+    rc = sum(1 if ch in cand else 0 for ch in s[mid:])
+    
+    return lc == rc
+        
+        
+  def halvesAreAlike(self, s: str) -> bool:
     n = len(s)
     c0, c1 = Counter(s[:n//2]), Counter(s[n//2:])
     vowels = set(['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'])

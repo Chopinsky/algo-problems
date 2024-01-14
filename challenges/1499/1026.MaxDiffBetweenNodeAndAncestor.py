@@ -22,9 +22,8 @@ Output: 3
 Constraints:
 
 The number of nodes in the tree is in the range [2, 5000].
-0 <= Node.val <= 105
+0 <= Node.val <= 10^5
 '''
-
 
 from typing import Optional, Tuple
 
@@ -38,6 +37,36 @@ class TreeNode:
 
 
 class Solution:
+  def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:
+    ans = 0
+    
+    def walk(root):
+      nonlocal ans
+      if not root:
+        return None
+
+      val = root.val
+      rng = [val, val]
+
+      l = walk(root.left)
+      if l:
+        ans = max(ans, abs(val - l[0]), abs(val - l[1]))
+        rng[0] = min(rng[0], l[0])
+        rng[1] = max(rng[1], l[1])
+        
+      r = walk(root.right)
+      if r:
+        ans = max(ans, abs(val - r[0]), abs(val - r[1]))
+        rng[0] = min(rng[0], r[0])
+        rng[1] = max(rng[1], r[1])
+      
+      return rng
+    
+    walk(root)
+    
+    return ans
+        
+
   def maxAncestorDiff(self, root: Optional[TreeNode]) -> int:
     def dive(root, s, b):
       if not root:

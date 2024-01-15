@@ -48,25 +48,29 @@ from collections import defaultdict
 
 class Solution:
   def findWinners(self, matches: List[List[int]]) -> List[List[int]]:
-    players = set()
+    cand = set()
     lost = defaultdict(int)
     
     for w, l in matches:
-      players.add(w)
-      players.add(l)
+      cand.add(w)
+      cand.add(l)
       lost[l] += 1
       
-    # print(players, lost)
-    ans = [[], []]
+    # print(cand, lost)
+    ans= [[], []]
     
-    for p in sorted(players):
-      if p not in lost:
+    for p in cand:
+      if lost[p] == 0:
         ans[0].append(p)
-      elif lost[p] == 1:
+        
+      if lost[p] == 1:
         ans[1].append(p)
     
+    ans[0].sort()
+    ans[1].sort()
+    
     return ans
-  
+
 
   def findWinners(self, matches: List[List[int]]) -> List[List[int]]:
     scores = defaultdict(int)

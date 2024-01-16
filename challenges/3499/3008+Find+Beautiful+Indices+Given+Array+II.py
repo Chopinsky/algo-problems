@@ -83,6 +83,8 @@ class Solution:
           
         curr_hash = (hash_src[i+lp] + mod - hash_src[i]) % mod
         pad_hash = (hash_ptn * powers[i]) % mod
+
+        # hash match, found an index
         if curr_hash == pad_hash:
           ans.append(i)
           # print(i, s[i:i+lp])

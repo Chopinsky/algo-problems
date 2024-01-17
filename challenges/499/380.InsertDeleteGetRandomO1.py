@@ -38,6 +38,52 @@ from random import randint
 
 class RandomizedSet:
   def __init__(self):
+    self.nums = {}
+    self.pos = {}
+    self.lst = []
+
+
+  def insert(self, val: int) -> bool:
+    if val in self.nums:
+      return False
+    
+    idx = len(self.lst)
+    self.nums[val] = idx
+    self.pos[idx] = val
+    self.lst.append(val)
+    
+    return True
+
+
+  def remove(self, val: int) -> bool:
+    if val not in self.nums:
+      return False
+    
+    idx = self.nums[val]
+    ldx = len(self.lst) - 1
+    
+    if idx != ldx:
+      lval = self.pos[ldx]
+      self.nums[lval] = idx
+      self.pos[idx] = lval
+      self.lst[idx] = lval
+      
+    self.lst.pop()
+    del self.nums[val]
+    del self.pos[ldx]
+      
+    return True
+
+
+  def getRandom(self) -> int:
+    ln = len(self.lst)
+    idx = randint(0, ln-1)
+    
+    return self.lst[idx]
+
+
+class RandomizedSet0:
+  def __init__(self):
     self.store = {}
     self.lst = []
 

@@ -36,6 +36,25 @@ from typing import List
 
 
 class Solution:
+  def minFallingPathSum(self, mat: List[List[int]]) -> int:
+    m, n = len(mat), len(mat[0])
+    
+    for i in range(1, m):
+      for j in range(n):
+        cell = mat[i][j]
+        cost = cell + mat[i-1][j]
+        
+        if j > 0:
+          cost = min(cost, cell + mat[i-1][j-1])
+          
+        if j < n-1:
+          cost = min(cost, cell + mat[i-1][j+1])
+          
+        mat[i][j] = cost
+      
+    return min(mat[-1])
+        
+        
   def minFallingPathSum(self, matrix: List[List[int]]) -> int:
     curr, nxt = [val for val in matrix[0]], []
     h, w = len(matrix), len(matrix[0])

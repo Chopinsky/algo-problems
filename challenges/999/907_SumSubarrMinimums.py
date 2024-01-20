@@ -22,8 +22,49 @@ Constraints:
 
 from typing import List
 
-
 class Solution:
+  def sumSubarrayMins(self, arr: List[int]) -> int:
+    stack = []
+    lb, rb = [], []
+    n = len(arr)
+    mod = 10**9 + 7
+    
+    def update(i, bounds, dr):
+      val = arr[i]
+      while stack and val <= stack[-1][0]:
+        if dr < 0 and val == stack[-1][0]:
+          break
+        
+        stack.pop()
+        
+      head = 0 if dr == 1 else n-1
+      bound = stack[-1][1]+dr if stack else head
+      if stack and stack[-1][0] == val:
+        stack.pop()
+        
+      stack.append((val, i))
+      bounds.append(bound)
+    
+    for i in range(n):
+      update(i, lb, 1)
+      
+    stack.clear()
+    
+    for i in range(n-1, -1, -1):
+      update(i, rb, -1)
+    
+    rb = rb[::-1]
+    sums = 0
+    # print(lb, rb)
+    
+    for i in range(n):
+      cnt = (i-lb[i]+1) * (rb[i]-i+1)
+      # print('calc:', arr[i], cnt)
+      sums = (sums + cnt * arr[i]) % mod
+    
+    return sums
+  
+  
   def sumSubarrayMins(self, arr: List[int]) -> int:
     mod = 10**9 + 7
     stack = [(-1, -1)]

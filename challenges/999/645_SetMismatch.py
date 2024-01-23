@@ -27,6 +27,22 @@ from typing import List
 
 class Solution:
   def findErrorNums(self, nums: List[int]) -> List[int]:
+    n = len(nums)
+    base = set(i+1 for i in range(n))
+    ans = [0, 0]
+    
+    for val in nums:
+      if val not in base:
+        ans[0] = val
+      else:
+        base.discard(val)
+        
+    ans[1] = base.pop()
+    
+    return ans
+        
+        
+  def findErrorNums(self, nums: List[int]) -> List[int]:
     ans = []
     n = len(nums)
     target = (n + n*n) // 2

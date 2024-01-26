@@ -26,6 +26,72 @@ from functools import lru_cache
 
 
 class Solution:
+  def findPaths(self, m: int, n: int, maxMove: int, r: int, c: int) -> int:
+    if maxMove == 0:
+      return 0
+    
+    if m == 1 and n == 1:
+      return 4
+    
+    count = 0
+    mod = 10**9 + 7
+    curr = [[0]*n for _ in range(m)]
+    nxt = [[0]*n for _ in range(m)]
+    curr[r][c] = 1
+    
+    def row_count(row: int):
+      c = 0
+      for j in range(n):
+        if j == 0 or j == n-1:
+          c += 2*curr[row][j]
+        else:
+          c += curr[row][j]
+      
+      return c
+      
+    def get_count():
+      if m == 1:
+        return 2*sum(curr[0]) + curr[0][0] + curr[0][-1]
+      
+      if n == 1:
+        return 2*sum(r[0] for r in curr) + curr[0][0] + curr[-1][0]
+      
+      c = row_count(0)
+      c += row_count(m-1)
+          
+      for i in range(1, m-1):
+        c += curr[i][0] + curr[i][-1]
+        
+      # print('count:', c)
+      return c % mod
+    
+    def update(curr, nxt):
+      for i in range(m):
+        for j in range(n):
+          nxt[i][j] = 0
+
+          if i > 0:
+            nxt[i][j] += curr[i-1][j]
+
+          if i < m-1:
+            nxt[i][j] += curr[i+1][j]
+
+          if j > 0:
+            nxt[i][j] += curr[i][j-1]
+
+          if j < n-1:
+            nxt[i][j] += curr[i][j+1]
+      
+      return nxt, curr
+    
+    for _ in range(maxMove):
+      count = (count + get_count()) % mod
+      curr, nxt = update(curr, nxt)
+      # print('round:', curr)
+      
+    return count
+        
+        
   def findPaths(self, m: int, n: int, maxMove: int, startRow: int, startColumn: int) -> int:
     mod = 10**9 + 7
     

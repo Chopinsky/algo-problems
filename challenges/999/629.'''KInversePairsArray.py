@@ -31,6 +31,26 @@ class Solution:
   Then the sum of (n, k) arrays will be sum((n-1, k-i) where i >= 0 and i <= k).
   '''
   def kInversePairs(self, n: int, k: int) -> int:
+    curr, nxt = [0]*(k+1), [0]*(k+1)
+    curr[0] = 1
+    mod = 10**9+7
+    
+    for ln in range(2, n+1):
+      cnt = 0
+      for pairs in range(k+1):
+        cnt += curr[pairs]
+        if pairs >= ln:
+          cnt -= curr[pairs-ln]
+        
+        cnt = cnt % mod
+        nxt[pairs] = cnt
+      
+      curr, nxt = nxt, curr
+      
+    return curr[-1]
+        
+        
+  def kInversePairs(self, n: int, k: int) -> int:
     # dp stores
     mod = 10**9 + 7
     dp = [[0]*(k+1) for _ in range(n+1)]

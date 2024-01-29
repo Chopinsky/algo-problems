@@ -44,6 +44,38 @@ one of those operations may take longer.
 
 class MyQueue:
   def __init__(self):
+    self.stack = []
+    self.front = 0
+
+
+  def push(self, x: int) -> None:
+    self.stack.append(x)
+    
+
+  def pop(self) -> int:
+    if self.empty():
+      return -1
+    
+    value = self.stack[self.front]
+    self.front += 1
+    
+    return value
+    
+
+  def peek(self) -> int:
+    if self.empty():
+      return -1
+    
+    return self.stack[self.front]
+
+
+  def empty(self) -> bool:
+    return self.front >= len(self.stack)
+        
+
+
+class MyQueue0:
+  def __init__(self):
     self.store = []
     self.l = 0
 

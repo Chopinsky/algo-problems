@@ -24,8 +24,22 @@ Constraints:
 
 from typing import List
 
-
 class Solution:
+  def dailyTemperatures(self, temp: List[int]) -> List[int]:
+    n = len(temp)
+    stack = []
+    ans = [0]*n
+    
+    for i in range(n):
+      while stack and stack[-1][0] < temp[i]:
+        _, j = stack.pop()
+        ans[j] = i-j
+      
+      stack.append((temp[i], i))
+      
+    return ans
+        
+        
   def dailyTemperatures(self, temp: List[int]) -> List[int]:
     stack = []
     temp = temp[::-1]

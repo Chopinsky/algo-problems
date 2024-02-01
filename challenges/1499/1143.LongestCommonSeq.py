@@ -34,8 +34,28 @@ text1 and text2 consist of only lowercase English characters.
 from collections import defaultdict
 from bisect import bisect_left
 
-
 class Solution:
+  def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+    n1, n2 = len(text1), len(text2)
+    if n1 > n2:
+      text1, text2 = text2, text1
+      n1, n2 = n2, n1
+      
+    prev, curr = [0]*n2, [0]*n2
+    
+    for i in range(n1):
+      for j in range(n2):
+        if text1[i] == text2[j]:
+          curr[j] = 1 + (prev[j-1] if j > 0 else 0)
+          
+        else:
+          curr[j] = max(curr[j-1] if j > 0 else 0, prev[j])
+          
+      curr, prev = prev, curr
+    
+    return max(prev)
+        
+        
   def longestCommonSubsequence(self, text1: str, text2: str) -> int:
     m, n = len(text1), len(text2)
     lcs = [[0]*n for _ in range(m)]

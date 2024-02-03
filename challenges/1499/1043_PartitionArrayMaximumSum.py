@@ -31,6 +31,31 @@ from functools import lru_cache
 
 class Solution:
   def maxSumAfterPartitioning(self, arr: List[int], k: int) -> int:
+    n = len(arr)
+    
+    @lru_cache(None)
+    def dp(i: int) -> int:
+      if i >= n:
+        return 0
+      
+      curr = 0
+      res = 0
+      
+      for j in range(i, n):
+        cnt = j-i+1
+        if cnt > k:
+          break
+          
+        curr = max(curr, arr[j])
+        res = max(res, cnt*curr + dp(j+1))
+      
+      # print(i, res, curr)
+      return res
+      
+    return dp(0)
+        
+        
+  def maxSumAfterPartitioning(self, arr: List[int], k: int) -> int:
     if k == 1:
       return sum(arr)
     

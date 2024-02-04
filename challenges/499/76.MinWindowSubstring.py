@@ -28,17 +28,60 @@ Constraints:
 
 m == s.length
 n == t.length
-1 <= m, n <= 105
+1 <= m, n <= 10^5
 s and t consist of uppercase and lowercase English letters.
 
 Follow up: Could you find an algorithm that runs in O(m + n) time?
 '''
 
-
 from collections import defaultdict, Counter
-
+from bisect import bisect_left
 
 class Solution:
+  def minWindow(self, s: str, t: str) -> str:
+    tc = Counter(t)
+    sc = defaultdict(list)
+    chars = sorted(tc)
+    
+    for i in range(len(s)):
+      sc[s[i]].append(i)
+    
+    for c in tc:
+      if tc[c] > len(sc[c]):
+        return ""
+    
+    def search(i: int):
+      if s[i] not in tc:
+        return -1
+      
+      tail = i
+      for ch in chars:
+        cnt = tc[ch]
+        idx = bisect_left(sc[ch], i)
+        if idx+cnt > len(sc[ch]):
+          return -2
+        
+        tail = max(tail, sc[ch][idx+cnt-1])
+        
+      # print('search:', i, tail)
+      return tail
+      
+    ans = s
+    for i in range(len(s)):
+      tail = search(i)
+      if tail == -1:
+        continue
+        
+      if tail == -2:
+        break
+      
+      substr = s[i:tail+1]
+      if len(substr) < len(ans) or (len(substr) == len(ans) and substr < ans):
+        ans = substr
+     
+    return ans
+    
+
   def minWindow(self, s: str, t: str) -> str:
     c = Counter(s)
     tgt = Counter(t)

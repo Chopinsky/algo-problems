@@ -20,17 +20,34 @@ Output: [["a"]]
 
 Constraints:
 
-1 <= strs.length <= 104
+1 <= strs.length <= 10^4
 0 <= strs[i].length <= 100
 strs[i] consists of lower-case English letters.
 '''
 
-
 from collections import defaultdict, Counter
 from typing import List
-
+from functools import lru_cache
 
 class Solution:
+  def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+    @lru_cache(None)
+    def hash_word(s: str) -> str:
+      c = Counter(s)
+      res = ""
+      
+      for ch in sorted(c):
+        res += ch + ':' + str(c[ch]) +','
+      
+      return res
+    
+    d = defaultdict(list)
+    for s in strs:
+      key = hash_word(s)
+      d[key].append(s)
+      
+    return [lst for lst in d.values()]
+        
   def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
     store = defaultdict(list)
     for word in strs:

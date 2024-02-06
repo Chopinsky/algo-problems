@@ -24,8 +24,16 @@ s consists of only lowercase English letters.
 
 import math
 
-
 class Solution:
+  def firstUniqChar(self, s: str) -> int:
+    c = Counter(s)
+    for i, ch in enumerate(s):
+      if ch in c and c[ch] == 1:
+        return i
+      
+    return -1
+    
+    
   def firstUniqChar(self, s: str) -> int:
     dic = {}
     for i, ch in enumerate(s):

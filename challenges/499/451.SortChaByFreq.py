@@ -33,8 +33,15 @@ s consists of uppercase and lowercase English letters and digits.
 
 from collections import Counter
 
-
 class Solution:
+  def frequencySort(self, s: str) -> str:
+    c = Counter(s)
+    arr = sorted([(cnt, ch) for ch, cnt in c.items()], reverse=True)
+    # print(arr)
+    
+    return "".join(cnt*ch for (cnt, ch) in arr)
+        
+        
   def frequencySort(self, s: str) -> str:
     c = Counter(s)
     src = sorted(c, key=lambda x: (-c[x], x))

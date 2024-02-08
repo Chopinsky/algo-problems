@@ -25,8 +25,29 @@ Constraints:
 from math import isqrt
 from collections import deque
 
-
 class Solution:
+  def numSquares(self, n: int) -> int:
+    nums = []
+    cnt = [float('inf')] * (n+1)
+    val = 1
+    
+    while val*val <= n:
+      nums.append(val*val)
+      cnt[val*val] = 1
+      val += 1
+      
+    for v0 in range(1, n+1):
+      for v1 in nums:
+        if v0+v1 > n:
+          break
+          
+        cnt[v0+v1] = min(cnt[v0+v1], 1+cnt[v0])
+    
+    # print(nums, cnt)
+    
+    return cnt[-1]
+        
+        
   def numSquares(self, n: int) -> int:
     base = set()
     val = 1

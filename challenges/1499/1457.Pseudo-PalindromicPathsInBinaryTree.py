@@ -26,6 +26,9 @@ The number of nodes in the tree is in the range [1, 10 ** 5].
 1 <= Node.val <= 9
 '''
 
+from typing import Optional
+
+
 # Definition for a binary tree node.
 class TreeNode:
   def __init__(self, val=0, left=None, right=None):
@@ -35,6 +38,22 @@ class TreeNode:
 
 
 class Solution:
+  def pseudoPalindromicPaths (self, root: Optional[TreeNode]) -> int:
+    def count(root, mask):
+      if not root:
+        return 0
+      
+      curr = mask ^ (1 << root.val)
+      if not root.left and not root.right:
+        return 1 if curr == 0 or bin(curr)[2:].count('1') == 1 else 0
+      
+      lc = count(root.left, curr)
+      rc = count(root.right, curr)
+      
+      return lc + rc
+    
+    return count(root, 0)
+        
   def pseudoPalindromicPaths(self, root: TreeNode) -> int:
     nums = [0] * 10
     count = [0]

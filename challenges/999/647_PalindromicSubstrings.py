@@ -22,8 +22,43 @@ Constraints:
 s consists of lowercase English letters.
 '''
 
-
 class Solution:
+  def countSubstrings(self, s: str) -> int:
+    n = len(s)
+    
+    def count_odd(i: int) -> int:
+      cnt = 1
+      j = i+1
+      i -= 1
+      
+      while i >= 0 and j < n and s[i] == s[j]:
+        cnt += 1
+        i -= 1
+        j += 1
+        
+      return cnt
+      
+    def count_even(i: int) -> int:
+      cnt = 0
+      if i >= n-1:
+        return cnt
+      
+      j = i+1
+      
+      while i >= 0 and j < n and s[i] == s[j]:
+        cnt += 1
+        i -= 1
+        j += 1
+        
+      return cnt
+      
+    total = 0
+    for i in range(n):
+      total += count_odd(i) + count_even(i)
+      
+    return total
+  
+
   def countSubstrings(self, s: str) -> int:
     n = len(s)
     

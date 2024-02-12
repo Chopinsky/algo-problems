@@ -24,11 +24,25 @@ n == nums.length
 Follow-up: Could you solve the problem in linear time and in O(1) space?
 '''
 
-
 from typing import List
 
-
 class Solution:
+  def majorityElement(self, nums: List[int]) -> int:
+    curr, cnt = nums[0], 1
+    
+    for val in nums[1:]:
+      if val == curr:
+        cnt += 1
+        continue
+
+      cnt -= 1
+      if cnt == 0:
+        curr = val
+        cnt += 1
+      
+    return curr
+        
+
   def majorityElement(self, nums: List[int]) -> int:
     count = 0
     cand = None

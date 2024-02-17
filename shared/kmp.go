@@ -7,9 +7,7 @@ func Match(s, p string, count int) []int {
 	ans := []int{}
 
 	// build the prefix-jump table
-	next := Build(p)
-
-	// j is the pointer to the pattern string
+	prefix := Prefix(p)
 	j := 0
 
 	// i is the pointer to the srouce string
@@ -18,7 +16,7 @@ func Match(s, p string, count int) []int {
 			// if we've reached a mismatch, find the next prefix-match that we can start with,
 			// until the point where j == 0, where we shall keep moving till the next initial char
 			// match
-			j = next[j]
+			j = prefix[j]
 		}
 
 		if s[i] == p[j] {
@@ -35,18 +33,18 @@ func Match(s, p string, count int) []int {
 			}
 
 			// jump to the next match -- it could be a suffix-to-prefix match, hence non-0
-			j = next[j]
+			j = prefix[j]
 		}
 	}
 
 	return ans
 }
 
-// Build ...
-func Build(p string) []int {
+// Prefix ...
+func Prefix(p string) []int {
 	// lenght of the longest prefix of p[0:i] that is also the suffix
 	size := len(p)
-	next := make([]int, size+1)
+	prefix := make([]int, size+1)
 
 	// j is the prefix pointer
 	j := 0
@@ -55,7 +53,7 @@ func Build(p string) []int {
 	for i := 1; i < size; i++ {
 		// looping back to the last matched position, or the front of the pattern
 		for p[i] != p[j] && j > 0 {
-			j = next[j]
+			j = prefix[j]
 		}
 
 		// if there's a match, moving i, j to the next point
@@ -64,8 +62,8 @@ func Build(p string) []int {
 		}
 
 		// record the suffix-to-prefix position
-		next[i+1] = j
+		prefix[i+1] = j
 	}
 
-	return next
+	return prefix
 }

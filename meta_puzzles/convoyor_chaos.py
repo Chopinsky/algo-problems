@@ -17,6 +17,7 @@ def build_start_end(n: int, h: List[int], a: List[int], b: List[int]):
 
   return start, end
 
+
 def build_graph(n: int, h: List[int], a: List[int], b: List[int]):
   hmap, hid = SortedSet(), {}
   add, remove = [], []
@@ -94,6 +95,8 @@ def getMinExpectedHorizontalTravelDistance(n: int, h: List[int], a: List[int], b
   def get_middle(idx):
     return sum(graph[idx]['x']) / 2.0
   
+  #todo
+
   return 0.0
 
 

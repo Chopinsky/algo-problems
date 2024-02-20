@@ -29,8 +29,13 @@ Follow up: Could you implement a solution using only O(1) extra space complexity
 
 from typing import List
 
-
 class Solution:
+  def missingNumber(self, nums: List[int]) -> int:
+    n = len(nums)
+    s = n*(n+1)//2
+    return s-sum(nums)
+        
+        
   def missingNumber(self, nums: List[int]) -> int:
     n = len(nums)
     zero = False

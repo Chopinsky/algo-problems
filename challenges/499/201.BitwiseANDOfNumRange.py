@@ -21,8 +21,37 @@ Constraints:
 0 <= left <= right <= 2^31 - 1
 '''
 
-
 class Solution:
+  def rangeBitwiseAnd(self, left: int, right: int) -> int:
+    if left == 0 or right == 0:
+      return 0
+    
+    low = bin(left)[2:]
+    top = 1 << len(low)
+    # print(low, top)
+    
+    if right >= top:
+      return 0
+    
+    base = 0
+    mask = top >> 1
+    
+    while mask > 0:
+      lb = mask & left
+      rb = mask & right
+      # print(mask, lb, rb)
+      
+      if lb != rb:
+        break
+        
+      if lb > 0:
+        base |= mask
+      
+      mask >>= 1
+    
+    return base 
+        
+
   def rangeBitwiseAnd(self, left: int, right: int) -> int:
     if left == 0 or left == right:
       return left

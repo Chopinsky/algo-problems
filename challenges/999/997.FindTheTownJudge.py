@@ -49,8 +49,21 @@ ai != bi
 from typing import List
 from collections import defaultdict
 
-
 class Solution:
+  def findJudge(self, n: int, trust: List[List[int]]) -> int:
+    cand = set(i for i in range(1, n+1))
+    count = defaultdict(int)
+    
+    for a, b in trust:
+      cand.discard(a)
+      count[b] += 1
+      
+    for a in cand:
+      if count[a] == n-1:
+        return a
+    
+    return -1
+  
   def findJudge(self, n: int, trust: List[List[int]]) -> int:
     cand = set([i for i in range(n)])
     c = [0] * n

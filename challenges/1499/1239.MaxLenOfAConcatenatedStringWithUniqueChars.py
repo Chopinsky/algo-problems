@@ -27,9 +27,42 @@ arr[i] contains only lower case English letters.
 '''
 
 from typing import List
-
+from functools import lru_cache
 
 class Solution:
+  def maxLength(self, arr: List[str]) -> int:
+    n = len(arr)
+    
+    @lru_cache(None)
+    def get_mask(i: int) -> int:
+      mask = 0
+      
+      for ch in arr[i]:
+        m0 = 1 << (ord(ch) - ord('a'))
+        if m0 & mask > 0:
+          return -1
+        
+        mask |= m0
+      
+      return mask
+    
+    @lru_cache(None)
+    def dp(i: int, mask: int) -> int:
+      if i >= n:
+        return 0
+      
+      m0 = get_mask(i)
+      s0 = dp(i+1, mask)
+      if m0 < 0 or m0&mask > 0:
+        return s0
+      
+      s1 = len(arr[i]) + dp(i+1, mask | m0)
+      
+      return max(s0, s1)
+    
+    return dp(0, 0)
+    
+
   def maxLength(self, arr: List[str]) -> int:
     arr = [s for s in arr if len(set(s)) == len(s)]
     if not arr:

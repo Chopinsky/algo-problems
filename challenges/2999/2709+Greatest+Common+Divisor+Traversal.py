@@ -32,9 +32,87 @@ Constraints:
 '''
 
 from typing import List
-
+from functools import lru_cache
 
 class Solution:
+  def canTraverseAllPairs(self, nums: List[int]) -> bool:
+    n = len(nums)
+    if n <= 1:
+      return True
+    
+    primes = {}
+    groups = set()
+    
+    def get_sive(top: int):
+      s = [i for i in range(top+1)]
+      for v0 in range(2, top+1):
+        if s[v0] != v0:
+          continue
+          
+        for v1 in range(2*v0, top+1, v0):
+          s[v1] = min(s[v1], v0)
+          
+      return s
+    
+    s = get_sive(max(nums))
+    # print(s)
+    
+    def find(x: int) -> int:
+      if x not in primes:
+        primes[x] = x
+      else:
+        while x != primes[x]:
+          x = primes[x]
+          
+      return x
+      
+    def union(x: int, y: int):
+      rx, ry = find(x), find(y)
+      if rx <= ry:
+        primes[ry] = rx
+      else:
+        primes[rx] = ry
+        
+    def union_groups(t):
+      groups.clear()
+      arr = sorted(t)
+      p0 = find(arr[0])
+      
+      for p1 in arr[1:]:
+        union(p0, find(p1))
+    
+    @lru_cache(None)
+    def get_factors(val: int):
+      if val == 1:
+        return (1, )
+
+      res = set()
+      while val > 1:
+        f = s[val]
+        res.add(f)
+        val //= f
+      
+      return tuple(res)
+    
+    for val in nums:
+      if val == 1:
+        return False
+      
+      factors = get_factors(val)
+      union_groups(factors)
+      # print(val, factors)
+
+    base = []
+    for p in primes:
+      g = find(p)
+      if not base:
+        base.append(g)
+      elif g != base[0]:
+        return False
+    
+    return True
+        
+
   def canTraverseAllPairs(self, nums: List[int]) -> bool:
     if len(nums) == 1:
       return True

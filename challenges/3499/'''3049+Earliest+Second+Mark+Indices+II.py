@@ -138,7 +138,6 @@ class Solution:
           
       return cost <= m, cnt
 
-
     def check(t: int):
       cost = n
       cand = []

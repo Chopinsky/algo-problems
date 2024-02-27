@@ -22,9 +22,7 @@ The number of nodes in the tree is in the range [1, 104].
 -100 <= Node.val <= 100
 '''
 
-
 from typing import Optional
-
 
 # Definition for a binary tree node.
 class TreeNode:
@@ -35,6 +33,24 @@ class TreeNode:
 
 
 class Solution:
+  def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+    ans = 0
+    
+    def dfs(root):
+      nonlocal ans
+      
+      if not root:
+        return 0
+      
+      l, r = dfs(root.left), dfs(root.right)
+      ans = max(ans, l+r)
+      
+      return 1 + max(l, r)
+    
+    dfs(root)
+    
+    return ans
+    
   def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
     if not root or (not root.left and not root.right):
       return 0

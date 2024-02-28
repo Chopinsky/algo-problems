@@ -18,7 +18,6 @@ The number of nodes in the tree is in the range [1, 104].
 -2^31 <= Node.val <= 2^31 - 1
 '''
 
-
 from typing import Optional
 
 
@@ -31,6 +30,29 @@ class TreeNode:
 
 
 class Solution:
+  def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
+    if not root:
+      return -1
+    
+    ans = [0, root.val]
+    
+    def dfs(node, level):
+      if not node:
+        return 
+
+      # print(node.val, level)
+      
+      if level > ans[0]:
+        ans[0] = level
+        ans[1] = node.val
+        
+      dfs(node.left, level+1)
+      dfs(node.right, level+1)
+      
+    dfs(root, 0)
+    
+    return ans[1]
+        
   def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:    
     stack, nxt = [root], []
     left = root

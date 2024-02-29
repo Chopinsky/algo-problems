@@ -24,6 +24,20 @@ from typing import List
 
 class Solution:
   def findLeastNumOfUniqueInts(self, arr: List[int], k: int) -> int:
+    if k >= len(arr):
+      return 0
+      
+    c = Counter(arr)
+    cand = sorted(c.values(), reverse=True)
+    # print(cand)
+    
+    while cand and k >= cand[-1]:
+      k -= cand.pop()
+      
+    return len(cand)
+    
+    
+  def findLeastNumOfUniqueInts(self, arr: List[int], k: int) -> int:
     s = 0
     c = Counter(arr)
     a = sorted(c.values())

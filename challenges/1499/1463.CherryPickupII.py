@@ -38,12 +38,35 @@ cols == grid[i].length
 0 <= grid[i][j] <= 100
 '''
 
-
 from typing import List
 from collections import defaultdict
 
-
 class Solution:
+  def cherryPickup(self, grid: List[List[int]]) -> int:
+    curr, nxt = defaultdict(int), defaultdict(int)
+    m, n = len(grid), len(grid[0])
+    curr[0, n-1] = grid[0][0]+grid[0][n-1]
+    moves = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 0), (0, 1), (1, -1), (1, 0), (1, 1)]
+    
+    for r in range(1, m):
+      nxt.clear()
+      for x0, y0 in curr:
+        c0 = curr[x0, y0]
+        
+        for dx, dy in moves:
+          x1, y1 = x0+dx, y0+dy
+          if x1 < 0 or x1 >= n or y1 < 0 or y1 >= n or x1 > y1:
+            continue
+          
+          c1 = grid[r][x1] + (grid[r][y1] if x1 != y1 else 0)
+          nxt[x1, y1] = max(nxt[x1, y1], c0+c1)
+        
+      curr, nxt = nxt, curr
+      # print(r, curr, nxt)
+      
+    return max(curr.values())
+        
+        
   def cherryPickup(self, grid: List[List[int]]) -> int:
     m, n = len(grid), len(grid[0])
     dirs = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 0), (0, 1), (1, -1), (1, 0), (1, 1)]

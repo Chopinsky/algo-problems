@@ -44,6 +44,23 @@ class Solution:
     while curr:
       stack.append(curr)
       curr = curr.next
+      
+    m = len(stack)
+    if m == n:
+      return stack[1] if m > 1 else None
+    
+    prev = stack[-n-1]
+    prev.next = stack[-n].next
+        
+    return stack[0]
+  
+  def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+    stack = []
+    curr = head
+    
+    while curr:
+      stack.append(curr)
+      curr = curr.next
     
     if n == len(stack):
       return head.next

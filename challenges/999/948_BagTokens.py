@@ -41,8 +41,28 @@ Constraints:
 
 from typing import List
 
-
 class Solution:
+  def bagOfTokensScore(self, tokens: List[int], power: int) -> int:
+    score, max_score = 0, 0
+    tokens.sort()
+    i, j = 0, len(tokens)-1
+    
+    while i <= j:
+      if score == 0 and power < tokens[i]:
+        break
+        
+      if power >= tokens[i]:
+        score += 1
+        max_score = max(max_score, score)
+        power -= tokens[i]
+        i += 1
+      else:
+        score -= 1
+        power += tokens[j]
+        j -= 1
+    
+    return max_score
+        
   def bagOfTokensScore(self, tokens: List[int], power: int) -> int:
     tokens.sort()
     curr, score = 0, 0

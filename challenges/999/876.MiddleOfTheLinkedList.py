@@ -22,9 +22,7 @@ The number of nodes in the list is in the range [1, 100].
 1 <= Node.val <= 100
 '''
 
-
 from typing import Optional
-
 
 # Definition for singly-linked list.
 class ListNode:
@@ -32,8 +30,23 @@ class ListNode:
     self.val = val
     self.next = next
 
-
 class Solution:
+  def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    if not head:
+      return None
+    
+    if not head.next:
+      return head
+    
+    s, f = head, head.next
+    while f:
+      s = s.next
+      f = f.next
+      if f:
+        f = f.next
+    
+    return s
+        
   def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
     s, f = head, head
     last = None

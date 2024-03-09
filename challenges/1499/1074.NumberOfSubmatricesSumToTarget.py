@@ -33,8 +33,39 @@ Constraints:
 from collections import defaultdict
 from typing import List
 
-
 class Solution:
+  def numSubmatrixSumTarget(self, mat: List[List[int]], target: int) -> int:
+    seg_sums = {}
+    m, n = len(mat), len(mat[0])
+    count = 0
+    
+    for i in range(m):
+      for j0 in range(n):
+        row = 0
+        for j1 in range(j0, -1, -1):
+          row += mat[i][j1]
+          if (j1, j0) not in seg_sums:
+            seg_sums[j1, j0] = { '$': 0 }
+            
+          if i == 0 and row == target:
+            # print('row:', i, (j1, j0))
+            count += 1
+            
+          prefix = row + seg_sums[j1, j0]['$']
+          if i > 0 and prefix == target:
+            # print('col:', i, (j1, j0))
+            count += 1
+          
+          val = prefix - target
+          count += seg_sums[j1, j0].get(val, 0)
+          # print(i, (j1, j0), row, prefix, val, seg_sums[j1, j0])
+          
+          seg_sums[j1, j0][prefix] = 1 + seg_sums[j1, j0].get(prefix, 0)
+          seg_sums[j1, j0]['$'] = prefix
+          
+    return count
+  
+  
   def numSubmatrixSumTarget(self, matrix: List[List[int]], target: int) -> int:
     m, n = len(matrix), len(matrix[0])
     row_sums = [[0]*n for _ in range(m)]

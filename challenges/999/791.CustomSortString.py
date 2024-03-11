@@ -21,8 +21,17 @@ str has length at most 200.
 order and str consist of lowercase letters only.
 '''
 
+from math import inf
 
 class Solution:
+  def customSortString(self, order: str, s: str) -> str:
+    o = {ch:i for i, ch in enumerate(order)}
+    chars = sorted(list(s), key=lambda x: o[x] if x in o else inf)
+    # print(o, chars)
+    
+    return ''.join(chars)
+        
+
   def customSortString(self, order: str, s: str) -> str:
     o = [0] * 26
     oa = ord('a')

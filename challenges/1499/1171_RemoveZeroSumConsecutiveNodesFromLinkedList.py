@@ -35,8 +35,48 @@ class ListNode:
     self.val = val
     self.next = next
 
-
 class Solution:
+  def removeZeroSumSublists(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    if not head or not head.next:
+      return None if not head or head.val == 0 else head
+    
+    fake = ListNode(val=0, next=head)
+    curr = head
+    stack = [fake]
+    prefix = [0]
+    seen = set(prefix)
+    
+    while curr:
+      if curr.val == 0:
+        curr = curr.next
+        continue
+        
+      curr_prefix = prefix[-1] + curr.val
+      if curr_prefix in seen:
+        while len(prefix) > 1 and prefix[-1] != curr_prefix:
+          p0 = prefix.pop()
+          stack.pop()
+          seen.discard(p0)
+            
+      else:
+        stack.append(curr)
+        prefix.append(curr_prefix)
+        seen.add(curr_prefix)
+        
+      curr = curr.next
+
+    # print([node.val for node in stack])
+    if len(stack) == 1:
+      return None
+    
+    for i in range(len(stack)):
+      if i < len(stack)-1:
+        stack[i].next = stack[i+1]
+      else:
+        stack[i].next = None
+        
+    return stack[0].next
+        
   def removeZeroSumSublists(self, head: Optional[ListNode]) -> Optional[ListNode]:
     if not head:
       return head

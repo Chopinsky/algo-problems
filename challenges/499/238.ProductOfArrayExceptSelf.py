@@ -24,8 +24,32 @@ The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit int
 Follow up: Can you solve the problem in O(1) extra space complexity? (The output array does not count as extra space for space complexity analysis.)
 '''
 
+from typing import List
 
 class Solution:
+  def productExceptSelf(self, nums: List[int]) -> List[int]:
+    left, right = [1], [1]
+    n = len(nums)
+    
+    for i in range(n):
+      val = nums[i]
+      left.append(val*left[-1])
+      
+    for i in range(n-1, -1, -1):
+      val = nums[i]
+      right.append(val*right[-1])
+      
+    ans = []
+    right = right[::-1][1:]
+    left = left[:-1]
+    # print(left, right)
+    
+    for i in range(n):
+      ans.append(left[i]*right[i])
+    
+    return ans
+        
+
   def productExceptSelf(self, nums: List[int]) -> List[int]:
     prod = 1
     n = len(nums)

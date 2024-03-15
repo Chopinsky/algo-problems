@@ -29,6 +29,28 @@ from typing import List
 
 class Solution:
   def numSubarraysWithSum(self, nums: List[int], goal: int) -> int:
+    prefix = [-1]
+    curr = 0
+    count = 0
+    
+    for i in range(len(nums)):
+      curr += nums[i]
+      if nums[i] == 1:
+        prefix.append(i)
+        
+      if curr < goal:
+        continue
+      
+      v0 = curr - goal
+      s = prefix[v0]
+      e = prefix[v0+1] if len(prefix) > v0+1 else i
+      count += e-s
+      # print((i, curr), v0, prefix, e, s)
+      
+    return count
+      
+      
+  def numSubarraysWithSum(self, nums: List[int], goal: int) -> int:
     n = len(nums)
     count = 0
     

@@ -55,8 +55,33 @@ Test cases:
 
 from typing import List
 
-
 class Solution:
+  def insert(self, intervals: List[List[int]], insert: List[int]) -> List[List[int]]:
+    if not intervals or insert[1] < intervals[0][0]:
+      return [insert] + intervals
+    
+    ans = []
+    inserted = False
+    
+    for x, y in intervals:
+      if inserted or y < insert[0]:
+        ans.append((x, y))
+        continue
+      
+      if x > insert[1]:
+        ans.append(insert)
+        ans.append((x, y))
+        inserted = True
+        continue
+      
+      insert[0] = min(insert[0], x)
+      insert[1] = max(insert[1], y)
+    
+    if not inserted:
+      ans.append(insert)
+      
+    return ans
+        
   def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
     result = []
     s0, e0 = newInterval

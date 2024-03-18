@@ -32,11 +32,25 @@ points[i].length == 2
 -2^31 <= xstart < xend <= 2^31 - 1
 '''
 
-
 from typing import List
 
-
 class Solution:
+  def findMinArrowShots(self, points: List[List[int]]) -> int:
+    points.sort(key=lambda x: (x[1], x[0]))
+    last = points[0][1]
+    count = 1
+    # print(points)
+    
+    for x, y in points[1:]:
+      if x <= last:
+        continue
+        
+      count += 1
+      last = y
+      # print('shoot:', last)
+    
+    return count
+        
   def findMinArrowShots(self, points: List[List[int]]) -> int:
     points.sort()
     count, idx = 0, 0

@@ -31,6 +31,22 @@ class ListNode:
 
 class Solution:
   def isPalindrome(self, head: Optional[ListNode]) -> bool:
+    vals = []
+    while head:
+      vals.append(head.val)
+      head = head.next
+      
+    i, j = 0, len(vals)-1
+    while i < j:
+      if vals[i] != vals[j]:
+        return False
+      
+      i += 1
+      j -= 1
+      
+    return True
+  
+  def isPalindrome(self, head: Optional[ListNode]) -> bool:
     if not head:
       return True
     

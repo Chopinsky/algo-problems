@@ -32,8 +32,34 @@ class ListNode:
     self.val = val
     self.next = next
 
-
 class Solution:
+  def reorderList(self, head: Optional[ListNode]) -> None:
+    if not head or not head.next:
+      return
+    
+    stack = []
+    curr = head
+    
+    while curr:
+      stack.append(curr)
+      curr = curr.next
+    
+    i, j = 0, len(stack)-1
+    tail = None
+    
+    while i <= j:
+      if tail:
+        tail.next = stack[i]
+      
+      stack[i].next = stack[j]
+      stack[j].next = None
+      tail = stack[j]
+      
+      i += 1
+      j -= 1
+    
+    return
+      
   def reorderList(self, head: Optional[ListNode]) -> None:
     """
     Do not return anything, modify head in-place instead.

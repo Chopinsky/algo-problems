@@ -16,16 +16,37 @@ Output: 0
 
 Constraints:
 
-1 <= nums.length <= 3 * 104
+1 <= nums.length <= 3 * 10^4
 1 <= nums[i] <= 1000
-0 <= k <= 106
+0 <= k <= 10^6
 '''
-
 
 from typing import List
 
-
 class Solution:
+  def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
+    if k <= 0:
+      return 0
+    
+    n = len(nums)
+    count, j, prod = 0, 0, 1
+    
+    for i in range(n):
+      if j < i:
+        j = i
+        prod = 1
+      elif i > 0:
+        prod //= nums[i-1]
+        
+      while j < n and prod*nums[j] < k:
+        prod *= nums[j]
+        j += 1
+      
+      count += j-i
+      # print(i, j, prod)
+      
+    return count
+    
   def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
     if k == 0 or k <= min(nums):
       return 0

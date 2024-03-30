@@ -28,8 +28,35 @@ Constraints:
 from typing import List
 from collections import defaultdict
 
-
 class Solution:
+  def subarraysWithKDistinct(self, nums: List[int], k: int) -> int:
+    cnt = defaultdict(int)
+    n = len(nums)
+    j0, subs = 0, 0
+    
+    for i in range(n):
+      if i > 0:
+        v0 = nums[i-1]
+        cnt[v0] -= 1
+        if not cnt[v0]:
+          del cnt[v0]
+      
+      while j0 < n and len(cnt) < k:
+        cnt[nums[j0]] += 1
+        j0 += 1
+      
+      if j0 >= n and len(cnt) < k:
+        break
+        
+      j1 = j0
+      while j1 < n and nums[j1] in cnt:
+        j1 += 1
+        
+      # print('iter:', (i, j0, j1), j1-j0+1)
+      subs += j1-j0+1
+        
+    return subs
+        
   def subarraysWithKDistinct(self, nums: List[int], k: int) -> int:
     counter = {}
     start, left = 0, 0
@@ -64,7 +91,7 @@ class Solution:
 
     return count
 
-  def subarraysWithKDistinct0(self, nums: List[int], k: int) -> int:
+  def subarraysWithKDistinct(self, nums: List[int], k: int) -> int:
     cs = set(nums)
     if len(cs) < k:
       return 0

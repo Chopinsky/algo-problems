@@ -68,7 +68,7 @@ class Solution:
       return min((nums[i]-nums[i-1]) for i in range(1, n))
     
     @lru_cache(None)
-    def count(i: int, ln: int):
+    def dp(i: int, ln: int):
       if i >= n or ln == 0:
         return tuple()
       
@@ -80,7 +80,7 @@ class Solution:
           cnt[d0] += 1
           continue
         
-        cand = count(j, ln-1)
+        cand = dp(j, ln-1)
         if len(cand) == 0:
           break
           
@@ -90,7 +90,8 @@ class Solution:
       return sorted(cnt.items())
     
     for i in range(n):
-      cand = count(i, k-1)
+      # subseq starts at i, and needs to add k-1 more elements into it
+      cand = dp(i, k-1)
       if not cand:
         break
         

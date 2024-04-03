@@ -47,6 +47,30 @@ Test Cases:
 
 class Solution:
   def minimumLength(self, s: str) -> int:
+    i, j = 0, len(s)-1
+    last = len(s)
+    
+    while i <= j and s[i] == s[j]:
+      ch = s[i]
+      cnt = 0
+      
+      while i <= j and s[i] == ch:
+        cnt += 1
+        i += 1
+        
+      while i <= j and s[j] == ch:
+        cnt += 1
+        j -= 1
+        
+      if i > j:
+        last = 0 if cnt > 1 else 1
+        break
+      
+      last = j-i+1
+    
+    return last
+        
+  def minimumLength(self, s: str) -> int:
     l, r = 0, len(s)-1
     
     while l < r and s[l] == s[r]:

@@ -32,12 +32,42 @@ board and word consists of only lowercase and uppercase English letters.
 Follow up: Could you use search pruning to make your solution faster with a larger board?
 '''
 
-
 from typing import List
 from collections import Counter, defaultdict
 
-
 class Solution:
+  def exist(self, board: List[List[str]], word: str) -> bool:
+    m, n = len(board) , len(board[0])
+    
+    def find(x: int, y: int, i: int, mask: int):
+      if i >= len(word):
+        return True
+      
+      if x < 0 or x >= m or y < 0 or y >= n:
+        return False
+      
+      if board[x][y] != word[i]:
+        return False
+      
+      key = 1 << (x*n+y)
+      if mask & key > 0:
+        return False
+      
+      mask |= key
+      for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+        xx, yy = x+dx, y+dy
+        if find(xx, yy, i+1, mask):
+          return True
+        
+      return False
+    
+    for i in range(m):
+      for j in range(n):
+        if find(i, j, 0, 0):
+          return True
+        
+    return False
+      
   def exist(self, board: List[List[str]], word: str) -> bool:
     m, n = len(board), len(board[0])
     c = Counter(word)
@@ -54,7 +84,6 @@ class Solution:
     k = len(word)
     seen = set()
     
-    # @lru_cache(None)
     def search(x: int, y: int, i: int):
       if i >= k:
         return True

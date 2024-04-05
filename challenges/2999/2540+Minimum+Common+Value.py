@@ -25,8 +25,22 @@ Both nums1 and nums2 are sorted in non-decreasing order.
 
 from typing import List
 
-
 class Solution:
+  def getCommon(self, nums1: List[int], nums2: List[int]) -> int:
+    i, j = 0, 0
+    n1, n2 = len(nums1), len(nums2)
+    
+    while i < n1 and j < n2 and nums1[i] != nums2[j]:
+      if nums1[i] < nums2[j]:
+        i += 1
+      else:  
+        j += 1
+      
+    if i >= n1 or j >= n2:
+      return -1
+    
+    return nums1[i]
+        
   def getCommon(self, nums1: List[int], nums2: List[int]) -> int:
     common = set(nums1) & set(nums2)
     return min(common) if common else -1

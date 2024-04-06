@@ -27,7 +27,20 @@ Constraints:
 1 <= n <= 1000
 '''
 
+from math import isqrt
+
 class Solution:
+  def pivotInteger(self, n: int) -> int:
+    if n == 1:
+      return 1
+    
+    s0 = n*(n+1)//2
+    s1 = isqrt(s0)
+    # print(s0, s1)
+    
+    return s1 if s1*s1 == s0 else -1
+        
+
   def pivotInteger(self, n: int) -> int:
     if n == 1:
       return 1

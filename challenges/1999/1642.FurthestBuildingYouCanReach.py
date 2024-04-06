@@ -35,13 +35,41 @@ Output: 3
 
 Constraints:
 
-1 <= heights.length <= 105
-1 <= heights[i] <= 106
-0 <= bricks <= 109
+1 <= heights.length <= 10^5
+1 <= heights[i] <= 10^6
+0 <= bricks <= 10^9
 0 <= ladders <= heights.length
 '''
 
+from typing import List
+from heapq import heappush, heappop, heappushpop
+
+
 class Solution:
+  def furthestBuilding(self, heights: List[int], bricks: int, ladders: int) -> int:
+    l = []
+    n = len(heights)
+    
+    for idx in range(1, n):
+      diff = heights[idx] - heights[idx-1]
+      if diff <= 0:
+        continue
+        
+      if len(l) < ladders:
+        heappush(l, diff)
+        continue
+        
+      b = heappushpop(l, diff) if ladders > 0 else diff
+      # print(idx, diff, b, bricks)
+      
+      if b > bricks:
+        return idx-1
+      
+      bricks -= b
+        
+    return n-1
+        
+
   def furthestBuilding(self, h: List[int], b: int, l: int) -> int:
     q = []
     total = 0
@@ -52,16 +80,16 @@ class Solution:
         continue
 
       if len(q) < l:
-        heapq.heappush(q, d)
+        heappush(q, d)
         continue
 
       if l == 0:
         total += d
       else:
-        top = heapq.heappop(q)
+        top = heappop(q)
 
         if d > top:
-          heapq.heappush(q, d)
+          heappush(q, d)
           total += top
         else:
           heapq.heappush(q, top)

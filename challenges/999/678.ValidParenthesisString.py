@@ -20,7 +20,6 @@ Example 3:
 
 Input: s = "(*))"
 Output: true
- 
 
 Constraints:
 
@@ -28,11 +27,28 @@ Constraints:
 s[i] is '(', ')' or '*'.
 '''
 
-
 from functools import lru_cache
 
-
 class Solution:
+  def checkValidString(self, s: str) -> bool:
+    @lru_cache(None)
+    def check(i: int, balance: int) -> bool:
+      if i >= len(s):
+        return balance == 0
+      
+      if balance < 0:
+        return False
+      
+      if s[i] == '(':
+        return check(i+1, balance+1)
+      
+      if s[i] == ')':
+        return check(i+1, balance-1)
+      
+      return check(i+1, balance) or check(i+1, balance+1) or check(i+1, balance-1)
+      
+    return check(0, 0)
+        
   def checkValidString(self, s: str) -> bool:
     n = len(s)
     

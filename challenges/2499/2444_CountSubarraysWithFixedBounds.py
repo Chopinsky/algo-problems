@@ -31,9 +31,51 @@ Constraints:
 from bisect import bisect_left
 from typing import List
 from math import comb
-
+from heapq import heappush, heappop
 
 class Solution:
+  def countSubarrays(self, nums: List[int], minK: int, maxK: int) -> int:
+    cnt = 0
+    j, k = 0, 0
+    n = len(nums)
+    sdx, bdx = [], []
+    
+    for i in range(n):
+      val = nums[i]
+      if val < minK or val > maxK:
+        sdx.clear()
+        bdx.clear()
+        continue
+      
+      while sdx and sdx[0] < i:
+        heappop(sdx)
+        
+      while bdx and bdx[0] < i:
+        heappop(bdx)
+      
+      j = max(j, i)
+      while j < n and minK <= nums[j] <= maxK and (not sdx or not bdx):
+        if nums[j] == minK:
+          heappush(sdx, j)
+          
+        if nums[j] == maxK:
+          heappush(bdx, j)
+          
+        j += 1
+        
+      k = max(k, j)
+      while k < n and minK <= nums[k] <= maxK:
+        k += 1
+        
+      # print('check:', i, (j, k), sdx, bdx)
+      if sdx and bdx:
+        cnt += k-j+1
+      
+      if j >= n and (not sdx or not bdx):
+        break
+    
+    return cnt
+        
   def countSubarrays(self, nums: List[int], minK: int, maxK: int) -> int:
     idx = 0
     n = len(nums)

@@ -40,6 +40,34 @@ class ListNode:
 
 class Solution:
   def mergeInBetween(self, list1: ListNode, a: int, b: int, list2: ListNode) -> ListNode:
+    head = ListNode(val=-1, next=list1)
+    idx = 0
+    curr = head
+    start = None
+    end = None
+    
+    while curr:
+      # print(idx, curr.val)
+      if idx == a:
+        start = curr
+        
+      if idx-1 == b:
+        end = curr.next
+        break
+      
+      curr = curr.next
+      idx += 1
+      
+    curr = list2
+    while curr.next:
+      curr = curr.next
+    
+    start.next = list2
+    curr.next = end
+    
+    return head.next
+        
+  def mergeInBetween(self, list1: ListNode, a: int, b: int, list2: ListNode) -> ListNode:
     prev, nxt = None, None
     curr = list1
     idx = 0

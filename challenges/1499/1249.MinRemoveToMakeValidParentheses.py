@@ -33,12 +33,37 @@ Output: "a(b(c)d)"
 
 Constraints:
 
-1 <= s.length <= 105
+1 <= s.length <= 10^5
 s[i] is either'(' , ')', or lowercase English letter.
 '''
 
-
 class Solution:
+  def minRemoveToMakeValid(self, s: str) -> str:
+    popped = set()
+    balance = 0
+    memo = {}
+    
+    for i in range(len(s)):
+      ch = s[i]
+      
+      if ch == '(':
+        balance += 1
+        memo[balance] = i
+        
+      if ch == ')':
+        if balance == 0:
+          popped.add(i)
+          continue
+          
+        balance -= 1
+    
+    for idx in range(balance):
+      popped.add(memo[idx+1])
+      
+    # print(popped, memo, balance)
+    
+    return ''.join(s[i] for i in range(len(s)) if i not in popped)
+    
   def minRemoveToMakeValid(self, s: str) -> str:
     stack = []
     remove = set()

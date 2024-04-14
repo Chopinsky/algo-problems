@@ -18,9 +18,7 @@ The number of nodes in the tree is in the range [1, 1000].
 -1000 <= Node.val <= 1000
 '''
 
-
 from typing import Optional
-
 
 # Definition for a binary tree node.
 class TreeNode:
@@ -29,8 +27,19 @@ class TreeNode:
     self.left = left
     self.right = right
 
-
 class Solution:
+  def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
+    def sum_left_leaves(root, is_left):
+      if not root:
+        return 0
+      
+      if not root.left and not root.right and is_left:
+        return root.val
+      
+      return sum_left_leaves(root.left, True) + sum_left_leaves(root.right, False)
+      
+    return sum_left_leaves(root, False)
+    
   def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
     total = 0
     

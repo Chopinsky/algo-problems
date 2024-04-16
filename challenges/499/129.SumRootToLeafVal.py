@@ -38,7 +38,6 @@ The depth of the tree will not exceed 10.
 
 from typing import Optional
 
-
 # Definition for a binary tree node.
 class TreeNode:
   def __init__(self, val=0, left=None, right=None):
@@ -46,8 +45,26 @@ class TreeNode:
     self.left = left
     self.right = right
     
-    
 class Solution:
+  def sumNumbers(self, root: Optional[TreeNode]) -> int:
+    total = [0]
+    
+    def walk(root, prev):
+      if not root:
+        return
+      
+      curr = 10*prev + root.val
+      if not root.left and not root.right:
+        total[0] += curr
+        return
+      
+      walk(root.left, curr)
+      walk(root.right, curr)
+      
+    walk(root, 0)
+    
+    return total[0]
+        
   def sumNumbers(self, root: Optional[TreeNode]) -> int:
     def get_sum(root, val):
       if not root:

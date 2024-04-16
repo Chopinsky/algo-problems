@@ -32,14 +32,12 @@ The depth of the tree is in the range [1, 10^4].
 
 from typing import Optional
 
-
 # Definition for a binary tree node.
 class TreeNode:
   def __init__(self, val=0, left=None, right=None):
     self.val = val
     self.left = left
     self.right = right
-
 
 class Solution:
   def addOneRow(self, root: Optional[TreeNode], val: int, depth: int) -> Optional[TreeNode]:

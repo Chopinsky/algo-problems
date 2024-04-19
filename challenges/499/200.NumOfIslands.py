@@ -33,11 +33,40 @@ n == grid[i].length
 grid[i][j] is '0' or '1'.
 '''
 
-
 from typing import List
 
-
 class Solution:
+  def numIslands(self, grid: List[List[str]]) -> int:
+    m, n = len(grid), len(grid[0])
+    label = [[0]*n for _ in range(m)]
+    
+    def mark(x: int, y: int, l: int):
+      stack = [(x, y)]
+      
+      while stack:
+        x0, y0 = stack.pop()
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+          x1, y1 = x0+dx, y0+dy
+          if x1 < 0 or x1 >= m or y1 < 0 or y1 >= n:
+            continue
+            
+          if grid[x1][y1] == '0' or label[x1][y1] > 0:
+            continue
+            
+          label[x1][y1] = l
+          stack.append((x1, y1))
+        
+    curr_label = 1
+    for x in range(m):
+      for y in range(n):
+        if grid[x][y] == '0' or label[x][y] > 0:
+          continue
+          
+        mark(x, y, curr_label)
+        curr_label += 1
+        
+    return curr_label - 1
+     
   def numIslands(self, grid: List[List[str]]) -> int:
     m, n = len(grid), len(grid[0])
     count = 0

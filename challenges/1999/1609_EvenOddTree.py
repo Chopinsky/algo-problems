@@ -53,6 +53,34 @@ class TreeNode:
 
 class Solution:
   def isEvenOddTree(self, root: Optional[TreeNode]) -> bool:
+    stack = []
+    
+    def check(root, level):
+      if not root:
+        return True
+      
+      val = root.val
+      
+      if level >= len(stack):
+        if (level%2 == 0 and val%2 == 0) or (level%2 == 1 and val%2 == 1):
+          return False
+        
+        stack.append(val)
+        
+      else:
+        if level%2 == 0 and (val%2 == 0 or val <= stack[level]):
+          return False
+        
+        if level%2 == 1 and (val%2 == 1 or val >= stack[level]):
+          return False
+            
+        stack[level] = val
+        
+      return check(root.left, level+1) and check(root.right, level+1)
+      
+    return check(root, 0)
+        
+  def isEvenOddTree(self, root: Optional[TreeNode]) -> bool:
     if not root:
       return True
     

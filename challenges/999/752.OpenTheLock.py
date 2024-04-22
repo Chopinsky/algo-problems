@@ -48,6 +48,52 @@ from typing import List
 
 class Solution:
   def openLock(self, deadends: List[str], target: str) -> int:
+    curr, nxt = ['0000'], []
+    seen = set(curr)
+    dead = set(deadends)
+    
+    if '0000' in dead:
+      return -1
+    
+    if '0000' == target:
+      return 0
+    
+    def to_string(d, prefix, suffix):
+      return prefix + chr(ord('0') + d) + suffix
+      
+    def rotate(s: str, add_to: List):
+      for i in range(4):
+        d = int(s[i])
+        s0 = to_string((d+1) % 10, s[:i], s[i+1:])
+        s1 = to_string((d+9) % 10, s[:i], s[i+1:])
+        
+        if s0 == target or s1 == target:
+          return True
+        
+        if s0 not in seen and s0 not in dead:
+          seen.add(s0)
+          add_to.append(s0)
+        
+        if s1 not in seen and s1 not in dead:
+          seen.add(s1)
+          add_to.append(s1)
+      
+      return False
+    
+    steps = 0
+    while curr:
+      steps += 1
+      for s in curr:
+        if rotate(s, nxt):
+          return steps
+        
+      curr, nxt = nxt, curr
+      nxt.clear()
+      # print(steps, len(curr))
+    
+    return -1
+        
+  def openLock(self, deadends: List[str], target: str) -> int:
     d = set(deadends)
     if target in d or '0000' in d:
       return -1

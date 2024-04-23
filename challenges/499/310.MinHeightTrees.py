@@ -39,12 +39,57 @@ All the pairs (ai, bi) are distinct.
 The given input is guaranteed to be a tree and there will be no repeated edges.
 '''
 
-
 from collections import defaultdict
 from typing import List
 
-
 class Solution:
+  def findMinHeightTrees(self, n: int, edges: List[List[int]]) -> List[int]:
+    nb = [set() for _ in range(n)]
+    curr, nxt = set(i for i in range(n)), set()
+    seen = set()
+    ans = []
+    
+    for u, v in edges:
+      nb[u].add(v)
+      if len(nb[u]) > 1:
+        curr.discard(u)
+
+      nb[v].add(u)
+      if len(nb[v]) > 1:
+        curr.discard(v)
+    
+    # print('init:', nb, curr)
+    
+    while curr:
+      # print('loop:', curr)
+      
+      # sole root
+      if len(curr) == 1:
+        break
+        
+      # dual root
+      if len(curr) == 2:
+        a, b = list(curr)
+        if a in nb[b]:
+          break
+        
+      for u in curr:
+        for v in nb[u]:
+          if v in seen:
+            continue
+            
+          nb[v].discard(u)
+          
+          # v is now the leaf
+          if len(nb[v]) == 1:
+            nxt.add(v)
+            seen.add(v)
+      
+      curr, nxt = nxt, curr
+      nxt.clear()
+    
+    return list(curr)
+        
   '''
   the idea is to use methods borrowed from the topological sort and move the nodes
   from the leaves to the middle, i.e., the min-height roots

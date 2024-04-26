@@ -36,8 +36,29 @@ Constraints:
 s contains only lower and upper case English letters.
 '''
 
-
 class Solution:
+  def makeGood(self, s: str) -> str:
+    stack = []
+    
+    for c0 in s:
+      if not stack:
+        stack.append(c0)
+        continue
+        
+      if 'a' <= c0 <= 'z':
+        c1 = chr(ord(c0) - ord('a') + ord('A'))
+      else:
+        c1 = chr(ord(c0) - ord('A') + ord('a'))
+        
+      # print(c0, c1)
+      if c1 == stack[-1]:
+        stack.pop()
+        continue
+        
+      stack.append(c0)
+        
+    return ''.join(stack)
+        
   def makeGood(self, s: str) -> str:
     if len(s) < 2:
       return s

@@ -32,11 +32,39 @@ ring and key consist of only lower case English letters.
 It is guaranteed that key could always be spelled by rotating ring.
 '''
 
-
+from functools import lru_cache
 from collections import defaultdict
-
+from typing import Dict
 
 class Solution:
+  def findRotateSteps(self, ring: str, key: str) -> int:
+    pos = defaultdict(list)
+    n = len(ring)
+
+    for i, ch in enumerate(ring):
+      pos[ch].append(i)
+
+    curr, nxt = {0:0}, {}
+    # print(pos, curr)
+
+    @lru_cache(None)
+    def dist(f: int, t: int) -> int:
+      return min(abs(f-t), abs(f+n-t), abs(t+n-f))
+
+    def update(i: int, s: int, nxt_ch: str, nxt: Dict):
+      for j in pos[ch]:
+        nxt[j] = min(nxt.get(j, float('inf')), 1+s+dist(i, j))
+
+    for ch in key:
+      for i, s in curr.items():
+        update(i, s, ch, nxt)
+
+      curr, nxt = nxt, curr
+      nxt.clear()
+      # print(ch, curr)
+
+    return min(curr.values())
+        
   def findRotateSteps(self, ring: str, key: str) -> int:
     pos = defaultdict(list)
     for i, c in enumerate(ring):

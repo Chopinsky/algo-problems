@@ -26,11 +26,30 @@ n == grid.length == grid[i].length
 -99 <= grid[i][j] <= 99
 '''
 
-
 from typing import List
 
-
 class Solution:
+  def minFallingPathSum(self, grid: List[List[int]]) -> int:
+    n = len(grid)
+    if n == 1:
+      return grid[0][0]
+    
+    curr = sorted((grid[0][i], i) for i in range(n))[:2]
+    
+    for i in range(1, n):
+      nxt = []
+      for j in range(n):
+        val = grid[i][j]
+        if j == curr[0][1]:
+          nxt.append((val+curr[1][0], j))
+        else:
+          nxt.append((val+curr[0][0], j))
+          
+      curr = sorted(nxt)[:2]
+      # print(i, curr)
+    
+    return min(curr)[0]
+        
   def minFallingPathSum(self, grid: List[List[int]]) -> int:
     h = len(grid)
     if h == 1:

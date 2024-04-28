@@ -27,7 +27,7 @@ Output: [1,1]
 
 Constraints:
 
-1 <= n <= 3 * 10 ** 4
+1 <= n <= 3 * 10^4
 edges.length == n - 1
 edges[i].length == 2
 0 <= ai, bi < n
@@ -35,12 +35,56 @@ ai != bi
 The given input represents a valid tree.
 '''
 
-
 from typing import List, Tuple
 from collections import defaultdict
 
-
 class Solution:
+  def sumOfDistancesInTree(self, n: int, edges: List[List[int]]) -> List[int]:
+    node = {}
+    ans = [0]*n
+    e = [list() for _ in range(n)]
+    
+    for u, v in edges:
+      e[u].append(v)
+      e[v].append(u)
+    
+    def dfs(u: int, p: int) -> int:
+      cnt = 1
+      dist = 0
+      
+      for v in e[u]:
+        if v == p:
+          continue
+        
+        c0, d0 = dfs(v, u)
+        cnt += c0
+        dist += (d0 + c0)
+      
+      node[u] = [p, cnt, dist]
+      
+      return cnt, dist
+    
+    def update(u: int):
+      p, c0, d0 = node[u]
+      
+      if u == 0:
+        ans[u] = d0
+      else:
+        ans[u] = d0 + (ans[p]-d0-c0) + (n-c0)
+        # print('update:', (u, node[u]), (node[p][2]-d0-c0, n-c0))
+        
+      for v in e[u]:
+        if v == p:
+          continue
+          
+        update(v)
+      
+    dfs(0, -1)
+    update(0)
+    # print(node)
+    
+    return ans
+        
   def sumOfDistancesInTree(self, n: int, edges: List[List[int]]) -> List[int]:
     e = defaultdict(list)
     down = {}

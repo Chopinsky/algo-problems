@@ -35,8 +35,16 @@ Constraints:
 from typing import List
 from collections import defaultdict
 
-
 class Solution:
+  def minOperations(self, nums: List[int], k: int) -> int:
+    base = k
+    for val in nums:
+      base ^= val
+      
+    # print(bin(base)[2:])
+    
+    return bin(base)[2:].count('1')
+    
   def minOperations(self, nums: List[int], k: int) -> int:
     c0 = defaultdict(int)
     c1 = defaultdict(int)

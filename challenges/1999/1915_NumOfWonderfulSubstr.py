@@ -38,7 +38,6 @@ Output: 2
 Explanation: The two wonderful substrings are underlined below:
 - "he" -> "h"
 - "he" -> "e"
- 
 
 Constraints:
 
@@ -46,11 +45,37 @@ Constraints:
 word consists of lowercase English letters from 'a' to 'j'.
 '''
 
-
 from collections import defaultdict
 
-
 class Solution:
+  def wonderfulSubstrings(self, word: str) -> int:
+    prefix = defaultdict(int)
+    prefix[0] += 1
+    mask = 0
+    cnt = 0
+    top = 1 << 10
+    
+    for ch in word:
+      idx = ord(ch) - ord('a')
+      mask ^= (1 << idx)
+      flag = 1
+      # print(ch, bin(mask)[2:], prefix)
+      
+      if mask in prefix:
+        cnt += prefix[mask]
+
+      while flag <= top:
+        flipped = mask ^ flag
+        if flipped in prefix:
+          cnt += prefix[flipped]
+          
+        flag <<= 1
+        
+      prefix[mask] += 1
+      # print('updated:', cnt)
+      
+    return cnt  
+    
   def wonderfulSubstrings(self, word: str) -> int:
     cnt = [0] * 10
     masks = defaultdict(int)

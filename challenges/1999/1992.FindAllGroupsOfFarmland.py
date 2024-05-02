@@ -38,11 +38,40 @@ land consists of only 0's and 1's.
 Groups of farmland are rectangular in shape.
 '''
 
-
 from typing import List
 
-
 class Solution:
+  def findFarmland(self, land: List[List[int]]) -> List[List[int]]:
+    farm = set()
+    m, n = len(land), len(land[0])
+    ans = []
+    
+    def bfs(x: int, y: int):
+      dim = [x, y, 0, 0]
+      
+      for x0 in range(x, m):
+        if land[x0][y] == 0:
+          break
+          
+        dim[2] = max(dim[2], x0)
+        for y0 in range(y, n):
+          if land[x0][y0] == 0:
+            break
+          
+          dim[3] = max(dim[3], y0)
+          farm.add((x0, y0))
+          
+      return dim
+      
+    for x in range(m):
+      for y in range(n):
+        if (x, y) in farm or land[x][y] == 0:
+          continue
+          
+        ans.append(bfs(x, y))
+        
+    return ans
+      
   def findFarmland(self, land: List[List[int]]) -> List[List[int]]:
     jumps = {}
     lands = []

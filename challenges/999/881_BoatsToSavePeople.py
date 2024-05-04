@@ -28,8 +28,30 @@ Constraints:
 
 from typing import List
 
-
 class Solution:
+  def numRescueBoats(self, people: List[int], limit: int) -> int:
+    people.sort()
+    cnt = 0
+    n = len(people)
+    j = n-1
+    taken = set()
+    
+    for i in range(n):
+      if i in taken:
+        continue
+      
+      v0 = people[i]
+      while j > i and people[j]+v0 > limit:
+        j -= 1
+        
+      if j > i:
+        taken.add(j)
+        j -= 1
+        
+      cnt += 1
+    
+    return cnt
+        
   def numRescueBoats(self, people: List[int], limit: int) -> int:
     taken = set()
     people.sort()

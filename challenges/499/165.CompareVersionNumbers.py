@@ -35,8 +35,38 @@ version1 and version2 are valid version numbers.
 All the given revisions in version1 and version2 can be stored in a 32-bit integer.
 '''
 
+from typing import List
 
 class Solution:
+  def compareVersion(self, version1: str, version2: str) -> int:
+    v1 = [int(val) for val in version1.split('.')]
+    v2 = [int(val) for val in version2.split('.')]
+    # print(v1, v2)
+    i, j = 0, 0
+    
+    def suffix_are_zeros(arr: List[int]) -> bool:
+      return all(val == 0 for val in arr)
+    
+    while i < len(v1) and j < len(v2):
+      if v1[i] > v2[j]:
+        return 1
+      
+      if v1[i] < v2[j]:
+        return -1
+      
+      i += 1
+      j += 1
+      
+    # print(i, j)
+    
+    if i < len(v1):
+      return 0 if suffix_are_zeros(v1[i:]) else 1
+    
+    if j < len(v2):
+      return 0 if suffix_are_zeros(v2[j:]) else -1
+    
+    return 0
+        
   def compareVersion(self, version1: str, version2: str) -> int:
     a = [int(val) for val in version1.split('.')]
     b = [int(val) for val in version2.split('.')]

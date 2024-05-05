@@ -64,8 +64,63 @@ xi != yi
 from typing import List
 from collections import defaultdict
 
-
 class Solution:
+  def findAllPeople(self, n: int, meetings: List[List[int]], firstPerson: int) -> List[int]:
+    meetings.sort(key=lambda x: (x[2], x[0]))
+    know = set([0, firstPerson])
+    graph = {}
+    cand, src, groups = [], set(), set()
+    curr = 0
+    
+    def find(x: int):
+      if x not in graph:
+        graph[x] = x
+      
+      while graph[x] != x:
+        x = graph[x]
+        
+      return x
+    
+    def union(x: int, y: int):
+      rx, ry = find(x), find(y)
+      if rx <= ry:
+        graph[ry] = rx
+      else:
+        graph[rx] = ry
+    
+    def update():
+      if len(cand) == 0:
+        return
+      
+      graph.clear()
+      src.clear()
+      groups.clear()
+      
+      for x, y in cand:
+        union(x, y)
+        src.add(x)
+        src.add(y)
+    
+      for x in src:
+        if x in know:
+          groups.add(find(x))
+          
+      for x in src:
+        if x not in know and find(x) in groups:
+          know.add(x)
+      
+    for x, y, t in meetings:
+      if t != curr:
+        update()
+        curr = t
+        cand = [(x, y)]
+      else:
+        cand.append((x, y))
+        
+    update()
+    
+    return list(know)
+        
   def findAllPeople(self, n: int, meetings: List[List[int]], firstPerson: int) -> List[int]:
     e = defaultdict(list)
     queue = set()

@@ -112,19 +112,19 @@ class Solution:
       if n % 2 == 0:
         return c0
 
-      # can add extra layer to make all equal 
-      # and paired
-      c1 = cost2*((total+1)//2 + (n-1)//2)
+      # can add extra layer to make all equal and paired, aka forming 
+      # the total of `(total-1)//2 + (n+1)//2` pairs:
+      c1 = c0 - cost1 + cost2*(n+1)//2
+
       return min(c0, c1)
     
     head = diff[0]
     min_cost = calc_cost(head, rest)
     
-    # keep raising height
+    # keep raising the height until an optimized solution can be achieved
     while head > rest:
       head += 1
       rest += n-1
-      
       c0 = calc_cost(head, rest)
       min_cost = min(min_cost, c0)
       # print('grow:', (head, rest), c0)

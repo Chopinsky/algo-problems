@@ -28,8 +28,37 @@ Constraints:
 s consists of lowercase English letters.
 '''
 
-
 class Solution:
+  def longestIdealString(self, s: str, k: int) -> int:
+    ln = [0]*26
+    seq = 0
+    
+    def update(val: int) -> int:
+      long = 0
+      ldx, rdx = val, val
+      dist = 0
+      
+      while dist <= k and (ldx >= 0 or rdx < 26):
+        if ldx >= 0:
+          long = max(long, ln[ldx])
+          
+        if rdx < 26:
+          long = max(long, ln[rdx])
+          
+        dist += 1
+        ldx -= 1
+        rdx += 1
+        
+      ln[val] = long+1
+      
+      return ln[val]
+    
+    for ch in s:
+      seq = max(seq, update(ord(ch) - ord('a')))
+    
+    # print(ln)
+    return seq
+    
   def longestIdealString(self, s: str, k: int) -> int:
     ln = [0] * 26
     

@@ -32,8 +32,30 @@ class ListNode:
     self.val = val
     self.next = next
 
-
 class Solution:
+  def doubleIt(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    if not head:
+      return head
+    
+    curr = head
+    prev = None
+    
+    while curr:
+      val = 2*curr.val
+      if val >= 10:
+        val -= 10
+        if prev:
+          prev.val += 1
+        else:
+          head = ListNode(val=1, next=curr)
+
+      # print(curr.val, val)
+      curr.val = val
+      prev = curr
+      curr = curr.next
+        
+    return head
+        
   def doubleIt(self, head: Optional[ListNode]) -> Optional[ListNode]:
     def double(curr):
       if not curr:

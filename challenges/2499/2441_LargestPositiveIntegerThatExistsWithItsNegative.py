@@ -30,8 +30,18 @@ nums[i] != 0
 
 from typing import List
 
-
 class Solution:
+  def findMaxK(self, nums: List[int]) -> int:
+    negatives = set(val for val in nums if val < 0)
+    positives = sorted(val for val in nums if val > 0)
+    
+    while positives:
+      val = positives.pop()
+      if -val in negatives:
+        return val 
+    
+    return -1
+  
   def findMaxK(self, nums: List[int]) -> int:
     base = set(nums)
     

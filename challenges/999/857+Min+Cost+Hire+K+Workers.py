@@ -17,22 +17,63 @@ Example 2:
 Input: quality = [3,1,10,10,1], wage = [4,8,2,2,7], k = 3
 Output: 30.66667
 Explanation: We pay 4 to 0th worker, 13.33333 to 2nd and 3rd workers separately.
- 
 
 Constraints:
 
 n == quality.length == wage.length
 1 <= k <= n <= 10^4
 1 <= quality[i], wage[i] <= 10^4
+
+Test cases:
+
+[10,20,5]
+[70,50,30]
+2
+[3,1,10,10,1]
+[4,8,2,2,7]
+3
+[14,56,59,89,39,26,86,76,3,36]
+[90,217,301,202,294,445,473,245,415,487]
+2
+[4,4,4,5]
+[13,12,13,12]
+2
+[32,43,66,9,94,57,25,44,99,19]
+[187,366,117,363,121,494,348,382,385,262]
+4
 '''
 
-
 from typing import List
-from heapq import heappush, heappop
+from heapq import heappush, heappop, heappushpop
 import math
 
-
 class Solution:
+  def mincostToHireWorkers(self, quality: List[int], wage: List[int], k: int) -> float:
+    if k == 1:
+      return min(wage)
+    
+    n = len(quality)
+    workers = sorted((wage[i]/quality[i], quality[i], i) for i in range(n))
+    quality_sum = 0
+    stack = []
+    cost = 0
+    # print('init:', workers)
+    
+    for i, (r, q, idx) in enumerate(workers):
+      if i < k:
+        quality_sum += q
+        heappush(stack, -q)
+        cost = quality_sum * r
+        continue
+        
+      # print('iter:', (idx, r, q), stack)
+      
+      q_pop = heappushpop(stack, -q)
+      quality_sum += q_pop + q
+      cost = min(cost, quality_sum*r)
+    
+    return cost
+        
   '''
   the idea is that the payment is determined by the highest `wage/quality` ratio of the
   worker in the group, times the total quality points from the workers in the group.

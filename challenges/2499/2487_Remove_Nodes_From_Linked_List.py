@@ -30,15 +30,30 @@ The number of the nodes in the given list is in the range [1, 10^5].
 
 from typing import Optional
 
-
 # Definition for singly-linked list.
 class ListNode:
   def __init__(self, val=0, next=None):
     self.val = val
     self.next = next
 
-
 class Solution:
+  def removeNodes(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    stack = []
+    curr = head
+    
+    while curr:
+      while stack and curr.val > stack[-1].val:
+        stack.pop()
+      
+      stack.append(curr)
+      curr = curr.next
+      
+    stack.append(None)
+    for i in range(len(stack)-1):
+      stack[i].next = stack[i+1]
+    
+    return stack[0]
+        
   def removeNodes(self, head: Optional[ListNode]) -> Optional[ListNode]:
     stack = []
     curr = head

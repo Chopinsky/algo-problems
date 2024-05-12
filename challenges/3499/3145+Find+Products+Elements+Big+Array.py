@@ -105,38 +105,35 @@ class Solution:
       
       return tuple(last)
       
-    def make(shift: int):
-      if shift == 0:
-        return {}
-      
-      c0 = 1<<(shift-1)
-      return {i:c0 for i in range(shift)}
-    
     def calc(val: int):
       if val <= 2:
         return {1:1, 0:1} if val == 2 else {0:1}
         
       counter = defaultdict(int)
-      base = []
+      one_pos = []
       shift = len(bin(val)[2:])-1
       
       while shift >= 0:
         if val & (1<<shift) > 0:
-          # update the upper parts
-          c0 = 1<<shift
-          for s0 in base:
-            counter[s0] += c0
+          # update the upper parts, there will be `1<<shift`
+          # count of numbers in total, so each 1-position will
+          # appear `1<<shift` times
+          cnt = 1 << shift
+          for pos in one_pos:
+            counter[pos] += cnt
           
-          # add the lower parts
-          for s0, c0 in make(shift).items():
-            counter[s0] += c0
+          # add the lower parts, each shift can only have
+          # half the number of 1s at it, so c0 >>= 1
+          cnt >>= 1
+          for pos in range(shift):
+            counter[pos] += cnt
           
-          base.append(shift)
+          one_pos.append(shift)
         
         shift -= 1
       
-      for s0 in base:
-        counter[s0] += 1
+      for pos in one_pos:
+        counter[pos] += 1
         
       return counter
       

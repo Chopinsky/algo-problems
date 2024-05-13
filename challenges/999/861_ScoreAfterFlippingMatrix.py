@@ -27,8 +27,48 @@ grid[i][j] is either 0 or 1.
 
 from typing import List
 
-
 class Solution:
+  def matrixScore(self, grid: List[List[int]]) -> int:
+    m, n = len(grid), len(grid[0])
+    
+    def flip_row(i: int):
+      for j in range(n):
+        grid[i][j] ^= 1
+        
+    def flip_cols(j: int):
+      for i in range(m):
+        grid[i][j] ^= 1
+      
+    def count_col_ones(j: int):
+      count = 0
+      for i in range(m):
+        if grid[i][j] == 1:
+          count += 1
+          
+      return count
+      
+    for i in range(m):
+      if grid[i][0] == 0:
+        flip_row(i)
+    
+    for j in range(n):
+      ones = count_col_ones(j)
+      zeros = m-ones
+      if zeros > ones:
+        flip_cols(j)
+      
+    # print(grid)
+    val = 0
+    
+    for i in range(m):
+      for j in range(n):
+        if grid[i][j] == 0:
+          continue
+          
+        val += 1 << (n-1-j)
+    
+    return val
+        
   def matrixScore(self, grid: List[List[int]]) -> int:
     m, n = len(grid), len(grid[0])
     

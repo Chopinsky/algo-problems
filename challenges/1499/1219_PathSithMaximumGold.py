@@ -41,8 +41,40 @@ There are at most 25 cells containing gold.
 
 from typing import List
 
-
 class Solution:
+  def getMaximumGold(self, grid: List[List[int]]) -> int:
+    seen = set()
+    m, n = len(grid), len(grid[0])
+    
+    def dfs(x0: int, y0: int):
+      gold = 0
+      seen.add((x0, y0))
+      
+      for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        x1 = x0 + dx
+        y1 = y0 + dy
+        if x1 < 0 or x1 >= m or y1 < 0 or y1 >= n:
+          continue
+          
+        if (x1, y1) in seen or grid[x1][y1] == 0:
+          continue
+          
+        gold = max(gold, dfs(x1, y1))
+      
+      seen.discard((x0, y0))
+        
+      return gold + grid[x0][y0]
+    
+    max_gold = 0
+    for x in range(m):
+      for y in range(n):
+        if not grid[x][y]:
+          continue
+        
+        max_gold = max(max_gold, dfs(x, y))
+        
+    return max_gold
+        
   def getMaximumGold(self, grid: List[List[int]]) -> int:
     m, n = len(grid), len(grid[0])
     visited = set()

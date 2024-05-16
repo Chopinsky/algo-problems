@@ -49,8 +49,76 @@ There is at least one thief in the grid.
 from typing import List
 from heapq import heappush, heappop
 
-
 class Solution:
+  def maximumSafenessFactor(self, grid: List[List[int]]) -> int:
+    n = len(grid)
+    if grid[0][0] == 1 or grid[n-1][n-1] == 1:
+      return 0
+    
+    min_dist = [[float('inf')]*n for _ in range(n)]
+    cand, nxt = [], []
+    
+    for i in range(n):
+      for j in range(n):
+        if grid[i][j] == 1:
+          cand.append((i, j))
+    
+    if not cand:
+      return -1
+    
+    seen = set(cand)
+    for x, y in cand:
+      min_dist[x][y] = 0
+    
+    while cand:
+      for x, y in cand:
+        dist = min_dist[x][y]
+        
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+          x0 = x + dx
+          y0 = y + dy
+          if x0 < 0 or x0 >= n or y0 < 0 or y0 >= n:
+            continue
+            
+          min_dist[x0][y0] = min(min_dist[x0][y0], dist+1)
+
+          if (x0, y0) not in seen:
+            nxt.append((x0, y0))
+            seen.add((x0, y0))
+      
+      cand, nxt = nxt, cand
+      nxt.clear()
+    
+    # print(min_dist)
+    stack = [(-min_dist[0][0], 0, 0)]
+    seen.clear()
+    seen.add((0, 0))
+    
+    while stack:
+      dist, x, y = heappop(stack)
+      if x == n-1 and y == n-1:
+        return -dist
+      
+      if dist == 0:
+        return 0
+      
+      # print((x, y, dist), stack)
+      for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        x0 = x + dx
+        y0 = y + dy
+        if x0 < 0 or x0 >= n or y0 < 0 or y0 >= n:
+          continue
+          
+        if (x0, y0) in seen or grid[x0][y0] == 1:
+          continue
+          
+        dist0 = min(-dist, min_dist[x0][y0])
+        heappush(stack, (-dist0, x0, y0))
+        seen.add((x0, y0))
+        # print('add:', (x0, y0, dist0))
+    
+    return 0
+  
   def maximumSafenessFactor(self, grid: List[List[int]]) -> int:
     m, n = len(grid), len(grid[0])
     if grid[0][0] == 1 or grid[m-1][n-1] == 1:

@@ -1,10 +1,12 @@
 '''
 2659. Make Array Empty
 
-You are given an integer array nums containing distinct numbers, and you can perform the following operations until the array is empty:
+You are given an integer array nums containing distinct numbers, and you 
+can perform the following operations until the array is empty:
 
-If the first element has the smallest value, remove it
-Otherwise, put the first element at the end of the array.
+- If the first element has the smallest value, remove it
+- Otherwise, put the first element at the end of the array.
+
 Return an integer denoting the number of operations it takes to make nums empty.
 
 Example 1:
@@ -45,27 +47,26 @@ All values in nums are distinct.
 
 from typing import List
 
-
 class Solution:
   def countOperationsToEmptyArray(self, nums: List[int]) -> int:
     tgt = sorted((val, i) for i, val in enumerate(nums))
     n = len(nums)
     fenwick = [0]*n
     
-    def update(i, val):
-      if (i == 0):
+    def update(idx, val):
+      if idx == 0:
         fenwick[i] += val
         return
       
-      while i < n:
-        fenwick[i] += val
-        i += (i & -i)
+      while idx < n:
+        fenwick[idx] += val
+        idx += (idx & -idx)
         
-    def query(i):
+    def query(idx):
       res = fenwick[0]
-      while i > 0:
-        res += fenwick[i]
-        i -= (i & -i)
+      while idx > 0:
+        res += fenwick[idx]
+        idx -= (idx & -idx)
       
       return res
     

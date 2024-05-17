@@ -34,7 +34,6 @@ The number of nodes in the tree is in the range [1, 3000].
 
 from typing import Optional
 
-
 # Definition for a binary tree node.
 class TreeNode:
   def __init__(self, val=0, left=None, right=None):
@@ -42,8 +41,35 @@ class TreeNode:
     self.left = left
     self.right = right
 
-
 class Solution:
+  def removeLeafNodes(self, root: Optional[TreeNode], target: int) -> Optional[TreeNode]:
+    def check(node: Optional[TreeNode]):
+      if not node:
+        return True
+      
+      return node.val == target and (not node.left) and (not node.right)
+    
+    def delete(node: Optional[TreeNode]):
+      if not node:
+        return
+      
+      delete(node.left)
+      delete(node.right)
+      
+      if check(node.left):
+        node.left = None
+        
+      if check(node.right):
+        node.right = None
+        
+      # print('done:', node)
+        
+    delete(root)
+    if check(root):
+      return None
+    
+    return root
+        
   def removeLeafNodes(self, root: Optional[TreeNode], target: int) -> Optional[TreeNode]:
     def delete(root: Optional[TreeNode]) -> bool:
       if not root:

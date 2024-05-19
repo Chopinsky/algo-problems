@@ -33,8 +33,27 @@ class TreeNode:
     self.left = left
     self.right = right
 
-
 class Solution:
+  def distributeCoins(self, root: Optional[TreeNode]) -> int:
+    moves = [0]
+    
+    def dist(node):
+      if not node:
+        return 0, 0
+      
+      lc, lg = dist(node.left)
+      rc, rg = dist(node.right)
+      nodes = 1+lc+rc
+      gold = node.val+lg+rg
+      moves[0] += abs(nodes-gold)
+      # print(node, nodes, gold)
+      
+      return nodes, gold
+    
+    dist(root)
+    
+    return moves[0]
+  
   def distributeCoins(self, root: Optional[TreeNode]) -> int:
     cnt = [0, 0]
     avg = 0

@@ -20,12 +20,32 @@ Constraints:
 All the numbers of nums are unique.
 '''
 
-
 from typing import List
 from itertools import combinations
-
+from functools import lru_cache
 
 class Solution:
+  def subsets(self, nums: List[int]) -> List[List[int]]:
+    n = len(nums)
+    
+    @lru_cache(None)
+    def gen(i: int):
+      if i >= n:
+        return tuple([tuple()])
+      
+      result = list(gen(i+1))
+      rest = [list(t) for t in result]
+      val = nums[i]
+      # print('gen:', i, val, rest)
+      
+      for lst in rest:
+        # print('iter:', lst)
+        result.append(tuple([val] + lst))
+        
+      return tuple(result)
+    
+    return gen(0)
+        
   def subsets(self, nums: List[int]) -> List[List[int]]:
     ans = [[]]
     n = len(nums)

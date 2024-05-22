@@ -19,13 +19,52 @@ Constraints:
 s contains only lowercase English letters.
 '''
 
-
 from typing import List
 from functools import lru_cache
 from bisect import bisect_left
 
-
 class Solution:
+  def partition(self, s: str) -> List[List[str]]:
+    n = len(s)
+    
+    @lru_cache(None)
+    def is_pal(i: int, j: int):
+      # print('check:', i, j, s[i:j+1])
+      if i > j:
+        return False
+      
+      while i < j:
+        if s[i] != s[j]:
+          return False
+        
+        i += 1
+        j -= 1
+        
+      return True
+      
+    @lru_cache(None)
+    def divide(i: int, j: int):
+      if i >= n or i > j:
+        return (tuple(), )
+      
+      if i == j:
+        return ((s[i], ), )
+      
+      result = []
+      
+      for k in range(0, j+1):
+        if not is_pal(i, k):
+          continue
+          
+        for sub_arr in divide(k+1, j):
+          lst = (s[i:k+1], ) + sub_arr
+          result.append(lst)
+
+      return tuple(result)
+      
+    return divide(0, n-1)
+    
+        
   def partition(self, s: str) -> List[List[str]]:
     n = len(s)
     

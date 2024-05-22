@@ -63,8 +63,64 @@ The input is generated such that edges represent a valid tree.
 
 from typing import List
 from collections import defaultdict
+from functools import lru_cache
 
 class Solution:
+  def maximumValueSum(self, nums: List[int], k: int, edges: List[List[int]]) -> int:
+    n = len(nums)
+    e = defaultdict(set)
+    p = [i for i in range(n)]
+    
+    for u, v in edges:
+      e[u].add(v)
+      e[v].add(u)
+      
+    curr, nxt = [0], []
+    
+    while curr:
+      for u in curr:
+        for v in e[u]:
+          if v == 0 or p[v] != v:
+            continue
+          
+          p[v] = u
+          e[v].discard(u)
+          nxt.append(v)
+      
+      curr, nxt = nxt, curr
+      nxt.clear()
+      
+    # print(e)
+    
+    @lru_cache(None)
+    def dp(u: int, c: bool) -> int:
+      cand = float('inf')
+      ops = 1 if c else 0
+      s0 = 0
+      
+      for v in e[u]:
+        s1 = dp(v, True)
+        s2 = dp(v, False)
+        if s1 >= s2:
+          s0 += s1
+          ops += 1
+        else:
+          s0 += s2
+        
+        cand = min(cand, abs(s1-s2))
+      
+      val = nums[u] if ops%2 == 0 else (nums[u]^k)
+      s0 += val
+      
+      # assume we flip one op to choose the alt result
+      if cand < float('inf'):
+        s1 = s0 - cand - val + (val ^ k)
+        s0 = max(s0, s1)
+      
+      return s0
+    
+    return dp(0, 0)
+        
   '''
   the idea is to create a dp, where dp[u][parent_toggle_boolean] is the max-sums that we can get for
   the subtree rooted at index-u, and if the edge connecting index-u and the parent node is toggled;

@@ -28,10 +28,43 @@ Constraints:
 1 <= nums[i], k <= 1000
 '''
 
-from typing import List
-
+from typing import List, Tuple
+from functools import lru_cache
 
 class Solution:
+  def beautifulSubsets(self, nums: List[int], k: int) -> int:
+    n = len(nums)
+    if n == 1:
+      return 1
+    
+    nums.sort()
+    # print(nums)
+    
+    @lru_cache(None)
+    def count(i: int, vals: Tuple[int]) -> int:
+      if i >= n:
+        return 0
+      
+      val = nums[i]
+      is_valid = val-k not in vals
+      
+      if i == n-1:
+        # print('end:', (i, val), is_valid, vals)
+        return 1 if (i == 0 or is_valid) else 0
+      
+      # if not using number @ i
+      c0 = count(i+1, vals)
+      if not is_valid:
+        return c0
+      
+      # if using number @ i
+      c1 = count(i+1, vals + (val, )) + (1 if is_valid else 0)
+      # print('iter:', (i, val), is_valid, c0, c1, vals)
+      
+      return c0 + c1
+        
+    return count(0, tuple())
+        
   def beautifulSubsets(self, nums: List[int], k: int) -> int:
     n = len(nums)
     if n == 1:

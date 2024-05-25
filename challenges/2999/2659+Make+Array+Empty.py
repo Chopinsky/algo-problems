@@ -55,7 +55,7 @@ class Solution:
     
     def update(idx, val):
       if idx == 0:
-        fenwick[i] += val
+        fenwick[idx] += val
         return
       
       while idx < n:

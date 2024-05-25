@@ -63,7 +63,7 @@ class Node:
 
 class Solution:
   '''
-  the idea is to use the range query on a range-tree: there will be at most 10**5 nodes in this tree, making
+  the idea is to use the range query on a segment-tree: there will be at most 10**5 nodes in this tree, making
   it log(n) time to update or query a result
   '''
   def getResults(self, queries: List[List[int]]) -> List[bool]:
@@ -71,7 +71,7 @@ class Solution:
     root = Node(l=0, r=top)
     # print('top:', top, root)
     
-    def update(node):
+    def update(node: Node):
       mid = (node.l + node.r) // 2
       
       if not node.lc:
@@ -95,7 +95,7 @@ class Solution:
       if node.r == top and node.o:
         node.sz = max(node.sz, node.r - node.o[1])
     
-    def insert(node, x: int):
+    def insert(node: Node, x: int):
       if not node:
         return
       
@@ -129,7 +129,7 @@ class Solution:
       insert(child, x)
       update(node)
     
-    def query(node, x: int):
+    def query(node: Node, x: int):
       if not node:
         return 0
       

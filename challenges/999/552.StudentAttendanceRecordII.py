@@ -28,11 +28,31 @@ Output: 183236316
 
 Constraints:
 
-1 <= n <= 105
+1 <= n <= 10^5
 '''
 
+from functools import lru_cache
 
 class Solution:
+  def checkRecord0(self, n: int) -> int:
+    @lru_cache(None)
+    def dp(i: int, a: int, l: int):
+      if i <= 0:
+        return 1
+
+      # use 'A'
+      c0 = dp(i-1, a+1, 0) if a < 1 else 0
+
+      # use 'L'
+      c1 = dp(i-1, a, l+1) if l < 2 else 0
+
+      # use 'P'
+      c2 = dp(i-1, a, 0)
+
+      return (c0 + c1 + c2) % (10**9 + 7)
+    
+    return dp(0, 0, 0)
+  
   def checkRecord0(self, n: int) -> int:
     mod = 10 ** 9 + 7
     if n == 0:
@@ -62,7 +82,6 @@ class Solution:
       ans += (dp[i] * dp[n-i-1]) % mod
 
     return ans % mod
-    
     
   def checkRecord(self, n: int) -> int:
     mod = 1_000_000_007

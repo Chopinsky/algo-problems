@@ -56,7 +56,7 @@ class Solution:
     curr_t2 = max(0, left_t3+right_t0, left_t2+right_t2)
     curr_t3 = max(0, left_t3+right_t1, left_t2+right_t3)
 
-  where left, right is the children node of the current node, and if current node covers [left, right], then
+  where left, right is the child node of the current node, and if the current node covers [left, right], then
   middle = (left + right) // 2, and the left node covers [left, mid] and the right node covers [mid+1, right]
   '''
   def maximumSumSubsequence(self, nums: List[int], queries: List[List[int]]) -> int:

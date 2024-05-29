@@ -38,8 +38,38 @@ s consists of characters '0' or '1'
 s[0] == '1'
 '''
 
-
 class Solution:
+  def numSteps(self, s: str) -> int:
+    decimals = [int(ch) for ch in s][::-1]
+    ops = 0
+    idx = 0
+    # print(decimals)
+    
+    def add(i: int):
+      n = len(decimals)
+      if i >= n:
+        return
+      
+      while i < n:
+        decimals[i] = 1 - decimals[i]
+        if decimals[i] == 1:
+          break
+          
+        i += 1
+      
+      if i >= n:
+        decimals.append(1)
+    
+    while idx < len(decimals)-1:
+      if decimals[idx] == 1:
+        add(idx+1)
+        ops += 1
+      
+      ops += 1
+      idx += 1
+    
+    return ops
+        
   def numSteps(self, s: str) -> int:
     digits = list(s)
     steps = 0

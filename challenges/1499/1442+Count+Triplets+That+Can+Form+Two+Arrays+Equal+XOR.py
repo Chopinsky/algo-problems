@@ -44,12 +44,36 @@ Constraints:
 1 <= arr[i] <= 10^8
 '''
 
-
 from typing import List
 from collections import defaultdict
 
-
 class Solution:
+  def countTriplets(self, arr: List[int]) -> int:
+    count = 0
+    n = len(arr)
+    xors = []
+    
+    def build_list(i: int):
+      d = defaultdict(int)
+      curr = 0
+      
+      for j in range(i, -1, -1):
+        curr ^= arr[j]
+        d[curr] += 1
+        
+      return d
+    
+    for i in range(n):
+      curr = arr[i]
+      
+      for j in range(i-1, -1, -1):
+        count += xors[j][curr]
+        curr ^= arr[j]
+        
+      xors.append(build_list(i))
+      
+    return count
+        
   '''
   the idea is for arr[i:j] whose XOR sum is 0, any (i, j, k) will form the 2 arrays
   that has the same XOR sums; then we only need to count how many prefix XOR sums

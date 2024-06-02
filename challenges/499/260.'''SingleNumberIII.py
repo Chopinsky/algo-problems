@@ -26,11 +26,27 @@ Constraints:
 Each integer in nums will appear twice, only two integers will appear once.
 '''
 
-
 from typing import List
 
-
 class Solution:
+  def singleNumber(self, nums: List[int]) -> List[int]:
+    base = 0
+    for val in nums:
+      base ^= val
+    
+    mask = 1
+    while mask & base == 0:
+      mask <<= 1
+    
+    num1, num2 = 0, 0
+    for val in nums:
+      if val & mask == 0:
+        num1 ^= val
+      else:
+        num2 ^= val
+        
+    return [num1, num2]
+  
   def singleNumber(self, nums: List[int]) -> List[int]:
     double = 0
     k = 0

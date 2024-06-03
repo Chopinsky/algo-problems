@@ -33,8 +33,33 @@ Constraints:
 s and t consist only of lowercase English letters.
 '''
 
+from collections import defaultdict
+from bisect import bisect_right
 
 class Solution:
+  def appendCharacters(self, s: str, t: str) -> int:
+    pos = defaultdict(list)
+    ls, lt = len(s), len(t)
+    last = -1
+    
+    for i in range(ls):
+      ch = s[i]
+      pos[ch].append(i)
+    
+    for i in range(lt):
+      ch = t[i]
+      if ch not in pos:
+        return lt-i
+      
+      cand = pos[ch]
+      j = bisect_right(cand, last)
+      if j >= len(cand):
+        return lt-i
+      
+      last = cand[j]
+      
+    return 0
+        
   def appendCharacters(self, s: str, t: str) -> int:
     i = 0
     for ch in s:

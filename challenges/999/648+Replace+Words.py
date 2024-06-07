@@ -31,8 +31,51 @@ sentence does not have leading or trailing spaces.
 
 from typing import List
 
-
 class Solution:
+  def replaceWords(self, dictionary: List[str], sentence: str) -> str:
+    root = [None]*26 + [False]
+    
+    def add(word: str):
+      curr = root
+      
+      for ch in word:
+        idx = ord(ch) - ord('a')
+        if curr[idx] is None:
+          curr[idx] = [None]*26 + [False]
+          
+        curr = curr[idx]
+          
+      curr[26] = True
+      
+    def search(word: str):
+      curr = root
+      res = ''
+      
+      for ch in word:
+        idx = ord(ch) - ord('a')
+        if curr[idx] == None:
+          return word
+        
+        curr = curr[idx]
+        res += ch
+        
+        if curr[26] == True:
+          return res
+        
+      return word
+    
+    for word in dictionary:
+      add(word)
+      
+    words = sentence.split(' ')
+    ans = []
+    # print(words)
+    
+    for word in words:
+      ans.append(search(word))
+    
+    return ' '.join(ans)
+        
   def replaceWords(self, dictionary: List[str], sentence: str) -> str:
     if not sentence:
       return ''

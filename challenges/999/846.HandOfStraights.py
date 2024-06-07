@@ -17,17 +17,38 @@ Explanation: Alice's hand can not be rearranged into groups of 4.
 
 Constraints:
 
-1 <= hand.length <= 104
-0 <= hand[i] <= 109
+1 <= hand.length <= 10^4
+0 <= hand[i] <= 10^9
 1 <= groupSize <= hand.length
 '''
-
 
 from collections import Counter
 from typing import List
 
-
 class Solution:
+  def isNStraightHand(self, hand: List[int], groupSize: int) -> bool:
+    n = len(hand)
+    if n % groupSize != 0:
+      return False
+    
+    c = Counter(hand)
+    cand = sorted(c, reverse=True)
+    
+    while cand:
+      num = cand.pop()
+      cnt = c[num]
+      if cnt == 0:
+        continue
+        
+      for offset in range(groupSize):
+        curr = num+offset
+        if curr not in c or c[curr] < cnt:
+          return False
+        
+        c[curr] -= cnt
+      
+    return True
+    
   def isNStraightHand(self, hand: List[int], groupSize: int) -> bool:
     count = Counter(hand)
     nums = sorted(set(hand))

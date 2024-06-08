@@ -29,8 +29,26 @@ Constraints:
 
 from typing import List
 
-
 class Solution:
+  def checkSubarraySum(self, nums: List[int], k: int) -> bool:
+    seen_mod = {}
+    prefix = 0 
+    
+    for idx, val in enumerate(nums):
+      prefix += val
+      mod = prefix % k
+      if (idx > 0 and mod == 0):
+        return True
+      
+      if mod not in seen_mod:
+        seen_mod[mod] = idx
+        continue
+        
+      if idx-seen_mod[mod] >= 2:
+        return True
+      
+    return False
+        
   def checkSubarraySum(self, nums: List[int], k: int) -> bool:
     prefix = nums[0]
     store = {0: -1}

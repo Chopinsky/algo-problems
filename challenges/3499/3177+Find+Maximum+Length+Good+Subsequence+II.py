@@ -62,9 +62,11 @@ class Solution:
     long = 1
     # print(ks)
     
-    def update_top(i: int, val: int, ln: int):
+    def update_top(i: int, val: int):
       arr = top[i]
-      if val == arr[0]:
+      ln = ks[i][val]
+      
+      if val == arr[0][0]:
         arr[0] = (val, ln)
 
       elif val == arr[1][0]:
@@ -86,29 +88,28 @@ class Solution:
           if val in ks[i]:
             ks[i][val] += 1
             ln = max(ln, ks[i][val])
-            update_top(i, val, ks[i][val])
+            update_top(i, val)
           
           continue
 
         l0 = 0
         seq = ks[i]
-        seq_top = top[i]
         
-        if val != seq_top[0][0] and seq_top[0][0] > 0:
-          l0 = max(l0, seq_top[0][1])
+        if val != top[i][0][0] and top[i][0][0] > 0:
+          l0 = max(l0, top[i][0][1])
           
-        elif val != seq_top[1][0] and seq_top[1][0] > 0:
-          l0 = max(l0, seq_top[1][1])
+        elif val != top[i][1][0] and top[i][1][0] > 0:
+          l0 = max(l0, top[i][1][1])
           
         if l0 > 0:
           ks[i-1][val] = max(ks[i-1].get(val, 0), l0+1)
           ln = max(ln, ks[i-1][val])
-          update_top(i-1, val, l0+1)
+          update_top(i-1, val)
         
         if val in ks[i] or i == k:
           seq[val] = seq.get(val, 0) + 1
           ln = max(ln, seq[val])
-          update_top(i, val, seq[val])
+          update_top(i, val)
         
       return ln
     

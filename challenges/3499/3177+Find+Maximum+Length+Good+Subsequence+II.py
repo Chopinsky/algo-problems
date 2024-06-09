@@ -84,22 +84,23 @@ class Solution:
       ln = 0
       
       for i in range(k+1):
+        seq = ks[i]
+
         if i == 0:
-          if val in ks[i]:
-            ks[i][val] += 1
-            ln = max(ln, ks[i][val])
+          if val in seq:
+            seq[val] += 1
+            ln = max(ln, seq[val])
             update_top(i, val)
           
           continue
 
         l0 = 0
-        seq = ks[i]
-        
-        if val != top[i][0][0] and top[i][0][0] > 0:
-          l0 = max(l0, top[i][0][1])
-          
-        elif val != top[i][1][0] and top[i][1][0] > 0:
-          l0 = max(l0, top[i][1][1])
+        seq_top = top[i]
+
+        if val != seq_top[0][0] and seq_top[0][0] > 0:
+          l0 = max(l0, seq_top[0][1])
+        elif val != seq_top[1][0] and seq_top[1][0] > 0:
+          l0 = max(l0, seq_top[1][1])
           
         if l0 > 0:
           ks[i-1][val] = max(ks[i-1].get(val, 0), l0+1)

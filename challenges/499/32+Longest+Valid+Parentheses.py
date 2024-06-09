@@ -20,9 +20,58 @@ Constraints:
 
 0 <= s.length <= 3 * 10^4
 s[i] is '(', or ')'.
+
+Test cases:
+
+"(()"
+")()())"
+""
+"()"
+"()(())"
+"(()())"
+"((()))())"
+"(())()(()(("
+"()(((()(()))))"
 '''
 
 class Solution:
+  def longestValidParentheses(self, s: str) -> int:
+    stack = []
+    long = 0
+    n = len(s)
+    
+    def expand(l: int, r: int):
+      # expand the valid range to [l, r]
+      while l-1 >= 0 and r+1 < n and s[l-1] == '(' and s[r+1] == ')':
+        l -= 1
+        r += 1
+      
+      # can merge
+      while stack and stack[-1][1] == l-1:
+        l, _ = stack.pop()
+        
+      if l > 0 and r < n-1 and s[l-1] == '(' and s[r+1] == ')':
+        l, r = expand(l, r)
+      
+      return (l, r)
+    
+    i = 0
+    while i < n:
+      ch = s[i]
+      if ch == '(' or i == 0 or s[i-1] != '(':
+        i += 1
+        continue
+        
+      l, r = expand(i-1, i)
+      stack.append((l, r))
+      long = max(long, r-l+1)
+      
+      # quick shift
+      i = max(i, r)
+      i += 1
+    
+    return long
+  
   def longestValidParentheses(self, s: str) -> int:
     stack = []
     long, length = 0, 0
@@ -50,7 +99,6 @@ class Solution:
 
     return long
     
-
   def longestValidParentheses0(self, s: str) -> int:
     if not s:
       return 0

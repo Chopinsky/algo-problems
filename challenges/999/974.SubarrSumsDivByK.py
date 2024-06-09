@@ -22,12 +22,24 @@ Constraints:
 2 <= k <= 10^4
 '''
 
-
 from typing import List
 from collections import defaultdict
 
-
 class Solution:
+  def subarraysDivByK(self, nums: List[int], k: int) -> int:
+    cnt = defaultdict(int)
+    cnt[0] += 1
+    prefix = 0
+    total = 0
+    
+    for val in nums:
+      prefix += val
+      mod = prefix % k
+      total += cnt[mod]
+      cnt[mod] += 1
+      
+    return total
+        
   def subarraysDivByK(self, nums: List[int], k: int) -> int:
     store = defaultdict(int)
     store[0] += 1
@@ -41,7 +53,6 @@ class Solution:
       store[mod] += 1
       
     return count
-    
     
   def subarraysDivByK(self, nums: List[int], k: int) -> int:
     prefix = 0

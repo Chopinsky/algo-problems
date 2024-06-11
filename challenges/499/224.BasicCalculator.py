@@ -29,8 +29,67 @@ There will be no two consecutive operators in the input.
 Every number and running calculation will fit in a signed 32-bit integer.
 '''
 
-
 class Solution:
+  def calculate(self, s: str) -> int:
+    stack = []
+    
+    def eval_seg():
+      curr = 0
+      # print('eval:', stack)
+      
+      while stack and stack[-1] != '(':
+        val = stack.pop()
+        
+        if stack and stack[-1] != '(':
+          sign = stack.pop()
+          if sign == '-':
+            val = -val
+            
+        curr += val
+      
+      if stack and stack[-1] == '(':
+        stack.pop()
+        
+      stack.append(curr)
+      
+    curr = 0
+    parsing = False
+    
+    for ch in s:
+      if parsing or '0' <= ch <= '9':
+        parsing = True
+        curr = 10*curr + int(ch)
+        continue
+
+      if parsing:
+        stack.append(curr)
+        curr = 0
+        parsing = False
+
+      if ch == ' ':
+        continue
+      
+      if ch == ')':
+        eval_seg()
+        continue
+        
+      if ch == '(':
+        stack.append(ch)
+        continue
+        
+      if ch == '+' or ch == '-':
+        stack.append(ch)
+        continue
+      
+    if parsing:
+      stack.append(curr)
+      
+    # print('done:', stack)
+    while len(stack) > 1:
+      eval_seg()
+      
+    return stack.pop()
+        
   def calculate(self, s: str) -> int:
     stack = []
     curr = []

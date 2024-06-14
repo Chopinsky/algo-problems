@@ -24,8 +24,22 @@ Constraints:
 
 from typing import List
 
-
 class Solution:
+  def minIncrementForUnique(self, nums: List[int]) -> int:
+    nums.sort()
+    ops = 0
+    expected = -1
+    
+    for val in nums:
+      if val >= expected:
+        expected = val+1
+        continue
+        
+      ops += expected - val
+      expected += 1
+    
+    return ops
+        
   def minIncrementForUnique(self, nums: List[int]) -> int:
     nums.sort()
     count = 0

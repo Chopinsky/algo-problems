@@ -34,13 +34,59 @@ n == capital.length
 1 <= n <= 10^5
 0 <= profits[i] <= 10^4
 0 <= capital[i] <= 10^9
+
+Test cases:
+
+2
+0
+[1,2,3]
+[0,1,1]
+3
+0
+[1,2,3]
+[0,1,2]
+1
+2
+[1,2,3]
+[1,1,2]
+1
+0
+[1,2,3]
+[1,1,2]
+11
+11
+[1,2,3]
+[11,12,13]
+1
+0
+[1,2,3]
+[0,1,2]
 '''
 
 from heapq import heappush, heappop
 from typing import List
 
-
 class Solution:
+  def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
+    projects = sorted([(c, p) for c, p in zip(capital, profits)], reverse=True)
+    cand = []
+    curr = w
+    # print(projects)
+    
+    while cand or (projects and projects[-1][0] <= curr):
+      while projects and projects[-1][0] <= curr:
+        c, p = projects.pop()
+        heappush(cand, -p)
+      
+      if cand:
+        curr += -heappop(cand)
+        k -= 1
+        
+      if k == 0:
+        break
+        
+    return curr
+        
   def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
     src = sorted(zip(capital, profits), reverse=True)
     cand = []
@@ -60,7 +106,6 @@ class Solution:
       
     return w
     
-
   def findMaximizedCapital(self, k: int, w: int, profits: List[int], capital: List[int]) -> int:
     n = len(profits)
     prj = sorted((-capital[i], profits[i]) for i in range(n))

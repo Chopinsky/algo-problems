@@ -31,13 +31,54 @@ Constraints:
 1 <= nums[i] <= 10 ** 4
 nums is sorted in ascending order.
 1 <= n <= 2 ** 31 - 1
-'''
 
+Test cases:
+
+[1,3]
+6
+[1,5,10]
+20
+[1,2,2]
+5
+[1,7,21,31,34,37,40,43,49,87,90,92,93,98,99]
+12
+[1,2,31,33]
+2147483647
+[1,2,16,19,31,35,36,64,64,67,69,71,73,74,76,79,80,91,95,96,97]
+8
+'''
 
 from typing import List
 
-
 class Solution:
+  def minPatches(self, nums: List[int], n: int) -> int:
+    top = 0
+    ops = 0
+
+    if nums[0] > 1:
+      # add 1 to the array
+      top = 1
+      ops += 1
+    
+    for curr in nums:
+      # print('iter:', curr, top, ops)
+      while top+1 < curr and top < n:
+        val = top+1
+        top += val
+        ops += 1
+        
+      top += curr
+      if top >= n:
+        break
+      
+    while top < n:
+      val = top+1
+      top += val
+      ops += 1
+        
+    return ops
+        
+
   '''
   use the idea of `dynamic programming` without using dp.
 

@@ -28,11 +28,25 @@ m == worker.length
 1 <= difficulty[i], profit[i], worker[i] <= 10^5
 '''
 
-
 from typing import List
 
-
 class Solution:
+  def maxProfitAssignment(self, difficulty: List[int], profit: List[int], worker: List[int]) -> int:
+    cand = sorted(zip(difficulty, profit))
+    worker.sort()
+    total_profit = 0
+    idx = 0
+    p = 0
+    
+    for w in worker:
+      while idx < len(cand) and cand[idx][0] <= w:
+        p = max(p, cand[idx][1])
+        idx += 1
+        
+      total_profit += p
+    
+    return total_profit
+        
   def maxProfitAssignment(self, difficulty: List[int], profit: List[int], worker: List[int]) -> int:
     jobs = sorted([(d, p) for d, p in zip(difficulty, profit)])
     worker.sort()

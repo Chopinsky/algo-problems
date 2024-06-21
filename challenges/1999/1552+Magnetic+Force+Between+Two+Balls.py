@@ -29,8 +29,43 @@ All integers in position are distinct.
 
 from typing import List
 
-
 class Solution:
+  def maxDistance(self, pos: List[int], m: int) -> int:
+    if m > len(pos):
+      return 0
+    
+    pos.sort()
+    if m == 2:
+      return pos[-1] - pos[0]
+    
+    def check(dist: int) -> bool:
+      # place the first ball @ pos[0]
+      cnt = m-1
+      prev = pos[0]
+      
+      for p in pos[1:]:
+        if p-prev >= dist:
+          cnt -= 1
+          prev = p
+        
+        if cnt <= 0:
+          break
+      
+      return cnt <= 0
+    
+    l, r = 1, pos[-1]
+    last = 1
+    
+    while l <= r:
+      mid = (l+r)//2
+      if check(mid):
+        l = mid+1
+        last = mid
+      else:
+        r = mid-1
+        
+    return last
+        
   def maxDistance(self, pos: List[int], m: int) -> int:
     pos.sort()
     if m == 2:

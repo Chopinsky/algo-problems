@@ -28,8 +28,23 @@ Constraints:
 
 from typing import List
 
-
 class Solution:
+  def numberOfSubarrays(self, nums: List[int], k: int) -> int:
+    odd_pos = []
+    total = 0
+    
+    for i, val in enumerate(nums):
+      if val%2 == 1:
+        odd_pos.append(i)
+        
+      if len(odd_pos) >= k:
+        ldx = len(odd_pos)-k
+        left_count = odd_pos[ldx] - (-1 if ldx == 0 else odd_pos[ldx-1])
+        total += left_count
+        # print('iter:', (i, val), left_count)
+        
+    return total
+  
   def numberOfSubarrays(self, nums: List[int], k: int) -> int:
     n = len(nums)
     odd = []

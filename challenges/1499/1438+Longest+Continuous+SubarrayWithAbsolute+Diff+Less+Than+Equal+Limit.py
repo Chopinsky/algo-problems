@@ -37,8 +37,40 @@ Constraints:
 from typing import List
 from heapq import heappush, heappop
 
-
 class Solution:
+  def longestSubarray(self, nums: List[int], limit: int) -> int:
+    max_heap = []
+    min_heap = []
+    j = 0
+    n = len(nums)
+    long = 1
+    
+    def get_diff(val: int):
+      if not max_heap or not min_heap:
+        return 0
+      
+      return max(abs(val+max_heap[0][0]), abs(val-min_heap[0][0]))
+    
+    for i in range(n):
+      while max_heap and max_heap[0][1] < i:
+        heappop(max_heap)
+        
+      while min_heap and min_heap[0][1] < i:
+        heappop(min_heap)
+        
+      while j < n and get_diff(nums[j]) <= limit:
+        heappush(max_heap, (-nums[j], j))
+        heappush(min_heap, (nums[j], j))
+        j += 1
+        
+      long = max(long, j-i)
+      # print('iter:', (i, j))
+      
+      if j >= n:
+        break
+      
+    return long
+        
   def longestSubarray(self, nums: List[int], limit: int) -> int:
     l, r = 0, 0
     n = len(nums)

@@ -27,7 +27,6 @@ Explanation:
 Flip nums[0],nums[1],nums[2]: nums becomes [1,1,1,1,0,1,1,0]
 Flip nums[4],nums[5],nums[6]: nums becomes [1,1,1,1,1,0,0,0]
 Flip nums[5],nums[6],nums[7]: nums becomes [1,1,1,1,1,1,1,1]
- 
 
 Constraints:
 
@@ -35,12 +34,38 @@ Constraints:
 1 <= k <= nums.length
 '''
 
-
 from typing import List
 from collections import deque
 
-
 class Solution:
+  def minKBitFlips(self, nums: List[int], k: int) -> int:
+    if k == 1:
+      return nums.count(0)
+    
+    n = len(nums)
+    changes = [0]*n
+    curr = 0
+    ops = 0
+    
+    for i in range(n):
+      curr += changes[i]
+      val = nums[i]
+      post_flips = val if curr%2 == 0 else 1-val
+      
+      if i+k > n:
+        if post_flips == 0:
+          return -1
+        
+        continue
+      
+      if post_flips == 0:
+        ops += 1
+        curr += 1
+        if i+k < n:
+          changes[i+k] -= 1
+      
+    return ops
+  
   def minKBitFlips(self, nums: List[int], k: int) -> int:
     n = len(nums)
     presum = nums.copy()

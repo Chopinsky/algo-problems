@@ -32,8 +32,26 @@ class TreeNode:
     self.left = left
     self.right = right
 
-
 class Solution:
+  def bstToGst(self, root: TreeNode) -> TreeNode:
+    if not root:
+      return root
+    
+    total = [0]
+    
+    def update(node):
+      if not node:
+        return
+      
+      update(node.right)
+      node.val += total[0]
+      total[0] = node.val
+      update(node.left)
+    
+    update(root)
+        
+    return root
+  
   def bstToGst(self, root: TreeNode) -> TreeNode:
     def update(node, suffix):
       if not node:

@@ -26,8 +26,48 @@ class TreeNode:
     self.left = left
     self.right = right
 
-
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
 class Solution:
+  def balanceBST(self, root: TreeNode) -> TreeNode:
+    stack = []
+    
+    def flatten(node):
+      if not node:
+        return
+      
+      flatten(node.left)
+      node.left = None
+      
+      stack.append(node)
+      
+      flatten(node.right)
+      node.right = None
+      
+    def rebuild(arr):
+      if not arr:
+        return None
+      
+      n = len(arr)
+      if n == 1:
+        return arr[0]
+        
+      idx = n//2
+      root = arr[idx]
+      root.left = rebuild(arr[:idx])
+      root.right = rebuild(arr[idx+1:])
+      
+      return root
+    
+    flatten(root)
+    # print(stack)
+    
+    return rebuild(stack)
+    
   def balanceBST(self, root: TreeNode) -> TreeNode:
     arr = []
     def to_arr(root):

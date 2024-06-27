@@ -45,8 +45,32 @@ from heapq import heappush, heappop
 from collections import defaultdict
 from typing import List
 
-
 class Solution:
+  def maxStarSum(self, vals: List[int], edges: List[List[int]], k: int) -> int:
+    if k == 0:
+      return max(vals)
+    
+    n = len(vals)
+    cand = []
+    graph = [val for val in vals]
+    edges_count = [0]*n
+    
+    for u, v in edges:
+      if vals[v] > 0:
+        cand.append((vals[v], u))
+        
+      if vals[u] > 0:
+        cand.append((vals[u], v))
+    
+    cand.sort()
+    while cand:
+      val, root = cand.pop()
+      if edges_count[root] < k:
+        graph[root] += val
+        edges_count[root] += 1
+    
+    return max(graph)
+  
   def maxStarSum(self, vals: List[int], edges: List[List[int]], k: int) -> int:
     n = len(vals)
     if k == 0:

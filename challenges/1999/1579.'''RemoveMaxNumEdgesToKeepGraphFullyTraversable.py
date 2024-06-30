@@ -36,59 +36,51 @@ edges[i].length == 3
 All tuples (typei, ui, vi) are distinct.
 '''
 
-
 from typing import List
-
 
 class Solution:
   def maxNumEdgesToRemove(self, n: int, edges: List[List[int]]) -> int:
     parents = [-1 for _ in range(n + 1)]
+
     res = 0
-    
-    for t, s, e in edges:
-      if t == 3:
-        if self.find(s, parents) == self.find(e, parents):
-          res += 1
-          continue
+    res += self.update(edges, parents, 3)
 
-        self.union(s, e, parents)
+    alice = parents.copy()
+    res += self.update(edges, alice, 1)
+        
+    bob = parents.copy()
+    res += self.update(edges, bob, 2)
 
-    alice = [val for val in parents]
-    for t, s, e in edges:
-      if t == 1:
-        if self.find(s, alice) == self.find(e, alice):
-          res += 1
-          continue
-          
-        self.union(s, e, alice)
-        
-    bob = [val for val in parents]
-    for t, s, e in edges:
-      if t == 2:
-        if self.find(s, bob) == self.find(e, bob):
-          res += 1
-          continue
-          
-        self.union(s, e, bob)
-
-    tot = 0
-    for val in alice[1:]:
-      if val < 0:
-        tot += 1
-        
-    if tot > 1:
-      return -1
-    
-    tot = 0
-    for val in bob[1:]:
-      if val < 0:
-        tot += 1
-        
-    if tot > 1:
+    if not self.verify(alice[1:]) or not self.verify(bob[1:]):
       return -1
 
     return res
     
+  def update(self, edges, p, num):
+    count = 0
+    
+    for t, s, e in edges:
+      if t != num:
+        continue
+        
+      if self.find(s, p) == self.find(e, p):
+        count += 1
+        continue
+
+      self.union(s, e, p)
+      
+    return count
+    
+  def verify(self, parents):
+    count = 0
+    for val in parents:
+      if val < 0:
+        count += 1
+        
+      if count > 1:
+        return False
+    
+    return True
 
   def find(self, node, parents):
     while parents[node] >= 0:
@@ -96,15 +88,14 @@ class Solution:
       
     return node
 
-
-  def union(self, s, e, group):
-    fP = self.find(s, group)
+  def union(self, s, e, parents):
+    fP = self.find(s, parents)
     if fP != s:
-      group[s] = fP
+      parents[s] = fP
 
-    sP = self.find(e, group)
+    sP = self.find(e, parents)
     if sP != e:
-      group[e] = sP
+      parents[e] = sP
 
     if fP == sP:
       return
@@ -112,75 +103,9 @@ class Solution:
     if sP < fP:
       fP, sP = sP, fP
 
-    group[fP] += group[sP]
-    group[sP] = fP
-        
-        
-  def maxNumEdgesToRemove(self, n: int, edges: List[List[int]]) -> int:
-    arr = [i for i in range(n+1)]
-    
-    def find(x: int) -> int:
-      while arr[x] != x:
-        x = arr[x]
+    parents[fP] += parents[sP]
+    parents[sP] = fP
 
-      return x
-
-    def union(x: int, y: int) -> bool:
-      xi, yi = find(x), find(y)
-      if xi == yi:
-        return False 
-      
-      if yi <= xi:
-        arr[xi] = yi
-      else:
-        arr[yi] = xi
-        
-      return True 
-
-    removes = 0
-    e1, e2 = 0, 0
-    
-    # add all type-3 edges, where both a and b can access
-    for t, x, y in edges:
-      if t != 3:
-        continue
-          
-      if union(x,y):
-        e1 += 1
-        e2 += 1
-      else:
-        removes += 1
-
-    # add only type-1 edges, alice can only traverse
-    # the graph if there are n-1 unique edges
-    cache = arr.copy()
-    for t, x, y in edges:
-      if t != 1:
-        continue
-          
-      if union(x, y):
-        e1 += 1
-      else:
-        removes += 1
-
-    if e1 != n-1:
-      return -1
-    
-    # add only type-1 edges, alice can only traverse
-    # the graph if there are n-1 unique edges
-    arr = cache
-    for t, x, y in edges:
-      if t != 2:
-        continue
-        
-      if union(x, y):
-        e2 += 1
-      else:
-        removes += 1
-    
-    return removes if e2 == n-1 else -1
-      
-  
   def maxNumEdgesToRemove(self, n: int, edges: List[List[int]]) -> int:
     a, b, c = set(), set(), set()
     an = [i for i in range(n+1)]

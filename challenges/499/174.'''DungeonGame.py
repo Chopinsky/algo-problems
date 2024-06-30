@@ -36,8 +36,33 @@ import math
 from typing import List
 from heapq import heappop, heappush
 
-
 class Solution:
+  def calculateMinimumHP(self, dg: List[List[int]]) -> int:
+    m, n = len(dg), len(dg[0])
+    grid = [[math.inf]*n for _ in range(m)]
+    
+    for i in range(m-1, -1, -1):
+      for j in range(n-1, -1, -1):
+        point = -dg[i][j] 
+        
+        if i == m-1 and j == n-1:
+          grid[i][j] = max(1, 1+point)
+          continue
+          
+        if i == m-1:
+          grid[i][j] = max(1, grid[i][j+1]+point)
+          continue
+          
+        if j == n-1:
+          grid[i][j] = max(1, grid[i+1][j]+point)
+          continue
+          
+        dest = min(grid[i][j+1], grid[i+1][j])
+        grid[i][j] = max(1, dest+point)
+    
+    # print(grid)
+    return grid[0][0]
+    
   def calculateMinimumHP(self, dun: List[List[int]]) -> int:
     m, n = len(dun), len(dun[0])
     if m == 1 and n == 1:

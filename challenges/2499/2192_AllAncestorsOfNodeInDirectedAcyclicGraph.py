@@ -46,8 +46,33 @@ The graph is directed and acyclic.
 from typing import List
 from collections import defaultdict
 
-
 class Solution:
+  def getAncestors(self, n: int, edges: List[List[int]]) -> List[List[int]]:
+    edges.sort()
+    anc = [set() for _ in range(n)]
+    cand = set(i for i in range(n))
+    pc = [0 for _ in range(n)]
+    child = [[] for _ in range(n)]
+    # print(edges)
+    
+    for u, v in edges:
+      anc[v].add(u)
+      pc[v] += 1
+      cand.discard(v)
+      child[u].append(v)
+      
+    cand = list(cand)
+    while cand:
+      u = cand.pop()
+      
+      for v in child[u]:
+        anc[v] |= anc[u]
+        pc[v] -= 1
+        if not pc[v]:
+          cand.append(v)
+        
+    return [sorted(p) for p in anc]
+  
   def getAncestors(self, n: int, edges: List[List[int]]) -> List[List[int]]:
     ec = [0] * n
     e = defaultdict(list)

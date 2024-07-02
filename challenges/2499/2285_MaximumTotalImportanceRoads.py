@@ -32,7 +32,6 @@ Explanation: The figure above shows the country and the assigned values of [4,3,
 - The road (1,3) has an importance of 3 + 5 = 8.
 The total importance of all roads is 9 + 3 + 8 = 20.
 It can be shown that we cannot obtain a greater total importance than 20.
- 
 
 Constraints:
 
@@ -47,8 +46,19 @@ There are no duplicate roads.
 from typing import List
 from collections import defaultdict
 
-
 class Solution:
+  def maximumImportance(self, n: int, roads: List[List[int]]) -> int:
+    counter = [0]*n
+    
+    for u, v in roads:
+      counter[u] += 1
+      counter[v] += 1
+    
+    counter.sort()
+    # print(counter)
+    
+    return sum(counter[i]*(i+1) for i in range(n))
+        
   def maximumImportance(self, n: int, roads: List[List[int]]) -> int:
     edges = defaultdict(int)
     for u, v in roads:

@@ -36,15 +36,45 @@ The beginning and end of the linked list have Node.val == 0.
 
 from typing import Optional
 
-
 # Definition for singly-linked list.
 class ListNode:
   def __init__(self, val=0, next=None):
     self.val = val
     self.next = next
 
-
 class Solution:
+  def mergeNodes(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    if not head:
+      return head
+    
+    fakeHead = ListNode()
+    gp = None
+    prev = None
+    curr = head
+    
+    while curr:
+      nxt = curr.next
+      
+      if curr.val == 0:
+        if prev is None:
+          fakeHead.next = curr
+        else:
+          prev.next = curr
+      
+        gp = prev
+        prev = curr
+        curr.next = None
+        
+      else:
+        prev.val += curr.val
+        
+      curr = nxt
+      
+    if gp:
+      gp.next = None
+    
+    return fakeHead.next
+        
   def mergeNodes(self, head: Optional[ListNode]) -> Optional[ListNode]:
     seg_head, curr = None, head
     head, chain = None, None

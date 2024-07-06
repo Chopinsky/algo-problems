@@ -46,15 +46,50 @@ The number of nodes in the list is in the range [2, 10^5].
 from typing import Optional, List
 import math
 
-
 # Definition for singly-linked list.
 class ListNode:
   def __init__(self, val=0, next=None):
     self.val = val
     self.next = next
 
-
 class Solution:
+  def nodesBetweenCriticalPoints(self, head: Optional[ListNode]) -> List[int]:
+    prev = None
+    first = -1
+    last = -1
+    curr = head
+    min_dist = float('inf')
+    
+    def is_critical_point(node):
+      if not prev or not node.next:
+        return False
+      
+      if node.val > prev.val and node.val > node.next.val:
+        return True
+      
+      return node.val < prev.val and node.val < node.next.val
+    
+    idx = 0
+    
+    while curr:
+      idx += 1
+      if is_critical_point(curr):
+        if first < 0:
+          first = idx
+        
+        if last > 0:
+          min_dist = min(min_dist, idx-last)
+          
+        last = idx
+        
+      prev = curr
+      curr = curr.next
+        
+    if first < 0 or last < 0 or min_dist == float('inf'):
+      return [-1, -1]
+    
+    return [min_dist, last-first]
+        
   def nodesBetweenCriticalPoints(self, head: Optional[ListNode]) -> List[int]:
     idx = 0
     curr, prev = head, None

@@ -37,32 +37,40 @@ Constraints:
 1 <= k <= n <= 500
 '''
 
-
 from collections import deque
 
-
 class Solution:
+  def findTheWinner(self, n: int, k: int) -> int:
+    def find(n: int, k: int):
+      if n == 1:
+        return 1
+      
+      return 1 + (find(n-1, k) + (k-1)) % n
+      
+    return find(n, k)
+  
+  def findTheWinner(self, n: int, k: int) -> int:
+    if k == 1:
+      return n
+    
+    curr = list(range(n))
+    
+    while len(curr) > 1:
+      ln = len(curr)
+      pos = (k-1) % ln
+      curr = curr[pos+1:] + curr[:pos]
+      # print(pos, curr)
+      
+    return 1+curr.pop()
+        
   def findTheWinner(self, n: int, k: int) -> int:
     winner = 0
     
     # thinking backwards: when n = n0 and winner is n1, then for 
     # n0+1 people, the winner is (n1 + k) % (n0+1)
-    for i in range(1, n+1):
-      winner = (winner + k) % i
+    for cnt in range(1, n+1):
+      winner = (winner + k) % cnt
       
     # the result is 1-indexed, shift by 1
     return winner + 1
-  
-    
-  def findTheWinner0(self, n: int, k: int) -> int:
-    q = deque([i+1 for i in range(n)])
-    
-    while len(q) > 1:
-      offset = (k-1) % len(q)
-      for i in range(offset):
-        q.append(q.popleft())
-        
-      q.popleft()
-    
-    return q[0]
     

@@ -38,8 +38,26 @@ arrivali <= arrivali+1
 
 from typing import List
 
-
 class Solution:
+  def averageWaitingTime(self, customers: List[List[int]]) -> float:
+    n = len(customers)
+    if n == 0:
+      return 0
+    
+    total = 0
+    curr = customers[0][0]
+    
+    for arrival, time in customers:
+      if arrival > curr:
+        curr = arrival
+        
+      curr += time
+      total += (curr - arrival)
+      
+    # print(total, n)
+    
+    return total / n
+        
   def averageWaitingTime(self, customers: List[List[int]]) -> float:
     curr_time = customers[0][0]
     wait_time = 0

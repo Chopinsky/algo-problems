@@ -37,8 +37,24 @@ Folder names consist of lowercase English letters and digits.
 
 from typing import List
 
-
 class Solution:
+  def minOperations(self, logs: List[str]) -> int:
+    levels = 0
+    
+    for log in logs:
+      if log == './':
+        continue
+        
+      if log == '../':
+        if levels > 0:
+          levels -= 1
+        
+        continue
+        
+      levels += 1
+      
+    return levels
+        
   def minOperations(self, logs: List[str]) -> int:
     stack = []
     for val in logs:

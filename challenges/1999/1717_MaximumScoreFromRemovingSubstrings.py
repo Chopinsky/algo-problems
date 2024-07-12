@@ -29,8 +29,34 @@ Constraints:
 s consists of lowercase English letters.
 '''
 
-
 class Solution:
+  def maximumGain(self, s: str, x: int, y: int) -> int:
+    def get_score(lst, pat, s0):
+      s1 = 0
+      stack = []
+      # print(lst, pat, s0)
+      
+      for ch in lst:
+        if stack and stack[-1] == pat[0] and ch == pat[1]:
+          stack.pop()
+          s1 += s0
+          continue
+          
+        stack.append(ch)
+    
+      return stack, s1
+    
+    if x >= y:
+      l1, s1 = get_score(list(s), 'ab', x)
+      _, s2 = get_score(l1, 'ba', y)
+      
+      return s1+s2
+    
+    l1, s1 = get_score(list(s), 'ba', y)
+    _, s2 = get_score(l1, 'ab', x)
+    
+    return s1+s2
+        
   def maximumGain(self, s: str, x: int, y: int) -> int:
     stack = []
     if x >= y:

@@ -43,8 +43,35 @@ All values in positions are distinct
 
 from typing import List
 
-
 class Solution:
+  def survivedRobotsHealths(self, positions: List[int], healths: List[int], directions: str) -> List[int]:
+    n = len(positions)
+    robo = sorted(zip(positions, healths, list(directions), list(range(n))))
+    stack = []
+    # print(robo)
+    
+    for _, h, d, idx in robo:
+      if d == 'R' or not stack or d == stack[-1][1] or 'L' == stack[-1][1]:
+        stack.append([h, d, idx])
+        continue
+        
+      while stack and h > 0 and stack[-1][1] == 'R':
+        if h >= stack[-1][0]:
+          x = stack.pop()
+          h = 0 if h == x[0] else h-1
+        else:
+          # print('keep:', stack[-1], h)
+          stack[-1][0] -= 1
+          h = 0
+          
+      if h > 0:
+        stack.append([h, d, idx])
+        
+    stack.sort(key=lambda x: x[2])
+    # print(stack)
+    
+    return list(x[0] for x in stack)
+        
   def survivedRobotsHealths(self, positions: List[int], healths: List[int], directions: str) -> List[int]:
     n = len(positions)
     src = sorted([(positions[i], i, healths[i], directions[i]) for i in range(n)])

@@ -40,8 +40,46 @@ class TreeNode:
     self.left = left
     self.right = right
 
-
 class Solution:
+  def getDirections(self, root: Optional[TreeNode], startValue: int, destValue: int) -> str:
+    def find(node, val: int) -> str:
+      if not node:
+        return ""
+      
+      stack = [[node, '']]
+      
+      while stack:
+        if not stack[-1][0]:
+          stack.pop()
+          continue
+          
+        if stack[-1][0].val == val:
+          break
+          
+        if stack[-1][1] == 'R':
+          stack.pop()
+          continue
+          
+        if stack[-1][1] == '':
+          stack[-1][1] = 'L'
+          stack.append([stack[-1][0].left, ''])
+          continue
+          
+        stack[-1][1] = 'R'
+        stack.append([stack[-1][0].right, ''])
+        
+      return ''.join(item[1] for item in stack)
+    
+    sp = find(root, startValue)
+    dp = find(root, destValue)
+    # print('find:', sp, dp)
+    
+    idx = 0
+    while idx < len(sp) and idx < len(dp) and sp[idx] == dp[idx]:
+      idx += 1
+      
+    return "U"*len(sp[idx:]) + dp[idx:]
+        
   def getDirections(self, root: Optional[TreeNode], startValue: int, destValue: int) -> str:
     if not root or startValue == destValue:
       return ''

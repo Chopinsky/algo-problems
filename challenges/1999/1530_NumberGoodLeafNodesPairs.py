@@ -36,14 +36,51 @@ class TreeNode:
     self.left = left
     self.right = right
 
-
 class Solution:
+  def countPairs(self, root: TreeNode, dist: int) -> int:
+    def count(node):
+      if not node:
+        return 0, {}
+
+      if not node.left and not node.right:
+        return 0, {1:1}
+
+      cnt = {}
+      curr = 0
+      
+      lc, lcnt = count(node.left)
+      rc, rcnt = count(node.right)
+      # print('node:', node.val, (lc, rc), (lcnt, rcnt))
+      
+      for d0 in sorted(lcnt):
+        if d0 >= dist:
+          break
+        
+        cnt[d0+1] = cnt.get(d0+1, 0) + lcnt[d0]
+
+        for d1 in sorted(rcnt):
+          if d0+d1 > dist:
+            break
+            
+          curr += lcnt[d0] * rcnt[d1]
+      
+      for d1 in sorted(rcnt):
+        if d1 >= dist:
+          break
+          
+        cnt[d1+1] = cnt.get(d1+1, 0) + rcnt[d1]
+      
+      return curr+lc+rc, cnt
+    
+    total, _ = count(root)
+    
+    return total
+        
   def countPairs(self, root: TreeNode, distance: int) -> int:
     count = 0
     
     def test(root: TreeNode):
       nonlocal count
-      
       if not root:
         return {}
       

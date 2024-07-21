@@ -47,8 +47,60 @@ lefti != righti
 from typing import List, Dict, Set
 from collections import defaultdict
 
-
 class Solution:
+  def buildMatrix(self, k: int, rc: List[List[int]], cc: List[List[int]]) -> List[List[int]]:
+    def build(cond):
+      e = defaultdict(list)
+      cand = set(i for i in range(1, k+1))
+      pc = [0]*(k+1)
+      
+      for u, v in cond:
+        e[u].append(v)
+        cand.discard(v)
+        pc[v] += 1
+        
+      return e, cand, pc
+      
+    def set_idx(e, cand, pc, coord):
+      idx = 0
+      cand = sorted(cand)
+      
+      while idx < len(cand):
+        u = cand[idx]
+        coord[u].append(idx)
+        idx += 1
+        
+        for v in e[u]:
+          pc[v] -= 1
+          if not pc[v]:
+            cand.append(v)
+            
+      # print(coord)
+      
+    r, r_cand, rp = build(rc)
+    c, c_cand, cp = build(cc)
+    
+    if not r_cand or not c_cand:
+      return []
+    
+    # print('row:', r_cand, rp)
+    # print('col:', c_cand, cp)
+    
+    coord = defaultdict(list)
+    set_idx(r, r_cand, rp, coord)
+    set_idx(c, c_cand, cp, coord)
+    mat = [[0]*k for _ in range(k)]
+    # print(coord)
+    
+    for val, pos in coord.items():
+      if len(pos) < 2:
+        return []
+      
+      x, y = pos
+      mat[x][y] = val
+    
+    return mat
+  
   def buildMatrix(self, k: int, rowConditions: List[List[int]], colConditions: List[List[int]]) -> List[List[int]]:
     ans = [[0]*k for _ in range(k)] 
     rows = defaultdict(set)

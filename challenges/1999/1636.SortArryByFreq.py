@@ -27,12 +27,22 @@ Constraints:
 -100 <= nums[i] <= 100
 '''
 
-
 from typing import List
-from collections import defaultdict
-
+from collections import defaultdict, Counter
 
 class Solution:
+  def frequencySort(self, nums: List[int]) -> List[int]:
+    c = Counter(nums)
+    cand = sorted((cnt, -val) for val, cnt in c.items())
+    # print(cand)
+    res = []
+    
+    for cnt, val in cand:
+      val = -val
+      res += [val]*cnt
+      
+    return res
+        
   def frequencySort(self, nums: List[int]) -> List[int]:
     c = defaultdict(int)
     for i in nums:

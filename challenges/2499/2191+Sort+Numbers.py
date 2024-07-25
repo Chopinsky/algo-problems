@@ -43,8 +43,31 @@ All the values of mapping[i] are unique.
 from typing import List
 from functools import lru_cache
 
-
 class Solution:
+  def sortJumbled(self, mapping: List[int], nums: List[int]) -> List[int]:
+    @lru_cache(None)
+    def translate(val: int) -> int:
+      res = 0
+      
+      for ch in str(val):
+        v0 = ord(ch) - ord('0')
+        res = 10*res + mapping[v0]
+        
+      return res
+        
+    cand = []
+    n = len(nums)
+    
+    for i in range(n):
+      v0 = nums[i]
+      v1 = translate(v0)
+      cand.append((v1, i, v0))
+      
+    cand.sort()
+    # print(cand)
+    
+    return [v[2] for v in cand]
+        
   def sortJumbled(self, mapping: List[int], nums: List[int]) -> List[int]:
     values = {}
     

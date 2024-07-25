@@ -24,8 +24,55 @@ Constraints:
 
 from typing import List
 
-
 class Solution:
+  def sortArray(self, nums: List[int]) -> List[int]:
+    n = len(nums)
+    backup = [0]*n
+    
+    def swap(i, j):
+      nums[i], nums[j] = nums[j], nums[i]
+      
+    def sort(i: int, j: int):
+      if i >= j:
+        return
+      
+      if i+1 == j:
+        if nums[i] > nums[j]:
+          swap(i, j)
+        
+        return
+      
+      mid = (i+j) // 2
+      sort(i, mid)
+      sort(mid+1, j)
+      
+      p0 = i
+      p1 = mid+1
+      p2 = i
+      
+      while p0 <= mid or p1 <= j:
+        if p0 > mid:
+          backup[p2] = nums[p1]
+          p1 += 1
+        elif p1 > j:
+          backup[p2] = nums[p0]
+          p0 += 1
+        elif nums[p0] < nums[p1]:
+          backup[p2] = nums[p0]
+          p0 += 1
+        else:
+          backup[p2] = nums[p1]
+          p1 += 1
+          
+        p2 += 1
+      
+      for idx in range(i, j+1):
+        nums[idx] = backup[idx]
+        
+    sort(0, n-1)
+    
+    return nums
+        
   def sortArray(self, nums: List[int]) -> List[int]:
     def mergeSort(i: int, j: int):
       if i >= j:

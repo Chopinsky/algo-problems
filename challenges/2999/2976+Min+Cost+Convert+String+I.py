@@ -43,11 +43,74 @@ original[i] != changed[i]
 
 from typing import List
 
+from heapq import heappop, heappush
+from functools import lru_cache
+from collections import defaultdict
 
 class Solution:
   def minimumCost(self, source: str, target: str, original: List[str], changed: List[str], cost: List[int]) -> int:
+    if len(source) != len(target):
+      return -1
+    
+    m = {}
+    for s, t, c in zip(original, changed, cost):
+      if s == t:
+        continue
+      
+      m[s, t] = min(m.get((s, t), float('inf')), c)
+      
+    e = defaultdict(list)
+    for k, c in m.items():
+      e[k[0]].append((k[1], c))
+    
+    @lru_cache(None)
+    def search(ch0: str, ch1: str):
+      heap = [(0, ch0)]
+      seen = {ch0:0}
+      small = float('inf')
+      
+      while heap:
+        c0, ch = heappop(heap)
+        # if ch0 == 'd':
+        #   print('iter:', ch, c0)
+        
+        if c0 > seen[ch]:
+          continue
+        
+        for ch2, c1 in e[ch]:
+          c2 = c0+c1
+          if ch2 == ch1:
+            small = min(small, c2)
+            continue
+            
+          if ch2 in seen and c2 >= seen[ch2]:
+            continue
+            
+          seen[ch2] = c2
+          heappush(heap, (c2, ch2))
+        
+      return -1 if small == float('inf') else small
+      
+    # print(e)
+    total = 0
+    
+    for ch0, ch1 in zip(source, target):
+      if ch0 == ch1:
+        continue
+        
+      c0 = search(ch0, ch1)
+      if c0 < 0:
+        return -1
+      
+      # print(ch0, ch1, c0)
+      total += c0
+    
+    return total
+        
+  def minimumCost(self, source: str, target: str, original: List[str], changed: List[str], cost: List[int]) -> int:
     inf = float('inf')
     mat = [[inf if i != j else 0 for j in range(26)] for i in range(26)]
+    
     for i in range(len(original)):
       odx = ord(original[i]) - ord('a')
       cdx = ord(changed[i]) - ord('a')

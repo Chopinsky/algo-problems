@@ -73,8 +73,42 @@ Each vertex can be reached directly or indirectly from every other vertex.
 from typing import List
 from collections import defaultdict
 
-
 class Solution:
+  def secondMinimum(self, n: int, edges: List[List[int]], time: int, change: int) -> int:
+    e = defaultdict(set)
+    for u, v in edges:
+      e[u].add(v)
+      e[v].add(u)
+    
+    def wait_time(t: int):
+      n = t // change
+      if n % 2 == 0:
+        return 0
+      
+      return (n+1)*change - t
+    
+    curr, nxt = set([1]), set()
+    t = 0
+    reached = False
+    
+    while curr:
+      if n in curr:
+        if reached:
+          return t
+        
+        reached = True
+        
+      t += wait_time(t)
+      
+      for u in curr:
+        nxt |= e[u]
+
+      t += time
+      curr, nxt = nxt, curr
+      nxt.clear()
+      
+    return -1
+    
   def secondMinimum(self, n: int, edges: List[List[int]], time: int, change: int) -> int:
     e = defaultdict(set)
     for u, v in edges:

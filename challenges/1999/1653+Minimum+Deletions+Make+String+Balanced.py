@@ -24,12 +24,31 @@ Constraints:
 s[i] is 'a' or 'b'​​.
 '''
 
-
 class Solution:
-  '''
-  trick is to delete all 'b's before an index, and all 'a's after an index,
-  then find the minimum deletions among all indexs
-  '''
+  def minimumDeletions(self, s: str) -> int:
+    n = len(s)
+    a_count = [0]*n
+    b_count = [0]*n
+    
+    for i in range(n):
+      before = (b_count[i-1] if i > 0 else 0)
+      b_count[i] = before + (1 if s[i] == 'b' else 0)
+        
+    for i in range(n-1, -1, -1):
+      after = (a_count[i+1] if i < n-1 else 0)
+      a_count[i] = after + (1 if s[i] == 'a' else 0)
+        
+    # print(a_count, b_count)
+    removal = n
+    
+    for i in range(n):
+      b_before = b_count[i-1] if i > 0 else 0
+      a_after = a_count[i+1] if i < n-1 else 0
+      removal = min(removal, b_before+a_after)
+      # print(i, b_before, a_after)
+      
+    return removal
+        
   def minimumDeletions(self, s: str) -> int:
     n = len(s)
     a, b = [0]*n, [0]*n

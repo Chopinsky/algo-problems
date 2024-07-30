@@ -34,8 +34,45 @@ All the integers in rating are unique.
 
 from typing import List
 
-
 class Solution:
+  def numTeams(self, rating: List[int]) -> int:
+    up = [0]
+    down = [0]
+    n = len(rating)
+    
+    for i in range(1, n):
+      v0 = rating[i]
+      c0 = 0
+      c1 = 0
+      
+      for j in range(i):
+        v1 = rating[j]
+        if v0 > v1:
+          c0 += 1
+        
+        if v0 < v1:
+          c1 += 1
+      
+      up.append(c0)
+      down.append(c1)
+    
+    count = 0
+    # print(up, down)
+    
+    for i in range(2, n):
+      v0 = rating[i]
+      
+      for j in range(1, i):
+        v1 = rating[j]
+        
+        if v0 > v1:
+          count += up[j]
+        
+        if v0 < v1:
+          count += down[j]
+    
+    return count
+    
   def numTeams(self, rating: List[int]) -> int:
     arr = sorted((val, i) for i, val in enumerate(rating))
     n = len(rating)

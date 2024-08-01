@@ -30,9 +30,33 @@ Constraints:
 '''
 
 from typing import List
-
+from functools import lru_cache
 
 class Solution:
+  def minHeightShelves(self, books: List[List[int]], shelfWidth: int) -> int:
+    n = len(books)
+    
+    @lru_cache(None)
+    def dp(i: int):
+      if i >= n:
+        return 0
+      
+      h, w = books[i][1]+dp(i+1), books[i][0]
+      top_h = books[i][1]
+      
+      for j in range(i+1, n):
+        w0, h0 = books[j]
+        if w+w0 > shelfWidth:
+          break
+          
+        w += w0
+        top_h = max(top_h, h0)
+        h = min(h, top_h + dp(j+1))
+        
+      return h
+    
+    return dp(0)
+        
   def minHeightShelves(self, books: List[List[int]], width: int) -> int:
     last_min = books[-1][1]
     dp, nxt = {}, {}

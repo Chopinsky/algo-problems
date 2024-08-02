@@ -25,14 +25,50 @@ rangeModule.removeRange(14, 16);
 rangeModule.queryRange(10, 14); // return True,(Every number in [10, 14) is being tracked)
 rangeModule.queryRange(13, 15); // return False,(Numbers like 14, 14.03, 14.17 in [13, 15) are not being tracked)
 rangeModule.queryRange(16, 17); // return True, (The number 16 in [16, 17) is still being tracked, despite the remove operation)
- 
 
 Constraints:
 
-1 <= left < right <= 109
+1 <= left < right <= 10^9
 At most 104 calls will be made to addRange, queryRange, and removeRange.
 '''
 
+from bisect import bisect_left, bisect_right
+
+class RangeModule:
+    def __init__(self):
+        self.track = []
+
+    def addRange(self, left, right):
+        start = bisect_left(self.track, left)
+        end = bisect_right(self.track, right)
+        replace = []
+        
+        if start % 2 == 0:
+            replace.append(left)
+            
+        if end % 2 == 0:
+            replace.append(right)
+			
+        self.track[start:end] = replace
+
+    def removeRange(self, left, right):
+        start = bisect_left(self.track, left)
+        end = bisect_right(self.track, right)
+        replace = []
+        
+        if start % 2 == 1:
+            replace.append(left)
+            
+        if end % 2 == 1:
+            replace.append(right)
+			
+        self.track[start:end] = replace
+		
+    def queryRange(self, left, right):
+        start = bisect_right(self.track, left)
+        end = bisect_left(self.track, right)
+		
+        return start == end and start % 2 == 1
 
 class RangeModule:
   def __init__(self):
@@ -78,7 +114,7 @@ class RangeModule:
     # no overlaps, insert into the gap
     if rdx >= 0 and left > self.right[rdx]:
       self.left = self.left[:rdx] + [left] + self.left[rdx:]
-      self.right = self.right[:rdx] + [rigt] + self.right[rdx:]
+      self.right = self.right[:rdx] + [right] + self.right[rdx:]
       return
     
     # merge to the left-most range

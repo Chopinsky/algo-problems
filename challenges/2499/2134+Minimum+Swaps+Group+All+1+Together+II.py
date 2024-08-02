@@ -41,8 +41,27 @@ nums[i] is either 0 or 1.
 
 from typing import List
 
-
 class Solution:
+  def minSwaps(self, nums: List[int]) -> int:
+    n = len(nums)
+    ones = nums.count(1)
+    nums += nums[:-1]
+    cost = n
+    curr = 0
+    # print(n, ones)
+    
+    for i in range(len(nums)):
+      val = nums[i]
+      curr += val
+
+      if i >= ones:
+        curr -= nums[i-ones]
+        
+      if i >= ones-1:
+        cost = min(cost, ones-curr)
+        
+    return cost
+        
   def minSwaps(self, nums: List[int]) -> int:
     n = len(nums)
     zeros = nums.count(0)

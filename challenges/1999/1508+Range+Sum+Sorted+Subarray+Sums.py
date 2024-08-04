@@ -30,8 +30,30 @@ n == nums.length
 
 from typing import List
 
-
 class Solution:
+  def rangeSum(self, nums: List[int], n: int, left: int, right: int) -> int:
+    mod = 10**9 + 7
+    s = []
+    prefix = [val for val in nums]
+    n = len(nums)
+    
+    for i in range(1, n):
+      prefix[i] += prefix[i-1]
+    
+    for i in range(n):
+      for j in range(i+1):
+        s0 = prefix[i] - (prefix[j-1] if j > 0 else 0)
+        s.append(s0)
+        
+    s.sort()
+    rs = 0
+    # print(s)
+    
+    for i in range(left-1, right):
+      rs = (rs + s[i]) % mod
+      
+    return rs
+  
   def rangeSum(self, nums: List[int], n: int, left: int, right: int) -> int:
     mod = 10**9 + 7
     arr = []

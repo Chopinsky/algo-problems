@@ -87,14 +87,14 @@ class Solution:
   '''
   the problem is hard in the sense that there are tons of edge cases to consider and patch;
   
-  the core idea is to maintain intervals of all alt-groups, and maintain a counter that can
-  calculate the number of intervals with ln >= k; then for interval with ln >= k, its contribution
-  to the final counter is `(ln-k+1) * number_of_intervals_with_ln`;
+  the core idea is to maintain intervals of all alt-groups (possibly with a sole element), and 
+  maintain a counter that can calculate the number of intervals with ln >= k; then for interval 
+  with ln >= k, its contribution to the final counter is `(ln-k+1) * number_of_intervals_with_ln`;
 
-  changing color at a location will possibly lead to the following actions:
-  1) move current interval's head to previous interval's tail;
-  2) move current interval's tail to next interval's head;
-  3) split an interval into 3 intervals (i.e., break from the middle);
+  changing color at a location will lead to one of the following actions:
+  1) if a head elem in an interval, move it to previous interval's tail;
+  2) if a tail elem in an interval, move it to next interval's head;
+  3) if it's in middle of an interval, split the interval into 3 intervals (i.e., break from the middle);
   4) if the current interval is a sole element, merge the one before and the one behind;
   '''
   def numberOfAlternatingGroups(self, colors: List[int], queries: List[List[int]]) -> List[int]:
@@ -102,8 +102,7 @@ class Solution:
     start = {}
     seg = []
     counter = defaultdict(int)
-    i, j = 0, 1
-    n = len(colors)
+    i, n = 0, len(colors)
     debug = False
     
     while i < n:
@@ -133,10 +132,10 @@ class Solution:
       print(seg, head, counter, start)
     
     def count(l0: int) -> int:
+      if l0 > n:
+        return 0
+      
       if len(head) == 1:
-        if l0 > n:
-          return 0
-        
         h0 = head[0]
         t0 = start[h0]
         
@@ -195,7 +194,7 @@ class Solution:
       if h == idx:
         # is the group head
         if len(head) == 1:
-          # sole group, head to tail
+          # sole group, head added to prev tail
           if colors[t%n] != colors[idx%n]:
             h0 = (h+1) % n
             t = (h0-1+n)

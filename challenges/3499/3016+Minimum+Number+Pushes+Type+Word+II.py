@@ -61,6 +61,25 @@ from collections import Counter
 
 class Solution:
   def minimumPushes(self, word: str) -> int:
+    c = Counter(word)
+    cand = sorted(cnt for cnt in c.values())
+    pushes = 0
+    key = 2
+    pos = 1
+    # print(cand)
+    
+    while cand:
+      cnt = cand.pop()
+      pushes += pos * cnt
+      key += 1
+      
+      if key > 9:
+        key = 2
+        pos += 1
+    
+    return pushes
+        
+  def minimumPushes(self, word: str) -> int:
     cand = sorted(Counter(word).values(), reverse=True)
     pushes = 0
     idx = 8

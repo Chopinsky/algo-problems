@@ -49,11 +49,14 @@ from typing import List
 class Solution:
   '''
   this is a very typical DP problem: at each position i, assuming the value at arr1 and arr2 are
-  a1 and a2, and a1+a2 == v1, i.e., (a1, a2), then the possible suffix arrays that are allowed are:
-      `count(a1, a2) = sum(count(b1, b2) for (b1+b2 == v2) and b1 >= a1 and 0 <= b2 <= a2)`
-  given that if we reduce a1 from v1 to 0, the `sum` part of the equation above is essentially a
-  prefix sum (with a1 reduce by 1, we will have 1 new state available to transition, aka from (b1, b2)
-  to (a1, a2)), and use the prefix sum we can set the total suffix arrays that are valid for (a1, a2).
+  a1 and a2, and a1+a2 == v1, i.e., (a1, a2), then the count of possible suffix arrays that are 
+  allowed for this value pair is:
+      `count(a1, a2) = sum(count(b1, b2) if (b1+b2 == v2) and b1 >= a1 and 0 <= b2 <= a2 else 0)`
+
+  given that if we iterate a1 from v1 to 0, then the `sum` part of the above equation is essentially a
+  prefix sum (because if a1 is reduced by 1, we will have 1 new state available in this transition, aka 
+  a new (b1, b2) to (a1, a2)), therefore if using the prefix sum, we can set the total suffix arrays 
+  that are valid for (a1, a2).
   '''
   def countOfPairs(self, nums: List[int]) -> int:
     mod = 10**9 + 7

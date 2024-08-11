@@ -79,12 +79,53 @@ s1 and s2 consist of digits 1-9 (inclusive), and lowercase English letters only.
 The number of consecutive digits in s1 and s2 does not exceed 3.
 '''
 
-
 from typing import List
 from functools import lru_cache
 
-
 class Solution:
+  def possiblyEquals(self, s1: str, s2: str) -> bool:
+    m, n = len(s1), len(s2)
+    
+    @lru_cache(None)
+    def dfs(i, j, gap):
+      if i >= m and j >= n:
+        return gap == 0
+
+      if i < m and s1[i].isdigit():
+        num = 0
+        while i < m and s1[i].isdigit():
+          num = num*10 + int(s1[i])
+          if dfs(i+1, j, gap+num):
+            return True
+          
+          i += 1
+
+        return False
+
+      if j < n and s2[j].isdigit():
+        num = 0
+        while j < n and s2[j].isdigit():
+          num = num*10 + int(s2[j])
+          if dfs(i, j+1, gap-num):
+            return True
+          
+          j += 1
+
+        return False
+
+      if gap > 0:
+        return dfs(i, j+1, gap-1)
+
+      if gap < 0:
+        return dfs(i+1, j, gap+1)
+
+      if s1[i] == s2[j]:
+        return dfs(i+1, j+1, gap)
+
+      return False
+      
+    return dfs(0, 0, 0)
+        
   def possiblyEquals(self, s1: str, s2: str) -> bool:
     def build(s: str) -> List[str]:
       seq = []

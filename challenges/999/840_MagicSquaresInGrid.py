@@ -28,8 +28,56 @@ col == grid[i].length
 
 from typing import List
 
-
 class Solution:
+  def numMagicSquaresInside(self, grid: List[List[int]]) -> int:
+    m, n = len(grid), len(grid[0])
+    if m < 3 or n < 3:
+      return 0
+    
+    def check(x: int, y: int) -> bool:
+      if x+2 >= m or y+2 >= n:
+        return False
+      
+      s = set(i for i in range(1, 10))
+      rows = [0]*3
+      cols = [0]*3
+      d0 = 0
+      d1 = 0
+      
+      for x0 in range(x, x+3):
+        # print('cr:', grid[x0][y:y+3])
+        for y0 in range(y, y+3):
+          val = grid[x0][y0]
+          if val not in s:
+            return False
+          
+          s.discard(val)
+          dx = x0-x
+          dy = y0-y
+          
+          rows[dx] += val
+          cols[dy] += val
+          
+          if dx == dy:
+            d0 += val
+            
+          if dx == 2-dy:
+            d1 += val
+      
+      # print('check:', (x, y), rows, cols, d0, d1)
+      if len(s) > 0 or d0 != d1:
+        return False
+      
+      return all(v == d0 for v in rows+cols)
+    
+    count = 0
+    for x in range(m-2):
+      for y in range(n-2):
+        if check(x, y):
+          count += 1
+    
+    return count
+        
   def numMagicSquaresInside(self, grid: List[List[int]]) -> int:
     m, n = len(grid), len(grid[0])
     if m < 3 or n < 3:

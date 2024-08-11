@@ -46,13 +46,106 @@ Constraints:
 
 1 <= grid.length, grid[i].length <= 30
 grid[i][j] is 0 or 1.
+
+Test cases:
+
+[[0,1,1,0],[0,1,1,0],[0,0,0,0]]
+[[1,1]]
+[[1,0,0],[1,1,0],[1,0,0]]
+[[1,1,0,1,1],[1,1,1,1,1],[1,1,0,1,1],[1,1,1,1,1]]
+[[0,0,0],[0,1,0],[0,0,0]]
+[[1,1,0,1,1],[1,1,1,1,1],[1,1,0,1,1],[1,1,0,1,1]]
+[[1,1],[1,0]]
 '''
 
-
-from typing import List, Tuple
-
+from typing import Tuple, List
 
 class Solution:
+  def minDays(self, grid: List[List[int]]) -> int:
+    seen = set()
+    m, n = len(grid), len(grid[0])
+    inland = []
+    
+    def is_inlind(x: int, y: int):
+      cnt = 0
+      for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        x0, y0 = x+dx, y+dy
+        if x0 < 0 or x0 >= m or y0 < 0 or y0 >= n:
+          continue
+        
+        if grid[x0][y0] == 0:
+          continue
+          
+        cnt += 1
+        
+      # print((x, y), cnt)
+      return cnt > 1
+    
+    def find_island(x: int, y: int, init: bool):
+      stack = [(x, y)]
+      seen.add((x, y))
+      
+      while stack:
+        x0, y0 = stack.pop()
+        if init and is_inlind(x0, y0):
+          inland.append((x0, y0))
+          
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+          x1, y1 = x0+dx, y0+dy
+          if x1 < 0 or x1 >= m or y1 < 0 or y1 >= n:
+            continue
+            
+          if grid[x1][y1] == 0 or (x1, y1) in seen:
+            continue
+            
+          seen.add((x1, y1))
+          stack.append((x1, y1))
+
+    def find_head(x: int, y: int):
+      for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        x0, y0 = x+dx, y+dy
+        if x0 < 0 or x0 >= m or y0 < 0 or y0 >= n:
+          continue
+        
+        if grid[x0][y0] == 0:
+          continue
+        
+        return (x0, y0)
+      
+      return None
+      
+    count = 0
+    for x in range(m):
+      for y in range(n):
+        if (x, y) in seen or grid[x][y] == 0:
+          continue
+        
+        count += 1
+        if count > 1:
+          return 0
+        
+        find_island(x, y, True)
+    
+    # print(seen, inland)
+    area = len(seen)
+    if area <= 2:
+      return area
+    
+    for x, y in inland:
+      head = find_head(x, y)
+      if not head:
+        continue
+        
+      seen.clear()
+      seen.add((x, y))
+      # print('check:', (x, y), head)
+      
+      find_island(head[0], head[1], False)
+      if len(seen) < area:
+        return 1
+      
+    return 2
+        
   '''
   the trick is that to divide the sole island into 2 parts, we need to toggle at 
   most 2 lands to the sea -- we can always get a land on the edge by doing so, the

@@ -36,50 +36,20 @@ It is guaranteed that there will be at least k elements in the array when you se
 from typing import List
 from heapq import heappushpop, heappush
 
-
 class KthLargest:
   def __init__(self, k: int, nums: List[int]):
     nums.sort()
-    self.stack = nums[-k:]
+    self.high = nums[-k:]
     self.k = k
+    # print(self.high)
 
 
   def add(self, val: int) -> int:
-    if len(self.stack) < self.k:
-      heappush(self.stack, val)
-    elif val > self.stack[0]:
-      heappushpop(self.stack, val)
-      
-    return self.stack[0]
-        
-
-  def __init__(self, k: int, nums: List[int]):    
-    self.heap = sorted(nums)[-k:] if nums else []
-    self.k = k
-    # print(self.heap, sorted(nums)[-k:][:5], len(self.heap), len(nums), min(nums))
-        
-
-  def add(self, val: int) -> int:
-    # print(len(self.heap), self.heap[:5], self.k)
+    if len(self.high) < self.k:
+      heappush(self.high, val)
+    else:
+      heappushpop(self.high, val)
     
-    if self.k == 1:
-      if not self.heap:
-        self.heap.append(val)
-      else:
-        self.heap[0] = max(self.heap[0], val)
-        
-      return self.heap[0]
-      
-    if len(self.heap) < self.k:
-      heappush(self.heap, val)
-    elif val > self.heap[0]:
-      # print(val, self.heap[:5])
-      heappushpop(self.heap, val)
-      
-    # print(val, self.heap[0])
-    return self.heap[0]
-
-
-# Your KthLargest object will be instantiated and called as such:
-# obj = KthLargest(k, nums)
-# param_1 = obj.add(val)
+    # print(self.high)
+    return self.high[0]
+  

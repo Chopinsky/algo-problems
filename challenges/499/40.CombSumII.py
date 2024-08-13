@@ -31,12 +31,42 @@ Constraints:
 1 <= target <= 30
 '''
 
-
 from typing import List
 from functools import lru_cache
-
+from collections import Counter
 
 class Solution:
+  def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+    c = Counter(candidates)
+    cand = sorted(c)
+    
+    @lru_cache(None)
+    def dp(i: int, t: int) -> List:
+      if t == 0:
+        return [tuple()]
+      
+      if i >= len(cand):
+        return []
+      
+      val = cand[i]
+      ans = []
+      curr = 0
+      
+      for cnt in range(c[val]+1):
+        if t < curr:
+          break
+          
+        rest = dp(i+1, t-curr)
+        base = tuple([val]*cnt)
+        curr += val
+        
+        for tail in rest:
+          ans.append(base + tail)
+      
+      return ans
+    
+    return dp(0, target)
+        
   def combinationSum2(self, cand: List[int], target: int) -> List[List[int]]:
     cand.sort()
     comb, results = [], []

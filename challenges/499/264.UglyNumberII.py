@@ -20,11 +20,29 @@ Constraints:
 1 <= n <= 1690
 '''
 
-
 from bisect import bisect_right
 
-
 class Solution:
+  def nthUglyNumber(self, n: int) -> int:
+    nums = [1]
+    x, y, z = 0, 0, 0
+    
+    for i in range(n-1):
+      minimum = min(nums[x]*2, nums[y]*3, nums[z]*5)
+      nums.append(minimum)
+      
+      if minimum == nums[x]*2:
+        x += 1
+        
+      if minimum == nums[y]*3:
+        y += 1
+        
+      if minimum == nums[z]*5:
+        z += 1
+        
+    return nums[-1]
+        
+
   def nthUglyNumber(self, n: int) -> int:
     if n <= 6:
       return n

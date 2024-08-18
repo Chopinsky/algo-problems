@@ -45,7 +45,35 @@ n == points[r].length
 from typing import List
 
 
-class Solution:
+class Solution:class Solution:
+  def maxPoints(self, points: List[List[int]]) -> int:
+    m, n = len(points), len(points[0])
+    if m == 1:
+      return max(points[0])
+    
+    curr = sorted((-val+i, i, val) for i, val in enumerate(points[0]))
+    nxt = []
+    
+    for row in points[1:]:
+      left = -math.inf
+      
+      for i in range(n):
+        while curr and curr[0][1] <= i:
+          _, j, pt = heappop(curr)
+          left = max(left, pt+j)
+        
+        val = row[i]
+        right = -curr[0][0] if curr else -math.inf
+        point = val + max(left-i, right+i)
+        heappush(nxt, (-point+i, i, point))
+        # print('check:', (i, val, point), (left, right))
+      
+      # print('row:', nxt)
+      curr, nxt = nxt, curr
+      nxt.clear()
+    
+    return max(item[2] for item in curr)
+    
   '''
   the idea is to get the max-val from the prev row's current or left columns,
   and get the max-val from the prev row's current or right columns

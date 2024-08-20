@@ -27,10 +27,36 @@ Constraints:
 '''
 
 from typing import List
-from functools import lru_cache
-
+from functools import lru_cache, cache
 
 class Solution:
+  def stoneGameII(self, piles: List[int]) -> int:
+    n = len(piles)
+    
+    @cache
+    def dp(i: int, m: int) -> tuple:
+      if i >= n:
+        return 0, 0
+      
+      if n-i <= 2*m:
+        return sum(piles[i:]), 0
+      
+      curr = 0
+      c0, c1 = 0, 0
+      
+      for j in range(i, min(n, i+2*m)):
+        curr += piles[j]
+        cnt = j-i+1
+        b, a = dp(j+1, max(m, cnt))
+        if curr+a > c0:
+          c0 = curr+a
+          c1 = b
+        
+      return c0, c1
+      
+    a, _ = dp(0, 1)
+    return a
+        
   def stoneGameII(self, piles: List[int]) -> int:
     suffix = [p for p in piles]
     n = len(piles)

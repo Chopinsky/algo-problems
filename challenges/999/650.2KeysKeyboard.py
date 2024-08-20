@@ -23,11 +23,35 @@ Constraints:
 1 <= n <= 1000
 '''
 
-
-from functools import lru_cache
-
+from functools import lru_cache, cache
 
 class Solution:
+  def minSteps(self, n: int) -> int:
+    if n == 1:
+      return 0
+    
+    @cache
+    def dp(cnt: int, copied: int) -> int:
+      if cnt > n or cnt+copied > n:
+        return float('inf')
+      
+      if cnt == n:
+        return 0
+      
+      # paste and done
+      if cnt + copied == n:
+        return 1
+      
+      # paste
+      c0 = 1+dp(cnt+copied, copied)
+      
+      # copy
+      c1 = 1+dp(cnt, cnt) if cnt != copied else float('inf')
+        
+      return min(c0, c1)
+    
+    return 1+dp(1, 1)
+        
   def minSteps(self, n: int) -> int:
     @lru_cache(None)
     def reduce(n: int) -> int:

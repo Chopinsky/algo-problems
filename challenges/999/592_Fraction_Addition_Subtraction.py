@@ -29,8 +29,53 @@ The numerator and denominator of the final result are guaranteed to be valid and
 
 from math import gcd
 
-
 class Solution:
+  def fractionAddition(self, expression: str) -> str:
+    t0, b0 = 0, 1
+    val = ''
+    stack = []
+    
+    def parse(val: str) -> tuple:
+      sign = 1
+      if val[0] == '+':
+        val = val[1:]
+        
+      if val[0] == '-':
+        sign = -1
+        val = val[1:]
+        
+      parts = val.split('/')
+      
+      return (sign, int(parts[0]), int(parts[1]))
+      
+    for ch in expression:
+      if (ch == '-' or ch == '+') and len(val) > 0:
+        stack.append(parse(val))
+        val = ch
+      else:
+        val += ch
+      
+    if val:
+      stack.append(parse(val))
+      
+    # print(stack)
+    for sign, t1, b1 in stack:
+      b2 = (b0 * b1) // gcd(b0, b1)
+      f0 = b2 // b0
+      f1 = b2 // b1
+      t0 = f0*t0 + sign*f1*t1
+      b0 = b2
+    
+    # print('done:', t0, b0)
+    if t0 == 0:
+      return "0/1"
+    
+    g = gcd(t0, b0)
+    t0 //= g
+    b0 //= g
+    
+    return str(t0) + "/" + str(b0)
+        
   def fractionAddition(self, expr: str) -> str:
     parts = []
     n = len(expr)

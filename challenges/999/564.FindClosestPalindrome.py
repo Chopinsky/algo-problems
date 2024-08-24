@@ -20,10 +20,165 @@ Constraints:
 1 <= n.length <= 18
 n consists of only digits.
 n does not have leading zeros.
-n is representing an integer in the range [1, 1018 - 1].
+n is representing an integer in the range [1, 10^18 - 1]
+
+Test cases:
+
+"123"
+"1"
+"10"
+"100"
+"99"
+"1283"
+"1213"
+"12389"
+"1837722381"
+"12"
 '''
 
+from functools import cache
+
 class Solution:
+  def nearestPalindromic(self, n: str) -> str:
+    ln = len(n)
+    val = int(n)
+    
+    if ln == 1:
+      return '1' if n == '0' else str(val-1)
+    
+    @cache
+    def get_pal():
+      pal = [int(d) for d in n]
+      i = (ln-1) // 2
+      j = ln // 2
+      
+      while i >= 0:
+        pal[j] = pal[i]
+        i -= 1
+        j += 1
+        
+      return ''.join(str(d) for d in pal)
+      
+    def downgrade():
+      return '9' * (ln-1)
+    
+    def lower_bound():
+      pal = get_pal()
+      if int(pal) < val:
+        return pal
+      
+      low = [int(d) for d in n]
+      i = (ln-1) // 2
+      j = ln // 2
+      done = False
+      over = 0
+      
+      while i >= 0:
+        if done:
+          low[i] += over
+          if low[i] < 0:
+            low[i] += 10
+            over = -1
+          else:
+            over = 0
+          
+        else:
+          if low[j] <= low[i]:
+            low[i] -= 1
+            
+          if low[i] < 0:
+            low[i] += 10
+            over = -1
+          
+          done = True
+        
+        low[j] = low[i]
+        i -= 1
+        j += 1
+        
+      # print('low:', low, over)
+      i = 0
+      while i < len(low) and low[i] == 0:
+        i += 1
+        
+      if i >= len(low) or over != 0:
+        return downgrade()
+        
+      return ''.join(str(d) for d in low[i:])
+      
+    def upper_bound():
+      pal = get_pal()
+      if int(pal) > val:
+        return pal
+      
+      high = [int(d) for d in n]
+      i = (ln-1) // 2
+      j = ln // 2
+      done = False
+      over = 0
+      
+      while i >= 0:
+        if done:
+          high[i] += over
+          if high[i] > 9:
+            high[i] -= 10
+            over = 1
+          else:
+            over = 0
+          
+        else:
+          if high[j] >= high[i]:
+            high[i] += 1
+            
+          if high[i] > 9:
+            high[i] -= 10
+            over = 1
+
+          done = True
+          
+        high[j] = high[i]
+        i -= 1
+        j += 1
+      
+      # print('high:', high, over)
+      if over != 0:
+        return upgrade()
+      
+      return ''.join(str(d) for d in high)
+      
+    def upgrade():
+      return '1' + '0'*(ln-1) + '1'
+    
+    res = downgrade()
+    diff = abs(val - int(res))
+    # print("v0:", res)
+    
+    v1 = lower_bound()
+    d1 = abs(val - int(v1))
+    # print("v1:", v1)
+    
+    if d1 < diff:
+      diff = d1
+      res = v1
+    
+    v2 = upper_bound()
+    d2 = abs(int(v2) - val)
+    # print("v2:", v2)
+    
+    if d2 < diff:
+      diff = d2
+      res = v2
+    
+    v3 = upgrade()
+    d3 = abs(int(v3) - val)
+    # print("v3:", v3)
+    
+    if d3 < diff:
+      diff = d3
+      res = v3
+      
+    return res
+        
   def nearestPalindromic(self, n: str) -> str:
     ln = len(n)
     if ln == 1:
@@ -79,7 +234,6 @@ class Solution:
 
     return "".join(tgt)
 
-
   def expand(self, tgt, l, r, ln):
     while tgt[l] == '0':
       l -= 1
@@ -94,7 +248,6 @@ class Solution:
       tgt[ln//2] = '1'
 
     return tgt
-
 
   def find(self, src, tgt, l, r):
     curr = 10 * int(src[l]) + int(src[r])
@@ -120,7 +273,6 @@ class Solution:
     else:
       tgt[l] = str(lower//10)
       tgt[r] = str(lower%10)
-
 
   def find1(self, src, tgt, l, r):
     curr = 100 * int(tgt[l]) + 10 * int(tgt[l+1]) + int(tgt[r])

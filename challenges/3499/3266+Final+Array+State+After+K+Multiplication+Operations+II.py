@@ -73,7 +73,6 @@ class Solution:
     max_val = stack[-1][0]
     
     def op():
-      nonlocal max_val
       val, i = heappop(stack)
       val *= mult
       heappush(stack, (val, i))

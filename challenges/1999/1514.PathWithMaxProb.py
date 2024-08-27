@@ -44,8 +44,42 @@ from typing import List
 from collections import defaultdict
 from heapq import heappush, heappop
 
-
 class Solution:
+  def maxProbability(self, n: int, edges: List[List[int]], succProb: List[float], start_node: int, end_node: int) -> float:
+    if start_node == end_node:
+      return 1.0
+    
+    e = defaultdict(list)
+    for (u, v), p in zip(edges, succProb):
+      e[u].append((v, p))
+      e[v].append((u, p))
+      
+    # print(e)
+    stack = [(-1.0, start_node)]
+    seen = {start_node: 1.0}
+    
+    while stack:
+      p0, u = heappop(stack)
+      p0 = -p0
+
+      if u == end_node:
+        return p0
+      
+      if p0 == 0:
+        continue
+      
+      # print('run:', u, p0)
+      
+      for v, p1 in e[u]:
+        p2 = p0*p1
+        if v in seen and p2 <= seen[v]:
+          continue
+          
+        seen[v] = p2
+        heappush(stack, (-p2, v))
+    
+    return 0
+        
   def maxProbability(self, n: int, edges: List[List[int]], succProb: List[float], start: int, end: int) -> float:
     p = [-1] * n
     s = {}
@@ -80,7 +114,6 @@ class Solution:
         heappush(stack, (-p[v], v))
       
     return 0
-        
         
   def maxProbability(self, n: int, edges: List[List[int]], succProb: List[float], start: int, end: int) -> float:
     g = defaultdict(list)

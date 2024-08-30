@@ -52,11 +52,78 @@ import math
 
 class Solution:
   '''
-  the idea is to find out the `dist` for the modifiable edges: use BFS as the main loop branch, and
+  the idea is to find out the `dist` for the modifiable edges: use BFS as the main loop, and
   we move from `source` to node `u`, if the edge to its children `v` is modifiable, then the `dist`
   assigned to this edge should be: `target - source_to_u - v_to_destination`; v_to_destination is
-  determined herustically, where modifiable edges are given distance of 1.
+  determined herustically, where modifiable edges are given distance of 1 initially.
   '''
+  def modifiedGraphEdges(self, n: int, edges: List[List[int]], source: int, dest: int, target: int) -> List[List[int]]:
+    top = 2*10**9
+    adj = [[] for _ in range(n)]
+    
+    for u, v, w in edges:
+      adj[u].append([v, w])
+      adj[v].append([u, w])
+
+    def dijk(source, adj, skip_negative):
+      pq = [[0, source]]
+      dist = defaultdict(lambda: math.inf)
+      dist[source] = 0
+      parent = {}
+
+      while pq:
+        d, u = heappop(pq)
+        if d > dist[u]:
+          continue
+          
+        for v, w in adj[u]:
+          if w == -1:
+            if skip_negative:
+              continue
+              
+            w = 1
+
+          d2 = d + w
+          if d2 < dist[v]:
+            dist[v] = d2
+            parent[v] = u
+            heappush(pq, [d2, v])
+
+      return dist, parent
+
+    dist_rev, _ = dijk(dest, adj, skip_negative=True)
+    if dist_rev.get(source, math.inf) < target:
+      return []
+    
+    dist, parent = dijk(source, adj, skip_negative=False)
+    if dist[dest] > target:
+      return []
+
+    path = [dest]
+    while path[-1] != source:
+      path.append(parent[path[-1]])
+      
+    path = path[::-1]
+    edges = {(min(u,v), max(u,v)) : w for u, v, w in edges}
+    walked = 0
+    
+    for i in range(1, len(path)):
+      u, v = path[i-1], path[i]
+      e = (min(u, v), max(u, v))
+      
+      if edges[e] == -1:
+        edges[e] = max(target - dist_rev.get(v, math.inf) - walked, 1)
+        if edges[e] > 1:
+          break
+
+      walked += edges[e]
+
+    for e, w in edges.items():
+      if w == -1:
+        edges[e] = top
+
+    return [[u,v,w] for (u,v), w in edges.items()]
+      
   def modifiedGraphEdges(self, n: int, edges: List[List[int]], source: int, destination: int, target: int) -> List[List[int]]:
     max_val = 2*10**9
     weight = {}

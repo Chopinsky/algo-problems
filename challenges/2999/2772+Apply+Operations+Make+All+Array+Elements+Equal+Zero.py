@@ -32,33 +32,63 @@ Constraints:
 
 from typing import List
 
-
 class Solution:
   def checkArray(self, nums: List[int], k: int) -> bool:
-    idx = 0
-    delta = 0
-    adjust = {}
     n = len(nums)
+    if n == k:
+      return all(val == nums[0] for val in nums)
     
-    while idx < n:
-      if idx in adjust:
-        delta -= adjust[idx]
-        
-      if nums[idx] < delta:
-        return False
-      
-      nums[idx] -= delta
-      delta += nums[idx]
-      
-      if nums[idx] > 0:
-        if idx+k > n:
+    def forward():
+      curr = nums[0]
+      delta = [0]*n
+      delta[k] += curr
+
+      for i in range(1, n):
+        curr -= delta[k]
+        # print('f:', (i, nums[i]), curr)
+
+        if nums[i] < curr:
           return False
+
+        if i+k > n:
+          if nums[i] > curr:
+            return False
+
+          continue
+
+        change = nums[i] - curr
+        if i+k < n:
+          delta[i+k] += change
+
+        curr += change
+
+      return True
+    
+    def backward():
+      curr = nums[-1]
+      delta = [0]*n
+      delta[-k-1] += curr
+      
+      for i in range(n-2, -1, -1):
+        curr -= delta[i]
+        # print('b:', (i, nums[i]), curr)
+
+        if nums[i] < curr:
+          return False
+
+        if i < k-1:
+          if nums[i] > curr:
+            return False
+
+          continue
+
+        change = nums[i] - curr
+        if i-k >= 0:
+          delta[i-k] += change
+
+        curr += change
         
-        adjust[idx+k] = nums[idx]
-      
-      # print(idx, delta, adjust, nums)
-      nums[idx] = 0
-      idx += 1
-      
-    return True
-  
+      return True
+    
+    return forward() or backward()
+        

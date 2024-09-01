@@ -80,6 +80,8 @@ class Solution:
       # if take this number
       mask |= (1 << row)
       j = jumps[val]
+
+      # get the max value
       total = max(total, val+dp(j, mask))
       # print('dp:', (i, bin(mask)[2:]), total)
       

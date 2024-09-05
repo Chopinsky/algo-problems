@@ -44,12 +44,27 @@ chalk.length == n
 1 <= k <= 10^9
 '''
 
-
 from typing import List
 from bisect import bisect_right
 
-
 class Solution:
+  def chalkReplacer(self, chalk: List[int], k: int) -> int:
+    n = len(chalk)
+    prefix = []
+    
+    for i in range(n):
+      val = chalk[i] + (prefix[-1] if prefix else 0)
+      if val > k:
+        return i
+      
+      prefix.append(val)
+    
+    rem = k % prefix[-1]
+    if rem == 0:
+      return 0
+    
+    return bisect_right(prefix, rem) % n
+        
   def chalkReplacer(self, chalk: List[int], k: int) -> int:
     for i in range(1, len(chalk)):
       chalk[i] += chalk[i-1]

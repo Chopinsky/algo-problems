@@ -39,8 +39,26 @@ Constraints:
 s consists of lowercase English letters.
 '''
 
-
 class Solution:
+  def getLucky(self, s: str, k: int) -> int:
+    base = ""
+    for ch in s:
+      base += str(ord(ch) - ord('a') + 1)
+    
+    # print(base)
+    val = int(base)
+    
+    while k > 0:
+      nxt_val = 0
+      while val > 0:
+        val, mod = divmod(val, 10)
+        nxt_val += mod
+        
+      val = nxt_val
+      k -= 1
+    
+    return val
+    
   def getLucky(self, s: str, k: int) -> int:
     base = ''.join(str(ord(ch)-ord('a')+1) for ch in s)
     val = 0

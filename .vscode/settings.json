@@ -18,5 +18,6 @@
     },
     "**/CVS": true
   },
-  "python.pythonPath": "C:\\Program Files (x86)\\Python\\Python38\\python.exe"
+  "python.pythonPath": "C:\\Program Files (x86)\\Python\\Python38\\python.exe",
+  "python.analysis.typeCheckingMode": "off"
 }

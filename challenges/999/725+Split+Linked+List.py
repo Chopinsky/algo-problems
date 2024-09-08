@@ -33,15 +33,48 @@ The number of nodes in the list is in the range [0, 1000].
 
 from typing import Optional, List
 
-
 # Definition for singly-linked list.
 class ListNode:
   def __init__(self, val=0, next=None):
     self.val = val
     self.next = next
 
-
 class Solution:
+  def splitListToParts(self, head: Optional[ListNode], k: int) -> List[Optional[ListNode]]:
+    n = 0
+    curr = head
+    ans = []
+    
+    while curr:
+      n += 1
+      curr = curr.next
+      
+    cnt, mod = divmod(n, k)
+    
+    def split(curr, c: int):
+      if not curr:
+        return curr, None
+      
+      head = curr
+      prev = None
+      
+      while c > 0 and curr:
+        prev = curr
+        curr = curr.next
+        c -= 1
+        
+      if prev:
+        prev.next = None
+        
+      return head, curr
+    
+    curr = head
+    for i in range(k):
+      h0, curr = split(curr, cnt+(1 if i < mod else 0))
+      ans.append(h0)
+      
+    return ans
+        
   def splitListToParts(self, head: Optional[ListNode], k: int) -> List[Optional[ListNode]]:
     def get_len(curr):
       ln = 0
@@ -73,7 +106,6 @@ class Solution:
     
     return ans
       
-
   def splitListToParts(self, head: Optional[ListNode], k: int) -> List[Optional[ListNode]]:
     ans = [None for _ in range(k)]
     if not head:

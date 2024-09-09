@@ -37,8 +37,35 @@ class ListNode:
     self.val = val
     self.next = next
 
-
 class Solution:
+  def spiralMatrix(self, m: int, n: int, head: Optional[ListNode]) -> List[List[int]]:
+    mat = [[-1]*n for _ in range(m)]
+    dirs = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    idx = 0
+    x, y = 0, 0
+    curr = head
+    
+    def update(x: int, y: int):
+      nonlocal idx
+      
+      dx, dy = dirs[idx]
+      x1, y1 = x+dx, y+dy
+      if 0 <= x1 < m and 0 <= y1 < n and mat[x1][y1] == -1:
+        return x1, y1
+      
+      idx = (idx + 1) % 4
+      dx, dy = dirs[idx]
+      return x+dx, y+dy
+    
+    while curr:
+      mat[x][y] = curr.val
+      curr = curr.next
+      
+      if curr:
+        x, y = update(x, y)
+    
+    return mat
+        
   def spiralMatrix(self, m: int, n: int, head: Optional[ListNode]) -> List[List[int]]:
     mat = [[-1]*n for _ in range(m)]
     if not head:

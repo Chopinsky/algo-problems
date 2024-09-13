@@ -33,11 +33,26 @@ queries[i].length == 2
 0 <= lefti <= righti < arr.length
 '''
 
-
 from typing import List
 
-
 class Solution:
+  def xorQueries(self, arr: List[int], queries: List[List[int]]) -> List[int]:
+    prefix = []
+    for val in arr:
+      if not prefix:
+        prefix.append(val)
+      else:
+        prefix.append(val^prefix[-1])
+        
+    ans = []
+    for l, r in queries:
+      if l == 0:
+        ans.append(prefix[r])
+      else:
+        ans.append(prefix[r]^prefix[l-1])
+        
+    return ans
+  
   def xorQueries(self, arr: List[int], queries: List[List[int]]) -> List[int]:
     prefix = [val for val in arr]
     for i in range(1, len(arr)):

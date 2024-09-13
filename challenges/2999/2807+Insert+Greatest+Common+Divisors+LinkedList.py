@@ -40,8 +40,19 @@ class ListNode:
     self.val = val
     self.next = next
 
-
 class Solution:
+  def insertGreatestCommonDivisors(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    curr = head
+    
+    while curr:
+      nxt = curr.next
+      if nxt:
+        curr.next = ListNode(val=gcd(curr.val, nxt.val), next=nxt)
+        
+      curr = nxt
+      
+    return head
+        
   def insertGreatestCommonDivisors(self, head: Optional[ListNode]) -> Optional[ListNode]:
     curr = head
     while curr and curr.next:

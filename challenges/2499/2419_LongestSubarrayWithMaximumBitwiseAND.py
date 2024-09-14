@@ -35,8 +35,29 @@ Constraints:
 
 from typing import List
 
-
 class Solution:
+  def longestSubarray(self, nums: List[int]) -> int:
+    curr, ln = 1, 1
+    curr_val = nums[0]
+    max_val = nums[0]
+    n = len(nums)
+    
+    for val in nums[1:]:
+      if val == curr_val:
+        curr += 1
+      else:
+        curr_val = val
+        curr = 1
+        
+      if val > max_val:
+        ln = curr
+      elif val == max_val:
+        ln = max(ln, curr)
+      
+      max_val = max(max_val, val)
+    
+    return ln
+        
   def longestSubarray(self, nums: List[int]) -> int:
     last = -1
     count = 0

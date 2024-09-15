@@ -25,8 +25,31 @@ Constraints:
 s contains only lowercase English letters.
 '''
 
-
 class Solution:
+  def findTheLongestSubstring(self, s: str) -> int:
+    pos = {0:-1}
+    mask = 0
+    shift = {
+      'a': 0,
+      'e': 1,
+      'i': 2,
+      'o': 3,
+      'u': 4,
+    }
+    
+    long = 0
+    
+    for i, ch in enumerate(s):
+      if ch in shift:
+        mask ^= (1 << shift[ch])
+        
+      if mask in pos:
+        long = max(long, i-pos[mask])
+      else:
+        pos[mask] = i
+        
+    return long
+          
   def findTheLongestSubstring(self, s: str) -> int:
     vowels = {'a': 0, 'e': 1, 'i': 2, 'o': 3, 'u': 4}
     masks = {}

@@ -17,13 +17,29 @@ Constraints:
 timePoints[i] is in the format "HH:MM".
 '''
 
-
 from typing import List
 from collections import defaultdict
 import math
 
-
 class Solution:
+  def findMinDifference(self, time: List[str]) -> int:
+    def parse(t: str):
+      arr = t.split(':')
+      hr = int(arr[0]) * 60
+      mm = int(arr[1])
+      
+      return hr + mm
+    
+    cand = sorted(parse(t) for t in time)
+    day = parse('24:00')
+    diff = cand[0] + (day - cand[-1])
+    
+    for i in range(1, len(cand)):
+      d0 = cand[i] - cand[i-1]
+      diff = min(diff, d0)
+      
+    return diff
+        
   def findMinDifference(self, timePoints: List[str]) -> int:
     cnt = defaultdict(int)
     for t in timePoints:

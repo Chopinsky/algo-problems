@@ -21,8 +21,24 @@ Constraints:
 
 from typing import List
 
-
 class Solution:
+  def lexicalOrder(self, n: int) -> List[int]:
+    ans = []
+    val = 1
+    
+    for _ in range(n):
+      ans.append(val)
+      if val*10 <= n:
+        val *= 10
+        continue
+        
+      while val%10 == 9 or val+1 > n:
+        val //= 10
+        
+      val += 1
+      
+    return ans
+        
   def lexicalOrder(self, n: int) -> List[int]:
     d = []
     c = 1

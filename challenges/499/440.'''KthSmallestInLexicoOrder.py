@@ -20,35 +20,38 @@ Constraints:
 1 <= k <= n <= 10^9
 '''
 
-
 class Solution:
   def findKthNumber(self, n: int, k: int) -> int:
-    def cnt_nodes(val: int) -> int: 
-      #Return node counts in denary trie.
-      cnt, base = 0, 1
-      while val <= n: 
-        # if len(n) == len(val), only count those in the interval
-        cnt += min(n-val+1, base)
-        val *= 10    # moving down a level
-        base *= 10   # for every level, there are 10 times more nodes under
-        
-      return cnt 
-
-    res = 1
-    while k > 1: 
-      # get the nodes count under the 
-      # current trie prefix 
-      cnt = cnt_nodes(res)
+    val = 1
+    k -= 1
+    
+    while k > 0:
+      count = 0
+      rng = [val, val+1]
       
-      if k > cnt: 
-        # moving to the right
-        k -= cnt
-        res += 1
+      # count all numbers between e.g., [123, 124) if 
+      # val == 123 and the number is smaller than or 
+      # equal to n
+      while rng[0] <= n:
+        count += min(n+1, rng[1]) - rng[0]
+        rng[0] *= 10
+        rng[1] *= 10
         
-      else: 
-        # moving down the trie
+      if k >= count:
+        # if k is greater than or equal to the count
+        # of numbers in the interval, move on to the
+        # next level, aka 124
+        k -= count
+        val += 1
+        
+      else:
+        # the k-th number is in the [123, 124) range, 
+        # keep refining the counts in the [1230, 1231)
+        # range and so on
         k -= 1
-        res *= 10 
+        val *= 10
+      
+    return val
+    
         
-    return res
   

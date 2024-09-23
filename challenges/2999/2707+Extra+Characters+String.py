@@ -30,7 +30,27 @@ from typing import List
 from functools import lru_cache
 
 
-class Solution: 
+class Solution:
+  def minExtraChar(self, s: str, dictionary: List[str]) -> int:
+    n = len(s)
+    d = set(dictionary)
+    
+    @lru_cache(None)
+    def dp(i: int) -> int:
+      if i >= n:
+        return 0
+      
+      rem = n-i
+      count = 1+dp(i+1)
+      
+      for w in d:
+        if s[i] == w[0] and len(w) <= rem and s[i:].startswith(w):
+          count = min(count, dp(i+len(w)))
+          
+      return count
+    
+    return dp(0)
+        
   def minExtraChar(self, s: str, dictionary: List[str]) -> int:
     d = set(dictionary)
     n = len(s)

@@ -50,47 +50,37 @@ from collections import defaultdict
 class Solution:
   def sumPrefixScores(self, words: List[str]) -> List[int]:
     root = {}
-    ans = []
     
-    for w in words:
+    def insert(w: str):
       curr = root
       
       for ch in w:
         if ch not in curr:
-          curr[ch] = { 'count': 0 }
+          curr[ch] = {'$':0}
           
-        curr[ch]['count'] += 1
         curr = curr[ch]
+        curr['$'] += 1
         
-    # print(root)
-    for w in words:
+    def query(w: str) -> int:
+      cnt = 0
       curr = root
-      score = 0
       
       for ch in w:
-        score += curr[ch]['count']
+        if ch not in curr:
+          break
+          
         curr = curr[ch]
+        cnt += curr['$']
       
-      ans.append(score)
+      return cnt
     
-    return ans
+    for w in words:
+      insert(w)
 
-
-  def sumPrefixScores0(self, words: List[str]) -> List[int]:
-    counter = defaultdict(int)
+    # print('insert:', root)
     ans = []
-    
-    for w in words:
-      for j in range(len(w)):
-        counter[w[:j+1]] += 1
-        
-    # print(counter)
-    for w in words:
-      score = 0
-      for j in range(len(w)):
-        score += counter[w[:j+1]]
-        
-      ans.append(score)
+    for w in words: 
+      ans.append(query(w))
     
     return ans
-    
+  

@@ -25,13 +25,37 @@ The number of calls to MyCalendar.book per test case will be at most 1000.
 In calls to MyCalendar.book(start, end), start and end are integers in the range [0, 10^9].
 '''
 
-from bisect import bisect_left
+from bisect import bisect_left, bisect_right
 
 
 class MyCalendar:
   def __init__(self):
+    self.start = []
+    self.end = []
     self.cal = []
 
+  def book(self, start: int, end: int) -> bool:
+    if not self.start or start > self.end[-1]:
+      self.start.append(start)
+      self.end.append(end)
+      return True
+    
+    if self.start and end <= self.start[0]:
+      self.start = [start] + self.start
+      self.end = [end] + self.end
+      return True
+      
+    idx = bisect_right(self.start, start)
+    if idx < len(self.start) and end > self.start[idx]:
+      return False
+    
+    if idx > 0 and start < self.end[idx-1]:
+      return False
+    
+    self.start.insert(idx, start)
+    self.end.insert(idx, end)
+    
+    return True
 
   def book(self, start: int, end: int) -> bool:
     idx = bisect_left(self.cal, (start, ))

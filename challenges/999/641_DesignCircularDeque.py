@@ -43,6 +43,82 @@ At most 2000 calls will be made to insertFront, insertLast, deleteFront, deleteL
 
 class MyCircularDeque:
   def __init__(self, k: int):
+    self.cap = k
+    self.len = 0
+    self.vals = [0]*k
+    self.l = 0
+    self.r = 0
+
+  def insertFront(self, value: int) -> bool:
+    if self.isFull():
+      return False
+    
+    if self.len > 0:
+      self.l = (self.l + self.cap - 1) % self.cap
+    
+    self.vals[self.l] = value
+    self.len += 1
+    
+    return True
+
+  def insertLast(self, value: int) -> bool:
+    if self.isFull():
+      return False
+    
+    if self.len > 0:
+      self.r = (self.r + 1) % self.cap
+    
+    self.vals[self.r] = value
+    self.len += 1
+    
+    return True
+
+  def deleteFront(self) -> bool:
+    if self.isEmpty():
+      return False
+    
+    self.l = (self.l + 1) % self.cap
+    self.len -= 1
+    
+    if self.len == 0:
+      self.r = self.l
+    
+    return True
+
+  def deleteLast(self) -> bool:
+    if self.isEmpty():
+      return False
+      
+    self.r = (self.r - 1 + self.cap) % self.cap
+    self.len -= 1
+    
+    if self.len == 0:
+      self.r = self.l
+    
+    return True
+
+  def getFront(self) -> int:
+    if self.isEmpty():
+      return -1
+
+    return self.vals[self.l]
+  
+  def getRear(self) -> int:
+    if self.isEmpty():
+      return -1
+      
+    # print('rear:', self.vals, (self.l, self.r))
+    return self.vals[self.r]
+
+  def isEmpty(self) -> bool:
+    return self.len == 0
+
+  def isFull(self) -> bool:
+    return self.len == self.cap
+  
+
+class MyCircularDeque0:
+  def __init__(self, k: int):
     self.q = [0] * k
     self.l = 0
     self.r = 0

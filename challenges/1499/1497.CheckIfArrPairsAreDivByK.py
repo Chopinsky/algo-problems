@@ -31,12 +31,32 @@ n is even.
 1 <= k <= 10^5
 '''
 
-
 from typing import List
 from collections import defaultdict
 
 
 class Solution:
+  def canArrange(self, arr: List[int], k: int) -> bool:
+    cnt = defaultdict(int)
+    for val in arr:
+      cnt[val % k] += 1
+      
+    # print(cnt)
+    for val, c0 in cnt.items():
+      if val == 0:
+        if c0 % 2 == 1:
+          return False
+        
+        continue
+      
+      cval = k - val
+      c1 = cnt[cval]
+        
+      if c0 != c1:
+        return False
+      
+    return True
+        
   def canArrange(self, arr: List[int], k: int) -> bool:
     cand = defaultdict(int)
     for val in arr:

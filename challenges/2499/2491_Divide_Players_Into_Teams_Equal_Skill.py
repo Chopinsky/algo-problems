@@ -42,6 +42,21 @@ from collections import Counter
 class Solution:
   def dividePlayers(self, skill: List[int]) -> int:
     n = len(skill)
+    skill.sort()
+    team_skill = skill[0] + skill[-1]
+    product = 0
+    
+    for i in range(n//2):
+      if skill[i] + skill[n-1-i] != team_skill:
+        return -1
+      
+      product += skill[i] * skill[n-1-i]
+      # print('pair:', skill[i], skill[n-1-i])
+      
+    return product
+  
+  def dividePlayers(self, skill: List[int]) -> int:
+    n = len(skill)
     teams = n // 2
     total_score = sum(skill)
     if total_score % teams != 0:

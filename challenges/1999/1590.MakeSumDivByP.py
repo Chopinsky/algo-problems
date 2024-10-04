@@ -29,12 +29,36 @@ Constraints:
 1 <= p <= 10^9
 '''
 
-
 from typing import List
 import math
 
 
 class Solution:
+  def minSubarray(self, nums: List[int], p: int) -> int:
+    s0 = sum(nums) 
+    if s0 < p:
+      return -1
+    
+    s = s0 % p
+    if s == 0:
+      return 0
+      
+    n = len(nums)
+    pos = {0:-1}
+    prefix = 0
+    long = n
+    
+    for i, val in enumerate(nums):
+      prefix = (prefix + val) % p
+      other = (prefix + p - s) % p
+      if other in pos:
+        # print('found:', (prefix, other), (pos[other], i), nums[pos[other]+1:i+1])
+        long = min(long, i-pos[other])
+      
+      pos[prefix] = i
+    
+    return -1 if long >= n else long
+    
   def minSubarray(self, nums: List[int], p: int) -> int:
     mod = sum(nums) % p
     if mod == 0:

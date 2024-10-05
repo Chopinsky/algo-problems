@@ -32,10 +32,10 @@ class Solution:
 
       # build the pattern jumps
       for i in range(1, m):
-        while k > 0 and pat[k] != pat[i]: 
+        while k > 0 and pat[k] != pat[i]:
           k = jumps[k-1]
 
-        if pat[k] == pat[i]: 
+        if pat[k] == pat[i]:
           k += 1
 
         jumps.append(k)

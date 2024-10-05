@@ -29,6 +29,36 @@ class Solution:
     if n1 > n2:
       return False
     
+    c1 = Counter(s1)
+    c2 = Counter(s2[:n1])
+    
+    def check(c1, c2):
+      for ch, cnt in c1.items():
+        if ch not in c2 or c2[ch] != cnt:
+          return False
+        
+      return True
+    
+    if check(c1, c2):
+      return True
+      
+    for i in range(n1, n2):
+      remove = s2[i-n1]
+      addition = s2[i]
+      
+      c2[remove] -= 1
+      c2[addition] += 1
+      
+      if check(c1, c2):
+        return True
+    
+    return False
+        
+  def checkInclusion(self, s1: str, s2: str) -> bool:
+    n1, n2 = len(s1), len(s2)
+    if n1 > n2:
+      return False
+    
     base = Counter(s1)
     running = Counter(s2[:n1])
     
@@ -56,30 +86,3 @@ class Solution:
       
     return False
     
-
-  def checkInclusion(self, s1: str, s2: str) -> bool:
-    n1, n2 = len(s1), len(s2)
-    if n1 > n2:
-      return False
-    
-    c1 = Counter(s1)
-    c2 = Counter(s2[:n1])
-    
-    if c1 == c2:
-      return True
-  
-    for i in range(n1, n2):
-      c2[s2[i-n1]] -= 1
-      if c2[s2[i-n1]] == 0:
-        c2.pop(s2[i-n1], None)
-      
-      if s2[i] not in c2:
-        c2[s2[i]] = 1
-      else:
-        c2[s2[i]] += 1
-      
-      if c1 == c2:
-        return True
-    
-    return False
-  

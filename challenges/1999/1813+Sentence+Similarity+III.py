@@ -30,8 +30,43 @@ sentence1 and sentence2 consist of lowercase and uppercase English letters and s
 The words in sentence1 and sentence2 are separated by a single space.
 '''
 
+from typing import List
+
 
 class Solution:
+  def areSentencesSimilar(self, sentence1: str, sentence2: str) -> bool:
+    def is_similar(a1: List, a2: List) -> bool:
+      n1 = len(a1)
+      n2 = len(a2)
+      
+      if n1 < n2:
+        return False
+      
+      i1, j1 = 0, n1-1
+      i2, j2 = 0, n2-1
+      front = 0
+      back = 0
+      
+      while i1 < n1 and i2 < n2 and a1[i1] == a2[i2]:
+        i1 += 1
+        i2 += 1
+        front += 1
+        
+      while j1 >= 0 and j2 >= 0 and a1[j1] == a2[j2]:
+        j1 -= 1
+        j2 -= 1
+        back += 1
+        
+      # print('check:', a1, a2)
+      # print('idx:', (front, back))
+      
+      return front+back >= n2
+      
+    a1 = sentence1.split(' ')
+    a2 = sentence2.split(' ')
+    
+    return is_similar(a1, a2) or is_similar(a2, a1)
+    
   def areSentencesSimilar(self, s1: str, s2: str) -> bool:
     w1, w2 = s1.split(' '), s2.split(' ')
     n1, n2 = len(w1), len(w2)

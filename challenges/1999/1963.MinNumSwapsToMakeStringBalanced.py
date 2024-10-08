@@ -44,6 +44,63 @@ The number of opening brackets '[' equals n / 2, and the number of closing brack
 
 class Solution:
   def minSwaps(self, s: str) -> int:
+    ops = 0
+    n = len(s)
+    i, j = 0, n-1
+    stack = list(s)
+    
+    def move_right(i: int, j: int) -> int:
+      if i >= j:
+        return -1
+      
+      balance = 0
+      while i < j and balance >= 0:
+        if stack[i] == '[':
+          balance += 1
+        else:
+          balance -= 1
+          
+        i += 1
+          
+      if balance < 0:
+        return i-1 
+      
+      return -1
+    
+    def move_left(i: int, j: int) -> int:
+      if j <= i:
+        return -1
+      
+      balance = 0
+      while i < j and balance <= 0:
+        if stack[j] == '[':
+          balance += 1
+        else:
+          balance -= 1
+          
+        j -= 1
+        
+      if balance > 0:
+        return j+1
+      
+      return -1
+      
+    while i < j:
+      i = move_right(i, j)
+      if i < 0:
+        break
+        
+      j = move_left(i, j)
+      if j < 0:
+        break
+        
+      if i < j:
+        stack[i], stack[j] = stack[j], stack[i]
+        ops += 1
+      
+    return ops
+    
+  def minSwaps(self, s: str) -> int:
     if not s:
       return 0
     

@@ -28,6 +28,25 @@ s[i] is either '(' or ')'.
 
 class Solution:
   def minAddToMakeValid(self, s: str) -> int:
+    added = 0
+    balance = 0
+    
+    for ch in s:
+      if ch == '(':
+        balance += 1
+      else:
+        balance -= 1
+        
+      if balance < 0:
+        added += -balance
+        balance = 0
+    
+    if balance > 0:
+      added += balance
+    
+    return added
+        
+  def minAddToMakeValid(self, s: str) -> int:
     opened = 0
     count = 0
     

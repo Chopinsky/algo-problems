@@ -26,6 +26,20 @@ from bisect import bisect_left
 
 class Solution:
   def maxWidthRamp(self, nums: List[int]) -> int:
+    cand = sorted((val, i) for i, val in enumerate(nums))
+    ramp = 0
+    low = cand[0][1]
+    # print(cand)
+    
+    for _, i in cand[1:]:
+      if i > low:
+        ramp = max(ramp, i-low)
+        
+      low = min(low, i)
+      
+    return ramp  
+        
+  def maxWidthRamp(self, nums: List[int]) -> int:
     stack = []
     width = 0
     

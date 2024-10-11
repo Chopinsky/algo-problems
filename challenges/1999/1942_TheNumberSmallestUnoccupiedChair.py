@@ -46,6 +46,38 @@ from heapq import heappop, heappush
 
 
 class Solution:
+  def smallestChair(self, times: List[List[int]], targetFriend: int) -> int:
+    time = []
+    seats = []
+    seat_map = {}
+    nxt = 0
+    
+    for i in range(len(times)):
+      s, e = times[i]
+      time.append((s, 1, i))
+      time.append((e, -1, i))
+      
+    time.sort()
+    # print('init:', time)
+    
+    for t, typ, idx in time:
+      if typ == -1:
+        heappush(seats, seat_map[idx])
+        continue
+        
+      if not seats:
+        seat_map[idx] = nxt
+        nxt += 1
+        
+      else:
+        seat_number = heappop(seats)
+        seat_map[idx] = seat_number
+      
+      if targetFriend in seat_map:
+        break
+    
+    return seat_map[targetFriend]
+        
   def smallestChair(self, times: List[List[int]], target: int) -> int:
     n = len(times)
     stack = [i for i in range(n)]

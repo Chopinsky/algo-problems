@@ -36,17 +36,70 @@ Constraints:
 nums.length == k
 1 <= k <= 3500
 1 <= nums[i].length <= 50
--105 <= nums[i][j] <= 105
+-10^5 <= nums[i][j] <= 10^5
 nums[i] is sorted in non-decreasing order.
 '''
 
-
 from typing import List
 from heapq import heappush, heappop
+from collections import defaultdict
 import math
 
 
 class Solution:
+  def smallestRange(self, nums: List[List[int]]) -> List[int]:
+    k = len(nums)
+    if k == 1:
+      return [nums[0][0], nums[0][0]]
+    
+    cnt = defaultdict(int)
+    cand = []
+        
+    for i in range(k):
+      for val in nums[i]:
+        cand.append((val, i))
+    
+    ans = None
+    cand.sort()
+    j = 0
+    n = len(cand)
+    # print('init:', cand)
+    
+    def check(l: int, r: int):
+      if not ans:
+        return True
+      
+      l0 = r-l
+      l1 = ans[1]-ans[0]
+      
+      return l0 < l1
+    
+    for i in range(n):
+      # pop prev
+      if i > 0:
+        idx = cand[i-1][1]
+        cnt[idx] -= 1
+        if not cnt[idx]:
+          del cnt[idx]
+          
+      j = max(i, j)
+      left, _ = cand[i]
+      
+      while j < n and len(cnt) < k:
+        right, idx = cand[j]
+        cnt[idx] += 1
+        j += 1
+      
+      # done
+      if j >= n and len(cnt) < k:
+        break
+        
+      # print('found:', (left, right), cnt, ans)
+      if check(left, right):
+        ans = [left, right]
+    
+    return ans
+  
   def smallestRange(self, nums: List[List[int]]) -> List[int]:
     stack = []
     k = len(nums)

@@ -38,6 +38,30 @@ s[i] is either '0' or '1'.
 
 class Solution:
   def minimumSteps(self, s: str) -> int:
+    n = len(s)
+    ops = 0
+    
+    # no need to swap
+    if s.count('1') == n or s.count('0') == n:
+      return ops
+    
+    i, j = 0, n-1
+    while i < j:
+      while i < j and s[i] == '0':
+        i += 1
+        
+      while i < j and s[j] == '1':
+        j -= 1
+        
+      # print('iter:', i, j)
+      if i < j:
+        ops += j-i
+        i += 1
+        j -= 1
+        
+    return ops
+        
+  def minimumSteps(self, s: str) -> int:
     idx = len(s)-1
     curr = idx
     ops = 0

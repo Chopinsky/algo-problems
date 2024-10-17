@@ -20,11 +20,40 @@ Constraints:
 0 <= num <= 10^8
 '''
 
-
 from typing import Counter
+from collections import defaultdict
 
 
 class Solution:
+  def maximumSwap(self, num: int) -> int:
+    s = list(str(num))
+    pos = defaultdict(list)
+    
+    for i, d in enumerate(s):
+      pos[d].append(i)
+    
+    cand = sorted(pos, reverse=True)
+    # print(s, pos, cand)
+    
+    for i in range(len(s)):
+      d0 = s[i]
+      done = False
+      
+      for d1 in cand:
+        if d0 == d1:
+          break
+        
+        j = pos[d1][-1]
+        if j > i:
+          s[i], s[j] = s[j], s[i]
+          done = True
+          break
+        
+      if done:
+        break
+    
+    return int(''.join(s))
+        
   def maximumSwap(self, num: int) -> int:
     d = list(str(num))
     n = len(d)

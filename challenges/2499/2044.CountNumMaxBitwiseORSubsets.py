@@ -38,7 +38,6 @@ Constraints:
 1 <= nums[i] <= 10^5
 '''
 
-
 from typing import List
 from collections import defaultdict, Counter
 
@@ -65,4 +64,32 @@ class Solution:
       
     # print(counter)
     return counter[max(counter)]
+
+  def countMaxOrSubsets(self, nums: List[int]) -> int:
+    n = len(nums)
     
+    def nums_or(mask: int):
+      pos = 1
+      idx = 0
+      val = 0
+      
+      while pos <= mask:
+        if pos & mask > 0:
+          val |= nums[idx]
+          
+        pos <<= 1
+        idx += 1
+        
+      return val
+    
+    count = 0
+    max_val = nums_or((1<<n)-1)
+    # print('init:', max_val)
+    
+    for mask in range(1, (1<<n)):
+      res = nums_or(mask)
+      if res == max_val:
+        count += 1
+        
+    return count
+        

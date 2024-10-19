@@ -32,8 +32,27 @@ Constraints:
 1 <= k <= 2^n - 1
 '''
 
+from typing import List
+
 
 class Solution:
+  def findKthBit(self, n: int, k: int) -> str:
+    k -= 1
+    vals = ['0']
+    
+    def extend(vals: List):
+      nxt = []
+      for val in vals:
+        nxt.append('1' if val == '0' else '0')
+        
+      return vals + ['1'] + nxt[::-1]
+    
+    while len(vals) <= k:
+      vals = extend(vals)
+      # print('iter:', vals)
+      
+    return vals[k]
+        
   def findKthBit(self, n: int, k: int) -> str:
     def find(n, k):
       if n == 1 or k == 1: 
@@ -50,7 +69,6 @@ class Solution:
       return 1 - find(n-1, ln-k+1)
 
     return str(find(n, k))
-  
   
   def findKthBit0(self, n: int, k: int) -> str:
     s = '0'

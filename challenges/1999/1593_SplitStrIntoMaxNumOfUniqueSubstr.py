@@ -28,8 +28,34 @@ Constraints:
 s contains only lower case English letters.
 '''
 
+from functools import lru_cache
+from typing import Tuple
+
 
 class Solution:
+  def maxUniqueSplit(self, s: str) -> int:
+    n = len(s)
+    
+    @lru_cache(None)
+    def dp(i: int, seen: Tuple) -> int:
+      if i >= n:
+        return len(seen)
+      
+      cnt = 0
+      
+      for j in range(i, n):
+        s0 = s[i:j+1]
+        if s0 in seen:
+          continue
+          
+        nxt = tuple(sorted(seen + (s0, )))
+        total = dp(j+1, nxt)
+        cnt = max(cnt, total)
+        
+      return cnt
+      
+    return dp(0, tuple())
+        
   def maxUniqueSplit(self, s: str) -> int:
     most_count = 1
     seen = set()

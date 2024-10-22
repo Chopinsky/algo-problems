@@ -47,6 +47,33 @@ class TreeNode:
 
 class Solution:
   def kthLargestLevelSum(self, root: Optional[TreeNode], k: int) -> int:
+    if not root:
+      return -1
+    
+    stack = [(root, 0)]
+    levels = []
+    
+    while stack:
+      node, lvl = stack.pop()
+      if not node:
+        continue
+    
+      if lvl >= len(levels):
+        levels.append(0)
+      
+      levels[lvl] += node.val
+      
+      if node.left:
+        stack.append((node.left, lvl+1))
+        
+      if node.right:
+        stack.append((node.right, lvl+1))
+    
+    # print('done:', levels)
+    
+    return sorted(levels, reverse=True)[k-1] if k <= len(levels) else -1
+    
+  def kthLargestLevelSum(self, root: Optional[TreeNode], k: int) -> int:
     sums = defaultdict(int)
     
     def add(root, level):

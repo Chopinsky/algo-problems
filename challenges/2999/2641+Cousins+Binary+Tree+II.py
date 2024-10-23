@@ -49,6 +49,38 @@ class TreeNode:
 
 class Solution:
   def replaceValueInTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+    lvls = []
+    
+    def dfs(node, lvl):
+      if not node:
+        return
+      
+      if lvl >= len(lvls):
+        lvls.append(node.val)
+      else:
+        lvls[lvl] += node.val
+        
+      dfs(node.left, lvl+1)
+      dfs(node.right, lvl+1)
+    
+    def update(node, lvl, vals):
+      if not node:
+        return
+      
+      node.val = lvls[lvl] - vals
+      lval = node.left.val if node.left else 0
+      rval = node.right.val if node.right else 0
+      nxt_vals = lval + rval
+      
+      update(node.left, lvl+1, nxt_vals)
+      update(node.right, lvl+1, nxt_vals)
+    
+    dfs(root, 0)
+    update(root, 0, root.val)  
+      
+    return root
+
+  def replaceValueInTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
     level = defaultdict(int)
     
     def add(root, l):

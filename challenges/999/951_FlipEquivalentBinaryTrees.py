@@ -40,6 +40,24 @@ class TreeNode:
 
 class Solution:
   def flipEquiv(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+    def flip(node1, node2) -> bool:
+      if not node1 and not node2:
+        return True
+      
+      if not node1 or not node2:
+        return False
+      
+      if node1.val != node2.val:
+        return False
+      
+      if flip(node1.left, node2.left) and flip(node1.right, node2.right):
+        return True
+      
+      return flip(node1.right, node2.left) and flip(node1.left, node2.right)
+    
+    return flip(root1, root2)
+  
+  def flipEquiv(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
     def check(a: Optional[TreeNode], b: Optional[TreeNode]) -> bool:
       if not a and not b:
         return True

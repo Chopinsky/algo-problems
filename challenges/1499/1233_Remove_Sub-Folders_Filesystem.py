@@ -38,6 +38,40 @@ from typing import List
 
 class Solution:
   def removeSubfolders(self, folder: List[str]) -> List[str]:
+    folder.sort()
+    root = {}
+    ans = []
+    # print('init:', folder)
+    
+    def add(f: str) -> bool:
+      node = root
+      subs = f[1:].split('/')
+      n = len(subs)
+      
+      if n == 1:
+        root[subs[0]] = {'$': 1}
+        return True
+      
+      for sf in subs:
+        if sf not in node:
+          node[sf] = {}
+          
+        node = node[sf]
+        if '$' in node:
+          return False
+        
+      node['$'] = 1
+      return True
+    
+    for f in folder:
+      if not add(f):
+        continue
+        
+      ans.append(f)
+      
+    return ans
+        
+  def removeSubfolders(self, folder: List[str]) -> List[str]:
     folder.sort(key=lambda x: x.count('/'))
     seen = set()
     ans = []

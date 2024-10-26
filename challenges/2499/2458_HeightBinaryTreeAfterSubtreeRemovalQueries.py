@@ -56,6 +56,72 @@ class TreeNode:
 
 class Solution:
   def treeQueries(self, root: Optional[TreeNode], queries: List[int]) -> List[int]:
+    stack = [(root, 0)]
+    below = {}
+    above = {}
+    levels = defaultdict(list)
+    
+    def update(node):
+      val = node.val
+      lvl = len(stack)
+      above[val] = lvl
+      below[val] = 0
+      
+      if node.left:
+        below[val] = max(below[val], 1+below[node.left.val])
+        
+      if node.right:
+        below[val] = max(below[val], 1+below[node.right.val])
+      
+      heappush(levels[lvl], (-below[val], val))
+      
+    while stack:
+      node, step = stack.pop()
+      if not node:
+        continue
+        
+      if step == 2:
+        update(node)
+        continue
+        
+      if step == 1:
+        stack.append((node, 2))
+        stack.append((node.right, 0))
+        continue
+        
+      stack.append((node, 1))
+      stack.append((node.left, 0))
+        
+    # print('init:', below, above, levels)
+    ans = []
+    
+    #todo
+    max_level = max(levels)
+    
+    for q in queries:
+      lvl = above[q]
+      curr_lvl = levels[lvl]
+      
+      # not affecting the longest path
+      if q != curr_lvl[0][1]:
+        ans.append(max_level)
+        continue
+      
+      # sole path, everything below is gone
+      if len(curr_lvl) == 1:
+        ans.append(lvl-1)
+        continue
+        
+      # print('iter:', q, lvl, curr_lvl)
+      side_long = -curr_lvl[1][0]
+      if len(curr_lvl) > 2:
+        side_long = max(side_long, -curr_lvl[2][0])
+        
+      ans.append(lvl+side_long)
+    
+    return ans
+        
+  def treeQueries(self, root: Optional[TreeNode], queries: List[int]) -> List[int]:
     depth = {}
     below = {}
     levels = defaultdict(list)

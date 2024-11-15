@@ -31,9 +31,35 @@ Constraints:
 '''
 
 from typing import List
+from bisect import bisect_left
 
 
 class Solution:
+  def findLengthOfShortestSubarray(self, arr: List[int]) -> int:
+    n = len(arr)
+    idx = n-1
+    while idx > 0 and arr[idx-1] <= arr[idx]:
+      idx -= 1
+      
+    back = arr[idx:]
+    m = len(back)
+    removes = n-m
+    prev = -1
+    # print('back:', back)
+    
+    for i in range(idx):
+      val = arr[i]
+      if val < prev:
+        break
+        
+      j = bisect_left(back, val)
+      keep = (i+1) + (m-j)
+      # print('iter:', (i, val, back[j:]), keep)
+      removes = min(removes, n-keep)
+      prev = val
+    
+    return removes
+        
   def findLengthOfShortestSubarray(self, arr: List[int]) -> int:
     n = len(arr)
     l, r = 0, n-1

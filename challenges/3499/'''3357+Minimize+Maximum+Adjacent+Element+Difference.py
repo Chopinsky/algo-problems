@@ -53,32 +53,32 @@ class Solution:
       intervals = []
       
       for a in singles:
-        intervals.append([a-bound, a+bound])
+        intervals.append((a-bound, a+bound))
         
       for a, b, stacked in doubles:
         if stacked:
-          intervals.append([a-bound, a+bound])
-          intervals.append([b-bound, b+bound])
+          intervals.append((a-bound, a+bound))
+          intervals.append((b-bound, b+bound))
           
         else:
           lo = b - bound
           hi = a + bound
           if lo > hi: 
-            return 0
+            return False
           
-          intervals.append([lo, hi])
+          intervals.append((lo, hi))
 
       # we have a bunch of intervals, and we want to know if we can stab twice
       # to hit all intervals
-      lo = min(e for s, e in intervals)
-      hi = max(s for s, e in intervals)
+      lo = min(e for _, e in intervals)
+      hi = max(s for s, _ in intervals)
 
       if lo + bound < hi:
         if not all(
           any(abs(a-p) <= bound and abs(b-p) <= bound for p in [lo, hi]) 
-          for a,b,l in doubles
+          for a, b, _ in doubles
         ):
-          return 0
+          return False
 
       return all(s <= lo <= e or s <= hi <= e for s, e in intervals)
 

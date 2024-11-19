@@ -16,6 +16,13 @@ from bisect import bisect_left
 from itertools import groupby
 
 class Solution:
+  '''
+  the key is to find the overlaps between all the subarray that contains `-1` in it and having
+  positive numbers as the ends; consolidating the subarray into intervals, and use binary
+  search to find if we can find (x, y) that can stub every intervals; in this case, we can
+  assume `x = min_interval_start + d`, and then add y greedily, and figure out if `d` is a 
+  possible solution to all intervals
+  '''
   def minDifference(self, A: List[int]) -> int:
     groups = [list(grp) for k, grp in groupby(A, key=lambda x: x>0)]
     singles = []  # a? or a??

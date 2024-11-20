@@ -34,11 +34,37 @@ Constraints:
 1 <= nums[i] <= 10^5
 '''
 
-from collections import Counter
+from collections import Counter, defaultdict
 from typing import List
 
 
 class Solution:
+  def maximumSubarraySum(self, nums: List[int], k: int) -> int:
+    dup_count = 0
+    counter = defaultdict(int)
+    ans = 0
+    curr = 0
+    
+    for i in range(len(nums)):
+      val = nums[i]
+      curr += val
+      counter[val] += 1
+      if counter[val] == 2:
+        dup_count += 1
+        
+      if i >= k:
+        prev = nums[i-k]
+        curr -= prev
+        counter[prev] -= 1
+        if counter[prev] == 1:
+          dup_count -= 1
+          
+      # print('iter:', i, curr, counter, dup_count)
+      if i >= k-1 and dup_count == 0:
+        ans = max(ans, curr)
+    
+    return ans
+        
   def maximumSubarraySum(self, nums: List[int], k: int) -> int:
     counter = Counter(nums[:k])
     sums = sum(nums[:k])

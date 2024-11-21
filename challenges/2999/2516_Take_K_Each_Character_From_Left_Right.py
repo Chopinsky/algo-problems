@@ -30,6 +30,81 @@ s consists of only the letters 'a', 'b', and 'c'.
 
 class Solution:
   def takeCharacters(self, s: str, k: int) -> int:
+    if k == 0:
+      return 0
+    
+    c0 = s.count('a')
+    c1 = s.count('b')
+    c2 = s.count('c')
+    
+    if c0 < k or c1 < k or c2 < k:
+      return -1
+    
+    n = len(s)
+    suffix = []
+    
+    for i in range(n-1, -1, -1):
+      ch = s[i]
+      prev = suffix[-1] if i < n-1 else (0, 0, 0)
+      curr = (
+        prev[0]+(1 if s[i] == 'a' else 0),
+        prev[1]+(1 if s[i] == 'b' else 0),
+        prev[2]+(1 if s[i] == 'c' else 0),
+      )
+      
+      suffix.append(curr)
+      
+    suffix = suffix[::-1]
+    prev = [0, 0, 0]
+    curr = [0, 0, 0]
+    j = n-1
+
+    def update(arr, i, d=1):
+      ch = s[i]
+      if ch == 'a':
+        arr[0] += d
+        
+      if ch == 'b':
+        arr[1] += d
+        
+      if ch == 'c':
+        arr[2] += d
+      
+    def can_pop():
+      if j >= n:
+        return False
+      
+      ch = s[j]
+      d0 = -1 if ch == 'a' else 0
+      d1 = -1 if ch == 'b' else 0
+      d2 = -1 if ch == 'c' else 0
+      
+      return (
+        prev[0]+curr[0]+d0 >= k
+        and prev[1]+curr[1]+d1 >= k
+        and prev[2]+curr[2]+d2 >= k
+      )
+      
+    while j >= 0:
+      update(prev, j)
+      if (prev[0] >= k and prev[1] >= k and prev[2] >= k):
+        break
+        
+      j -= 1  
+      
+    remove = n-j
+    for i in range(n):
+      update(curr, i)
+        
+      while can_pop():
+        update(prev, j, -1)
+        j += 1
+        
+      remove = min(remove, i+1+n-j)
+      
+    return remove
+      
+  def takeCharacters(self, s: str, k: int) -> int:
     ch = [0, 0, 0]
     i, n = 0, len(s)
     

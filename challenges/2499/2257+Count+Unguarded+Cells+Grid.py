@@ -34,9 +34,65 @@ All the positions in guards and walls are unique.
 
 from typing import List
 from bisect import bisect_right
+from collections import defaultdict
 
 
 class Solution:
+  def countUnguarded(self, m: int, n: int, guards: List[List[int]], walls: List[List[int]]) -> int:
+    rows = defaultdict(list)
+    cols = defaultdict(list)
+    skip = set()
+    
+    for x, y in guards:
+      rows[x].append((y, 0))
+      cols[y].append((x, 0))
+      skip.add((x, y))
+      
+    for x, y in walls:
+      rows[x].append((y, 1))
+      cols[y].append((x, 1))
+      skip.add((x, y))
+      
+    for row in rows.values():
+      row.sort()
+    
+    for col in cols.values():
+      col.sort()
+      
+    # print('init:', rows, cols, skip)
+    count = 0
+    
+    for x in range(m):
+      for y in range(n):
+        if (x, y) in skip:
+          continue
+          
+        free = 0
+        
+        if x not in rows:
+          free += 1
+        else:
+          row = rows[x]
+          idx = bisect_right(row, (y, -1))
+          rg = idx < len(row) and row[idx][1] == 0
+          lg = idx-1 >= 0 and row[idx-1][1] == 0
+          free += 1 if not rg and not lg else 0
+        
+        if y not in cols:
+          free += 1
+        else:
+          col = cols[y]
+          idx = bisect_right(col, (x, -1))
+          bg = idx < len(col) and col[idx][1] == 0
+          tg = idx-1 >= 0 and col[idx-1][1] == 0
+          free += 1 if not bg and not tg else 0
+          
+        if free == 2:
+          # print('free:', (x, y))
+          count += 1
+          
+    return count
+        
   def countUnguarded(self, m: int, n: int, guards: List[List[int]], walls: List[List[int]]) -> int:
     rows, rl = [[] for _ in range(m)], [[] for _ in range(m)]
     cols, cl = [[] for _ in range(n)], [[] for _ in range(n)]

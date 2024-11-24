@@ -32,6 +32,31 @@ from typing import List
 
 
 class Solution:
+  def maxMatrixSum(self, matrix: List[List[int]]) -> int:
+    m, n = len(matrix), len(matrix[0])
+    s0 = 0
+    has_zero = False
+    neg_count = 0
+    low = abs(matrix[0][0])
+    
+    for x in range(m):
+      for y in range(n):
+        val = matrix[x][y]
+        if val == 0:
+          has_zero = True
+          continue
+          
+        s0 += abs(val)
+        low = min(low, abs(val))
+        
+        if val < 0:
+          neg_count += 1
+        
+    if has_zero or (neg_count % 2 == 0):
+      return s0
+    
+    return s0 - 2*low
+      
   '''
   the trick is to understand that you can roll the operations, such that any 2 numbers 
   in the matrix can form a "pair" and flip the signs; as a result, if we have even number

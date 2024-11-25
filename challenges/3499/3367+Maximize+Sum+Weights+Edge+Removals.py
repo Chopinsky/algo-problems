@@ -9,7 +9,7 @@ from heapq import nlargest
 class Solution:
   def maximizeSumOfWeights(self, edges: List[List[int]], k: int) -> int:
     n = len(edges) + 1
-    graph = [[] for i in range(n)]
+    graph = [[] for _ in range(n)]
     
     for i, j, w in edges:
       graph[i].append((j, w))

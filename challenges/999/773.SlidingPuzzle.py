@@ -52,6 +52,72 @@ from typing import List
 
 class Solution:
   def slidingPuzzle(self, board: List[List[int]]) -> int:
+    curr, nxt = [tuple(board[0]+board[1])], []
+    seen = set(curr)
+    steps = 0
+    target = (1, 2, 3, 4, 5, 0)
+    # print('init:', seen)
+        
+    def find_nxt(s, nxt):
+      idx = s.index(0)
+      arr = list(s)
+      
+      # swap to right
+      if idx != 2 and idx != 5:
+        arr[idx], arr[idx+1] = arr[idx+1], arr[idx]
+        s0 = tuple(arr)
+        if s0 not in seen:
+          seen.add(s0)
+          nxt.append(s0)
+          
+        arr[idx], arr[idx+1] = arr[idx+1], arr[idx]
+        
+      # swap to left
+      if idx != 0 and idx != 3:
+        arr[idx], arr[idx-1] = arr[idx-1], arr[idx]
+        s1 = tuple(arr)
+        if s1 not in seen:
+          seen.add(s1)
+          nxt.append(s1)
+        
+        arr[idx], arr[idx-1] = arr[idx-1], arr[idx]
+        
+      # swap to below
+      if idx < 3:
+        arr[idx], arr[idx+3] = arr[idx+3], arr[idx]
+        s2 = tuple(arr)
+        if s2 not in seen:
+          seen.add(s2)
+          nxt.append(s2)
+        
+        arr[idx], arr[idx+3] = arr[idx+3], arr[idx]
+      
+      # swap to above
+      if idx >= 3:
+        arr[idx], arr[idx-3] = arr[idx-3], arr[idx]
+        s3 = tuple(arr)
+        if s3 not in seen:
+          seen.add(s3)
+          nxt.append(s3)
+        
+        arr[idx], arr[idx-3] = arr[idx-3], arr[idx]
+        
+    while curr:
+      # print('iter:', steps, curr)
+      for s in curr:
+        if s == target:
+          return steps
+        
+        find_nxt(s, nxt)
+      
+      curr, nxt = nxt, curr
+      nxt.clear()
+      steps += 1
+    
+    # all states iterated, not solved
+    return -1
+      
+  def slidingPuzzle(self, board: List[List[int]]) -> int:
     b = board[0] + board[1]
     target = (1, 2, 3, 4, 5, 0)
     if tuple(b) == target:

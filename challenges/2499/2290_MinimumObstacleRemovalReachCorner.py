@@ -39,6 +39,31 @@ class Solution:
   def minimumObstacles(self, grid: List[List[int]]) -> int:
     m, n = len(grid), len(grid[0])
     removes = [[math.inf]*n for _ in range(m)]
+    removes[0][0] = 1 if grid[0][0] == 1 else 0
+    # seen = set([(0, 0)])
+    stack = [(removes[0][0], 0, 0)]
+    
+    while stack:
+      _, x0, y0 = heappop(stack)
+      val = removes[x0][y0]
+      
+      for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        x1, y1 = x0+dx, y0+dy
+        if x1 < 0 or x1 >= m or y1 < 0 or y1 >= n:
+          continue
+        
+        nxt_val = val + grid[x1][y1]
+        if nxt_val >= removes[x1][y1]:
+          continue
+          
+        removes[x1][y1] = nxt_val
+        heappush(stack, (nxt_val, x1, y1))
+        
+    return removes[m-1][n-1]
+    
+  def minimumObstacles(self, grid: List[List[int]]) -> int:
+    m, n = len(grid), len(grid[0])
+    removes = [[math.inf]*n for _ in range(m)]
     stack = [(grid[0][0], 0, 0)]
     removes[0][0] = grid[0][0]
     

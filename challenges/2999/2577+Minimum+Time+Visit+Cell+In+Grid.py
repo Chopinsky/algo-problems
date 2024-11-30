@@ -46,6 +46,43 @@ from heapq import heappop, heappush
 
 class Solution:
   def minimumTime(self, grid: List[List[int]]) -> int:
+    m, n = len(grid), len(grid[0])
+    out = (1 if m > 1 and grid[1][0] <= 1 else 0) + (1 if n > 1 and grid[0][1] <= 1 else 0)
+    if out == 0 or grid[0][0] != 0:
+      return -1
+    
+    stack = [(0, 0, 0)]
+    visited = set()
+    
+    while stack:
+      t0, x, y = heappop(stack)
+      if (x, y) in visited:
+        continue
+        
+      if x == m-1 and y == n-1:
+        return t0
+      
+      visited.add((x, y))
+      for dx, dy in [(-1, 0), (1, 0), (0, 1), (0, -1)]:
+        x0 , y0 = x+dx, y+dy
+        if x0 < 0 or x0 >= m or y0 < 0 or y0 >= n:
+          continue
+          
+        if (x0, y0) in visited:
+          continue
+          
+        t1 = grid[x0][y0]
+        if t1 <= t0+1:
+          t1 = t0+1
+        else:
+          diff = t1-t0
+          t1 += 1 if diff%2 == 0 else 0
+        
+        heappush(stack, (t1, x0, y0))
+      
+    return -1
+      
+  def minimumTime(self, grid: List[List[int]]) -> int:
     stack = []
     m, n = len(grid), len(grid[0])
     time = {(0, 0): 0}

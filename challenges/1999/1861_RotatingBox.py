@@ -53,6 +53,35 @@ from typing import List
 class Solution:
   def rotateTheBox(self, box: List[List[str]]) -> List[List[str]]:
     m, n = len(box), len(box[0])
+    res = [['.']*m for _ in range(n)]
+    
+    def mark_stones(x: int, y: int, cnt: int):
+      if y < n:
+        res[y][m-1-x] = '*'
+      
+      y -= 1
+      while cnt > 0 and y >= 0:
+        res[y][m-1-x] = '#'
+        cnt -= 1
+        y -= 1
+    
+    for x in range(m):
+      curr = 0
+      for y in range(n):
+        if box[x][y] == '*':
+          mark_stones(x, y, curr)
+          curr = 0
+          continue
+        
+        if box[x][y] == '#':
+          curr += 1
+          
+      mark_stones(x, n, curr)
+    
+    return res
+        
+  def rotateTheBox(self, box: List[List[str]]) -> List[List[str]]:
+    m, n = len(box), len(box[0])
     ans = [['.']*m for _ in range(n)]
     
     def place_rocks(i, j, cnt):

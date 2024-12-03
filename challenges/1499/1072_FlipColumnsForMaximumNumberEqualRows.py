@@ -36,6 +36,32 @@ from collections import defaultdict
 
 
 class Solution:
+  def maxEqualRowsAfterFlips(self, mat: List[List[int]]) -> int:
+    m, n = len(mat), len(mat[0])
+    if n == 1:
+      return m
+    
+    counter = defaultdict(int)
+    
+    def hash_row(row: List[int]) -> int:
+      k0 = []
+      k1 = []
+      
+      for i, val in enumerate(row):
+        if val == 1:
+          k0.append(i)
+        else:
+          k1.append(i)
+          
+      counter[tuple(k0)] += 1
+      counter[tuple(k1)] += 1
+      
+    for row in mat:
+      hash_row(row)
+    
+    # print('done:', counter)
+    return max(counter.values())
+    
   def maxEqualRowsAfterFlips(self, matrix: List[List[int]]) -> int:
     idx = 0
     dic = {}

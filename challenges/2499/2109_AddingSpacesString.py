@@ -39,6 +39,20 @@ from typing import List
 
 class Solution:
   def addSpaces(self, s: str, spaces: List[int]) -> str:
+    res = ''
+    spaces.sort()
+    j = 0
+    
+    for i, ch in enumerate(s):
+      if j < len(spaces) and i == spaces[j]:
+        res += " "
+        j += 1
+    
+      res += ch
+      
+    return res
+        
+  def addSpaces(self, s: str, spaces: List[int]) -> str:
     if not spaces:
       return s
     

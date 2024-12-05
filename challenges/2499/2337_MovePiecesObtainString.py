@@ -35,7 +35,43 @@ n == start.length == target.length
 start and target consist of the characters 'L', 'R', and '_'.
 '''
 
+from typing import List
+
+
 class Solution:
+  def canChange(self, start: str, target: str) -> bool:
+    if len(start) != len(target):
+      return False
+    
+    def condense(s: str) -> List:
+      stack = []
+      for i in range(len(s)):
+        ch = s[i]
+        if ch == '_':
+          continue
+          
+        stack.append((ch, i))
+        
+      return stack
+    
+    a0 = condense(start)
+    a1 = condense(target)
+    if len(a0) != len(a1):
+      return False
+    
+    for (c0, i0), (c1, i1) in zip(a0, a1):
+      # print('iter:', c0, i0, c1, i1)
+      if c0 != c1:
+        return False
+      
+      if c0 == 'L' and i0 < i1:
+        return False
+      
+      if c0 == 'R' and i0 > i1:
+        return False
+    
+    return True
+    
   def canChange(self, start: str, target: str) -> bool:
     s, t = [], []
     for i in range(len(target)):

@@ -35,9 +35,45 @@ Constraints:
 '''
 
 from typing import List
+from bisect import bisect_right
 
 
 class Solution:
+  def maxCount(self, banned: List[int], n: int, maxSum: int) -> int:
+    banned = sorted(set(banned))
+    prefix = [val for val in banned]
+    for i in range(1, len(prefix)):
+      prefix[i] += prefix[i-1]
+      
+    def check(cnt: int):
+      if cnt == 0:
+        return True, 0
+      
+      total = ((1+cnt)*cnt)//2
+      idx = bisect_right(banned, cnt)-1
+      if idx >= 0:
+        cnt -= idx+1
+        total -= prefix[idx]
+        
+      # print('check:', cnt, idx, total)
+      return total <= maxSum, cnt
+      
+    l, r = 0, n
+    last = 0
+    # print('init:', banned, prefix)
+    
+    while l <= r:
+      mid = (l+r)//2
+      res, cnt = check(mid)
+      
+      if res:
+        last = cnt
+        l = mid+1
+      else:
+        r = mid-1
+    
+    return last
+        
   def maxCount(self, banned: List[int], n: int, maxSum: int) -> int:
     banned = set(banned)
     running_sum = 0

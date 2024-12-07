@@ -43,6 +43,35 @@ from typing import List
 
 
 class Solution:
+  def minimumSize(self, nums: List[int], maxOps: int) -> int:
+    l, r = 1, max(nums)
+    last = r
+    
+    def check(th: int) -> bool:
+      if th >= last:
+        return True
+      
+      ops = 0
+      for cnt in nums:
+        if cnt <= th:
+          continue
+          
+        extra_ops = (cnt//th) - (1 if cnt%th == 0 else 0)
+        ops += extra_ops
+      
+      # print('check:', th, ops)
+      return ops <= maxOps
+      
+    while l <= r:
+      mid = (l + r) // 2
+      if check(mid):
+        last = mid
+        r = mid-1
+      else:
+        l = mid+1
+    
+    return last
+    
   def minimumSize(self, nums: List[int], maxOperations: int) -> int:
     def cnt_op(d: int) -> int:
       op = 0

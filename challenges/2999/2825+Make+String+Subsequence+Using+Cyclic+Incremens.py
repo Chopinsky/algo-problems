@@ -41,6 +41,28 @@ str1 and str2 consist of only lowercase English letters.
 
 class Solution:
   def canMakeSubsequence(self, str1: str, str2: str) -> bool:
+    i = 0
+    n2 = len(str2)
+    
+    def is_match(c1: str, c2: str) -> bool:
+      if c1 == c2:
+        return True
+      
+      c3 = 'a' if c1 == 'z' else chr(ord(c1)+1)
+      # print('check:', c1, c2, c3)
+      
+      return c3 == c2
+    
+    for ch in str1:
+      if is_match(ch, str2[i]):
+        i += 1
+        
+      if i >= n2:
+        return True
+      
+    return False
+      
+  def canMakeSubsequence(self, str1: str, str2: str) -> bool:
     n1, n2 = len(str1), len(str2)
     if n1 < n2:
       return False

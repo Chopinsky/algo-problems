@@ -38,9 +38,30 @@ Constraints:
 '''
 
 from typing import List
+from collections import defaultdict
 
 
 class Solution:
+  def maximumBeauty(self, nums: List[int], k: int) -> int:
+    delta = defaultdict(int)
+    
+    for val in nums:
+      l = val-k
+      r = val+k
+      delta[l] += 1
+      delta[r+1] -= 1
+      
+    beauty = 1
+    curr = 0
+    
+    for val in sorted(delta):
+      curr += delta[val]
+      # print('visit:', val, delta[val], curr)
+      beauty = max(beauty, curr)
+      
+    return beauty
+    
+        
   def maximumBeauty(self, nums: List[int], k: int) -> int:
     n = len(nums)
     nums.sort()

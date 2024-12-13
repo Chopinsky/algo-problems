@@ -43,6 +43,23 @@ from heapq import heappop
 class Solution:
   def findScore(self, nums: List[int]) -> int:
     marked = set()
+    stack = sorted([(val, i) for i, val in enumerate(nums)])
+    score = 0
+    
+    while stack:
+      val, idx = heappop(stack)
+      if idx in marked:
+        continue
+        
+      marked.add(idx)
+      marked.add(idx-1)
+      marked.add(idx+1)
+      score += val
+    
+    return score
+        
+  def findScore(self, nums: List[int]) -> int:
+    marked = set()
     n = len(nums)
     h = sorted((val, i) for i, val in enumerate(nums))
     score = 0

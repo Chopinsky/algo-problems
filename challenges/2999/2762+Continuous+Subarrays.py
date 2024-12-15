@@ -39,7 +39,38 @@ Constraints:
 from typing import List
 from heapq import heappush, heappop
 
+
 class Solution:
+  def continuousSubarrays(self, nums: List[int]) -> int:
+    i, j = 0, 0
+    cnt = 0
+    n = len(nums)
+    big = []
+    small = []
+    
+    while i < n:
+      # pop
+      while big and big[0][1] < i:
+        heappop(big)
+        
+      while small and small[0][1] < i:
+        heappop(small)
+      
+      while j < n:
+        val = nums[j]
+        if (big and abs(-big[0][0]-val) > 2) or (small and abs(small[0][0]-val) > 2):
+          break
+        
+        heappush(big, (-val, j))
+        heappush(small, (val, j))
+        j += 1
+      
+      cnt += max(0, j-i)
+      # print('iter:', (i, j))
+      i += 1
+      
+    return cnt
+        
   def continuousSubarrays(self, nums: List[int]) -> int:
     n = len(nums)
     i, j = 0, 0

@@ -39,6 +39,38 @@ from collections import Counter
 class Solution:
   def repeatLimitedString(self, s: str, limit: int) -> str:
     c = Counter(s)
+    # print('init:', c)
+    res = ''
+    cand = sorted(c)
+    
+    def fill():
+      nonlocal res
+      
+    while cand:
+      ch = cand.pop()
+      while c[ch] > 0:
+        used = min(c[ch], limit)
+        res += ch*used
+        c[ch] -= used
+        if c[ch] == 0:
+          break
+          
+        while cand and c[cand[-1]] == 0:
+          cand.pop()
+        
+        if not cand:
+          break
+          
+        last = cand[-1]
+        res += last
+        c[last] -= 1
+        if not c[last]:
+          cand.pop()
+    
+    return res
+        
+  def repeatLimitedString(self, s: str, limit: int) -> str:
+    c = Counter(s)
     chars = sorted(c)
     res = ''
     # print(c, chars)

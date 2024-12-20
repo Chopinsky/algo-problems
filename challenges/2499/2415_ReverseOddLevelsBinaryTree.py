@@ -52,6 +52,30 @@ class TreeNode:
 
 class Solution:
   def reverseOddLevels(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+    stack = defaultdict(list)
+    
+    def traverse(node, level):
+      if not node:
+        return 
+      
+      if level%2 == 1:
+        stack[level].append(node)
+      
+      traverse(node.left, level+1)
+      traverse(node.right, level+1)
+      
+    traverse(root, 0)
+    
+    for lst in stack.values():
+      l, r = 0, len(lst)-1
+      while l < r:
+        lst[l].val, lst[r].val = lst[r].val, lst[l].val
+        l +=1
+        r -= 1
+        
+    return root
+        
+  def reverseOddLevels(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
     level = 0
     curr, nxt = [root], []
     

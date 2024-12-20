@@ -34,6 +34,17 @@ from typing import List
 
 class Solution:
   def maxChunksToSorted(self, arr: List[int]) -> int:
+    count = 0
+    target = 0
+    
+    for i, val in enumerate(arr):
+      target = max(target, val)
+      if i >= target:
+        count += 1 
+    
+    return count
+        
+  def maxChunksToSorted(self, arr: List[int]) -> int:
     n = len(arr)
     large = -1
     count = 0

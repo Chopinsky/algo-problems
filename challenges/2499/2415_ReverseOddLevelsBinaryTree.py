@@ -40,6 +40,7 @@ root is a perfect binary tree.
 '''
 
 from typing import Optional
+from collections import defaultdict
 
 
 # Definition for a binary tree node.

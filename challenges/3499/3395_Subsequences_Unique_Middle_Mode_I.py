@@ -1,14 +1,17 @@
 '''
 3395. Subsequences with a Unique Middle Mode I
 
+Test cases:
+
 [1,1,1,1,1,1]
 [1,2,2,3,3,4]
 [0,1,2,3,4,5,6,7,8]
 [0,1,-1,-1,-1]
 '''
 
-from typing import List
+from typing import List, Dict
 from collections import Counter
+from math import comb
 
 
 class Solution:
@@ -19,7 +22,7 @@ class Solution:
     lc = Counter(nums[:2])
     rc = Counter(nums[2:])
     
-    def count_pairs(v0: int, d1, d2):
+    def count_triplets(v0: int, d1: Dict, d2: Dict) -> int:
       pairs = 0
       slots = 0
       total = 0
@@ -32,8 +35,11 @@ class Solution:
         if c1 >= 2:
           pairs += comb(c1, 2)
         
-      # pick any 2 from the right side, minus the pairs
+      # pick any 2 from the right side, minus the same-number-pairs
       rc0 = comb(slots, 2) - pairs
+
+      # picking v1 from one side, check how many unique (v2, v3) pairs 
+      # we can pick up from the other side
       for v1, lc1 in d1.items():
         if v1 == v0:
           continue
@@ -46,31 +52,29 @@ class Solution:
       
       return total
     
-    def count_1s(i: int):
+    def count_1s(i: int) -> int:
       val = nums[i]
       lc_val = lc.get(val, 0)
       rc_val = rc.get(val, 0)
-      total = 0
+      cnt = 0
       
-      # (left:1, right:0)
+      # distribute val with (left:1, right:0)
       if lc_val > 0:
-        total = (total + lc_val*count_pairs(val, lc, rc)) % mod
+        cnt = (cnt + lc_val*count_triplets(val, lc, rc)) % mod
       
-      # (left:0, right:1)
+      # distribute val with (left:0, right:1)
       if rc_val > 0:
-        total = (total + rc_val*count_pairs(val, rc, lc)) % mod
+        cnt = (cnt + rc_val*count_triplets(val, rc, lc)) % mod
       
-      return total
+      return cnt
     
-    def count_2_and_3s(i: int):
+    def count_2_and_3s(i: int) -> int:
       val = nums[i]
       cnt = 0
       
       for total in [2, 3]:
         for lc0 in [0, 1, 2]:
           rc0 = total - lc0
-          # print('2/3s:', (lc0, rc0))
-          
           if rc0 > 2:
             continue
           
@@ -95,8 +99,7 @@ class Solution:
       
       return cnt % mod
     
-    def count_4s(i: int):
-      vla = nums[i]
+    def count_4s(i: int) -> int:
       if lc.get(val, 0) < 2 or rc.get(val, 0) < 2:
         return 0
       

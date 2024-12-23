@@ -45,9 +45,55 @@ queries[i] = [ai, bi]
 
 from typing import List
 from heapq import heappop, heappush
+from bisect import bisect_left
 
 
 class Solution:
+  def leftmostBuildingQueries(self, heights: List[int], queries: List[List[int]]) -> List[int]:
+    ans = [-1]*len(queries)
+    max_h = max(heights)
+    q = sorted([(min(query), max(query), i) for i, query in enumerate(queries)], key=lambda x: -x[1])
+    h_stack = []
+    h_index = []
+    jdx = len(heights)-1
+    
+    for a, b, idx in q:
+      while jdx > b:
+        h = heights[jdx]
+        while h_stack and -h_stack[-1] <= h:
+          h_stack.pop()
+          h_index.pop()
+        
+        h_stack.append(-h)
+        h_index.append(jdx)
+        jdx -= 1
+      
+      # print('q:', (a, b), idx)
+      # print('state:', h_stack, h_index)
+      
+      if a == b:
+        ans[idx] = a
+        continue
+        
+      ha = heights[a]
+      hb = heights[b]
+      
+      # can just go to b
+      if hb > ha:
+        ans[idx] = b
+        continue
+        
+      # no way
+      if not h_stack or ha >= -h_stack[0]:
+        continue
+        
+      # find the way
+      kdx = bisect_left(h_stack, -ha)-1
+      if kdx >= 0:
+        ans[idx] = h_index[kdx]
+    
+    return ans
+        
   def leftmostBuildingQueries(self, heights: List[int], queries: List[List[int]]) -> List[int]:
     q = [[] for _ in heights]
     h = []

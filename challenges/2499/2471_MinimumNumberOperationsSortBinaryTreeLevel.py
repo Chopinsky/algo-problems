@@ -45,7 +45,8 @@ The number of nodes in the tree is in the range [1, 10^5].
 All the values of the tree are unique.
 '''
 
-from typing import Optional
+from typing import Optional, List
+from collections import defaultdict
 
 
 # Definition for a binary tree node.
@@ -57,6 +58,45 @@ class TreeNode:
 
 
 class Solution:
+  def minimumOperations(self, root: Optional[TreeNode]) -> int:
+    tree = defaultdict(list)
+    
+    def dfs(node, lvl):
+      if not node:
+        return
+      
+      tree[lvl].append(node.val)
+      dfs(node.left, lvl+1)
+      dfs(node.right, lvl+1)
+    
+    def count(vals: List) -> int:
+      ops = 0
+      if len(vals) <= 1:
+        return ops
+      
+      arr = sorted(vals)
+      pos = {v:i for i, v in enumerate(arr)}
+      ln = len(arr)
+      idx = 0
+      # print('sort:', vals, pos)
+      
+      while idx < ln:
+        if arr[idx] == vals[idx]:
+          idx += 1
+          continue
+          
+        val = vals[idx]
+        jdx = pos[val]
+        vals[idx], vals[jdx] = vals[jdx], vals[idx]
+        ops += 1
+      
+      return ops
+      
+    dfs(root, 0)
+    # print('init:', tree)
+    
+    return sum(count(vals) for vals in tree.values())
+
   def minimumOperations(self, root: Optional[TreeNode]) -> int:
     if not root:
       return 0

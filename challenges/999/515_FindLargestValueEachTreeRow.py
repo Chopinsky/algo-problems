@@ -30,7 +30,28 @@ class TreeNode:
     self.right = right
 
 
-class Solution:
+  def largestValues(self, root: Optional[TreeNode]) -> List[int]:
+    if not root:
+      return []
+    
+    stack = [(root, 0)]
+    ans = []
+    
+    while stack:
+      node, lvl = stack.pop()
+      if lvl >= len(ans):
+        ans.append(node.val)
+      else:
+        ans[lvl] = max(ans[lvl], node.val)
+        
+      if node.left:
+        stack.append((node.left, lvl+1))
+        
+      if node.right:
+        stack.append((node.right, lvl+1))
+        
+    return ans
+  
   def largestValues(self, root: Optional[TreeNode]) -> List[int]:
     stack = []
     

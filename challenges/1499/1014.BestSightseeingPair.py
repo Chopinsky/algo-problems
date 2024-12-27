@@ -28,6 +28,17 @@ from typing import List
 
 class Solution:
   def maxScoreSightseeingPair(self, values: List[int]) -> int:
+    n = len(values)
+    prev = values[-1] - (n-1)
+    best = -float('inf')
+    
+    for i in range(n-2, -1, -1):
+      best = max(best, values[i]+i+prev)
+      prev = max(prev, values[i]-i)
+    
+    return best
+        
+  def maxScoreSightseeingPair(self, values: List[int]) -> int:
     high = 0
     best = 0
     

@@ -29,6 +29,57 @@ from itertools import accumulate
 
 class Solution:
   def maxSumOfThreeSubarrays(self, nums: List[int], k: int) -> List[int]:
+    n = len(nums)
+    if 3*k == n:
+      return [0, k, 2*k]
+
+    p0 = []
+    for i in range(n):
+      val = nums[i]
+      if i == 0:
+        p0.append(val)
+      else:
+        p0.append(val+p0[-1])
+
+    p1 = [[-1, -1] for _ in range(k)]
+    prev = p0[k-1]
+    prev_idx = 0
+    # print('init:', p0)
+
+    for i in range(2*k-1, n):
+      new_prev = p0[i-k] - (p0[i-2*k] if i >= 2*k else 0)
+      if new_prev > prev:
+        prev = new_prev
+        prev_idx = i-2*k+1
+
+      curr = p0[i] - p0[i-k]
+      p1.append([curr+prev, prev_idx])
+      
+    # print('p1:', p1)
+    prev = -1
+    prev_idx = None
+    curr_max = -1
+    curr_idx = None
+    j = k
+
+    for i in range(3*k-1, n):
+      new_prev, idx = p1[j]
+      if new_prev > prev:
+        prev = new_prev
+        prev_idx = (idx, j)
+
+      curr = p0[i] - p0[i-k] + prev
+      # print('iter:', (i, curr), (prev, prev_idx))
+
+      if curr > curr_max:
+        curr_max = curr
+        curr_idx = (prev_idx[0], prev_idx[1], i-k+1)
+
+      j += 1
+
+    return curr_idx
+        
+  def maxSumOfThreeSubarrays(self, nums: List[int], k: int) -> List[int]:
     i0, i1, i2 = 0, k, 2*k
     s0, s1, s2 = sum(nums[:i1]), sum(nums[i1:i2]), sum(nums[i2:i2+k])
     best0, best1, best2 = s0, s0+s1, s0+s1+s2
@@ -60,7 +111,6 @@ class Solution:
         box2 = box1 + [i2]
     
     return box2
-    
     
   def maxSumOfThreeSubarrays0(self, nums: List[int], k: int) -> List[int]:
     n = len(nums)

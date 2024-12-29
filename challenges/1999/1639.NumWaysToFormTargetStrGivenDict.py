@@ -60,6 +60,38 @@ from functools import lru_cache
 
 class Solution:
   def numWays(self, words: List[str], target: str) -> int:
+    mod = 10**9+7
+    n = len(words[0])
+    m = len(target)
+    pos = [defaultdict(int) for _ in range(n)]
+
+    for i in range(n):
+      for w in words:
+        ch = w[i]
+        pos[i][ch] += 1
+
+    # print('init:', pos)
+    
+    @lru_cache(None)
+    def dp(i: int, j: int) -> int:
+      if j >= m:
+        return 1
+
+      if i >= n or n-i < m-j:
+        return 0
+
+      ch = target[j]
+      if ch not in pos[i]:
+        return dp(i+1, j)
+
+      match_ch = pos[i][ch] * dp(i+1, j+1)
+      match_ch_not = dp(i+1, j)
+
+      return (match_ch + match_ch_not) % mod
+
+    return dp(0, 0)
+        
+  def numWays(self, words: List[str], target: str) -> int:
     n = len(words[0])
     m = len(target)
     # print('problem:', n, m)

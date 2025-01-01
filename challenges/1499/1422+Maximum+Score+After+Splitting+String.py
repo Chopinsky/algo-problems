@@ -34,6 +34,27 @@ The string s consists of characters '0' and '1' only.
 
 class Solution:
   def maxScore(self, s: str) -> int:
+    n = len(s)
+    l0, l1 = 0, 0
+    r0 = s.count('0')
+    r1 = n - r0
+    score = 0
+
+    for i in range(n-1):
+      ch = s[i]
+      if ch == '1':
+        l1 += 1
+        r1 -= 1
+      else:
+        l0 += 1
+        r0 -= 1
+
+      # print('iter:', ch, (l0, l1), (r0, r1))
+      score = max(score, l0+r1)
+
+    return score
+        
+  def maxScore(self, s: str) -> int:
     l0 = 0
     r1 = s.count('1')
     score = 0

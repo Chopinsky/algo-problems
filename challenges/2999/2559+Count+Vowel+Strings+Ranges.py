@@ -39,6 +39,25 @@ from typing import List
 
 class Solution:
   def vowelStrings(self, words: List[str], queries: List[List[int]]) -> List[int]:
+    ans = []
+    vowels = set(['a', 'e', 'i', 'o', 'u'])
+    prefix = []
+
+    for w in words:
+      change = 0
+      if w[0] in vowels and w[-1] in vowels:
+        change = 1
+
+      prefix.append(change + (0 if not prefix else prefix[-1]))
+
+    for l, r in queries:
+      lc = prefix[l-1] if l > 0 else 0
+      rc = prefix[r]
+      ans.append(rc-lc)
+
+    return ans
+
+  def vowelStrings(self, words: List[str], queries: List[List[int]]) -> List[int]:
     prefix = [0]
     vowels = set(['a', 'e', 'i', 'o', 'u'])
     ans = []

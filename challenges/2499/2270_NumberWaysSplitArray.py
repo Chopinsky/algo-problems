@@ -39,6 +39,20 @@ from typing import List
 
 class Solution:
   def waysToSplitArray(self, nums: List[int]) -> int:
+    n = len(nums)
+    total = sum(nums)
+    count = 0
+    prefix = 0
+
+    for i in range(n-1):
+      prefix += nums[i]
+      suffix = total - prefix
+      if prefix >= suffix:
+        count += 1
+
+    return count
+
+  def waysToSplitArray(self, nums: List[int]) -> int:
     prefix = [val for val in nums]
     n = len(nums)
     count = 0

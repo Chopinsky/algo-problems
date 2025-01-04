@@ -40,10 +40,41 @@ s consists of only lowercase English letters.
 '''
 
 from collections import defaultdict
-from bisect import bisect_right
+from bisect import bisect_right, bisect_left
 
 
 class Solution:
+  def countPalindromicSubsequence(self, s: str) -> int:
+    count = 0
+    pos = {}
+
+    for i in range(len(s)):
+      ch = s[i]
+      if ch not in pos:
+        pos[ch] = [i]
+      else:
+        pos[ch].append(i)
+
+    # print('init:', pos)
+    def find(l: int, r: int) -> int:
+      c = 0
+      if l >= r:
+        return c
+
+      for cand in pos.values():
+        i = bisect_right(cand, l)
+        j = bisect_left(cand, r)-1
+        if i <= j and i < len(cand):
+          c += 1
+
+      return c
+
+    for lst in pos.values():
+      # print('find:', lst)
+      count += find(lst[0], lst[-1])
+
+    return count
+
   def countPalindromicSubsequence(self, s: str) -> int:
     pos = defaultdict(list)
     for i, ch in enumerate(s):

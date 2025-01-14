@@ -36,6 +36,18 @@ from typing import List
 
 
 class Solution:
+  def findThePrefixCommonArray(self, A: List[int], B: List[int]) -> List[int]:
+    sa = set()
+    sb = set()
+    c = []
+
+    for va, vb in zip(A, B):
+      sa.add(va)
+      sb.add(vb)
+      c.append(len(sa&sb))
+      
+    return c
+        
   def findThePrefixCommonArray(self, a: List[int], b: List[int]) -> List[int]:
     n = len(a)
     ans = [0]*n

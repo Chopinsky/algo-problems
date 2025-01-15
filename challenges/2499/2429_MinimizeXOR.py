@@ -31,7 +31,54 @@ Constraints:
 1 <= num1, num2 <= 10^9
 '''
 
+from typing import List
+
+
 class Solution:
+  def minimizeXor(self, num1: int, num2: int) -> int:
+    s1, s2 = bin(num1)[2:], bin(num2)[2:]
+    cnt = s2.count('1')
+    n1 = len(s1)
+    # print('init:', s1, s2, cnt)
+
+    def convert(bits: List) -> int:
+      res = 0
+      if not bits:
+        return res
+
+      mask = 1
+
+      while bits:
+        if bits.pop() == 1:
+          res |= mask
+
+        mask <<= 1
+
+      return res
+
+    if cnt >= n1:
+      return convert([1]*cnt)
+
+    bits = [0]*n1
+
+    for i in range(n1):
+      if cnt == 0:
+        break
+
+      if s1[i] == '1':
+        bits[i] = 1
+        cnt -= 1
+
+    for i in range(n1-1, -1, -1):
+      if cnt == 0:
+        break
+
+      if s1[i] == '0':
+        bits[i] = 1
+        cnt -= 1
+
+    return convert(bits)
+        
   def minimizeXor(self, num1: int, num2: int) -> int:
     c0 = bin(num2)[2:].count('1') 
     if c0 == 0:

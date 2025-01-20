@@ -38,6 +38,29 @@ from typing import List
 class Solution:
   def firstCompleteIndex(self, arr: List[int], mat: List[List[int]]) -> int:
     m, n = len(mat), len(mat[0])
+    pos = [None]*(m*n)
+    rows = [0]*m
+    cols = [0]*n
+
+    for x in range(m):
+      for y in range(n):
+        pos[mat[x][y]-1] = (x, y)
+
+    # print('init:', pos)
+
+    for i in range(len(arr)):
+      x, y = pos[arr[i]-1]
+      # print('iter:', arr[i]-1, (x, y))
+      rows[x] += 1
+      cols[y] += 1
+
+      if rows[x] == n or cols[y] == m:
+        return i
+
+    return -1
+        
+  def firstCompleteIndex(self, arr: List[int], mat: List[List[int]]) -> int:
+    m, n = len(mat), len(mat[0])
     pos = {}
     
     for i in range(m):

@@ -44,6 +44,20 @@ from typing import List
 
 class Solution:
   def gridGame(self, grid: List[List[int]]) -> int:
+    s0 = sum(grid[0])
+    r0 = s0-grid[0][0]
+    r1 = 0
+    points = r0
+
+    for i in range(1, len(grid[0])):
+      v0, v1 = grid[0][i], grid[1][i-1]
+      r0 -= v0
+      r1 += v1
+      points = min(points, max(r0, r1))
+
+    return points
+        
+  def gridGame(self, grid: List[List[int]]) -> int:
     n = len(grid[0])
     if n == 1:
       return 0

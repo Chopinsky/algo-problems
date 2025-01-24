@@ -39,6 +39,35 @@ from collections import defaultdict
 
 class Solution:
   def eventualSafeNodes(self, graph: List[List[int]]) -> List[int]:
+    n = len(graph)
+    parents = [[] for _ in range(n)]
+    rem = [0 for _ in range(n)]
+    cand = []
+    safe = []
+    
+    for u, chi in enumerate(graph):
+      if not chi:
+        cand.append(u)
+      else:
+        rem[u] = len(chi)
+
+      for v in chi:
+        parents[v].append(u)
+
+    # print('init', cand, parents, rem)
+
+    while cand:
+      v = cand.pop()
+      safe.append(v)
+
+      for u in parents[v]:
+        rem[u] -= 1
+        if not rem[u]:
+          cand.append(u)
+
+    return sorted(safe)
+        
+  def eventualSafeNodes(self, graph: List[List[int]]) -> List[int]:
     stack = []
     parent = defaultdict(set)
     ans = []

@@ -47,6 +47,31 @@ from heapq import heappush, heappop
 
 class Solution:
   def lexicographicallySmallestArray(self, nums: List[int], limit: int) -> List[int]:
+    groups = []
+    label = {}
+    ans = []
+
+    for val in sorted(nums):
+      if not groups or val-groups[-1][-1] > limit:
+        if groups:
+          groups[-1] = groups[-1][::-1]
+
+        groups.append([])
+
+      groups[-1].append(val)
+      label[val] = len(groups)-1
+
+    if groups:
+      groups[-1] = groups[-1][::-1]
+
+    # print('init:', label, groups)
+    for val in nums:
+      idx = label[val]
+      ans.append(groups[idx].pop())
+
+    return ans
+        
+  def lexicographicallySmallestArray(self, nums: List[int], limit: int) -> List[int]:
     n = len(nums)
     ans = [0]*n
     vals = defaultdict(list)

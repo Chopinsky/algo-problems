@@ -43,6 +43,35 @@ from collections import defaultdict
 
 
 class Solution:
+  def checkIfPrerequisite(self, n: int, pre: List[List[int]], queries: List[List[int]]) -> List[bool]:
+    ans = []
+    e = defaultdict(list)
+    cnt = defaultdict(int)
+    pre_courses = defaultdict(set)
+    cand = set([i for i in range(n)])
+
+    for u, v in pre:
+      e[u].append(v)
+      cnt[v] += 1
+      cand.discard(v)
+
+    # print('init:', e, cnt, cand)
+    cand = list(cand)
+    
+    while cand:
+      u = cand.pop()
+      for v in e[u]:
+        pre_courses[v].add(u)
+        pre_courses[v] |= pre_courses[u]
+        cnt[v] -= 1
+        if not cnt[v]:
+          cand.append(v)
+
+    for u, v in queries:
+      ans.append(u in pre_courses[v])
+
+    return ans
+        
   def checkIfPrerequisite(self, n: int, req: List[List[int]], q: List[List[int]]) -> List[bool]:
     e = defaultdict(list)
     dep = defaultdict(int)

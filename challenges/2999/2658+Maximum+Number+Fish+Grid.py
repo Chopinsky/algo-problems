@@ -39,6 +39,43 @@ class Solution:
   def findMaxFish(self, grid: List[List[int]]) -> int:
     seen = set()
     m, n = len(grid), len(grid[0])
+    fish = 0
+
+    def dfs(x: int, y: int) -> int:
+      pool = grid[x][y]
+      stack = [(x, y)]
+
+      while stack:
+        x0, y0 = stack.pop()
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+          x1, y1 = x0+dx, y0+dy
+          if x1 < 0 or x1 >= m or y1 < 0 or y1 >= n:
+            continue
+
+          if (x1, y1) in seen or grid[x1][y1] == 0:
+            continue
+
+          seen.add((x1, y1))
+          pool += grid[x1][y1]
+          stack.append((x1, y1))
+
+      # print('done:', (x, y), pool)
+
+      return pool
+
+    for x in range(m):
+      for y in range(n):
+        if (x, y) in seen or grid[x][y] == 0:
+          continue
+
+        seen.add((x, y))
+        fish = max(fish, dfs(x, y))
+
+    return fish
+        
+  def findMaxFish(self, grid: List[List[int]]) -> int:
+    seen = set()
+    m, n = len(grid), len(grid[0])
     
     def dfs(x, y):
       # print('start:', (x, y))

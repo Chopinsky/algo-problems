@@ -32,6 +32,27 @@ from typing import List
 
 class Solution:
   def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
+    g = [i for i in range(len(edges)+1)]
+
+    def find(u: int):
+      while g[u] != u:
+        u = g[u]
+
+      return u
+
+    for u, v in edges:
+      ru, rv = find(u), find(v)
+      if ru == rv:
+        return [u, v]
+
+      if ru < rv:
+        g[rv] = ru
+      else:
+        g[ru] = rv
+
+    return [-1, -1]
+
+  def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
     n = len(edges)
     node = [i for i in range(n)]
     

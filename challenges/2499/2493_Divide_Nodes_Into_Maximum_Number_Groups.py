@@ -45,6 +45,88 @@ from collections import defaultdict
 
 class Solution:
   def magnificentSets(self, n: int, edges: List[List[int]]) -> int:
+    groups = 0
+    e = defaultdict(list)
+    seen = set()
+
+    for u, v in edges:
+      e[u].append(v)
+      e[v].append(u)
+
+    def dfs(u: int) -> List:
+      group = []
+      stack = [u]
+      seen.add(u)
+
+      while stack:
+        u = stack.pop()
+        group.append(u) 
+
+        for v in e[u]:
+          if v in seen:
+            continue
+
+          stack.append(v)
+          seen.add(v)
+
+      return group
+
+    def bfs(u: int) -> int:
+      curr, nxt = [u], []
+      num = 1
+      level = {u:num}
+      # print('bfs:', u)
+
+      while curr:
+        num += 1
+        # print('level:', curr, level)
+
+        for u in curr:
+          for v in e[u]:
+            # print('reach:', (u, v), num, level.get(v, -1))
+            if v in level:
+              if abs(level[u]-level[v]) != 1:
+                return -1
+
+              continue
+
+            level[v] = num
+            nxt.append(v)
+
+        curr, nxt = nxt, curr
+        nxt.clear()
+
+      return max(level.values())
+
+    def find_groups(g: List) -> int:
+      gc = 0
+      for u in g:
+        gc0 = bfs(u)
+        if gc0 <= 0:
+          continue
+
+        gc = max(gc, gc0)
+        # print('count:', g, gc)
+
+      return gc
+
+    for u in range(n):
+      u += 1
+      if u in seen:
+        continue
+
+      g = dfs(u)
+      gc = find_groups(g)
+      # print('group:', u, g, gc)
+
+      if gc <= 0:
+        return -1
+
+      groups += gc
+
+    return groups
+
+  def magnificentSets(self, n: int, edges: List[List[int]]) -> int:
     conn = defaultdict(set)
     for u, v in edges:
       conn[u].add(v)

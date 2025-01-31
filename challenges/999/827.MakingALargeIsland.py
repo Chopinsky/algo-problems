@@ -37,6 +37,71 @@ from typing import List
 
 class Solution:
   def largestIsland(self, grid: List[List[int]]) -> int:
+    num = 0
+    island = []
+    points = {}
+    m, n = len(grid), len(grid[0])
+    area = 0
+    cand = []
+
+    def mark(x: int, y: int, num: int):
+      points[x, y] = num
+      stack = [(x, y)]
+      count = 1
+      
+      while stack:
+        x0, y0 = stack.pop()
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+          x1, y1 = x0+dx, y0+dy
+          if x1 < 0 or x1 >= m or y1 < 0 or y1 >= n:
+            continue
+
+          if (x1, y1) in points or grid[x1][y1] == 0:
+            continue
+
+          points[x1, y1] = num
+          stack.append((x1, y1))
+          count += 1
+
+      return count
+
+    for x in range(m):
+      for y in range(n):
+        if grid[x][y] == 0:
+          cand.append((x, y))
+          continue
+
+        if (x, y) in points:
+          continue
+
+        island.append(mark(x, y, num))
+        num += 1
+
+    # print('init:', points, island, cand)
+    if len(points) == m*n:
+      return m*n
+
+    groups = set()
+    for x0, y0 in cand:
+      groups.clear()
+
+      for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        x1, y1 = x0+dx, y0+dy
+        if x1 < 0 or x1 >= m or y1 < 0 or y1 >= n:
+          continue
+
+        if grid[x1][y1] == 1:
+          groups.add(points[x1, y1])
+
+      curr = 1
+      for g in groups:
+        curr += island[g]
+
+      area = max(area, curr)
+
+    return area
+        
+  def largestIsland(self, grid: List[List[int]]) -> int:
     h, w = len(grid), len(grid[0])
     dirs = [-1, 0, 1, 0, -1]
     edges = set()

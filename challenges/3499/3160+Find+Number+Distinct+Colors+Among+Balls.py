@@ -49,7 +49,26 @@ queries[i].length == 2
 from collections import defaultdict
 from typing import List
 
+
 class Solution:
+  def queryResults(self, limit: int, queries: List[List[int]]) -> List[int]:
+    colors = defaultdict(int)
+    balls = {}
+    ans = []
+
+    for b, c0 in queries:
+      c1 = balls.get(b, 0)
+      if c1 > 0:
+        colors[c1] -= 1
+        if not colors[c1]:
+          del colors[c1]
+
+      colors[c0] += 1
+      balls[b] = c0
+      ans.append(len(colors))
+
+    return ans
+        
   def queryResults(self, limit: int, queries: List[List[int]]) -> List[int]:
     pos = {}
     colors = defaultdict(set)

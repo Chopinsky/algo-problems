@@ -33,6 +33,19 @@ from collections import defaultdict
 
 class Solution:
   def countBadPairs(self, nums: List[int]) -> int:
+    prev = defaultdict(int)    
+    count = 0
+
+    for i, num in enumerate(nums):
+      val = i-num
+      if i > 0:
+        count += i - prev[val]
+
+      prev[val] += 1
+
+    return count
+        
+  def countBadPairs(self, nums: List[int]) -> int:
     store = defaultdict(int)
     count = 0
     

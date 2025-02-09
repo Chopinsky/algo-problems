@@ -24,7 +24,7 @@ class Solution:
         nextScore = 0
         if score < floor:
           r = ceil((floor - score) / points[i])
-          if curr - (2*r) < 0:
+          if curr - 2*r < 0:
             return False
             
           curr -= 2*r

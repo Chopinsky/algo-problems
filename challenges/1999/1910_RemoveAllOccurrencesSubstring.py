@@ -36,6 +36,31 @@ s​​​​​​ and part consists of lowercase English letters.
 
 class Solution:
   def removeOccurrences(self, s: str, part: str) -> str:
+    stack = []
+    np = len(part)
+
+    def can_remove() -> bool:
+      ns = len(stack)
+      if ns < np:
+        return False
+
+      i, j = ns-1, np-1
+      while i >= 0 and j >= 0 and stack[i] == part[j]:
+        i -= 1
+        j -= 1
+
+      return j < 0
+
+    for ch in s:
+      stack.append(ch)
+      # print('append:', stack)
+      if can_remove():
+        # print('remove:', ch)
+        stack = stack[:-np]
+
+    return ''.join(stack)
+        
+  def removeOccurrences(self, s: str, part: str) -> str:
     res = ""
     n = len(part)
     

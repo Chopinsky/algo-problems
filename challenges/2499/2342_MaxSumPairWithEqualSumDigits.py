@@ -30,6 +30,30 @@ from functools import lru_cache
 
 class Solution:
   def maximumSum(self, nums: List[int]) -> int:
+    result = -1
+
+    @lru_cache(None)
+    def calc(val: int) -> int:
+      digits = list(int(ch) for ch in str(val))
+      return sum(digits)
+
+    cand = defaultdict(list)
+    nums.sort()
+
+    for val in nums:
+      num = calc(val)
+      cand[num].append(val)
+
+    # print('init:', cand)
+    for val in nums:
+      num = calc(val)
+      if len(cand[num]) > 1:
+        pair = cand[num][-1] if val != cand[num][-1] else cand[num][-2]
+        result = max(result, val+pair)
+
+    return result
+
+  def maximumSum(self, nums: List[int]) -> int:
     vals = defaultdict(list)
     
     @lru_cache(None)

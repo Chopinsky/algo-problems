@@ -43,7 +43,20 @@ The input is generated such that an answer always exists. That is, there exists 
 from typing import List
 from heapq import heappush, heappop
 
+
 class Solution:
+  def minOperations(self, nums: List[int], k: int) -> int:
+    nums.sort()
+    ops = 0
+    
+    while len(nums) and nums[0] < k:
+      x = heappop(nums)
+      y = heappop(nums)
+      heappush(nums, 2*min(x, y)+max(x, y))
+      ops += 1
+
+    return ops
+        
   def minOperations(self, nums: List[int], k: int) -> int:
     cand = sorted(nums)
     ops = 0

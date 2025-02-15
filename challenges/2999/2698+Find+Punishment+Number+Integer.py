@@ -33,8 +33,52 @@ Constraints:
 1 <= n <= 1000
 '''
 
+from functools import cache
+
 
 class Solution:
+  @cache
+  def calc(self, val: int) -> int:
+    if val == 1:
+      return True
+
+    base = val*val
+    s = str(base)
+
+    @cache
+    def dp(s: str, rem: int, is_head: bool) -> bool:
+      # print('iter:', val, s, rem)
+      if not s:
+        return rem == 0
+
+      if rem <= 0:
+        return rem == 0 and int(s) == 0
+
+      if int(s) < rem:
+        return False
+
+      if int(s) == rem and not is_head:
+        return True
+      
+      base = 0
+      n = len(s)
+      end = n if not is_head else n-1
+
+      for i in range(end):
+        base = 10*base + int(s[i])
+        if base > rem:
+          return False
+
+        if dp(s[i+1:], rem-base, False):
+          return True
+
+      return False
+
+    return base if dp(s, val, True) else 0
+
+  def punishmentNumber(self, n: int) -> int:
+    return sum(self.calc(val) for val in range(1, n+1))
+        
   def punishmentNumber(self, n: int) -> int:
     known = set([1, 9, 10, 36])
     

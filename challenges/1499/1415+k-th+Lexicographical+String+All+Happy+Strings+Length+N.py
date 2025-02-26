@@ -33,6 +33,45 @@ Constraints:
 
 
 class Solution:
+  def __init__(self):
+    n = 10
+    cand = ["a", "b", "c"]
+    nxt = []
+    ln = 1
+    self.store = [None]*11
+    self.store[ln] = cand.copy()
+
+    while ln < n:
+      for w in cand:
+        for ch in ("a", "b", "c"):
+          if ch == w[-1]:
+            continue
+
+          nxt.append(w+ch)
+
+      cand, nxt = nxt, cand
+      cand = cand[:100]
+      nxt.clear()
+      ln += 1
+      self.store[ln] = cand.copy()
+
+  def getHappyString(self, n: int, k: int) -> str:
+    def can_get(n: int, k: int) -> bool:
+      count = 3
+      n -= 1
+
+      while n > 0:
+        count *= 2
+        n -= 1
+
+      return count >= k
+
+    if not can_get(n, k):
+      return ""
+
+    return self.store[n][k-1]
+
+        
   def getHappyString(self, n: int, k: int) -> str:
     str_lst = []
     

@@ -42,6 +42,48 @@ class TreeNode:
 
 
 class Solution:
+  def recoverFromPreorder(self, t: str) -> Optional[TreeNode]:
+    levels = []
+    i = 0
+    n = len(t)
+    stack = []
+
+    while i < n:
+      level = 0
+      while i < n and t[i] == '-':
+        level += 1
+        i += 1
+
+      val = 0
+      while i < n and t[i] != '-':
+        val = 10*val + int(t[i])
+        i += 1
+
+      stack.append((level, val))
+
+    # print('init:', stack)
+    if not stack:
+      return None
+
+    for lvl, val in stack:
+      node = TreeNode(val=val)
+      if lvl == 0:
+        levels.append(node)
+        continue
+
+      parent = levels[lvl-1]
+      if not parent.left:
+        parent.left = node
+      else:
+        parent.right = node
+
+      if lvl >= len(levels):
+        levels.append(node)
+      else:
+        levels[lvl] = node
+      
+    return levels[0]
+        
   def recoverFromPreorder(self, traversal: str) -> Optional[TreeNode]:
     stack = []
     num = 0

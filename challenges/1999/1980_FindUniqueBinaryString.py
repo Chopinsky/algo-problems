@@ -28,8 +28,45 @@ All the strings of nums are unique.
 
 from typing import List
 
-
 class Solution:
+  def findDifferentBinaryString(self, nums: List[str]) -> str:
+    nums.sort()
+    n = len(nums[0])
+    base = '0'*n
+
+    if nums[0] != base:
+      return base
+
+    # print('init:', nums)
+    prev = 0
+
+    def to_num(s: str):
+      i = n-1
+      val = 0
+      mask = 1
+
+      while i >= 0:
+        if s[i] == '1':
+          val |= mask
+
+        mask <<= 1
+        i -= 1
+
+      return val
+
+    for val in nums[1:]:
+      curr = to_num(val)
+      if curr != prev+1:
+        s = bin(prev+1)[2:]
+        s = '0'*(n-len(s)) + s
+        # print('end:', prev+1, curr, s)
+        return s
+
+      prev = curr
+
+    return '1'*n
+
+      
   def findDifferentBinaryString(self, nums: List[str]) -> str:
     val = 1
     n = len(nums[0])

@@ -25,7 +25,6 @@ All the values of postorder are unique.
 It is guaranteed that preorder and postorder are the preorder traversal and postorder traversal of the same binary tree.
 '''
 
-
 from typing import List, Optional
 
 
@@ -37,8 +36,24 @@ class TreeNode:
     self.right = right
 
 
-
 class Solution:
+  def constructFromPrePost(self, preorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
+    def build(pre, post):
+      if not pre or not post:
+        return None
+
+      root = TreeNode(pre[0])
+      if len(pre) > 1:
+        p0 = pre[1:]
+        p1 = post[:-1]
+        idx = p1.index(p0[0])+1
+        root.left = build(p0[:idx], p1[:idx])
+        root.right = build(p0[idx:], p1[idx:])
+
+      return root
+    
+    return build(preorder, postorder)
+
   def constructFromPrePost(self, preorder: List[int], postorder: List[int]) -> Optional[TreeNode]:
     def build(pre: List[int], post: List[int]) -> Optional[TreeNode]:
       if not pre:

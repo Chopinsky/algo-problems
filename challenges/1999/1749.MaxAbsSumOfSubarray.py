@@ -31,23 +31,44 @@ from typing import List
 
 
 class Solution:
-    def maxAbsoluteSum(self, nums: List[int]) -> int:
-        prefix = [n for n in nums]
-        n = len(nums)
-        low, high = nums[0], nums[0]
-        ans = max(abs(high), abs(low))
+  def maxAbsoluteSum(self, nums: List[int]) -> int:
+    small = 0
+    large = 0
+    curr = 0
+    ans = abs(nums[0])
+
+    for val in nums:
+      curr += val
+      ans = max(
+        ans,
+        abs(curr),
+        abs(curr-small),
+        abs(curr-large),
+      )
+
+      # print('iter:', val, curr, small, large)
+      small = min(small, curr)
+      large = max(large, curr)
+
+    return ans
         
-        for i in range(1, n):
-          prefix[i] += prefix[i-1]
-          ans = max(ans, abs(nums[i]))
-          
-          if prefix[i] < 0:
-            ans = max(ans, abs(prefix[i] - max(0, high)))
-          else:
-            ans = max(ans, abs(prefix[i] - min(0, low)))
-            
-          # print(nums[i], prefix[i], high, low)
-          high = max(high, prefix[i])
-          low = min(low, prefix[i])
+  def maxAbsoluteSum(self, nums: List[int]) -> int:
+    prefix = [n for n in nums]
+    n = len(nums)
+    low, high = nums[0], nums[0]
+    ans = max(abs(high), abs(low))
+    
+    for i in range(1, n):
+      prefix[i] += prefix[i-1]
+      ans = max(ans, abs(nums[i]))
+      
+      if prefix[i] < 0:
+        ans = max(ans, abs(prefix[i] - max(0, high)))
+      else:
+        ans = max(ans, abs(prefix[i] - min(0, low)))
         
-        return ans
+      # print(nums[i], prefix[i], high, low)
+      high = max(high, prefix[i])
+      low = min(low, prefix[i])
+    
+    return ans

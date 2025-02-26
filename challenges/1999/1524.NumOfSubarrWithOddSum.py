@@ -37,6 +37,25 @@ from typing import List
 
 class Solution:
   def numOfSubarrays(self, arr: List[int]) -> int:
+    prefix = [1, 0]
+    curr = 0
+    count = 0
+    mod = 10**9 + 7
+
+    for val in arr:
+      curr += val
+      if curr%2 == 1:
+        count += prefix[0]
+        prefix[1] += 1
+      else:
+        count += prefix[1]
+        prefix[0] += 1
+
+      count = count%mod
+
+    return count
+
+  def numOfSubarrays(self, arr: List[int]) -> int:
     mod = 10**9+7
     odds = 0
     evens = 0

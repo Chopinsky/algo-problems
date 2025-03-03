@@ -42,6 +42,18 @@ from typing import List
 
 class Solution:
   def mergeArrays(self, nums1: List[List[int]], nums2: List[List[int]]) -> List[List[int]]:
+    cand = sorted(nums1+nums2)
+    ans = []
+
+    for id, val in cand:
+      if ans and id == ans[-1][0]:
+        ans[-1][1] += val
+      else:
+        ans.append([id, val])
+
+    return ans
+        
+  def mergeArrays(self, nums1: List[List[int]], nums2: List[List[int]]) -> List[List[int]]:
     ans = []
     i, j = 0, 0
     m, n = len(nums1), len(nums2)

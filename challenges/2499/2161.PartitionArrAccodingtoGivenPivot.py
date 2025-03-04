@@ -31,11 +31,17 @@ Constraints:
 pivot equals to an element of nums.
 '''
 
-
 from typing import List
 
 
 class Solution:
+  def pivotArray(self, nums: List[int], pivot: int) -> List[int]:
+    less = [val for val in nums if val < pivot]
+    mid =  [val for val in nums if val == pivot]
+    large = [val for val in nums if val > pivot]
+
+    return less + mid + large
+        
   def pivotArray(self, nums: List[int], pivot: int) -> List[int]:
     small, equal, large = [], [], []
     for val in nums:

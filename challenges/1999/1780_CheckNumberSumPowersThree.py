@@ -25,10 +25,38 @@ Constraints:
 1 <= n <= 10^7
 '''
 
-from functools import lru_cache
+from functools import lru_cache, cache
+from bisect import bisect_right
 
+
+val = 1
+cand = []
+
+while val <= 10**7:
+  cand.append(val)
+  val *= 3
 
 class Solution:
+  def checkPowersOfThree(self, n: int) -> bool:
+    # print('init:', cand)
+
+    @cache
+    def dp(val: int) -> bool:
+      if val <= 1:
+        return val == 1 or val == 0
+
+      idx = bisect_right(cand, val)-1
+      # print('check:', val, idx)
+      if idx < 0:
+        return False
+
+      if val >= 2*cand[idx]:
+        return False
+
+      return dp(val-cand[idx])
+
+    return dp(n)
+        
   def checkPowersOfThree(self, n: int) -> bool:
     base = 1
     while base < n:

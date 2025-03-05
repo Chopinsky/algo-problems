@@ -29,6 +29,16 @@ Constraints:
 
 class Solution:
   def coloredCells(self, n: int) -> int:
+    curr = 1
+    step = 1
+
+    while step < n:
+      step += 1
+      curr += 4*(step-1)
+
+    return curr
+
+  def coloredCells(self, n: int) -> int:
     cnt = 0
     idx, delta, col = 1, 1, 1
     

@@ -33,7 +33,41 @@ from bisect import bisect_left
 import math
 
 
+primes = []
+nums = [i for i in range(10**6)]
+for val in range(2, len(nums)):
+  if nums[val] < val:
+    continue
+
+  primes.append(val)
+  for v0 in range(val*val, len(nums), val):
+    if nums[v0] == v0:
+      nums[v0] = val
+
+
 class Solution:
+  def closestPrimes(self, left: int, right: int) -> List[int]:
+    # print('init', primes)
+    l = bisect_left(primes, left)
+    if l >= len(primes):
+      return [-1, -1]
+
+    idx = l+1
+    prev = primes[l]
+    diff = math.inf
+    ans = [-1, -1]
+
+    while idx < len(primes) and primes[idx] <= right:
+      curr = primes[idx] - prev
+      if curr < diff:
+        diff = curr
+        ans = [prev, primes[idx]]
+
+      prev = primes[idx] 
+      idx += 1
+
+    return ans
+        
   def is_prime(self, num: int) -> bool:
     if num == 1:
       return False

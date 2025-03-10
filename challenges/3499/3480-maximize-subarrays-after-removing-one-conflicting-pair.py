@@ -17,6 +17,7 @@ class Solution:
     left = [0, 0]
     imp = [0] * (n+1)
     for r in range(1, n+1):
+      # update the last 2 left points
       for l in right[r]:
         left = max(left, [l, left[0]], [left[0], l])
       

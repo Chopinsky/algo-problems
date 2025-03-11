@@ -28,6 +28,26 @@ s only consists of a, b or c characters.
 
 class Solution:
   def numberOfSubstrings(self, s: str) -> int:
+    count = [0, 0, 0]
+    r = 0
+    n = len(s)
+    total = 0
+
+    for i in range(n):
+      while r < n and any(val == 0 for val in count):
+        idx = ord(s[r]) - ord('a')
+        count[idx] += 1
+        r += 1
+
+      if all(val > 0 for val in count):
+        total += n-r+1
+
+      idx = ord(s[i]) - ord('a')
+      count[idx] -= 1
+
+    return total
+        
+  def numberOfSubstrings(self, s: str) -> int:
     # ca, cb, cc = [], [], []
     ca, cb, cc = -1, -1, -1
     count = 0

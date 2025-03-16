@@ -42,6 +42,29 @@ from math import isqrt
 
 class Solution:
   def repairCars(self, ranks: List[int], cars: int) -> int:
+    def check(t: int) -> bool:
+      c = 0
+      for r in ranks:
+        c += isqrt(t//r)
+
+      print('t:', t, c)
+      return c >= cars
+
+    l, r = 1, cars**2 * min(ranks)
+    last = r
+    # print('init:', l, r)
+
+    while l <= r:
+      mid = (l+r) // 2
+      if check(mid):
+        r = mid-1
+        last = mid
+      else:
+        l = mid+1
+
+    return last
+
+  def repairCars(self, ranks: List[int], cars: int) -> int:
     ranks.sort()
     
     def check(t: int) -> bool:

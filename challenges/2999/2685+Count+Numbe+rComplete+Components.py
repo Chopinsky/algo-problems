@@ -30,11 +30,50 @@ ai != bi
 There are no repeated edges.
 '''
 
-from typing import List
+from typing import List, Set
 from collections import defaultdict
 
 
 class Solution:
+  def countCompleteComponents(self, n: int, edges: List[List[int]]) -> int:
+    e = defaultdict(list)
+    seen = set()
+    count = 0
+
+    def is_connected(u: int, seen: Set) -> bool:
+      curr, nxt = [u], []
+      graph = set(curr)
+
+      while curr:
+        for u in curr:
+          for v in e[u]:
+            if v in graph:
+              continue
+
+            graph.add(v)
+            nxt.append(v)
+
+        curr, nxt = nxt, curr
+        nxt.clear()
+
+      seen |= graph
+      ec = len(graph) - 1
+
+      return all(len(e[u]) == ec for u in graph)
+
+    for u, v in edges:
+      e[u].append(v)
+      e[v].append(u)
+        
+    for u in range(n):
+      if u in seen:
+        continue
+
+      if is_connected(u, seen):
+        count += 1
+
+    return count
+
   def countCompleteComponents(self, n: int, edges: List[List[int]]) -> int:
     e = defaultdict(list)
     for u, v in edges:

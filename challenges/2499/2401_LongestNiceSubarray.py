@@ -38,6 +38,26 @@ from functools import lru_cache
 
 class Solution:
   def longestNiceSubarray(self, nums: List[int]) -> int:
+    l, r = 0, 1
+    n = len(nums)
+    long = 1
+
+    while r < n:
+      idx = r-1
+      while idx >= l:
+        if nums[r] & nums[idx] > 0:
+          break
+
+        idx -= 1
+
+      l = idx+1
+      # print('iter:', (l, r))
+      long = max(long, r-l+1)
+      r += 1
+
+    return long
+        
+  def longestNiceSubarray(self, nums: List[int]) -> int:
     start = 0
     long = 1
     curr = {}

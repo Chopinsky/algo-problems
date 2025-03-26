@@ -44,6 +44,37 @@ from collections import defaultdict
 
 class Solution:
   def minOperations(self, grid: List[List[int]], x: int) -> int:
+    if len(grid) == 1 and len(grid[0]) == 1:
+      return 0
+
+    nums = []
+    for row in grid:
+      nums += row
+
+    nums.sort()
+    base = nums[0] % x
+    # print('init:', nums, base)
+
+    if any(val%x != base for val in nums):
+      return -1
+
+    def get_ops(target: int):
+      ans = 0
+      for val in nums:
+        if abs(val-target)%x!=0:
+          return -1
+          
+        ans += abs(val-target) // x
+
+      return ans
+
+    n = len(nums)
+    return min(
+      get_ops(nums[n//2]),
+      get_ops(nums[n//2-1])
+    )
+
+  def minOperations(self, grid: List[List[int]], x: int) -> int:
     c = defaultdict(int)
     rem = grid[0][0] % x
     

@@ -29,6 +29,32 @@ from typing import List
 
 class Solution:
   def partitionLabels(self, s: str) -> List[int]:
+    loc = {}
+    for i, ch in enumerate(s):
+      if ch not in loc:
+        loc[ch] = [i, i]
+      else:
+        loc[ch][1] = i
+
+    # print('init:', loc)
+    ans = []
+    n = len(s)
+    curr = 0
+    l, r = -1, -1
+
+    while curr < n:
+      ch = s[curr]
+      r = max(r, loc[ch][1])
+
+      if curr == r:
+        ans.append(curr-l)
+        l = curr
+
+      curr += 1
+
+    return ans
+
+  def partitionLabels(self, s: str) -> List[int]:
     chars = {}
     parts = []
     seq = []

@@ -50,6 +50,26 @@ from typing import List
 
 class Solution:
   def minimumIndex(self, nums: List[int]) -> int:
+    total = Counter(nums)
+    n = len(nums)
+    l = {}
+    l_max = [-1, 0]
+
+    for i, val in enumerate(nums):
+      l[val] = l.get(val, 0) + 1
+      if l[val] > l_max[1]:
+        l_max[0] = val
+        l_max[1] = l[val]
+
+      lc = l_max[1]
+      rc = total[l_max[0]] - lc
+
+      if lc*2 > (i+1) and rc*2 > n-i-1:
+        return i
+
+    return -1
+        
+  def minimumIndex(self, nums: List[int]) -> int:
     n = len(nums)
     c = Counter(nums)
     curr, cnt = -1, 0

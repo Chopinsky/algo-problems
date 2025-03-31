@@ -34,9 +34,31 @@ Constraints:
 '''
 
 from typing import List
+from heapq import heappush, heappop
 
 
 class Solution:
+  def putMarbles(self, weights: List[int], k: int) -> int:
+    n = len(weights)
+    if n == k:
+      return 0
+
+    low = []
+    high = []
+
+    for i in range(1, n):
+      sm = weights[i]+weights[i-1]
+      heappush(low, -sm)
+      heappush(high, sm)
+
+      while len(low) > k-1:
+        heappop(low)
+
+      while len(high) > k-1:
+        heappop(high)
+
+    return abs(sum(low) + sum(high))
+        
   def putMarbles(self, weights: List[int], k: int) -> int:
     n = len(weights)
     if k == n or k == 1:

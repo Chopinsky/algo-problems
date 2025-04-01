@@ -43,6 +43,18 @@ class Solution:
   def mostPoints(self, questions: List[List[int]]) -> int:
     n = len(questions)
     dp = [0]*n
+
+    for i in range(n-1, -1, -1):
+      point, skip_count = questions[i]
+      skip = 0 if i == n-1 else dp[i+1]
+      solve = point + (dp[i+skip_count+1] if i+skip_count+1 < n else 0)
+      dp[i] = max(skip, solve)
+
+    return dp[0]
+        
+  def mostPoints(self, questions: List[List[int]]) -> int:
+    n = len(questions)
+    dp = [0]*n
     
     for i in range(n-1, -1, -1):
       p, d = questions[i]

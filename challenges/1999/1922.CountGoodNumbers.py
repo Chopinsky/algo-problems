@@ -25,8 +25,23 @@ Constraints:
 1 <= n <= 10^15
 '''
 
-
 class Solution:
+  def countGoodNumbers(self, n: int) -> int:
+    mod = 10**9 + 7
+
+    def count(n: int):
+      if n == 1:
+        return 5
+
+      even_cnt = n // 2
+      odd_cnt = n // 2
+      if n%2 == 1:
+        even_cnt += 1
+
+      return (pow(5, even_cnt, mod) * pow(4, odd_cnt, mod)) % mod
+
+    return count(n)
+  
   def countGoodNumbers(self, n: int) -> int:
     mod = 10**9 + 7
     if n == 1:

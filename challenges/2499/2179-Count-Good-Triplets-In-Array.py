@@ -27,29 +27,47 @@ n == nums1.length == nums2.length
 nums1 and nums2 are permutations of [0, 1, ..., n - 1].
 '''
 
-
 from typing import List
-from sortedcontainers import SortedList
 
 
 class Solution:
   def goodTriplets(self, nums1: List[int], nums2: List[int]) -> int:
     n = len(nums1)
-    p = [0] * n
-    for i, x in enumerate(nums1):
-      p[x] = i
-      
-    ans = 0
-    s = SortedList()
+    pv1 = {val:i for i, val in enumerate(nums1)}
+
+    def query(f, idx):
+      c = f[0]
+      while idx > 0:
+        c += f[idx]
+        idx -= (idx & -idx)
+
+      return c
+
+    def fill(f, idx):
+      if idx == 0:
+        f[idx] += 1
+        return
+
+      while idx < n+1:
+        f[idx] += 1
+        idx += (idx & -idx)
+
+    before = [0]*n
+    after = [0]*n
+    fw = [0]*(n+1)
+
+    for val in nums2:
+      before[val] = query(fw, pv1[val])
+      fill(fw, pv1[val])
+
+    fw = [0]*(n+1)
+    for val in nums2[::-1]:
+      after[val] = query(fw, n-pv1[val])
+      fill(fw, n-pv1[val])
+
+    # print('init:', before, after)
     
-    for i in range(1, n-1):
-      s.add(p[nums2[i-1]])
-      y = p[nums2[i]]
-      less = s.bisect_left(y)
-      ans += less * ((n-1-y) - (i-less))
-        
-    return ans
-      
+    return sum(before[i]*after[i] for i in range(n))
 
   def goodTriplets(self, nums1: List[int], nums2: List[int]) -> int:
     n = len(nums1)

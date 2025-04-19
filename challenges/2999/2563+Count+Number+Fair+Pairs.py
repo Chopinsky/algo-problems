@@ -34,6 +34,27 @@ from bisect import bisect_right, bisect_left
 class Solution:
   def countFairPairs(self, nums: List[int], lower: int, upper: int) -> int:
     nums.sort()
+    cnt = 0
+    # print('init:', nums)
+
+    for i, val in enumerate(nums):
+      ldx = bisect_left(nums, lower-val)
+      rdx = bisect_right(nums, upper-val)-1
+      # print('found:', (i, val), (ldx, rdx))
+
+      if rdx < ldx or ldx >= len(nums) or rdx < 0:
+        continue
+
+      c = rdx-ldx+1
+      if ldx <= i <= rdx:
+        c -= 1
+
+      cnt += c
+
+    return cnt//2
+        
+  def countFairPairs(self, nums: List[int], lower: int, upper: int) -> int:
+    nums.sort()
     n = len(nums)
     total = 0
     

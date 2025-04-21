@@ -46,6 +46,21 @@ from typing import List
 
 class Solution:
   def numberOfArrays(self, diff: List[int], lower: int, upper: int) -> int:
+    curr = 0
+    limits = [0, 0]
+
+    for d in diff:
+      curr += d
+      limits[0] = min(limits[0], curr)
+      limits[1] = max(limits[1], curr)
+
+    d0 = limits[1]-limits[0]
+    d1 = upper-lower
+    # print('init:', limits, d0, d1)
+
+    return max(0, d1-d0+1)
+
+  def numberOfArrays(self, diff: List[int], lower: int, upper: int) -> int:
     bottom, top, last = 0, 0, 0
     for val in diff:
       curr = last + val

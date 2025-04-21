@@ -28,9 +28,20 @@ Constraints:
 '''
 
 from typing import List
-from collections import defaultdict
+from collections import defaultdict, Counter
+from math import ceil
+
 
 class Solution:
+  def numRabbits(self, answers: List[int]) -> int:
+    c = Counter(answers)
+    total = 0
+
+    for val, cnt in c.items():
+      total += ceil(float(cnt) / (val+1)) * (val+1)
+
+    return total
+        
   def numRabbits(self, answers: List[int]) -> int:
     c = defaultdict(int)
     res = 0

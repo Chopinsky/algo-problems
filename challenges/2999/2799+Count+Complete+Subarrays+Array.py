@@ -28,10 +28,36 @@ Constraints:
 '''
 
 from typing import List
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 
 class Solution:
+  def countCompleteSubarrays(self, nums: List[int]) -> int:
+    tgt = len(Counter(nums))
+    c = defaultdict(int)
+    subs = 0
+    l, r = 0, 0
+    n = len(nums)
+    # print('init:', tgt)
+
+    while l < n:
+      if l-1 >= 0:
+        val = nums[l-1]
+        c[val] -= 1
+        if not c[val]:
+          del c[val]
+
+      while r < n and len(c) < tgt:
+        c[nums[r]] += 1
+        r += 1
+
+      if len(c) == tgt:
+        subs += n-r+1
+
+      l += 1
+
+    return subs
+  
   def countCompleteSubarrays(self, nums: List[int]) -> int:
     counter = defaultdict(int)
     target = len(set(nums))

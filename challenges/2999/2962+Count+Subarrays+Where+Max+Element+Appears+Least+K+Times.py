@@ -34,7 +34,32 @@ Constraints:
 
 from typing import List
 
+
 class Solution:
+  def countSubarrays(self, nums: List[int], k: int) -> int:
+    max_val = max(nums)
+    l, r = 0, 0
+    cnt = 0
+    n = len(nums)
+    sub = 0
+
+    while l < n:
+      if l > 0 and nums[l-1] == max_val:
+        cnt -= 1
+
+      while r < n and cnt < k:
+        if nums[r] == max_val:
+          cnt += 1
+
+        r += 1
+
+      if cnt >= k:
+        sub += n-r+1
+
+      l += 1
+
+    return sub
+        
   def countSubarrays(self, nums: List[int], k: int) -> int:
     top = max(nums)
     n = len(nums)

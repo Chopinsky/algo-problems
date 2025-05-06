@@ -49,10 +49,33 @@ Constraints:
 '''
 
 from typing import List
+from collections import defaultdict
 from math import comb
 
 
 class Solution:
+  def countInterestingSubarrays(self, nums: List[int], mod: int, k: int) -> int:
+    c = [0]
+    vals = defaultdict(int)
+    n = len(nums)
+
+    for i, val in enumerate(nums):
+      curr = c[-1]
+      if val % mod == k:
+        curr += 1
+
+      c.append(curr)
+
+    # print('init:', c)
+    cnt = 0
+    for i in range(n+1):
+      v0 = (c[i] + mod - k) % mod
+      # print('iter:', i, v0)
+      cnt += vals[v0]
+      vals[c[i]%mod] += 1
+
+    return cnt
+        
   def countInterestingSubarrays(self, nums: List[int], mod: int, k: int) -> int:
     cand = []
     n = len(nums)

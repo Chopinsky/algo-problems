@@ -10,7 +10,7 @@ from typing import List
 class Solution:
   def minTravelTime(self, l: int, n: int, k: int, position: List[int], time: List[int]) -> int:
     @cache
-    def dp(idx, speed, extra, prev, rem: int):
+    def dp(idx: int, speed: int, extra: int, prev: int, rem: int):
       if idx == n-1:
         return (l-prev) * speed if rem == 0 else math.inf
 

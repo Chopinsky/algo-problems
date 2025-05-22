@@ -33,6 +33,25 @@ from typing import List
 
 
 class Solution:
+  def setZeroes(self, grid: List[List[int]]) -> None:
+    """
+    Do not return anything, modify matrix in-place instead.
+    """
+    rows = set()
+    cols = set()
+    m, n = len(grid), len(grid[0])
+
+    for x in range(m):
+      for y in range(n):
+        if grid[x][y] == 0:
+          rows.add(x)
+          cols.add(y)
+
+    for x in range(m):
+      for y in range(n):
+        if x in rows or y in cols:
+          grid[x][y] = 0
+
   def setZeroes(self, mat: List[List[int]]) -> None:
     """
     Do not return anything, modify matrix in-place instead.

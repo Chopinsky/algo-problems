@@ -38,6 +38,37 @@ import math
 
 class Solution:
   def closestMeetingNode(self, edges: List[int], node1: int, node2: int) -> int:
+    def get_trace(u: int):
+      dist = {}
+      curr = 0
+
+      while u >= 0 and u not in dist:
+        dist[u] = curr
+        u = edges[u]
+        curr += 1
+
+      return dist
+
+    ans = -1
+    dist = 3*len(edges)
+    t1 = get_trace(node1)
+    t2 = get_trace(node2)
+    # print('init:', t1, t2)
+
+    for u, d1 in t1.items():
+      if u not in t2:
+        continue
+
+      d0 = max(d1, t2[u])
+      if d0 < dist:
+        dist = d0
+        ans = u
+      elif d0 == dist:
+        ans = min(ans, u)
+
+    return ans
+
+  def closestMeetingNode(self, edges: List[int], node1: int, node2: int) -> int:
     n = len(edges)
     
     def calc_dist(src: int) -> List[int]:

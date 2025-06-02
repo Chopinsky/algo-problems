@@ -63,9 +63,50 @@ The input is generated such that edges represent a valid tree.
 
 from typing import List
 from collections import defaultdict
-from functools import lru_cache
+from functools import lru_cache, cache
+
 
 class Solution:
+  def maximumValueSum(self, nums: List[int], k: int, edges: List[List[int]]) -> int:
+    e = defaultdict(list)
+    for u, v in edges:
+      e[u].append(v)
+      e[v].append(u)
+
+    @cache
+    def dp(u: int, p: int, xor: bool) -> int:
+      val = nums[u]
+      c = 1 if xor else 0
+      s = 0
+      change = None
+
+      for v in e[u]:
+        if v == p:
+          continue
+
+        v0 = dp(v, u, True)  # flip
+        v1 = dp(v, u, False) # no-flip
+
+        if v0 > v1:
+          c += 1
+          s += v0
+        else:
+          s += v1
+
+
+        if change is None or change > abs(v0-v1):
+          change = abs(v0-v1)
+
+      res0 = s + (val if c%2 == 0 else val^k)
+      res1 = 0
+      if change is not None:
+        c += 1
+        res1 = max(res1, s-change+(val if c%2 == 0 else val^k))
+      
+      return max(res0, res1)
+
+    return dp(0, -1, False)
+        
   def maximumValueSum(self, nums: List[int], k: int, edges: List[List[int]]) -> int:
     n = len(nums)
     e = defaultdict(set)

@@ -35,6 +35,42 @@ dominoes[i] is either 'L', 'R', or '.'.
 
 class Solution:
   def pushDominoes(self, dominoes: str) -> str:
+    stack = [(i, d) for i, d in enumerate(dominoes) if d != '.']
+    if not stack:
+      return dominoes
+
+    res = ''
+    n = len(stack)
+    m = len(dominoes)
+    # print('init:', stack)
+
+    for i in range(n):
+      if i == 0:
+        ch = 'L' if stack[i][1] == 'L' else '.'
+        res += ch*stack[i][0]
+
+      res += stack[i][1]
+      if i < n-1:
+        space = stack[i+1][0] - stack[i][0] - 1
+        if stack[i][1] == stack[i+1][1]:
+          res += stack[i][1]*space 
+        elif stack[i][1] == 'L' and stack[i+1][1] == 'R':
+          res += '.'*space
+        else:
+          half = space // 2
+          if space%2 == 0:
+            res += 'R'*half + 'L'*half
+          else:
+            res += 'R'*half + '.' + 'L'*half
+
+      if i == n-1:
+        ch = 'R' if stack[i][1] == 'R' else '.'
+        # print('tail:', ch, stack[i])
+        res += ch*(m-1-stack[i][0])
+
+    return res
+        
+  def pushDominoes(self, dominoes: str) -> str:
     stack = []
     ans = ''
     n = len(dominoes)

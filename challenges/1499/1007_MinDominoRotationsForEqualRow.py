@@ -29,12 +29,33 @@ bottoms.length == tops.length
 1 <= tops[i], bottoms[i] <= 6
 '''
 
-
 from typing import List
 import math
+from collections import Counter, defaultdict
 
 
 class Solution:
+  def minDominoRotations(self, tops: List[int], bottoms: List[int]) -> int:
+    c0 = Counter(tops)
+    c1 = Counter(bottoms)
+    n = len(tops)
+    d = defaultdict(int)
+    # print('init:', c0, c1)
+    swaps = n
+
+    for i in range(n):
+      if tops[i] == bottoms[i]:
+        d[tops[i]] += 1
+
+    for val in c0:
+      if c0[val]+c1[val]-d[val] >= n:
+        swaps = min(
+          n-c0[val],
+          n-c1[val],
+        )
+
+    return -1 if swaps == n else swaps
+        
   def minDominoRotations(self, tops: List[int], bottoms: List[int]) -> int:
     for val in (tops[0], bottoms[0]):
       if all(val in d for d in zip(tops, bottoms)):

@@ -40,6 +40,31 @@ from collections import Counter
 class Solution:
   def longestPalindrome(self, words: List[str]) -> int:
     c = Counter(words)
+    has_mid = False
+    seen = set()
+    pairs = 0
+    # print('init:', c)
+
+    for w, c0 in c.items():
+      if w in seen:
+        continue
+
+      if w[0] != w[1]:
+        rev = w[1]+w[0]
+        if rev in c:
+          pairs += min(c0, c[rev])
+          seen.add(rev)
+      else:
+        pairs += c0 // 2
+        if c0 % 2 == 1:
+          has_mid = True
+
+      seen.add(w)
+
+    return 4*pairs + (2 if has_mid else 0)
+        
+  def longestPalindrome(self, words: List[str]) -> int:
+    c = Counter(words)
     ln = 0
     double = False
     seen = set()

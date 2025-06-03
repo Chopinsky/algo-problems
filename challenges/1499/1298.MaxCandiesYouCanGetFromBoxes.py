@@ -59,6 +59,32 @@ from typing import List
 
 class Solution:
   def maxCandies(self, status: List[int], candies: List[int], keys: List[List[int]], containedBoxes: List[List[int]], initialBoxes: List[int]) -> int:
+    curr = set(initialBoxes)
+    nxt = set()
+    count = 0
+
+    while curr:
+      # print('iter:', curr, status)
+      can_open = [b for b in curr if status[b] == 1]
+      rem = set([b for b in curr if status[b] == 0])
+
+      while can_open:
+        b0 = can_open.pop()
+        count += candies[b0]
+        nxt |= set(containedBoxes[b0])
+
+        for b1 in keys[b0]:
+          status[b1] = 1
+          if b1 in rem:
+            can_open.append(b1)
+            rem.discard(b1)
+
+      curr, nxt = nxt, curr
+      nxt.clear()
+
+    return count
+        
+  def maxCandies(self, status: List[int], candies: List[int], keys: List[List[int]], containedBoxes: List[List[int]], initialBoxes: List[int]) -> int:
     total = 0
     boxes, nxt = initialBoxes, []
     owned_keys = set(initialBoxes)

@@ -44,6 +44,40 @@ s1, s2, and baseStr consist of lowercase English letters.
 
 class Solution:
   def smallestEquivalentString(self, s1: str, s2: str, baseStr: str) -> str:
+    arr = [i for i in range(26)]
+
+    def find(x: int) -> int:
+      while arr[x] != x:
+        x = arr[x]
+
+      return x
+
+    def union(x: int, y: int):
+      if x == y:
+        return
+
+      x0, y0 = find(x), find(y)
+      if x0 <= y0:
+        arr[y0] = x0
+      else:
+        arr[x0] = y0
+
+    n = len(s1)
+    for i in range(n):
+      x = ord(s1[i]) - ord('a')
+      y = ord(s2[i]) - ord('a')
+      # print('union:', x, y)
+      union(x, y)
+
+    res = ""
+    # print('done:', arr)
+    for c0 in baseStr:
+      x = ord(c0) - ord('a')
+      res += chr(ord('a') + find(x))
+    
+    return res
+
+  def smallestEquivalentString(self, s1: str, s2: str, baseStr: str) -> str:
     dic = {}
     for ch in set(s1) | set(s2):
       dic[ch] = ch

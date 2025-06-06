@@ -44,6 +44,32 @@ from collections import Counter
 
 class Solution:
   def robotWithString(self, s: str) -> str:
+    stack = []
+    res = []
+    rem = Counter(s)
+    cand = sorted(rem)[::-1]
+    # print('init:', rem, cand)
+
+    for ch in s:
+      while cand and rem[cand[-1]] == 0:
+        cand.pop()
+
+      while stack and stack[-1] <= cand[-1]:
+        res.append(stack.pop())
+
+      # take the char from s
+      # print('ch:', ch, cand, rem, stack)
+      rem[ch] -= 1
+      if ch == cand[-1]:
+        res.append(ch)
+      else:
+        stack.append(ch)
+
+    res += stack[::-1]
+
+    return ''.join(res)
+        
+  def robotWithString(self, s: str) -> str:
     cand = sorted(set(s), reverse=True)
     counter = Counter(s)
     stack = []

@@ -64,7 +64,7 @@ class LCA:
       return abs(self.dist[v] - self.dist[u])
     return (self.dist[u] - self.dist[a]) + (self.dist[v] - self.dist[a])
 
-  def find_node_dist(self, u, distance, mode=0):
+  def find(self, u, distance, mode=0):
     d = len(self.ancestors[u]) - 1
     m = u
     while d >= 0:
@@ -84,15 +84,15 @@ class LCA:
     goal = (self.distance(u, v)) / 2
     a = self.lca(u, v)
     if u == a:
-      return self.find_node_dist(v, goal + self.dist[u])
+      return self.find(v, goal + self.dist[u])
     if v == a:
-      return self.find_node_dist(u, goal + self.dist[v], 1)
+      return self.find(u, goal + self.dist[v], 1)
 
     d = self.distance(a, u)
     if d >= goal:
-      return self.find_node_dist(u, d - goal + self.dist[a], 1)
+      return self.find(u, d - goal + self.dist[a], 1)
 
-    return self.find_node_dist(v, goal - d + self.dist[a])
+    return self.find(v, goal - d + self.dist[a])
                 
 class Solution:
   def findMedian(self, n: int, edges: List[List[int]], queries: List[List[int]]) -> List[int]:

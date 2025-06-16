@@ -85,6 +85,7 @@ class LCA:
     a = self.lca(u, v)
     if u == a:
       return self.find(v, goal + self.dist[u])
+    
     if v == a:
       return self.find(u, goal + self.dist[v], 1)
 

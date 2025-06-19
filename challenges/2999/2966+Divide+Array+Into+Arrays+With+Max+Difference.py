@@ -36,6 +36,21 @@ from typing import List
 
 class Solution:
   def divideArray(self, nums: List[int], k: int) -> List[List[int]]:
+    nums.sort()
+    ans = []
+    n = len(nums)
+
+    for i in range(0, n, 3):
+      arr = nums[i:i+3]
+      # print('iter:', arr)
+      if arr[-1]-arr[0] > k:
+        return []
+
+      ans.append(arr)
+
+    return ans
+
+  def divideArray(self, nums: List[int], k: int) -> List[List[int]]:
     n = len(nums)
     if n%3 != 0:
       return []

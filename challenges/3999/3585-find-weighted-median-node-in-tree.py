@@ -13,7 +13,6 @@ class LCA:
     self.time_in = dict()
     self.time_out = dict()
     self.timer = 0
-    self.depth = dict()
     self.dist = dict()
     self.dfs(root, root, [root])
       
@@ -22,11 +21,10 @@ class LCA:
     self.time_in[v] = self.timer
     up = 1
 
-    while len(path) >= up:
+    while up <= len(path):
       self.ancestors[v].append(path[-up])
-      up *= 2
+      up <<= 1
 
-    self.depth[v] = len(path)
     self.dist[v] = d
     path.append(v)
     

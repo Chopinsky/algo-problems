@@ -53,7 +53,21 @@ Constraints:
 
 from typing import List
 
+
 class Solution:
+  def partitionArray(self, nums: List[int], k: int) -> int:
+    cand = sorted(set(nums))
+    count = 1
+    start = cand[0]
+    # print('init:', cand)
+
+    for val in cand[1:]:
+      if val-start > k:
+        start = val
+        count += 1
+
+    return count
+        
   def partitionArray(self, nums: List[int], k: int) -> int:
     unique_num = sorted(set(nums))
     start_num = unique_num[0] 

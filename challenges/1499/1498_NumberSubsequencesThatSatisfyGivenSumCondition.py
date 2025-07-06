@@ -37,9 +37,42 @@ Constraints:
 from bisect import bisect_right
 from functools import lru_cache
 from typing import List
+from collections import Counter
 
 
 class Solution:
+  def numSubseq(self, nums: List[int], target: int) -> int:
+    mod = 10**9 + 7
+    c = Counter(nums)
+    count = 0
+    cand = sorted(c)
+    i, j = 0, len(cand)-1
+    
+    prefix = [c[cand[idx]] for idx in range(len(cand))]
+    for idx in range(1, len(cand)):
+      prefix[idx] += prefix[idx-1]
+
+    # print('init:', cand, prefix)
+    while i <= j:
+      val = cand[i]
+      while j >= i and val+cand[j] > target:
+        j -= 1
+
+      if j < i:
+        break
+
+      base = (1<<c[val]) - 1
+      if i == j:
+        count += base
+      else:
+        rest = prefix[j]-prefix[i]
+        count += base * (1<<rest)
+
+      count %= mod
+      i += 1
+
+    return count
+        
   def numSubseq(self, nums: List[int], target: int) -> int:
     mod = 10**9 + 7
     nums.sort()

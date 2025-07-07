@@ -33,6 +33,38 @@ from heapq import heappush, heappop
 
 
 class Solution:
+  def maxEvents(self, events: List[List[int]]) -> int:
+    d = 0
+    cnt = 0
+    cand = []
+    events.sort()
+    i = 0
+
+    while i < len(events) or cand:
+      while cand and cand[0] < d:
+        heappop(cand)
+
+      if not cand:
+        if i >= len(events):
+          break
+
+        d = events[i][0]
+
+      while i < len(events) and events[i][0] <= d:
+        if events[i][1] >= d:
+          heappush(cand, events[i][1])
+
+        i += 1
+
+      if cand:
+        heappop(cand)
+        cnt += 1
+
+      d += 1
+        
+    return cnt
+
+
   '''
   the trick is to use each hour-based time-slot and try to match it with
   the event with the earliest ending time that's already happening

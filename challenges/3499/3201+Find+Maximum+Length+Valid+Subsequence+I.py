@@ -49,6 +49,26 @@ from typing import List
 
 class Solution:
   def maximumLength(self, nums: List[int]) -> int:
+    def count(pat: List) -> int:
+      ln = 0
+      i = 0
+
+      for val in nums:
+        if val%2 == pat[i]:
+          ln += 1
+          i = 1 - i
+
+      return ln
+
+    l0 = count([0, 0])
+    l1 = count([0, 1])
+    l2 = count([1, 0])
+    l3 = count([1, 1])
+    # print('done:', l0, l1, l2, l3)
+
+    return max(l0, l1, l2, l3)
+        
+  def maximumLength(self, nums: List[int]) -> int:
     arr = [val%2 for val in nums]
     long = max(arr.count(0), arr.count(1))
     prev, ln = arr[0], 1

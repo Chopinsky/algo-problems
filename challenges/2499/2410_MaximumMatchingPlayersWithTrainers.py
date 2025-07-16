@@ -36,6 +36,23 @@ from bisect import bisect_left
 
 
 class Solution:
+  def matchPlayersAndTrainers(self, p: List[int], t: List[int]) -> int:
+    p.sort()
+    t.sort()
+    t = t[::-1]
+    count = 0
+    # print('init:', p, t)
+
+    for a0 in p:
+      while t and t[-1] < a0:
+        t.pop()
+
+      if t:
+        t.pop()
+        count += 1
+
+    return count
+        
   def matchPlayersAndTrainers(self, players: List[int], trainers: List[int]) -> int:
     players.sort()
     trainers.sort()

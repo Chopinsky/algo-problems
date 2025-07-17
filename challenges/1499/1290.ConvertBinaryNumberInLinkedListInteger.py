@@ -33,6 +33,8 @@ Number of nodes will not exceed 30.
 Each node's value is either 0 or 1.
 '''
 
+from typing import Optional
+
 
 # Definition for singly-linked list.
 class ListNode:
@@ -42,6 +44,16 @@ class ListNode:
 
 
 class Solution:
+  def getDecimalValue(self, head: Optional[ListNode]) -> int:
+    val = 0
+
+    while head:
+      val <<= 1
+      val |= head.val
+      head = head.next
+
+    return val
+        
   def getDecimalValue(self, head: ListNode) -> int:
     base = 0
     while head:

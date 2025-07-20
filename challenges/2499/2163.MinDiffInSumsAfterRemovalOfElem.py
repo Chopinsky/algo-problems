@@ -39,10 +39,53 @@ nums.length == 3 * n
 
 
 from typing import List
-from heapq import heapify, heappushpop, heappop
+from heapq import heapify, heappushpop, heappop, heappush
 
 
 class Solution:
+  def minimumDifference(self, v: List[int]) -> int:
+    n = len(v)//3
+
+    # for each closed range [0,n], ... [0,2n-1] find min. n elements
+    # store their sum
+    h = [-val for val in v[:n]]
+    heapify(h)
+    p0 = [-sum(h)]
+
+    for i in range(n, 2*n):
+      val = v[i]
+      prefix = p0[-1]
+
+      if -val > h[0]:
+        prefix -= -heappop(h)
+        heappush(h, -val)
+        prefix += val
+
+      p0.append(prefix)
+
+    # for each range [n,3n], ... [2n,3n] find max. n elements
+    ## store their sum
+    h = [val for val in v[2*n:]]
+    heapify(h)
+    p1 = [sum(h)]
+
+    for i in range(2*n-1, n-1, -1):
+      val = v[i]
+      prefix = p1[-1]
+
+      if val > h[0]:
+        prefix -= heappop(h)
+        heappush(h, val)
+        prefix += val
+
+      p1.append(prefix)
+
+    p1 = p1[::-1]
+
+    # cost is sum-min(N[0:n-1]) + sum-max(N[n:3n-1]) - closed ranges
+    # here P starts at n-1 and S[::-1] ends at n - hence zip directly
+    return min(p-s for p, s in zip(p0, p1))
+
   def minimumDifference(self, nums: List[int]) -> int:
     n = len(nums) // 3
     if n == 1:

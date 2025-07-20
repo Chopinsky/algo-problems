@@ -38,6 +38,51 @@ from typing import List
 
 class Solution:
   def removeSubfolders(self, folder: List[str]) -> List[str]:
+    root = {}
+    cand = sorted([f.split('/') for f in folder], key=lambda x: (len(x), x))
+    # print('init:', cand)
+
+    def check(c: List) -> bool:
+      curr = root
+      level = 0
+      # print('check:', c)
+
+      for f in c:
+        if f not in curr:
+          if level == 0:
+            # print('out-1')
+            return True
+
+          if len(curr) > 0:
+            # print('out-2')
+            return True
+
+          return False
+
+        curr = curr[f]
+        level += 1
+
+      return True
+
+    def insert(c: List):
+      curr = root
+
+      for f in c:
+        if f not in curr:
+          curr[f] = {}
+
+        curr = curr[f]
+
+    ans = []
+    for c in cand:
+      # print(root)
+      if check(c[1:]):
+        insert(c[1:])
+        ans.append('/'.join(c))
+
+    return ans
+        
+  def removeSubfolders(self, folder: List[str]) -> List[str]:
     folder.sort()
     root = {}
     ans = []

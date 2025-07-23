@@ -23,9 +23,33 @@ Constraints:
 '''
 
 from typing import List
+from collections import defaultdict
 
 
 class Solution:
+  def maximumUniqueSubarray(self, nums: List[int]) -> int:
+    n = len(nums)
+    res = 0
+    l = 0
+    vals = defaultdict(int)
+    curr = 0
+
+    for r in range(n):
+      val = nums[r]
+      curr += val
+      vals[val] += 1
+
+      while l < r and vals[val] > 1:
+        v0 = nums[l]
+        curr -= v0
+        vals[v0] -= 1
+        l += 1
+
+      # print('subarr', (l, r), curr)
+      res = max(res, curr)
+
+    return res
+        
   def maximumUniqueSubarray(self, nums: List[int]) -> int:
     max_score, curr_score = 0, 0
     uniq = set()

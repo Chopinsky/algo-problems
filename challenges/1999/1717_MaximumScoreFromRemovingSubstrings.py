@@ -29,7 +29,49 @@ Constraints:
 s consists of lowercase English letters.
 '''
 
+
 class Solution:
+  def maximumGain(self, s: str, x: int, y: int) -> int:
+    curr, nxt = list(s), []
+    has_changes = True
+    s1 = ["ab", x]
+    s2 = ["ba", y]
+    
+    # swap
+    if x < y:
+      s1, s2 = s2, s1
+
+    scores = 0
+    # print('init:', s1, s2)
+
+    while has_changes:
+      has_changes = False
+      # print('iter:', curr)
+      
+      for ch in curr:
+        if nxt and nxt[-1] == s1[0][0] and ch == s1[0][1]:
+          scores += s1[1]
+          nxt.pop()
+          has_changes = True
+        else:
+          nxt.append(ch)
+
+      curr, nxt = nxt, curr
+      nxt.clear()
+
+      for ch in curr:
+        if nxt and nxt[-1] == s2[0][0] and ch == s2[0][1]:
+          scores += s2[1]
+          nxt.pop()
+          has_changes = True
+        else:
+          nxt.append(ch)
+
+      curr, nxt = nxt, curr
+      nxt.clear()
+
+    return scores
+        
   def maximumGain(self, s: str, x: int, y: int) -> int:
     def get_score(lst, pat, s0):
       s1 = 0

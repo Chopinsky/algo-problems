@@ -44,6 +44,23 @@ from collections import defaultdict, Counter
 
 class Solution:
   def countMaxOrSubsets(self, nums: List[int]) -> int:
+    curr = defaultdict(int)
+
+    for v0 in nums:
+      nxt = curr.copy()
+      nxt[v0] += 1
+
+      for v1, c1 in curr.items():
+        nxt[v0|v1] += c1
+
+      curr = nxt
+
+    top = max(curr)
+    print('done:', top, curr)
+
+    return curr[top]
+        
+  def countMaxOrSubsets(self, nums: List[int]) -> int:
     counter, nxt = defaultdict(int), defaultdict(int)
     c = Counter(nums)
     

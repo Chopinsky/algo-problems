@@ -1,9 +1,66 @@
-from typing import List
+'''
+2411-smallest-subarrays-with-maximum-bitwise-or
+'''
+
+from typing import List, Dict
 from functools import lru_cache
 from collections import defaultdict
 
 
 class Solution:
+  def smallestSubarrays(self, nums: List[int]) -> List[int]:
+    n = len(nums)
+    t = [0]*n
+    curr = 0
+
+    for i in range(n-1, -1, -1):
+      curr |= nums[i]
+      t[i] = curr
+
+    def bits_to_val(b: Dict) -> int:
+      val = 0
+      for os, cnt in b.items():
+        if cnt > 0:
+          val |= 1 << os
+
+      return val
+
+    def update(b: Dict, val: int, delta: int) -> Dict:
+      os = 0
+
+      while val > 0:
+        if val & 1:
+          b[os] += delta
+
+        val >>= 1
+        os += 1
+
+      return b
+
+    # print('init:', t)
+    bits = defaultdict(int)
+    l, r = 0, 0
+    res = []
+
+    for l in range(n):
+      if r < l:
+        r = l
+        bits.clear()
+
+      if t[l] == 0:
+        res.append(1)
+        continue
+
+      while r < n and bits_to_val(bits) != t[l]:
+        bits = update(bits, nums[r], 1)
+        r += 1
+
+      res.append(r-l)
+      # print('iter:', l, bits_to_val(bits), t[l], bits)
+      update(bits, nums[l], -1)
+
+    return res
+
   def smallestSubarrays(self, nums: List[int]) -> List[int]:
     n = len(nums)
     suffix = [0]*n

@@ -35,6 +35,22 @@ from typing import List
 
 class Solution:
   def subarrayBitwiseORs(self, arr: List[int]) -> int:
+    curr, nxt = set(), set()
+    seen = set()
+
+    for v0 in arr:
+      nxt.add(v0)
+      for v1 in curr:
+        nxt.add(v0 | v1)
+      
+      seen |= nxt
+      curr, nxt = nxt, curr
+      nxt.clear()
+
+    # print('init:', seen)
+    return len(seen)
+
+  def subarrayBitwiseORs(self, arr: List[int]) -> int:
     curr = set()
     ans = set()
     

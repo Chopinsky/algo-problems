@@ -22,6 +22,23 @@ from typing import List
 
 class Solution:
   def generate(self, numRows: int) -> List[List[int]]:
+    arr = [[1]]
+    n = 1
+
+    while n < numRows:
+      curr = [1]
+      prev = arr[-1]
+      m = len(prev)
+      for i in range(m-1):
+        curr.append(prev[i]+prev[i+1])
+
+      curr.append(1)
+      arr.append(curr)
+      n += 1
+
+    return arr
+
+  def generate(self, numRows: int) -> List[List[int]]:
     curr = [1]
     ans = [curr]
     
@@ -36,7 +53,6 @@ class Solution:
       ans.append(curr)
       
     return ans
-      
       
   def generate(self, numRows: int) -> List[List[int]]:
     ans = [[1]]

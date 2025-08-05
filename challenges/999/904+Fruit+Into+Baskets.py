@@ -35,9 +35,32 @@ Constraints:
 '''
 
 from typing import List
+from collections import defaultdict
 
 
 class Solution:
+  def totalFruit(self, fruits: List[int]) -> int:
+    curr = defaultdict(int)
+    l, r = 0, 0
+    count = 0
+    n = len(fruits)
+
+    while r < n:
+      curr[fruits[r]] += 1
+
+      while len(curr) > 2:
+        curr[fruits[l]] -= 1
+        if not curr[fruits[l]]:
+          del curr[fruits[l]]
+
+        l += 1
+
+      # print('iter:', (l, r), r-l+1)
+      count = max(count, r-l+1)
+      r += 1
+
+    return count
+        
   def totalFruit(self, fruits: List[int]) -> int:
     first, second = -1, -1
     second_count = 0

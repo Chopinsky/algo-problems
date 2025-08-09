@@ -41,6 +41,12 @@ class Solution:
   def isPowerOfTwo(self, n: int) -> bool:
     if n <= 0:
       return False
+
+    return n & (n-1) == 0
+        
+  def isPowerOfTwo(self, n: int) -> bool:
+    if n <= 0:
+      return False
     
     while n > 1:
       if n%2 != 0:
@@ -50,14 +56,6 @@ class Solution:
       
     return True
         
-
-  def isPowerOfTwo(self, n: int) -> bool:
-    if n <= 0:
-      return False
-
-    return (n & n-1) == 0
-
-
   def isPowerOfTwo1(self, n: int) -> bool:
     if n <= 0:
       return False

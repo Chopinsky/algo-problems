@@ -20,10 +20,38 @@ Constraints:
 1 <= n <= 109
 '''
 
-from collections import Counter
+from collections import Counter, defaultdict
 
 
 class Solution:
+  def reorderedPowerOf2(self, n: int) -> bool:
+    cand = defaultdict(list)
+    curr = 1
+    ln = len(str(curr))
+
+    while ln < 10:
+      cand[ln].append(Counter(str(curr)))
+      curr <<= 1
+      ln = len(str(curr))
+      # print('iter:', curr, Counter(str(curr)))
+
+    # print('init:', len(cand), curr)
+    base = Counter(str(n))
+    ln = len(str(n))
+    # print('run:', base, cand[ln])
+
+    for c in cand[ln]:
+      found = True
+      for num, cnt in c.items():
+        if num not in base or base[num] != cnt:
+          found = False
+          break
+
+      if found:
+        return True
+
+    return False
+
   def reorderedPowerOf2(self, n: int) -> bool:
     base = 1
     upper = 1 << 30

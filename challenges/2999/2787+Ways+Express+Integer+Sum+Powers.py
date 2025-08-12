@@ -29,10 +29,64 @@ Constraints:
 1 <= x <= 5
 '''
 
-from functools import lru_cache
+from functools import lru_cache, cache
 
 
 class Solution:
+  def numberOfWays(self, n: int, x: int) -> int:
+    mod = 1_000_000_007
+    f = [0] * (n+1)
+    f[0] = 1
+
+    for k in range(1, n+1):
+      v = k**x
+      if v > n:
+        break
+
+      for j in range(n, v-1, -1):
+        f[j] = (f[j] + f[j-v]) % mod
+    
+    return f[-1]
+
+
+  def numberOfWays(self, n: int, x: int) -> int:
+    cand = []
+    mod = 10**9 + 7
+
+    for base in range(1, n+1):
+      val = pow(base, x)
+      if val > n:
+        break
+
+      cand.append(val)
+
+    ln = len(cand)
+    suffix = [val for val in cand]
+    for i in range(ln-2, -1, -1):
+      suffix[i] += suffix[i+1]
+
+    # print('init:', cand, suffix)
+
+    @cache
+    def dp(i: int, rem: int) -> int:
+      # print('iter:', i, rem, suffix[i] if i < ln else 0)
+      if rem == 0:
+        return 1
+
+      if i >= ln or rem < 0 or cand[i] > rem:
+        return 0
+
+      if rem >= suffix[i]:
+        return 1 if rem == suffix[i] else 0
+        
+      c1 = dp(i+1, rem - cand[i])
+      c2 = dp(i+1, rem)
+
+      return (c1+c2) % mod
+
+    return dp(0, n)
+
+
   def numberOfWays(self, n: int, x: int) -> int:
     mod = 10**9 + 7
     

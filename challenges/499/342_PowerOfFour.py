@@ -26,6 +26,21 @@ Constraints:
 
 class Solution:
   def isPowerOfFour(self, n: int) -> bool:
+    if n <= 0:
+      return False
+
+    moves = 0
+    while n > 1:
+      if n%2 == 1:
+        return False
+
+      n >>= 1
+      moves += 1
+
+    # print('done:', moves)
+    return moves%2 == 0
+        
+  def isPowerOfFour(self, n: int) -> bool:
     s = bin(n)[2:]
     if s.count('1') > 1:
       return False

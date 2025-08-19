@@ -40,6 +40,19 @@ from typing import List
 
 class Solution:
   def zeroFilledSubarray(self, nums: List[int]) -> int:
+    total = 0
+    cnt = 0
+
+    for val in nums:
+      if val == 0:
+        cnt += 1
+        total += cnt
+      else:
+        cnt = 0
+
+    return total
+
+  def zeroFilledSubarray(self, nums: List[int]) -> int:
     cnt = 0
     start = -1
     

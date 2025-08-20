@@ -42,6 +42,47 @@ from typing import List
 
 
 class Solution:
+  def countSquares(self, mat: List[List[int]]) -> int:
+    m, n = len(mat), len(mat[0])
+    prefix = [[val for val in row] for row in mat]
+    count = 0
+
+    for x in range(m):
+      row = 0
+      for y in range(n):
+        row += mat[x][y]
+        prefix[x][y] = row + (prefix[x-1][y] if x > 0 else 0)
+
+    # print('init:', prefix)
+    def is_one_square(x0: int, y0: int, x1: int, y1: int) -> bool:
+      if x0 == x1 and y0 == y1:
+        return mat[x0][y0] == 1
+
+      tl = prefix[x0-1][y0-1] if x0 > 0 and y0 > 0 else 0
+      top = prefix[x0-1][y1] if x0 > 0 else 0
+      left = prefix[x1][y0-1] if y0 > 0 else 0
+      br = prefix[x1][y1]
+      
+      expected = (x1-x0+1) * (y1-y0+1)
+      curr = br - top - left + tl
+      # print('count:', (x0, y0), (x1, y1), expected, curr, tl, top, left, br)
+
+      return expected == curr
+
+    for x in range(m):
+      for y in range(n):
+        if mat[x][y] == 0:
+          continue
+
+        for k in range(min(x, y)+1):
+          if not is_one_square(x-k, y-k, x, y):
+            break
+
+          count += 1
+          # print('square:', (x-k, y-k), (x, y))
+
+    return count
+        
   def countSquares(self, matrix: List[List[int]]) -> int:
     m, n = len(matrix), len(matrix[0])
     prefix = [[0]*n for _ in range(m)]

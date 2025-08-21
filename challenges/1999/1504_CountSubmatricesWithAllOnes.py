@@ -37,6 +37,37 @@ from typing import List
 
 
 class Solution:
+  def numSubmat(self, grid: List[List[int]]) -> int:
+    prefix = []
+    count = 0
+    m, n = len(grid), len(grid[0])
+
+    for x in range(m):
+      row = []
+      curr = 0
+
+      for y in range(n):
+        if grid[x][y] == 0:
+          curr = 0
+        else:
+          curr += 1
+          count += curr
+          c0 = curr
+
+          for k in range(len(prefix)-1, -1, -1):
+            c1 = prefix[k][y]
+            if c1 == 0:
+              break
+
+            c0 = min(c0, c1)
+            count += c0
+
+        row.append(curr)
+
+      prefix.append(row)
+
+    return count
+        
   def numSubmat(self, mat: List[List[int]]) -> int:
     m, n = len(mat), len(mat[0])
     count = 0

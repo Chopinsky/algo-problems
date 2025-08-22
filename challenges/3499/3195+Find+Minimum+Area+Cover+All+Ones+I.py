@@ -4,7 +4,26 @@
 
 from typing import List
 
+
 class Solution:
+  def minimumArea(self, grid: List[List[int]]) -> int:
+    m, n = len(grid), len(grid[0])
+    lx, rx = m, -1
+    uy, by = n, -1
+
+    for x in range(m):
+      for y in range(n):
+        if grid[x][y] == 0:
+          continue
+
+        lx = min(lx, x)
+        rx = max(rx, x)
+        uy = min(uy, y)
+        by = max(by, y)
+
+    # print('done:', lx, rx, uy, by)
+    return (rx-lx+1) * (by-uy+1)
+        
   def minimumArea(self, grid: List[List[int]]) -> int:
     m, n = len(grid), len(grid[0])
     left = n

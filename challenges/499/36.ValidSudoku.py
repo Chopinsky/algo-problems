@@ -45,11 +45,75 @@ board[i].length == 9
 board[i][j] is a digit or '.'.
 '''
 
-
 from typing import List
 
 
 class Solution:
+  def isValidSudoku(self, board: List[List[str]]) -> bool:
+    m = len(board)
+    n = len(board[0])
+    seen = set()
+    
+    def check_row(i: int) -> bool:
+      seen.clear()
+      for j in range(n):
+        val = board[i][j]
+        if val == '.':
+          continue
+
+        if val in seen:
+          return False
+
+        seen.add(val)
+
+      return True
+
+    def check_col(i: int) -> bool:
+      seen.clear()
+
+      for j in range(m):
+        val = board[j][i]
+        if val == '.':
+          continue
+
+        if val in seen:
+          return False
+
+        seen.add(val)
+
+      return True
+
+    def check_block(i: int, j: int) -> bool:
+      seen.clear()
+
+      for dx in range(3):
+        for dy in range(3):
+          val = board[i+dx][j+dy]
+          if val == '.':
+            continue
+
+          if val in seen:
+            return False
+
+          seen.add(val)
+
+      return True
+
+    for row in range(m):
+      if not check_row(row):
+        return False
+
+    for col in range(n):
+      if not check_col(col):
+        return False
+
+    for x in range(0, m, 3):
+      for y in range(0, n, 3):
+        if not check_block(x, y):
+          return False
+
+    return True
+
   def isValidSudoku(self, board: List[List[str]]) -> bool:
     if len(board) != 9 or len(board[0]) != 9:
       return False

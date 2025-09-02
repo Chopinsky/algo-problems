@@ -22,11 +22,72 @@ board[i][j] is a digit or '.'.
 It is guaranteed that the input board has only one solution.
 '''
 
-
 from typing import List
+from collections import defaultdict
 
 
 class Solution:
+  def solveSudoku(self, board: List[List[str]]) -> None:
+    """
+    Do not return anything, modify board in-place instead.
+    """
+
+    cand = []
+    m = len(board)
+    n = len(board[0])
+    cols = defaultdict(set)
+    rows = defaultdict(set)
+    blocks = defaultdict(set) 
+
+    for x in range(m):
+      for y in range(n):
+        if board[x][y] == '.':
+          cand.append((x, y))
+        else:
+          val = int(board[x][y])
+          rows[x].add(val)
+          cols[y].add(val)
+          blocks[x//3, y//3].add(val)
+
+    # print('init:', cand, rows, cols, blocks)
+    def check(x: int, y: int, val: int):
+      if val in rows[x]:
+        return False
+
+      if val in cols[y]:
+        return False
+
+      if val in blocks[x//3, y//3]:
+        return False
+
+      return True
+
+    def guess(i: int) -> bool:
+      if i >= len(cand):
+        return True
+
+      x, y = cand[i]
+      for val in range(1, 10):
+        if not check(x, y, val):
+          continue
+
+        # use val
+        rows[x].add(val)
+        cols[y].add(val)
+        blocks[x//3, y//3].add(val)
+
+        if guess(i+1):
+          board[x][y] = str(val)
+          return True
+
+        rows[x].discard(val)
+        cols[y].discard(val)
+        blocks[x//3, y//3].discard(val)
+
+      return False
+
+    guess(0)
+        
   def solveSudoku(self, board: List[List[str]]) -> None:
     """
     Do not return anything, modify board in-place instead.
@@ -37,7 +98,6 @@ class Solution:
     cols = [set() for _ in range(9)]
     base = set([i for i in range(1, 10)])
     stack = []
-    trace = []
     o0 = ord('0')
     
     def get_block_num(i: int, j: int) -> int:

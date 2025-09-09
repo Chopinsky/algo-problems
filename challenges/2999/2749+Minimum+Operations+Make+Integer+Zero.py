@@ -33,6 +33,21 @@ Constraints:
 
 class Solution:
   def makeTheIntegerZero(self, num1: int, num2: int) -> int:
+    for ops in range(60):
+      ops += 1
+      val = num1 - ops*num2
+      if val < 0:
+        continue
+
+      bv = bin(val)[2:]
+      one_cnt = bv.count('1')
+      # print('iter:', ops, bv)
+      if val >= ops >= one_cnt:
+        return ops
+
+    return -1
+
+  def makeTheIntegerZero(self, num1: int, num2: int) -> int:
     curr = num1
     ops = 0
 

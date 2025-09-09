@@ -49,7 +49,48 @@ from bisect import bisect_left
 from collections import defaultdict
 from typing import List
 
+
 class Solution:
+  def numberOfPairs(self, points: List[List[int]]) -> int:
+    points.sort(key=lambda x: (x[0], -x[1]))
+    count = 0
+    n = len(points)
+
+    def is_valid(i: int, j: int) -> bool:
+      x0, y0 = points[i]
+      x1, y1 = points[j]
+
+      if x1 < x0:
+        # print('1:', i, j)
+        return False
+
+      if y1 > y0:
+        # print('2:', i, j)
+        return False
+
+      for k in range(i+1, n):
+        x2, y2 = points[k]
+        # print('check:', (i, j), (x2, y2))
+        if x2 > x1:
+          break
+
+        if k == j:
+          continue
+
+        # found inside point
+        if x0 <= x2 <= x1 and y1 <= y2 <= y0:
+          # print('3:', i, j)
+          return False
+
+      return True
+
+    for i in range(n):
+      for j in range(i+1, n):
+        if is_valid(i, j):
+          count += 1
+
+    return count  
+
   def numberOfPairs(self, points: List[List[int]]) -> int:
     points.sort()
     pos = defaultdict(list)

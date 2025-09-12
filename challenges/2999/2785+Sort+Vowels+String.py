@@ -27,7 +27,24 @@ Constraints:
 s consists only of letters of the English alphabet in uppercase and lowercase.
 '''
 
+
 class Solution:
+  def sortVowels(self, s: str) -> str:
+    v = set(['a', 'e', 'i', 'o', 'U', 'A', 'E', 'I', 'O', 'u'])
+    cand = sorted(ch for ch in s if ch in v)
+    i = 0
+    res = ''
+    # print('init:', cand)
+
+    for ch in s:
+      if ch not in v:
+        res += ch
+      else:
+        res += cand[i]
+        i += 1
+
+    return res
+
   def sortVowels(self, s: str) -> str:
     vowels = set(['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'])
     arr0 = list(s)

@@ -37,7 +37,33 @@ All the given revisions in version1 and version2 can be stored in a 32-bit integ
 
 from typing import List
 
+
 class Solution:
+  def compareVersion(self, version1: str, version2: str) -> int:
+    v1 = [int(val) for val in version1.split('.')]
+    v2 = [int(val) for val in version2.split('.')]
+    n1 = len(v1)
+    n2 = len(v2)
+
+    if n1 > n2:
+      v2 += [0] * (n1-n2)
+    
+    if n1 < n2:
+      v1 += [0] * (n2-n1)
+
+    # print('init:', v1, v2)
+    for i in range(max(n1, n2)):
+      if v1[i] == v2[i]:
+        continue
+
+      if v1[i] > v2[i]:
+        return 1
+
+      return -1
+
+    return 0
+
+
   def compareVersion(self, version1: str, version2: str) -> int:
     v1 = [int(val) for val in version1.split('.')]
     v2 = [int(val) for val in version2.split('.')]

@@ -29,7 +29,34 @@ triangle[i].length == triangle[i - 1].length + 1
 Follow up: Could you do this using only O(n) extra space, where n is the total number of rows in the triangle?
 '''
 
+from typing import List
+
+
 class Solution:
+  def minimumTotal(self, t: List[List[int]]) -> int:
+    r = 0
+    curr, nxt = [0], []
+
+    while r < len(t):
+      for c in range(r+1):
+        val = t[r][c]
+        if c == 0:
+          nxt.append(curr[c]+val)
+      
+        elif c == r:
+          nxt.append(curr[c-1]+val)
+
+        else:
+          prev = min(curr[c], curr[c-1])
+          nxt.append(prev+val)
+      
+      curr, nxt = nxt, curr
+      nxt.clear()
+      r += 1
+
+    return min(curr)
+
+
   def minimumTotal(self, tri: List[List[int]]) -> int:
     rows = len(tri)
     stack = [0]*rows

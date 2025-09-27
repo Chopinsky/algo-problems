@@ -27,6 +27,31 @@ from bisect import bisect_right
 
 
 class Solution:
+  def triangleNumber(self, nums: List[int]) -> int:
+    n = len(nums)
+    if n < 3:
+      return 0
+
+    nums.sort()
+    count = 0
+    k = 0
+
+    for i in range(n-2):
+      v0 = nums[i]
+      k = 0
+
+      for j in range(i+1, n-1):
+        v1 = nums[j]
+
+        while k < n and nums[k] < v0+v1:
+          k += 1
+
+        # print('iter:', (i, j), k, k-j-1)
+        if k > j:
+          count += k-j-1
+
+    return count
+
   def triangleNumber(self, nums: List[int]) -> int:      
     n = sorted(nums)
     ln = len(n)

@@ -25,6 +25,22 @@ from typing import List
 
 class Solution:
   def largestTriangleArea(self, points: List[List[int]]) -> float:
+    points.sort()
+    a = 0
+    n = len(points)
+
+    for i in range(n-2):
+      x0, y0 = points[i]
+      for j in range(i+1, n-1):
+        x1, y1 = points[j]
+        for k in range(j+1, n):
+          x2, y2 = points[k]
+          a0 = abs(x0*(y1-y2) + x1*(y2-y0) + x2*(y0-y1)) / 2.0
+          a = max(a, a0)
+
+    return a
+  
+  def largestTriangleArea(self, points: List[List[int]]) -> float:
     area = 0
     for p in combinations(points, 3):
       [ax, ay], [bx, by], [cx, cy] = p

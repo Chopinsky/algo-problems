@@ -35,6 +35,21 @@ from typing import List
 
 class Solution:
   def triangularSum(self, nums: List[int]) -> int:
+    curr, nxt = nums, []
+
+    while len(curr) > 1:
+      n = len(curr)
+      # print('iter:', curr)
+
+      for i in range(n-1):
+        nxt.append((curr[i]+curr[i+1])%10)
+
+      curr, nxt = nxt, curr
+      nxt.clear()
+    
+    return curr[0]
+        
+  def triangularSum(self, nums: List[int]) -> int:
     ans = 0
     n = len(nums)-1
     coeff = 1

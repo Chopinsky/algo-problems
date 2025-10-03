@@ -29,6 +29,48 @@ from heapq import heappush, heappop
 
 
 class Solution:
+  def trapRainWater(self, hm: List[List[int]]) -> int:
+    seen = set()
+    m = len(hm)
+    n = len(hm[0])
+    s = []
+
+    def push(i: int, j: int, h: int):
+      if (i, j) in seen:
+        return
+
+      heappush(s, (h, i, j))
+      seen.add((i, j))
+
+    for i in range(m):
+      row = hm[i]
+      if i == 0 or i == m-1:
+        for j in range(n):
+          push(i, j, row[j])
+
+      else:
+        push(i, 0, hm[i][0])
+        push(i, n-1, hm[i][n-1])
+        
+    total = 0
+    while s:
+      h0, x0, y0 = heappop(s)
+      for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        x1, y1 = x0+dx, y0+dy
+        if x1 < 0 or x1 >= m or y1 < 0 or y1 >= n:
+          continue
+
+        if (x1, y1) in seen:
+          continue
+
+        h1 = hm[x1][y1]
+        if h1 < h0:
+          total += h0 - h1
+
+        push(x1, y1, max(h0, h1))
+
+    return total
+
   def trapRainWater(self, mat: List[List[int]]) -> int:
     if not mat or not mat[0]:
       return 0

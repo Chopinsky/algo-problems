@@ -33,6 +33,21 @@ from typing import List
 
 
 class Solution:
+  def maxArea(self, h: List[int]) -> int:
+    area = 0
+    l = 0
+    r = len(h)-1
+
+    while l < r:
+      container_height = min(h[l], h[r])
+      area = max(area, (r-l)*container_height)
+      if h[l] <= h[r]:
+        l += 1
+      else:
+        r -= 1
+
+    return area
+
   def maxArea(self, height: List[int]) -> int:
     l, r = 0, len(height)-1
     area = 0

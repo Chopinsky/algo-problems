@@ -48,6 +48,64 @@ from heapq import heappop, heappush
 
 
 class Solution:
+  def pacificAtlantic(self, ht: List[List[int]]) -> List[List[int]]:
+    m, n = len(ht), len(ht[0])
+    masks = [[0]*n for _ in range(m)]
+
+    def mask(curr: List, mk: int):
+      seen = set(curr)
+      nxt = []
+
+      while curr:
+        # print('iter:', mk, curr)
+        for x0, y0 in curr:
+          h0 = ht[x0][y0]
+          masks[x0][y0] |= mk
+
+          for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            x1 = x0+dx
+            y1 = y0+dy
+
+            if x1 < 0 or x1 >= m or y1 < 0 or y1 >= n:
+              continue
+
+            if (x1, y1) in seen:
+              continue
+
+            h1 = ht[x1][y1]
+            if h1 < h0:
+              continue
+
+            seen.add((x1, y1))
+            nxt.append((x1, y1))
+        
+        curr, nxt = nxt, curr
+        nxt.clear()
+
+    c1 = set()
+    c2 = set()
+
+    for y in range(n):
+      c1.add((0, y))
+      c2.add((m-1, y))
+
+    for x in range(m):
+      c1.add((x, 0))
+      c2.add((x, n-1))
+
+    # print('init:', ht, m, n, c1, c2)
+    mask(list(c1), 1)
+    mask(list(c2), 2)
+    ans = []
+    # print('done:', masks)
+
+    for x in range(m):
+      for y in range(n):
+        if masks[x][y] == 3:
+          ans.append((x, y))
+
+    return ans
+
   def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
     m, n = len(heights), len(heights[0])
     dp = [[0]*n for _ in range(m)]

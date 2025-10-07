@@ -38,7 +38,37 @@ grid[i][j] is a permutation of [0, ..., N*N - 1].
 from typing import List
 from heapq import heappush, heappop
 
+
 class Solution:
+  def swimInWater(self, grid: List[List[int]]) -> int:
+    time = {(0, 0): grid[0][0]}
+    m = len(grid)
+    n = len(grid)
+    h = [(grid[0][0], 0, 0)]
+
+    while h:
+      t0, x0, y0 = heappop(h)
+      if x0 == m-1 and y0 == n-1:
+        return t0
+
+      if (x0, y0) in time and t0 > time[x0, y0]:
+        continue
+
+      for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        x1 = x0 + dx
+        y1 = y0 + dy
+        if x1 < 0 or x1 >= m or y1 < 0 or y1 >= n:
+          continue
+
+        t1 = max(t0, grid[x1][y1])
+        if (x1, y1) in time and t1 >= time[x1, y1]:
+          continue
+
+        time[x1, y1] = t1
+        heappush(h, (t1, x1, y1))
+
+    return -1
+        
   def swimInWater(self, grid: List[List[int]]) -> int:
     cand = [[grid[0][0], 0, 0]]
     dirs = [-1, 0, 1, 0, -1]

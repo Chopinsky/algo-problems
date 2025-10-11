@@ -40,7 +40,30 @@ Constraints:
 from collections import Counter
 from typing import List
 
+
 class Solution:
+  def maximumTotalDamage(self, power: List[int]) -> int:
+    c = Counter(power)
+    cand = sorted(c)
+    damage = []
+    j = -1
+    res = 0
+    # print('init:', c, cand)
+
+    for i in range(len(cand)):
+      d = cand[i]*c[cand[i]]
+      while j+1 < len(damage) and cand[j+1] < cand[i]-2:
+        j += 1
+
+      # print('iter:', (cand[i], c[cand[i]]), j, damage)
+      if 0 <= j < len(damage):
+        d += damage[j]
+
+      res = max(res, d)
+      damage.append(max(d, damage[-1] if damage else 0))
+
+    return res
+        
   def maximumTotalDamage(self, power: List[int]) -> int:
     damage = []
     powers = Counter(power)

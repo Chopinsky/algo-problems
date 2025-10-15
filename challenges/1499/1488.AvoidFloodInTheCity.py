@@ -62,12 +62,57 @@ Constraints:
 0 <= rains[i] <= 109
 '''
 
+from typing import List
+from collections import defaultdict
+from heapq import heappop, heappush
+from bisect import bisect_right
+
+
 class Solution:
+  def avoidFlood(self, rains: List[int]) -> List[int]:
+    days = defaultdict(list)
+    for i, lake in enumerate(rains):
+      if lake > 0:
+        days[lake].append(i)
+
+    # print('init:', days)
+    full = set()
+    q = []
+    ans = []
+
+    for i, lake in enumerate(rains):
+      # dry the lake
+      if lake == 0:
+        if not q:
+          ans.append(1)
+        else:
+          _, l = heappop(q)
+          full.discard(l)
+          ans.append(l)
+
+        continue
+
+      # flood
+      if lake in full:
+        return []
+
+      # add
+      j = bisect_right(days[lake], i)
+      ans.append(-1)
+
+      if j < len(days[lake]):
+        diff = days[lake][j] - i
+        heappush(q, (diff, lake))
+        full.add(lake)
+
+    return ans
+
+
   def avoidFlood(self, rains: List[int]) -> List[int]:
     n = len(rains)
     ans = [-1 if r > 0 else 0 for r in rains]
 
-    dry_days = collections.defaultdict(list)
+    dry_days = defaultdict(list)
     full = {}
     last_rain_day = -1
 
@@ -122,7 +167,7 @@ class Solution:
     n = len(rains)
     ans = [-1 if r > 0 else 0 for r in rains]
 
-    rain_days = collections.defaultdict(list)
+    rain_days = defaultdict(list)
     sunny_days = []
     last_lake = 1
 
@@ -157,12 +202,12 @@ class Solution:
         if q[idx][2] in lakes or q[idx][0] <= day:
           return []
 
-        heapq.heappush(hq, q[idx])
+        heappush(hq, q[idx])
         lakes.add(q[idx][2])
         idx += 1
 
       if len(hq) > 0:
-        next = heapq.heappop(hq)
+        next = heappop(hq)
         ans[day] = next[2]
         lakes.remove(next[2])
       else:

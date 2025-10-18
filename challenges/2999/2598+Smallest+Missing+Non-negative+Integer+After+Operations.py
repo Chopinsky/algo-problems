@@ -39,6 +39,27 @@ from collections import defaultdict, Counter
 
 
 class Solution:
+  def findSmallestInteger(self, nums: List[int], value: int) -> int:
+    c = Counter([val%value for val in nums])
+    # print('init:', c)
+
+    cand = []
+    for base, cnt in c.items():
+      curr = 0
+      while cnt > 0:
+        cand.append(base+curr*value)
+        curr += 1
+        cnt -= 1
+
+    cand.sort()
+    # print('iter:', cand)
+
+    for i in range(len(cand)):
+      if i != cand[i]:
+        return i
+
+    return len(cand)
+        
   def beautifulSubsets(self, nums: list[int], k: int) -> int:
     n = len(nums)
     masks = [0] * n

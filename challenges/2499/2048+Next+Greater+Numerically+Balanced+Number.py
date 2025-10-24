@@ -51,6 +51,36 @@ from typing import List, Tuple
 
 class Solution:
   def nextBeautifulNumber(self, n: int) -> int:
+    cnt = [i for i in range(10)]
+    sz = len(str(n))
+
+    def dfs(n: int, val: int, sz: int) -> int:
+      if sz == 0:
+        for i in range(1, 10):
+          if cnt[i] != i and cnt[i] != 0:
+            return 0
+
+        return val if val > n else 0
+
+      res = 0
+      for i in range(1, 10):
+        if cnt[i] > 0 and cnt[i] <= sz:
+          cnt[i] -= 1
+          res = dfs(n, val*10 + i, sz-1)
+          cnt[i] += 1
+
+        if res > 0:
+          break
+
+      return res
+
+    res = dfs(n, 0, sz)
+    if res > 0:
+      return res
+
+    return dfs(0, 0, sz+1)
+
+  def nextBeautifulNumber(self, n: int) -> int:
     base = str(n)
     ln = len(base)
   

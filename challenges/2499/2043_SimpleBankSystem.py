@@ -47,6 +47,46 @@ from typing import List
 
 class Bank:
   def __init__(self, balance: List[int]):
+    self.balance = balance
+
+  def transfer(self, a1: int, a2: int, money: int) -> bool:
+    a1 -= 1
+    a2 -= 1
+    n = len(self.balance)
+
+    if a1 >= n or a2 >= n:
+      return False
+
+    if self.balance[a1] < money:
+      return False
+
+    self.balance[a1] -= money
+    self.balance[a2] += money
+    return True
+
+  def deposit(self, a: int, money: int) -> bool:
+    a -= 1
+    n = len(self.balance)
+    
+    if a >= n:
+      return False
+
+    self.balance[a] += money
+    return True
+
+  def withdraw(self, a: int, money: int) -> bool:
+    a -= 1
+    n = len(self.balance)
+
+    if a >= n or self.balance[a] < money:
+      return False
+
+    self.balance[a] -= money
+    return True
+
+
+class Bank0:
+  def __init__(self, balance: List[int]):
     self.bal = balance
 
 

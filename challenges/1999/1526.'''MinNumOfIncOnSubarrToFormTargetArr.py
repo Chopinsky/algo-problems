@@ -40,11 +40,23 @@ Constraints:
 1 <= target[i] <= 10^5
 '''
 
-
 from typing import List
 
 
 class Solution:
+  def minNumberOperations(self, target: List[int]) -> int:
+    ans = target[0]
+    prev = target[0]
+
+    # only counting the climbing up ops
+    for i in range (1, len(target)):
+      if target[i] > prev:
+        ans += target[i] - prev
+
+      prev = target[i]
+
+    return ans
+
   def minNumberOperations(self, target: List[int]) -> int:
     ops = 0
     base = 0

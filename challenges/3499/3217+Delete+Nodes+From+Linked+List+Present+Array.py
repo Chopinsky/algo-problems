@@ -13,17 +13,21 @@ class ListNode:
 
 class Solution:
   def modifiedList(self, nums: List[int], head: Optional[ListNode]) -> Optional[ListNode]:
+    if not head:
+      return head
+
     fake_head = ListNode(val=0, next=head)
-    nums = set(nums)
+    val_set = set(nums)
     curr = fake_head
-    
+
     while curr and curr.next:
-      if curr.next.val in nums:
-        node = curr.next.next
-        curr.next.next = None
-        curr.next = node
+      # print('curr:', curr.val, curr.next.val)
+      if curr.next.val in val_set:
+        old = curr.next
+        curr.next = old.next
+        old.next = None
       else:
         curr = curr.next
-    
+
     return fake_head.next
         

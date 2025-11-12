@@ -28,9 +28,32 @@ strs[i] consists only of digits '0' and '1'.
 
 from typing import List, Tuple
 from functools import lru_cache
+from collections import defaultdict
 
 
 class Solution:
+  def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
+    cand = defaultdict(int)
+    cand[0, 0] = 0
+    vals = [(s.count('0'), s.count('1')) for s in strs]
+    # print('init:', vals)
+
+    for z0, o0 in vals:
+      nxt = cand.copy()
+      for z1, o1 in cand:
+        if z0+z1 > m or o0+o1 > n:
+          continue
+
+        nxt[z0+z1, o0+o1] = max(
+          nxt[z0+z1, o0+o1],
+          1+cand[z1, o1]
+        )
+
+      cand = nxt
+      # print('iter:', (z0, o0), cand)
+
+    return max(cand.values())
+        
   def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
     # (zero_count, one_count, ln), start with a blank set
     dp = {(0, 0, 0)}

@@ -42,7 +42,7 @@ class ConsistentHashRing:
             raise Exception("No nodes in the ring")
 
         h = hash_value(key)
-        pos = bisect.bisect(self.ring, h)
+        pos = bisect.bisect_left(self.ring, h)
 
         # Wrap around the ring
         if pos == len(self.ring):

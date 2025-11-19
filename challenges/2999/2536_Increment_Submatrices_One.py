@@ -36,6 +36,31 @@ from typing import List
 
 class Solution:
   def rangeAddQueries(self, n: int, queries: List[List[int]]) -> List[List[int]]:
+    accu = [[0]*n for _ in range(n)]
+    ans = []
+
+    def update(x0: int, y0: int, x1: int, y1: int):
+      for x in range(x0, x1+1):
+        accu[x][y0] += 1
+        if y1+1 < n:
+          accu[x][y1+1] -= 1
+
+    for x0, y0, x1, y1 in queries:
+      update(x0, y0, x1, y1)
+
+    for i in range(n):
+      row = []
+      curr = 0
+
+      for j in range(n):
+        curr += accu[i][j]
+        row.append(curr)
+
+      ans.append(row)
+
+    return ans
+        
+  def rangeAddQueries(self, n: int, queries: List[List[int]]) -> List[List[int]]:
     mat = [[0]*n for _ in range(n)]
     
     for i in range(n):

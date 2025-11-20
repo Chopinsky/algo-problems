@@ -37,6 +37,21 @@ class Solution:
     mod = 10**9 + 7
     count = 0
     total = 0
+
+    for ch in s:
+      if ch == '0':
+        count = 0
+        continue
+
+      count += 1
+      total = (total + count) % mod
+
+    return total
+        
+  def numSub(self, s: str) -> int:
+    mod = 10**9 + 7
+    count = 0
+    total = 0
     
     @lru_cache(None)
     def get_pairs(cnt: int) -> int:

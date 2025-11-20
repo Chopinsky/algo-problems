@@ -29,6 +29,34 @@ from typing import List
 
 
 class Solution:
+  def intersectionSizeTwo(self, intervals: List[List[int]]) -> int:
+    intervals.sort(key=lambda x: (x[1], -x[0]))
+
+    count = 2
+    max_val = intervals[0][1]
+    nxt_max_val = max_val-1
+    # vals = []
+
+    for a, b in intervals[1:]:
+      # full overlap, done
+      if a <= nxt_max_val:
+        continue
+
+      if nxt_max_val < a <= max_val:
+        # case 1: partial overlap, append b, 
+        # shift nxt_max to max
+        count += 1
+        nxt_max_val = max_val
+        max_val = b
+      elif a > max_val:
+        # case 2: no overlap, append both
+        # b-1 and b
+        count += 2
+        nxt_max_val = b-1
+        max_val = b
+
+    return count
+
   def intersectionSizeTwo(self, itvls: List[List[int]]) -> int:
     itvls.sort(key=lambda x: (x[1], x[0]))
     # print('init', itvls)

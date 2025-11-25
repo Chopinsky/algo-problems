@@ -31,6 +31,29 @@ class Solution:
   def smallestRepunitDivByK(self, k: int) -> int:
     if k == 1:
       return 1
+
+    base = 1
+    digits = 1
+
+    while base < k:
+      base = 10*base + 1
+      digits += 1
+
+    if base == k:
+      return digits
+
+    seen = set()
+
+    while base > 0 and base not in seen:
+      seen.add(base)
+      base = (base*10 + 1) % k
+      digits += 1
+        
+    return digits if base == 0 else -1
+
+  def smallestRepunitDivByK(self, k: int) -> int:
+    if k == 1:
+      return 1
     
     base = 1
     digits = 1

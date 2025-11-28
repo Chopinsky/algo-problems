@@ -39,6 +39,30 @@ from typing import List
 class Solution:
   def numberOfPaths(self, grid: List[List[int]], k: int) -> int:
     m, n = len(grid), len(grid[0])
+    mod = 10**9 + 7
+
+    dp = {}
+    dp[0, 0, grid[0][0]%k] = 1
+    # print('init:', dp)
+
+    for x in range(m):
+      for y in range(n):
+        val = grid[x][y]
+
+        for r in range(k):
+          # from above
+          nxt_r = (r+val)%k
+
+          if x > 0 and (x-1, y, r) in dp:
+            dp[x, y, nxt_r] = (dp.get((x, y, nxt_r), 0) + dp[x-1, y, r]) % mod
+        
+          if y > 0 and (x, y-1, r) in dp:
+            dp[x, y, nxt_r] = (dp.get((x, y, nxt_r), 0) + dp[x, y-1, r]) % mod
+
+    return dp.get((m-1, n-1, 0), 0)
+        
+  def numberOfPaths(self, grid: List[List[int]], k: int) -> int:
+    m, n = len(grid), len(grid[0])
     dp = [[{} for _ in range(n)] for _ in range(m)]
     mod = 10**9 + 7
     

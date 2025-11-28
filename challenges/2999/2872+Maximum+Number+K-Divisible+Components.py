@@ -40,11 +40,45 @@ Sum of values is divisible by k.
 The input is generated such that edges represents a valid tree.
 '''
 
-from typing import List
+from typing import List, Tuple
 from collections import defaultdict
 
 
 class Solution:
+  def maxKDivisibleComponents(self, n: int, edges: List[List[int]], values: List[int], k: int) -> int:
+    e = defaultdict(list)
+    for u, v in edges:
+      e[u].append(v)
+      e[v].append(u)
+
+    def count(u: int, p: int) -> Tuple[int, int]:
+      s = 0
+      c = 0
+
+      if u >= n:
+        return s, c
+
+      for v in e[u]:
+        if v == p:
+          continue
+
+        s0, c0 = count(v, u) 
+        s += s0
+        c += c0
+
+      s = (s+values[u]) % k
+      # print('iter:', (u, p), s, c)
+
+      if s == 0:
+        c += 1
+
+      return s, c
+        
+    _, total = count(0, -1)
+    # print('done:', s, total)
+
+    return total
+
   def maxKDivisibleComponents(self, n: int, edges: List[List[int]], values: List[int], k: int) -> int:
     total = sum(values)
     if total % k != 0:

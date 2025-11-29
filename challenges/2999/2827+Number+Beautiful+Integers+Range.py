@@ -44,6 +44,40 @@ from functools import lru_cache
 
 
 class Solution:
+  def maxKDivisibleComponents(self, n: int, edges: List[List[int]], values: List[int], k: int) -> int:
+    e = defaultdict(list)
+    for u, v in edges:
+      e[u].append(v)
+      e[v].append(u)
+
+    def count(u: int, p: int) -> Tuple[int, int]:
+      s = 0
+      c = 0
+
+      if u >= n:
+        return s, c
+
+      for v in e[u]:
+        if v == p:
+          continue
+
+        s0, c0 = count(v, u) 
+        s += s0
+        c += c0
+
+      s = (s+values[u]) % k
+      # print('iter:', (u, p), s, c)
+
+      if s == 0:
+        c += 1
+
+      return s, c
+        
+    s, total = count(0, -1)
+    # print('done:', s, total)
+
+    return total
+
   def numberOfBeautifulIntegers(self, low: int, high: int, k: int) -> int:
     @lru_cache(None)
     def dp(val: str, i: int, balance: int, mod: int, zero: bool) -> int:

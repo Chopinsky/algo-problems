@@ -45,6 +45,20 @@ class Solution:
     if n == len(b):
       return min(b)
     
+    total = sum(b)
+    b.sort()
+
+    while b[-1] > total/n:
+      n -= 1
+      total -= b.pop()
+
+    return total // n
+     
+    
+  def maxRunTime(self, n: int, b: List[int]) -> int:
+    if n == len(b):
+      return min(b)
+    
     b.sort()
     total = sum(b)
     m = len(b)
@@ -92,76 +106,3 @@ class Solution:
     return last
     
     
-  def maxRunTime(self, n: int, b: List[int]) -> int:
-    if n == len(b):
-      return min(b)
-    
-    b.sort()
-    total = sum(b)
-    
-    # if the richest batter is going to waste some energy,
-    # take it out since it's going to power the n-th computer
-    # all the time
-    while b[-1] > total/n:
-      n -= 1
-      total -= b.pop()
-      
-    # calculate the average time the remainder set of the batter
-    # can support the computers
-    return total / n
-     
-    
-  def maxRunTime0(self, n: int, b: List[int]) -> int:
-    m = len(b)
-    if m == n:
-      return min(b)
-    
-    b.sort()
-    total = sum(b)
-    
-    def check(k: int) -> bool:
-      if k == b[0]:
-        return True
-      
-      if k*n > total:
-        return False
-      
-      stack = [val-k for val in b[-n:]]
-      heapify(stack)
-      # print('pre check', k, stack)
-      
-      # can sustain k-runtime without refuel
-      if stack[0] >= 0:
-        return True
-      
-      for i in range(m-n-1, -1, -1):
-        # nxt = b[i] + stack[0]
-        # heappushpop(stack, nxt)
-        val = b[i]
-        while stack and val and val+stack[0] >= 0:
-          val += heappop(stack)
-
-        if val and stack:
-          heappushpop(stack, stack[0]+val)
-          
-        if not stack or stack[0] >= 0:
-          break
-        
-      # print(k, stack)
-      return not stack or stack[0] >= 0
-    
-    l, r = b[0], (total//n)+1
-    last = l
-    
-    while l < r:
-      k = (l + r) // 2
-      # print('check', k, check(k))
-      
-      if check(k):
-        l = k + 1
-        last = k
-      else:
-        r = k - 1
-        
-    # print('fin:', last)
-    return l if check(l) else last

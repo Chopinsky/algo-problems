@@ -38,6 +38,47 @@ directions[i] is either 'L', 'R', or 'S'.
 
 
 class Solution:
+  def countCollisions(self, d: str) -> int:
+    i, j = 0, len(d)-1
+    while i <= j and d[i] == "L":
+      i += 1
+
+    while i <= j and d[j] == "R":
+      j -= 1
+
+    # print('1:', (i, j))
+    if i >= j:
+      return 0
+
+    # print('init:', d[i:j+1])
+    cnt = 0
+    cand = []
+    curr_cnt = 0
+    curr = ''
+
+    for dr in d[i:j+1] + '$':
+      if dr == curr:
+        curr_cnt += 1
+        continue
+
+      if curr_cnt > 0:
+        cand.append((curr, curr_cnt))
+
+      curr = dr
+      curr_cnt = 1
+
+    # print('cand:', cand)
+    for i in range(len(cand)):
+      dr, c = cand[i]
+
+      # no special handling here
+      if dr == 'S':
+        continue
+
+      cnt += c
+
+    return cnt
+        
   def countCollisions(self, directions: str) -> int:
     stack = []
     count = 0

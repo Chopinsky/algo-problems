@@ -60,6 +60,7 @@ def hanoi_moves_gen(n: int, source: str = "A", dest: str = "C", aux: str = "B") 
     if disk == 1:
       yield (disk, s, d)
       return
+    
     yield from _gen(disk - 1, s, a, d)
     yield (disk, s, d)
     yield from _gen(disk - 1, a, d, s)
@@ -93,16 +94,18 @@ def _cli() -> None:
     moves_iter = hanoi_moves_gen(n)
     if args.do_print:
       print_moves(moves_iter)
+
     else:
       # count moves from generator to validate
       count = sum(1 for _ in moves_iter)
       print(f"Generated {count} moves")
       assert _validate_move_count(n, count), "unexpected move count"
-      
+
   else:
     moves = hanoi_moves(n)
     if args.do_print:
       print_moves(moves)
+      
     else:
       print(f"Computed {len(moves)} moves")
       assert _validate_move_count(n, len(moves)), "unexpected move count"

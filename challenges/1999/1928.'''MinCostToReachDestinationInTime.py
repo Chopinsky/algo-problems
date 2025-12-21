@@ -48,6 +48,32 @@ import math
 
 class Solution:
   def minCost(self, maxTime: int, edges: List[List[int]], fees: List[int]) -> int:
+    n = len(fees)
+    g = [[] for i in range(n)]
+    
+    for u, v, w in edges:
+      g[u].append((v, w))
+      g[v].append((u, w))
+
+    times = {}
+    q = [(fees[0], 0, 0)]
+
+    while q:
+      cost, u, time = heappop(q)
+      if time > maxTime:
+        continue
+
+      if u == n-1:
+        return cost
+
+      if u not in times or time < times[u]:
+        times[u] = time
+        for v, w in g[u]:
+          heappush(q, (cost+fees[v], v, time+w))
+
+    return -1
+        
+  def minCost(self, maxTime: int, edges: List[List[int]], fees: List[int]) -> int:
     conn = {}
     for u, v, t in edges:
       a, b = min(u, v), max(u, v)

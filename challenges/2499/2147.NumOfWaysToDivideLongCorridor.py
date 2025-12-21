@@ -35,7 +35,52 @@ n == corridor.length
 corridor[i] is either 'S' or 'P'.
 '''
 
+
 class Solution:
+  def numberOfWays(self, c: str) -> int:
+    mod = 10**9 + 7
+    seats = c.count('S')
+    if seats%2 == 1:
+      return 0
+
+    lb, rb = 0, len(c)-1
+    while lb < rb and c[lb] == 'P':
+      lb += 1
+
+    while rb > lb and c[rb] == 'P':
+      rb -= 1
+
+    if lb >= rb:
+      return 0
+
+    idx = lb
+    ways = 1
+
+    while idx <= rb:
+      scnt = 0
+      pcnt = 0
+
+      while idx <= rb:
+        if c[idx] == 'S':
+          if scnt == 2:
+            break
+
+          scnt += 1
+
+        else:
+          if scnt == 2:
+            pcnt += 1
+
+        idx += 1
+
+      if scnt == 2:
+        if ways == 0:
+          ways = (pcnt+1)
+        else:
+          ways = (ways * (pcnt+1)) % mod
+
+    return ways
+        
   def numberOfWays(self, cor: str) -> int:
     count = 1
     sc, pc = 0, 0

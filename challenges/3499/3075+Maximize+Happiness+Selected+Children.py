@@ -42,7 +42,24 @@ Constraints:
 
 from typing import List
 
+
 class Solution:
+  def maximumHappinessSum(self, happiness: List[int], k: int) -> int:
+    happiness.sort()
+    re = 0
+    total = 0
+    
+    while happiness and k > 0:
+      h = happiness.pop()
+      if h <= re:
+        break
+        
+      total += max(0, h-re)
+      re += 1
+      k -= 1
+      
+    return total
+    
   def maximumHappinessSum(self, h: List[int], k: int) -> int:
     total, selected = 0, 0
     h.sort()

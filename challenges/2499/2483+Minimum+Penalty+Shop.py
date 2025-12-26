@@ -43,6 +43,28 @@ customers consists only of characters 'Y' and 'N'.
 
 
 class Solution:
+  def bestClosingTime(self, c: str) -> int:
+    n = len(c)
+    yc = c.count('Y')
+    nc = 0
+    p = yc
+    h = 0
+
+    for i, ct in enumerate(c):
+      if ct == 'Y':
+        yc -= 1
+      else:
+        nc += 1
+
+      curr = yc+nc
+      # print('iter:', (i, ct), (yc, nc), curr, p)
+
+      if curr < p:
+        p = curr
+        h = i+1
+
+    return h
+        
   def bestClosingTime(self, customers: str) -> int:
     n = len(customers)
     nc, yc = 0, sum(1 if ch == 'Y' else 0 for ch in customers)

@@ -54,6 +54,33 @@ from heapq import heappush, heappop
 
 
 class Solution:
+  def mostBooked(self, n: int, m: List[List[int]]) -> int:
+    rooms = [i for i in range(n)]
+    cnt = [0]*n
+    in_use = []
+
+    m.sort()
+    most_used = 0
+
+    for s, e in m:
+      while in_use and in_use[0][0] <= s:
+        _, idx = heappop(in_use)
+        heappush(rooms, idx)
+
+      if rooms:
+        idx = heappop(rooms)
+      else:
+        t, idx = heappop(in_use)
+        e = t + (e-s)
+      
+      heappush(in_use, (e, idx))
+      cnt[idx] += 1
+      if cnt[idx] > cnt[most_used] or (cnt[idx] == cnt[most_used] and idx < most_used):
+        most_used = idx
+
+    # print('done:', cnt)
+    return most_used
+        
   def mostBooked(self, n: int, meetings: List[List[int]]) -> int:
     meetings.sort()
     cnt = [0] * n

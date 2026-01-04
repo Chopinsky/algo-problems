@@ -27,12 +27,42 @@ Constraints:
 '''
 
 from typing import List
+from math import isqrt
+from functools import cache
 
 
 class Solution:
   def sumFourDivisors(self, nums: List[int]) -> int:
+    @cache
+    def cnt(val: int) -> bool:
+      c = 0
+      s = 0
+
+      for v0 in range(1, isqrt(val)+1):
+        if v0*v0 > val:
+          break
+
+        if val%v0 == 0:
+          c += 1
+          s += v0
+
+          if val//v0 != v0:
+            s += val//v0
+            c += 1
+
+        if c > 4:
+          break
+
+      return s if c == 4 else 0
+        
     total = 0
-    
+
+    for val in nums:
+      total += cnt(val)
+
+    return total
+
+  def sumFourDivisors(self, nums: List[int]) -> int:
     def sive(n: int) -> List[int]:
       s = [i for i in range(n+1)]
       for i in range(2, n+1):

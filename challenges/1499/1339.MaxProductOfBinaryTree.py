@@ -48,6 +48,29 @@ class TreeNode:
 
 class Solution:
   def maxProduct(self, root: Optional[TreeNode]) -> int:
+    mod = 10**9 + 7
+    sub = set()
+
+    def dfs(r):
+      if not r:
+        return 0
+
+      s = r.val + dfs(r.left) + dfs(r.right)
+      if r != root:
+        sub.add(s)
+
+      return s
+
+    total = dfs(root)
+    max_val = -1
+    # print('done:', sub)
+
+    for val in sub:
+      max_val = max(max_val, val*(total-val))
+
+    return max_val%mod
+
+  def maxProduct(self, root: Optional[TreeNode]) -> int:
     @lru_cache(None)
     def subtree_sum(root):
       if not root:

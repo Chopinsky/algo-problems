@@ -51,6 +51,26 @@ from typing import List
 
 class Solution:
   def minDeletionSize(self, strs: List[str]) -> int:
+    n = len(strs[0])
+    cnt = 0
+
+    def check(j: int) -> bool:
+      prev = ''
+      for w in strs:
+        if w[j] < prev:
+          return False
+
+        prev = w[j]
+
+      return True
+
+    for col in range(n):
+      if not check(col):
+        cnt += 1
+
+    return cnt
+        
+  def minDeletionSize(self, strs: List[str]) -> int:
     cnt = 0
     m, n = len(strs), len(strs[0])
     

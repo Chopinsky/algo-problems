@@ -31,11 +31,24 @@ Constraints:
 1 <= prices[i] <= 10^5
 '''
 
-
 from typing import List
 
 
 class Solution:
+  def getDescentPeriods(self, prices: List[int]) -> int:
+    days = 0
+    total = 0
+
+    for i in range(len(prices)):
+      if i == 0 or prices[i]+1 == prices[i-1]:
+        days += 1
+      else:
+        days = 1
+
+      total += days
+
+    return total
+        
   def getDescentPeriods(self, prices: List[int]) -> int:
     cnt = 1
     start = 0

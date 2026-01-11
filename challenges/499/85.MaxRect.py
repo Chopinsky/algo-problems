@@ -34,7 +34,39 @@ matrix[i][j] is '0' or '1'.
 
 from typing import List
 
+
 class Solution:
+  def maximalRectangle(self, matrix: List[List[str]]) -> int:
+    m, n = len(matrix), len(matrix[0])
+    g = []
+    area = 0
+
+    for x in range(m):
+      curr = []
+
+      for y in range(n):
+        d = int(matrix[x][y])
+        if d == 0:
+          curr.append(0)
+          continue
+
+        curr.append(d+(curr[-1] if curr else 0))
+        ln = curr[-1]
+        area = max(area, ln)
+        z = len(g)-1
+        h = 2
+        # print('iter:', (x, y), ln, g, z)
+
+        while z >= 0 and ln > 0:
+          ln = min(ln, g[z][y])
+          area = max(area, ln*h)
+          z -= 1
+          h += 1
+
+      g.append(curr)
+
+    return area
+        
   def maximalRectangle(self, mat: List[List[str]]) -> int:
     m, n = len(mat), len(mat[0])
     prefix = [[int(val) for val in mat[i]] for i in range(m)]

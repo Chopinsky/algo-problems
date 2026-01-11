@@ -60,11 +60,56 @@ xi != yi
 1 <= firstPerson <= n - 1
 '''
 
-
 from typing import List
 from collections import defaultdict
 
+
 class Solution:
+  def findAllPeople(self, n: int, meetings: List[List[int]], firstPerson: int) -> List[int]:
+    known = set([0, firstPerson])
+    m = defaultdict(list)
+    
+    def spread(t: int):
+      checked = set()
+      cand = set()
+      e = defaultdict(set)
+
+      for u, v in m[t]:
+        e[u].add(v)
+        e[v].add(u)
+        cand.add(u)
+        cand.add(v)
+
+      # print('graph:', t, e, cand)
+
+      for u in cand:
+        if (u not in known) or (u in checked):
+          continue
+
+        # spread
+        curr, nxt = set([u]), set()
+        checked.add(u)
+
+        while curr:
+          # print('spread:', curr, checked)
+          for u0 in curr:
+            for v0 in e[u0]:
+              if v0 not in checked:
+                checked.add(v0)
+                known.add(v0)
+                nxt.add(v0)
+
+          curr, nxt = nxt, curr
+          nxt.clear()
+
+    for x, y, t in meetings:
+      m[t].append((x, y))
+
+    for t0 in sorted(m):
+      spread(t0)
+
+    return list(known)
+
   def findAllPeople(self, n: int, meetings: List[List[int]], firstPerson: int) -> List[int]:
     meetings.sort(key=lambda x: (x[2], x[0]))
     know = set([0, firstPerson])

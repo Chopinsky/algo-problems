@@ -39,11 +39,42 @@ n == strs.length
 strs[i] consists of lowercase English letters.
 '''
 
-
 from typing import List
+from functools import cache
 
 
 class Solution:
+  def minDeletionSize(self, strs: List[str]) -> int:
+    n = len(strs)
+    m = len(strs[0])
+
+    @cache
+    def dp(i: int, j: int) -> int:
+      if j >= m:
+        return 0
+        
+      if i < 0:
+        return min(
+          dp(j, j+1),   # keep col j
+          1+dp(i, j+1), # remove col j
+        )
+
+      is_good = True
+      for s in strs:
+        if s[i] > s[j]:
+          is_good = False
+
+      if not is_good:
+        # must delete
+        return 1+dp(i, j+1)
+
+      return min(
+        dp(j, j+1),   # keep
+        1+dp(i, j+1), # remove
+      )
+
+    return dp(-1, 0)
+
   def minDeletionSize(self, strs: List[str]) -> int:
     m, n = len(strs), len(strs[0])
     dp = [1] * n

@@ -36,10 +36,51 @@ from collections import defaultdict
 
 
 class Solution:
-  def pyramidTransition(self, bottom: str, allowed: List[str]) -> bool:
-    a = defaultdict(set)
-    for s in allowed:
-      a[s[:2]].add(s[2])
+    def pyramidTransition(self, bottom: str, allowed: List[str]) -> bool:
+        cand = defaultdict(list)
+        for a in allowed:
+            cand[a[:2]].append(a[2])
+        # print('init:', cand)
+
+        def gen(a: List, i: int) -> List[str]:
+            if i >= len(a):
+                return ['']
+
+            res = set()
+            for c in a[i]:
+                for s in gen(a, i+1):
+                    res.add(c+s)
+
+            return list(res)
+
+        @cache
+        def dp(b: str) -> bool:
+            if len(b) <= 1:
+                return True
+
+            if len(b) == 2:
+                return b in cand
+
+            a = []
+            for i in range(len(b)-1):
+                s = b[i:i+2]
+                if s not in cand:
+                    return False
+
+                a.append(cand[s])
+
+            for s in gen(a, 0):
+                if dp(s):
+                    return True
+
+            return False
+
+        return dp(bottom)
+
+    def pyramidTransition(self, bottom: str, allowed: List[str]) -> bool:
+        a = defaultdict(set)
+        for s in allowed:
+            a[s[:2]].add(s[2])
       
     print(a)
     stack = [bottom]

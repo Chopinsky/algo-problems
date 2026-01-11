@@ -34,9 +34,28 @@ events[i].length == 3
 '''
 
 from typing import List
+from heapq import heappop, heappush
 
 
 class Solution:
+  def maxTwoEvents(self, events: List[List[int]]) -> int:
+    best = 0
+    prev_best = 0
+    events.sort()
+    cand = []
+
+    for s, e, v0 in events:
+      while cand and cand[0][0] < s:
+        _, v1 = heappop(cand)
+        prev_best = max(prev_best, v1)
+
+      v2 = v0+prev_best
+      # print('iter:', (s, e, v0), v2, prev_best)
+      best = max(best, v2)
+      heappush(cand, (e, v0))
+
+    return best
+
   def maxTwoEvents(self, events: List[List[int]]) -> int:
     max_score = 0
     prev_max_val = 0
@@ -49,7 +68,7 @@ class Solution:
     e.sort()
     # print(e)
     
-    for t, typ, val in e:
+    for _, typ, val in e:
       if typ == 1:
         prev_max_val = max(prev_max_val, val)
       else:

@@ -37,6 +37,18 @@ from typing import List
 
 class Solution:
   def minTimeToVisitAllPoints(self, points: List[List[int]]) -> int:
+    def dist(a, b) -> int:
+      dx = abs(a[0]-b[0])
+      dy = abs(a[1]-b[1])
+      return max(dx, dy)
+
+    total = 0
+    for i in range(len(points)-1):
+      total += dist(points[i], points[i+1])
+
+    return total
+        
+  def minTimeToVisitAllPoints(self, points: List[List[int]]) -> int:
     t = 0
     
     for i in range(1, len(points)):

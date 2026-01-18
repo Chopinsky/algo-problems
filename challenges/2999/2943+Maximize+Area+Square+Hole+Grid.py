@@ -71,6 +71,33 @@ from typing import List
 
 
 class Solution:
+  def maximizeSquareHoleArea(self, n: int, m: int, hBars: List[int], vBars: List[int]) -> int:
+    hBars.sort()
+    vBars.sort()
+
+    def get_long(cand: List) -> int:
+      if not cand:
+        return 1
+
+      cnt = 1
+      ln = 1
+
+      for i in range(1, len(cand)):
+        if cand[i]-cand[i-1] == 1:
+          cnt += 1
+        else:
+          cnt = 1
+
+        ln = max(ln, cnt)
+
+      return ln+1
+
+    xlong = get_long(hBars)
+    ylong = get_long(vBars)
+    # print('size:', xlong, ylong)
+
+    return min(xlong, ylong)**2
+
   def maximizeSquareHoleArea(self, n: int, m: int, hbars: List[int], vbars: List[int]) -> int:
     if not hbars or not vbars:
       return 1

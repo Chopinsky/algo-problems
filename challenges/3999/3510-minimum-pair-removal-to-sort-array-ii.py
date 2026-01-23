@@ -3,9 +3,60 @@
 '''
 
 from typing import List
+import math
+from heapq import heappush, heappop
+
+from sortedcontainers import SortedList
 
 
 class Solution:
+  def minimumPairRemoval(self, nums: List[int]) -> int:
+    n = len(nums)
+    prev = [i-1 for i in range(n+1)]
+    nxt = [i+1 if i < n-1 else -1 for i in range(n)]
+    nxt.append(0)
+
+    q = []
+    bad = 0
+
+    for i in range(1, n):
+      if nums[i-1] > nums[i]:
+        bad += 1
+
+      heappush(q, (nums[i-1]+nums[i], i))
+
+    ans = 0
+    while bad > 0:
+      # print(ans, bad, nums, q)
+      s, r = heappop(q)
+      l = prev[r]
+
+      # illegal or stale state
+      if l == -1 or nums[l] + nums[r] != s:
+        continue
+
+      nxt[l] = nxt[r]
+      prev[nxt[r]] = l
+
+      if nums[l] > nums[r]:
+        bad -= 1
+
+      ll = prev[l]
+      if ll != -1:
+        bad += (nums[ll] > s) - (nums[ll] > nums[l])
+        heappush(q, (nums[ll]+s, l))
+
+      rr = nxt[r]
+      if rr != -1:
+        bad += (s > nums[rr]) - (nums[r] > nums[rr])
+        heappush(q, (nums[rr]+s, rr))
+
+      nums[l] = s
+      nums[r] = math.inf
+      ans += 1
+
+    return ans
+
   def minimumPairRemoval(self, nums: List[int]) -> int:
     n = len(nums)
     l = list(range(-1, n-1))
@@ -32,20 +83,20 @@ class Solution:
     ans = 0
     while inversions > 0:
       ans += 1
-      val, i = s.pop(0)
+      _, i = s.pop(0)
       j = r[i]
-      h, k = l[i], r[j]
+      ll, rr = l[i], r[j]
       
-      remove(h)
+      remove(ll)
       remove(i)
       remove(j)
 
       nums[i] += nums[j]
-      r[i] = k
-      if k < n:
-        l[k] = i
+      r[i] = rr
+      if rr < n:
+        l[rr] = i
 
-      add(h)
+      add(ll)
       add(i)
 
     return ans

@@ -21,5 +21,6 @@
   "python.pythonPath": "C:\\Program Files (x86)\\Python\\Python38\\python.exe",
   "python.analysis.typeCheckingMode": "off",
   "editor.fontFamily": "'IBM Plex Mono', Menlo, Monaco, 'Courier New', monospace",
-  "editor.wordWrap": "off"
+  "editor.wordWrap": "off",
+  "cursorpyright.analysis.typeCheckingMode": "off"
 }

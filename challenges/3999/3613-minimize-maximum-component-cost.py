@@ -28,10 +28,14 @@ class Solution:
       if px == py:
         return False
 
+      # make the component with the higher rank the parent
       if rank[px] < rank[py]:
         px, py = py, px
 
+      # py is now the child of px, so update the parent of py to px
       g[py] = px
+
+      # px is now the root of the unioned component, increment its rank
       if rank[px] == rank[py]:
         rank[px] += 1
 

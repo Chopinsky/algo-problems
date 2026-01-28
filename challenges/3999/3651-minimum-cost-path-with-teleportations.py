@@ -8,13 +8,43 @@ from typing import List
 
 class Solution:
   def minCost(self, grid: List[List[int]], k: int) -> int:
+    n = len(grid)
+    m = len(grid[0])
+    cost = [[math.inf] * m for _ in range(n)] # cost[i][j] = minimum cost to reach destination from (i, j)
+    cost[-1][-1] = 0
+    tcost = [math.inf] * (max(max(row) for row in grid) + 1)
+
+    for t in range(k + 1):
+      for i in range(n-1, -1, -1):
+        for j in range(m-1, -1, -1):
+          # move right, down, or teleport
+          if i < n - 1: 
+            cost[i][j] = min(cost[i][j], cost[i+1][j] + grid[i+1][j])
+
+          if j < m - 1: 
+            cost[i][j] = min(cost[i][j], cost[i][j+1] + grid[i][j+1])
+
+          if t > 0: 
+            cost[i][j] = min(cost[i][j], tcost[grid[i][j]])
+      
+      # compute tcost for next t
+      for i in range(n):
+        for j in range(m):
+          tcost[grid[i][j]] = min(tcost[grid[i][j]], cost[i][j])
+
+      for i in range(1, len(tcost)): 
+        tcost[i] = min(tcost[i], tcost[i - 1]) # compute pref min
+    
+    return cost[0][0]
+
+  def minCost(self, grid: List[List[int]], k: int) -> int:
     m, n = len(grid), len(grid[0])
     top_val = grid[0][0]
+
+    # [m][n][k+1] matrix (0 to k teleport)
     dp = [
       [
-        [
-          math.inf for _ in range(k+1)
-        ] for _ in range(n)
+        [math.inf for _ in range(k+1)] for _ in range(n)
       ] for _ in range(m)
     ]
 
@@ -34,18 +64,16 @@ class Solution:
 
     # print('init:', dp, dp[-1][-1][k])
 
-    # calc best cost at each additional teleport
+    # calc cost at each teleport
     for tc in range(1, k+1):
       min_cost_v = [math.inf] * (top_val+2)
       for i in range(m):
         for j in range(n):
           min_cost_v[grid[i][j]] = min(
-            min_cost_v[grid[i][j]],   # current best
-            dp[i][j][tc-1],           # best score after teleporting tc-1 times
+            min_cost_v[grid[i][j]],
+            dp[i][j][tc-1],
           )
 
-      # aggregate to get the best from all above values, given
-      # the teleport cost is 0
       min_cost_above_v = [math.inf] * (top_val+2)
       for v in range(top_val, -1, -1):
         min_cost_above_v[v] = min(

@@ -41,13 +41,65 @@ original[i], changed[i] are lowercase English letters.
 original[i] != changed[i]
 '''
 
+import math
 from typing import List
 
 from heapq import heappop, heappush
 from functools import lru_cache
 from collections import defaultdict
 
+
 class Solution:
+  def minimumCost(self, source: str, target: str, original: List[str], changed: List[str], cost: List[int]) -> int:
+    if len(source) != len(target):
+      return -1
+
+    c = [{} for _ in range(26)]
+    for i in range(len(original)):
+      src = ord(original[i]) - ord('a')
+      tgt = ord(changed[i]) - ord('a')
+      c[src][tgt] = min(cost[i], c[src].get(tgt, math.inf))
+
+    # print('init:', c)
+    min_cost = {}
+
+    for i in range(26):
+      curr = list(c[i].items())
+      nxt = []
+      # print('iter:', i, curr)
+
+      while curr:
+        for j, w0 in curr:
+          # better solution exists
+          if (i, j) in min_cost and w0 >= min_cost[i, j]:
+            continue
+
+          # update min_cost
+          min_cost[i, j] = w0
+
+          # expand to next set of chars
+          for k, w1 in c[j].items():
+            nxt.append((k, w0+w1))
+
+        curr, nxt = nxt, curr
+        nxt.clear()
+
+    # print('fin:', min_cost)
+    total_cost = 0
+
+    for i in range(len(source)):
+      src = ord(source[i]) - ord('a')
+      tgt = ord(target[i]) - ord('a')
+      if src == tgt:
+        continue
+
+      if (src, tgt) not in min_cost:
+        return -1
+
+      total_cost += min_cost[src, tgt]
+
+    return total_cost
+        
   def minimumCost(self, source: str, target: str, original: List[str], changed: List[str], cost: List[int]) -> int:
     if len(source) != len(target):
       return -1

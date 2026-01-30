@@ -57,6 +57,64 @@ from typing import List
 
 class Solution:
   def minimumCost(self, source: str, target: str, original: List[str], changed: List[str], cost: List[int]) -> int:
+    index = {}
+    for o in original:
+      if o not in index:
+        index[o] = len(index)
+
+    for c in changed:
+      if c not in index:
+        index[c] = len(index)
+
+    n = len(index)
+    dis = [[math.inf]*n for _ in range(n)]
+
+    for i in range(len(cost)):
+      oi = index[original[i]]
+      ci = index[changed[i]]
+      dis[oi][ci] = min(dis[oi][ci], cost[i])
+
+    # update shortest path
+    for k in range(n):
+      for i in range(n):
+        if dis[i][k] == math.inf:
+          continue
+
+        for j in range(n):
+          if dis[k][j] == math.inf:
+            continue
+
+          # there is a path: i->k and k->j, check if it's
+          # better cost-wise
+          dis[i][j] = min(dis[i][j], dis[i][k]+dis[k][j])
+
+    substr = set(len(o) for o in original)
+    dp = [math.inf] * (len(target)+1)
+    dp[0] = 0
+
+    for i in range(len(target)):
+      if dp[i] == math.inf:
+        continue
+
+      if target[i] == source[i]:
+        dp[i+1] = min(dp[i+1], dp[i])
+
+      for t in substr:
+        if i+t >= len(dp):
+          continue
+
+        sub_s = source[i:i+t]
+        sub_t = target[i:i+t]
+
+        c1 = index[sub_s] if sub_s in index else -1
+        c2 = index[sub_t] if sub_t in index else -1
+
+        if c1 >= 0 and c2 >= 0 and dis[c1][c2] < math.inf:
+          dp[i+t] = min(dp[i+t], dp[i]+dis[c1][c2])
+
+    return dp[-1] if dp[-1] < math.inf else -1
+
+  def minimumCost(self, source: str, target: str, original: List[str], changed: List[str], cost: List[int]) -> int:
     wid = {w:idx for idx, w in enumerate(sorted(set(changed) | set(original)))}
     n = len(wid)
     

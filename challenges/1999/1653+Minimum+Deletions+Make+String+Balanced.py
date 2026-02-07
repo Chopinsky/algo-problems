@@ -24,7 +24,36 @@ Constraints:
 s[i] is 'a' or 'b'​​.
 '''
 
+
 class Solution:
+  def minimumDeletions(self, s: str) -> int:
+    n = len(s)
+    suffix = [0]*n
+    prefix = 0
+
+    for i in range(n-1, -1, -1):
+      suffix[i] = (0 if i == n-1 else suffix[i+1]) + (1 if s[i] == 'a' else 0)
+
+    na = suffix[0]
+    nb = n - na
+    ops = min(na, nb)
+
+    for i in range(n):
+      # delete all prev 'b'
+      c0 = prefix 
+
+      if s[i] == 'a':
+        # delete all 'a' or all 'b' after
+        c1 = suffix[i]-1
+      else:
+        c1 = suffix[i]
+        prefix += 1
+
+      # print('iter:', ops, i, s[i], c0, c1)
+      ops = min(ops, c0+c1)
+
+    return ops
+        
   def minimumDeletions(self, s: str) -> int:
     n = len(s)
     a_count = [0]*n

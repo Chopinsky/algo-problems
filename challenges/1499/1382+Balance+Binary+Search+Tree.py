@@ -19,6 +19,9 @@ The number of nodes in the tree is in the range [1, 10^4].
 1 <= Node.val <= 10^5
 '''
 
+from typing import Optional
+
+
 # Definition for a binary tree node.
 class TreeNode:
   def __init__(self, val=0, left=None, right=None):
@@ -26,13 +29,46 @@ class TreeNode:
     self.left = left
     self.right = right
 
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+
 class Solution:
+  def balanceBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+    nodes = []
+
+    def is_balanced(u):
+      if not u:
+        return True, 0
+
+      lb, ld = is_balanced(u.left)
+      nodes.append(u)
+      rb, rd = is_balanced(u.right)
+
+      if not rb or not lb:
+        return False, 0
+
+      if abs(ld-rd) > 1:
+        return False, 0
+
+      return True, 1+max(ld, rd)
+
+    def rebuild(l: int, r: int):
+      if r < l:
+        return None
+
+      mid = (l+r) // 2
+      curr = nodes[mid]
+      curr.left = rebuild(l, mid-1)
+      curr.right = rebuild(mid+1, r)
+      # print('rebuild:', curr.val)
+
+      return curr
+
+    res, _ = is_balanced(root)
+    # print('vals:', [node.val for node in nodes])
+    if res:
+      return root
+
+    return rebuild(0, len(nodes)-1)
+        
   def balanceBST(self, root: TreeNode) -> TreeNode:
     stack = []
     

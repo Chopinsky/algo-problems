@@ -29,8 +29,32 @@ Constraints:
 0 <= query_glass <= query_row < 100
 '''
 
+from typing import List
+
 
 class Solution:
+  def champagneTower(self, poured: int, r: int, c: int) -> float:
+    def pour(curr: List) -> float:
+      n = len(curr)
+      if n-1 == r:
+        return min(1.0, curr[c])
+
+      nxt = [0.0]*(n+1)
+
+      for i in range(n):
+        # no spill
+        if curr[i] <= 1.0:
+          continue
+
+        spill = (curr[i] - 1.0) / 2.0
+        nxt[i] += spill
+        nxt[i+1] += spill
+
+      return pour(nxt)
+
+    return pour([poured])
+        
+        
   def champagneTower(self, poured: int, r: int, c: int) -> float:
     if r == 0:
       return min(1, poured)

@@ -31,7 +31,59 @@ Constraints:
 from typing import List
 
 
+h = {0:[0]}
+m = {0:[0]}
+
+def find(i: int, rem: int, arr: list, limit: int):
+  n = len(arr)
+  if rem > n-i or i >= n:
+    return []
+
+  if rem == 0:
+    return [0]
+
+  if rem == 1:
+    return arr[i:]
+
+  # base case: not using current hr digit
+  ans = set(find(i+1, rem, arr, limit))
+
+  # extra case: use current hr digit
+  curr = arr[i]
+  for t in find(i+1, rem-1, arr, limit):
+    if curr+t >= limit:
+      break
+
+    ans.add(curr+t)
+
+  return sorted(ans)
+
+for ln in range(1, 11):
+  h[ln] = find(0, ln, [1, 2, 4, 8], 12)
+
+for ln in range(1, 11):
+  m[ln] = find(0, ln, [1, 2, 4, 8, 16, 32], 60)
+
 class Solution:
+  def readBinaryWatch(self, cnt: int) -> List[str]:
+    # print('init:', h, m)
+    ans = []
+
+    def format(th: int, tm: int) -> str:
+      sh = str(th)
+      sm = ("0" if tm < 10 else "") + str(tm)
+      return f"{sh}:{sm}"
+
+    for l0 in range(cnt+1):
+      hl = h[l0]
+      ml = m[cnt-l0]
+
+      for th in hl:
+        for tm in ml:
+          ans.append(format(th, tm))
+
+    return ans
+        
   def readBinaryWatch(self, turnedOn: int) -> List[str]:
     if turnedOn == 0:
       return ['0:00']

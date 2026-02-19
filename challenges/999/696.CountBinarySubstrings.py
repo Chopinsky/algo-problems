@@ -23,7 +23,29 @@ s.length will be between 1 and 50,000.
 s will only consist of "0" or "1" characters.
 '''
 
+
 class Solution:
+  def countBinarySubstrings(self, s: str) -> int:
+    prev_cnt = 0
+    prev = ""
+    curr_cnt = 0
+    curr = ""
+    cnt = 0
+
+    for ch in s:
+      if ch != curr:
+        prev_cnt = curr_cnt
+        prev = curr
+        curr_cnt = 1
+        curr = ch
+      else:
+        curr_cnt += 1
+
+      if prev and curr_cnt <= prev_cnt:
+        cnt += 1
+
+    return cnt
+
   def countBinarySubstrings(self, s: str) -> int:
     ones, zeros = 0, 0
     count = 0

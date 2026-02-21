@@ -36,10 +36,50 @@ Constraints:
 0 <= right - left <= 10^4
 '''
 
+from math import comb
+
+
+primes = set([2, 3, 5, 7, 11, 13, 17, 19])
 
 class Solution:
+  # this solution can handle 1 <= left <= right <= 2^31-1
   def countPrimeSetBits(self, left: int, right: int) -> int:
-    primes = set([2, 3, 5, 7, 11, 13, 17, 19])
+    def calc(slot: int, pre: int) -> int:
+      cnt = 0
+      if slot == 0:
+        return 1 if pre in primes else 0
+
+      for i in range(slot+1):
+        if i+pre in primes:
+          cnt += comb(slot, i)
+
+      return cnt
+
+    def count(val: int) -> int:
+      if val <= 2:
+        return 0
+
+      bval = bin(val)[2:]
+      slot = len(bval)-1
+      cnt = 0 # count of 1s set in the previous spots (except the current spot)
+      res = 1 if bval.count('1') in primes else 0
+
+      while slot >= 0:
+        mask = 1 << slot
+
+        # can set 1s in the lower slots with current spot to be 0
+        if mask&val > 0:
+          res += calc(slot, cnt)
+          cnt += 1 # update prev 1s count
+
+        slot -= 1
+
+      # print('count:', val, res)
+      return res
+
+    return count(right) - count(left-1)
+        
+  def countPrimeSetBits(self, left: int, right: int) -> int:
     count = 0
     
     for val in range(left, right+1):

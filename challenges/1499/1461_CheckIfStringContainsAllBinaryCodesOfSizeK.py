@@ -27,6 +27,31 @@ s[i] is either '0' or '1'.
 
 class Solution:
   def hasAllCodes(self, s: str, k: int) -> bool:
+    n = len(s)
+    if n < k:
+      return False
+
+    val = int(s[:k], 2)
+    seen = set([val])
+    target = 1 << k
+    top = 1 << (k-1)
+
+    for i in range(k, n):
+      if s[i-k] == '1':
+        val -= top
+
+      val <<= 1
+      val |= int(s[i])
+      seen.add(val)
+
+      if len(seen) == target:
+        return True
+
+    return False
+
+
+class Solution:
+  def hasAllCodes(self, s: str, k: int) -> bool:
     base = set()
     for i in range(len(s)-k+1):
       # print(s[i:i+k])  

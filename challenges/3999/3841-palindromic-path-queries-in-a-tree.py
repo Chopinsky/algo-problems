@@ -48,6 +48,8 @@ class Solution:
         u, v = v, u
 
       diff = depth[u] - depth[v]
+
+      # lift u to the same depth of v
       for k in range(bit_bound):
         if diff & (1<<k):
           u = parent[k][u]
@@ -56,6 +58,7 @@ class Solution:
       if u == v:
         return u
 
+      # uplift if both node's parent is not a common grandparent
       for k in reversed(range(bit_bound)):
         # only move up the tree by 2^k steps if the parents are 
         # different -- otherwise, the k-grandparent is above the lca.

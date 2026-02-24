@@ -36,6 +36,25 @@ class TreeNode:
 
 class Solution:
   def sumRootToLeaf(self, root: Optional[TreeNode]) -> int:
+    res = [0]
+
+    def dfs(curr, val: int):
+      if not curr:
+        return
+
+      val = (val << 1) | int(curr.val)
+      if not curr.left and not curr.right:
+        res[0] += val
+        return
+
+      dfs(curr.left, val)
+      dfs(curr.right, val)
+
+    dfs(root, 0)
+
+    return res[0]
+        
+  def sumRootToLeaf(self, root: Optional[TreeNode]) -> int:
     total = 0
     if not root:
       return total

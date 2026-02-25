@@ -28,7 +28,13 @@ Constraints:
 
 from typing import List
 
+
 class Solution:
+  def sortByBits(self, arr: List[int]) -> List[int]:
+    b = [(bin(val)[2:].count('1'), val) for val in arr]
+    b.sort()
+    return [val[1] for val in b]
+        
   def sortByBits(self, arr: List[int]) -> List[int]:
     s = sorted((bin(val)[2:].count('1'), val) for val in arr)
     return list(v[1] for v in s)

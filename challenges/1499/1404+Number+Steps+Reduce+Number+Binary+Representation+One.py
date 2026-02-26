@@ -38,7 +38,42 @@ s consists of characters '0' or '1'
 s[0] == '1'
 '''
 
+from collections import deque
+
+
 class Solution:
+  def numSteps(self, s: str) -> int:
+    a = deque(list(int(val) for val in s))
+    steps = 0
+    
+    def add_one():
+      carryover = 1
+      i = len(a)-1
+
+      while i >= 0 and carryover > 0:
+        a[i] += carryover
+        carryover = 0
+
+        if a[i] > 1:
+          a[i] %= 2
+          carryover += 1
+
+        i -= 1
+
+      if carryover > 0:
+        a.appendleft(1)
+
+    while len(a) > 1:
+      if a[-1] > 0:
+        add_one()
+        steps += 1
+
+      a.pop()
+      steps += 1
+      # print('iter:', a)
+
+    return steps
+
   def numSteps(self, s: str) -> int:
     decimals = [int(ch) for ch in s][::-1]
     ops = 0

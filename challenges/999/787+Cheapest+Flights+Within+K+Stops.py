@@ -47,7 +47,32 @@ from collections import defaultdict
 from heapq import heappush, heappop
 import math
 
+
 class Solution:
+  def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
+    f = defaultdict(list)
+    for a, b, p in flights:
+      f[a].append((b, p))
+
+    h = [[0, src, k+1]]
+    seen = {(src, k+1): 0}
+
+    while h:
+      p0, i, k = heappop(h)
+      if i == dst:
+        return p0
+
+      if k == 0:
+        continue
+
+      for j, dp in f[i]:
+        p1 = p0 + dp
+        if (j, k-1) not in seen or p1 < seen[j, k-1]:
+          heappush(h, (p1, j, k-1))
+          seen[j, k-1] = p1
+
+    return -1
+
   def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
     if src == dst:
       return 0

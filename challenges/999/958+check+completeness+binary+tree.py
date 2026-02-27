@@ -39,6 +39,48 @@ class TreeNode:
 class Solution:
   def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
     if not root:
+      return False
+
+    curr, nxt = [root], []
+    row = 0
+
+    def has_children() -> bool:
+      for u in curr:
+        if u.left or u.right:
+          return True
+
+      return False
+
+    while curr:
+      if len(curr) < (1<<row):
+        return not has_children()
+
+      is_ended = False
+
+      for u in curr:
+        if u.right and not u.left:
+          return False
+
+        if is_ended and (u.left or u.right):
+          return False
+
+        if not u.right or not u.left:
+          is_ended = True
+          
+        if u.left:
+          nxt.append(u.left)
+
+        if u.right:
+          nxt.append(u.right)
+
+      curr, nxt = nxt, curr
+      nxt.clear()
+      row += 1
+
+    return True
+
+  def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
+    if not root:
       return True
     
     curr, nxt = [root], []
@@ -72,7 +114,6 @@ class Solution:
       expected <<= 1
       
     return True
-    
     
   def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
     if not root:

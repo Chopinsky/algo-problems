@@ -26,10 +26,24 @@ n consists of only digits.
 n does not contain any leading zeros and represents a positive integer.
 '''
 
+
 class Solution:
   def minPartitions(self, n: str) -> int:
-    return max([int(ch) for ch in n])
+    ops = 0
+    top = 0
 
+    for d in n:
+      val = int(d)
+      if val <= top:
+        continue
+
+      ops += val - top
+      top = val
+
+    return ops
+        
+  def minPartitions(self, n: str) -> int:
+    return max([int(ch) for ch in n])
 
   def minPartitions(self, n: str) -> int:
     arr = list(n)

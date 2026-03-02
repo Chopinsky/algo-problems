@@ -31,11 +31,49 @@ n == grid.length == grid[i].length
 grid[i][j] is either 0 or 1
 '''
 
-
 from typing import List
 
 
 class Solution:
+  def minSwaps(self, grid: List[List[int]]) -> int:
+    n = len(grid[0])
+    m = len(grid)
+
+    def right_one(r: list[int]) -> int:
+      c = n-1
+
+      while c >= 0:
+        if r[c] == 1:
+          return c
+
+        c -= 1
+
+      return c
+      
+    rows = [right_one(grid[i]) for i in range(m)]
+    sorted_rows = sorted(rows[i] for i in range(m))
+
+    if any(sorted_rows[i] > i for i in range(n)):
+      return -1
+
+    ops = 0
+    for i in range(m):
+      right = rows[i]
+      if right <= i:
+        continue
+
+      j = i+1
+      while j < m and rows[j] > i:
+        j += 1
+
+      # found the row
+      while j > i:
+        rows[j-1], rows[j] = rows[j], rows[j-1]
+        j -= 1
+        ops += 1
+
+    return ops
+        
   def minSwaps(self, grid: List[List[int]]) -> int:
     n = len(grid)
     zeros = []

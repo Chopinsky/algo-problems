@@ -35,7 +35,37 @@ Constraints:
 from typing import List
 
 
+ln = [0, 1]
+while len(ln) < 21:
+  curr = (ln[-1] << 1) + 1
+  ln.append(curr)
+
+
 class Solution:
+  def findKthBit(self, n: int, k: int) -> str:
+    flips = 0
+    k -= 1 # convert to index
+    # print('init:', ln)
+
+    while n > 1:
+      length = ln[n]
+      half = length // 2
+
+      # digit is the middle "1"
+      if k == half:
+        return '1' if flips%2 == 0 else '0'
+      
+      if k > half:
+        # digit is in the right-half, mirror
+        diff = k-half
+        k = half-diff
+        flips += 1
+
+      n -= 1
+
+    # print('done:', n, k, flips)
+    return '1' if flips%2 == 1 else '0'
+        
   def findKthBit(self, n: int, k: int) -> str:
     k -= 1
     vals = ['0']

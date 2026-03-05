@@ -30,6 +30,28 @@ from typing import List
 
 class Solution:
   def numSpecial(self, mat: List[List[int]]) -> int:
+    m, n = len(mat), len(mat[0])
+    rc = [0]*m
+    cc = [0]*n
+    cand = []
+
+    for x in range(m):
+      for y in range(n):
+        if mat[x][y] == 0:
+          continue
+
+        rc[x] += 1
+        cc[y] += 1
+        cand.append((x, y))
+
+    cnt = 0
+    for x, y in cand:
+      if rc[x] == 1 and cc[y] == 1:
+        cnt += 1
+
+    return cnt
+        
+  def numSpecial(self, mat: List[List[int]]) -> int:
     cand = set()
     m, n = len(mat), len(mat[0])
     rows = [0]*m

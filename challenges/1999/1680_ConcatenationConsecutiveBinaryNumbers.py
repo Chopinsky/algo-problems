@@ -30,7 +30,37 @@ Constraints:
 '''
 
 
+ln = 10**5+1
+mod = 10**9 + 7
+ans = [0]*ln
+val = 0
+
+for i in range(1, ln):
+  b_ln = len(bin(i)[2:])
+  val = ((val << b_ln) | i) % mod
+  ans[i] = val
+
+
 class Solution:
+  def concatenatedBinary(self, n: int) -> int:
+    return ans[n]
+
+  def concatenatedBinary(self, n: int) -> int:
+    if n == 1:
+      return 1
+
+    mod = 10**9 + 7
+    padding = 1
+    res = 0
+
+    while n > 0:
+      res = (res + n*padding) % mod
+      ln = len(bin(n)[2:])
+      padding = (padding << ln) % mod
+      n -= 1
+
+    return res
+        
   def concatenatedBinary(self, n: int) -> int:
     mod = 10**9+7
     res = 0

@@ -34,7 +34,56 @@ Constraints:
 s[i] is either '0' or '1'.
 '''
 
+
 class Solution:
+  def minFlips(self, s: str) -> int:
+    n = len(s)
+    s = list(int(ch) for ch in s)
+    p0 = [0]*n
+    p1 = [0]*n
+    s0 = [0]*n
+    s1 = [0]*n
+    v0 = 0
+
+    for i in range(n):
+      ch = s[i]
+      prev0 = p0[i-1] if i > 0 else 0
+      prev1 = p1[i-1] if i > 0 else 0
+
+      if ch == v0:
+        p0[i] = prev0
+        p1[i] = prev1 + 1
+      else:
+        p0[i] = prev0 + 1
+        p1[i] = prev1
+
+      v0 = 1 - v0
+
+    v0 = 0
+    for i in range(n-1, -1, -1):
+      ch = s[i]
+      nxt0 = s0[i+1] if i < n-1 else 0
+      nxt1 = s1[i+1] if i < n-1 else 0
+
+      if ch == v0:
+        s0[i] = nxt0
+        s1[i] = nxt1 + 1
+      else:
+        s0[i] = nxt0 + 1
+        s1[i] = nxt1
+
+      v0 = 1 - v0
+
+    # print('init:', p0, p1, s0, s1)
+    ops = min(p0[-1], p1[-1])
+
+    for i in range(n-1):
+      ops0 = p0[i] + s1[i+1]
+      ops1 = p1[i] + s0[i+1]
+      ops = min(ops, ops0, ops1)
+
+    return ops
+
   '''
   the problem is tricky: 
   1)  the end state will be one of the 2 cases: '0' in even slots and '1' in 

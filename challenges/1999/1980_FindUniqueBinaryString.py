@@ -30,6 +30,18 @@ from typing import List
 
 class Solution:
   def findDifferentBinaryString(self, nums: List[str]) -> str:
+    vals = set(int(num, 2) for num in nums)
+    n = len(nums)
+
+    for val in range(1<<n):
+      if val not in vals:
+        bval = bin(val)[2:]
+        diff = max(0, n - len(bval))
+        return "0"*diff + bval
+
+    return bin(1<<n)[2:]
+        
+  def findDifferentBinaryString(self, nums: List[str]) -> str:
     nums.sort()
     n = len(nums[0])
     base = '0'*n

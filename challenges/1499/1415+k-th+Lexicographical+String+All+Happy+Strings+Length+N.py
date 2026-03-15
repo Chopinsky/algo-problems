@@ -33,6 +33,30 @@ Constraints:
 
 
 class Solution:
+  def getHappyString(self, n: int, k: int) -> str:
+    def gen(i: int):
+      if i >= n:
+        return ['']
+
+      res = []
+      for w in gen(i+1):
+        for ch in ['a', 'b', 'c']:
+          if w and ch == w[-1]:
+            continue
+
+          res.append(w+ch)
+
+      return res
+
+    s = gen(0)
+    # print('res:', s)
+
+    if len(s) < k:
+      return ""
+
+    s.sort()
+    return s[k-1]
+        
   def __init__(self):
     n = 10
     cand = ["a", "b", "c"]

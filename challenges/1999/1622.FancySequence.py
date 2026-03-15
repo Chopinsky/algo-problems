@@ -34,13 +34,51 @@ fancy.getIndex(2); // return 20
 Constraints:
 
 1 <= val, inc, m <= 100
-0 <= idx <= 105
-At most 105 calls total will be made to append, addAll, multAll, and getIndex.
+0 <= idx <= 10^5
+At most 10^5 calls total will be made to append, addAll, multAll, and getIndex.
 '''
 
 mod = 10**9 + 7
 
+
 class Fancy:
+  def __init__(self):
+    self.seq = []
+    self.ops = [(1, 0)]      
+
+  def append(self, val: int) -> None:
+    self.seq.append((val, len(self.ops)-1))
+
+  def addAll(self, inc: int) -> None:
+    pm, pa = self.ops[-1]
+    self.ops.append((pm, (pa+inc)%mod))
+    # print('add:', inc, self.ops)
+
+  def multAll(self, m: int) -> None:
+    pm, pa = self.ops[-1]
+    self.ops.append(((pm*m)%mod, (pa*m)%mod))
+    # print('mult:', m, self.ops)
+
+  def getIndex(self, idx: int) -> int:
+    if idx >= len(self.seq):
+      return -1
+
+    val, ops_idx = self.seq[idx]
+    if len(self.ops) == 1:
+      return val
+
+    curr_m, curr_a = self.ops[-1]
+    prev_m, prev_a = self.ops[ops_idx]
+    # print('get:', idx, (curr_m, curr_a), (prev_m, prev_a))
+
+    multi = (curr_m * pow(prev_m, mod-2, mod)) % mod
+    addi = (curr_a - multi*prev_a) % mod
+    # print('res:', multi, addi)
+
+    return (multi*val+addi) % mod
+
+
+class Fancy2:
   def __init__(self):
     self._vals = []
     self._plus = [0]

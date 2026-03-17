@@ -31,9 +31,36 @@ matrix[i][j] is either 0 or 1.
 
 from typing import List
 from collections import defaultdict
+import math
 
 
 class Solution:
+  def largestSubmatrix(self, mat: List[List[int]]) -> int:
+    m, n = len(mat), len(mat[0])
+    cols = [[mat[x][y] for y in range(n)] for x in range(m)]
+
+    for x in range(1, m):
+      for y in range(n):
+        if cols[x][y] == 1:
+          cols[x][y] += cols[x-1][y]
+
+    # print('init:', cols)
+    area = 0
+
+    for x in range(m):
+      row = sorted(cols[x], reverse=True)
+      h = math.inf
+
+      for y in range(n):
+        h = min(h, row[y])
+        if h == 0:
+          break
+
+        # print('iter:', (x, y), h)
+        area = max(area, h*(y+1))
+
+    return area
+
   def largestSubmatrix(self, mat: List[List[int]]) -> int:
     m, n = len(mat), len(mat[0])
     row = [0]*n

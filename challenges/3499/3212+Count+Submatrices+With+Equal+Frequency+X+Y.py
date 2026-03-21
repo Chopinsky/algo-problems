@@ -44,7 +44,37 @@ grid[i][j] is either 'X', 'Y', or '.'.
 
 from typing import List
 
+
 class Solution:
+  def numberOfSubmatrices(self, grid: List[List[str]]) -> int:
+    m = len(grid)
+    n = len(grid[0])
+    prev = [(0, 0) for _ in range(n)]
+    curr = []
+    count = 0
+
+    for x in range(m):
+      xc = 0
+      yc = 0
+
+      for y in range(n):
+        xc += 1 if grid[x][y] == 'X' else 0
+        yc += 1 if grid[x][y] == 'Y' else 0
+
+        curr.append((
+          xc + prev[y][0],
+          yc + prev[y][1],
+        ))
+
+        # print('iter:', curr)
+        if curr[-1][0] == curr[-1][1] and curr[-1][0] > 0:
+          count += 1
+
+      curr, prev = prev, curr
+      curr.clear()
+
+    return count
+        
   def numberOfSubmatrices(self, grid: List[List[str]]) -> int:
     n = len(grid[0])
     prev, curr = [], []

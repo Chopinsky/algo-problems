@@ -36,8 +36,46 @@ n == grid[i].length
 '''
 
 from typing import List
+import math
+
 
 class Solution:
+  def maxProductPath(self, grid: List[List[int]]) -> int:
+    curr, nxt = [], []
+    m, n = len(grid), len(grid[0])
+
+    for i in range(m):
+      for j in range(n):
+        # print('iter:', nxt)
+        val = grid[i][j]
+        if i == 0 and j == 0:
+          nxt.append((val, val))
+          continue
+
+        low = math.inf
+        high = -math.inf
+
+        if i > 0:
+          high = max(high, curr[j][0])
+          low = min(low, curr[j][1])
+
+        if j > 0:
+          high = max(high, nxt[-1][0])
+          low = min(low, nxt[-1][1])
+
+        nxt.append((
+          max(low*val, high*val),
+          min(low*val, high*val),
+        ))
+
+      curr, nxt = nxt, curr
+      nxt.clear()
+
+    max_val = max(curr[-1])
+    mod = 10**9 + 7
+
+    return -1 if max_val < 0 else (max_val%mod)
+        
   def maxProductPath(self, grid: List[List[int]]) -> int:
     inf = float('inf')
     cell = [inf, inf]

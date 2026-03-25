@@ -37,6 +37,30 @@ from typing import List
 
 class Solution:
   def constructProductMatrix(self, grid: List[List[int]]) -> List[List[int]]:
+    mod = 12345
+    m = len(grid)
+    n = len(grid[0])
+    res = [[0]*n for _ in range(m)]
+
+    prev = 1
+    suffix = 1
+    for x in range(m-1, -1, -1):
+      for y in range(n-1, -1, -1):
+        suffix = (prev * suffix) % mod
+        res[x][y] = suffix
+        prev = grid[x][y]
+        
+    prev = 1
+    prefix = 1
+    for x in range(m):
+      for y in range(n):
+        prefix = (prev * prefix) % mod
+        res[x][y] = (res[x][y] * prefix) % mod
+        prev = grid[x][y]
+      
+    return res
+        
+  def constructProductMatrix(self, grid: List[List[int]]) -> List[List[int]]:
     ans = []
     prefix, suffix = [], []
     m, n = len(grid), len(grid[0])

@@ -34,6 +34,49 @@ from typing import List
 
 
 class Solution:
+  def findTheString(self, lcp: List[List[int]]) -> str:
+    n = len(lcp)
+    ch = [""] * n
+    curr = ord('a')
+
+    # construct init string
+    for i in range(n):
+      if ch[i]:
+        continue
+
+      # invalid, out of the bound
+      if curr > ord('z'):
+        return ''
+
+      ch[i] = chr(curr)
+      for j in range(i+1, n):
+        # 1st char is at least common
+        if lcp[i][j] > 0:
+          ch[j] = ch[i]
+        
+      curr += 1
+
+    # verify if meets the lcp requirements
+    for i in range(n-1, -1, -1):
+      for j in range(n-1, -1, -1):
+        if ch[i] != ch[j]:
+          # should be the same char but is not
+          if lcp[i][j] > 0:
+            return ''
+
+        else:
+          if i == n-1 or j == n-1:
+            # can only match at most 1 char
+            if lcp[i][j] != 1:
+              return ''
+
+          else:
+            # should have 1 more matched length than sub-state
+            if lcp[i][j] != lcp[i+1][j+1] + 1:
+              return ''
+
+    return ''.join(ch)
+
   '''
   the string generation part is easy -- if lcp[i][j] > 0, it means s[i] == s[j]
   and we can group (i, j) to the same group of the chars, then assign chars according

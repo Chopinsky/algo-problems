@@ -30,10 +30,33 @@ n == s1.length == s2.length
 s1 and s2 consist only of lowercase English letters.
 '''
 
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 
 class Solution:
+  def checkStrings(self, s1: str, s2: str) -> bool:
+    n = len(s1)
+    g0 = Counter(s1[i] for i in range(n) if i%2 == 0)
+    g1 = Counter(s1[i] for i in range(n) if i%2 == 1)
+
+    for i in range(n):
+      ch = s2[i]
+      if i%2 == 0:
+        cnt = g0.get(ch, 0)
+        if cnt == 0:
+          return False
+
+        g0[ch] -= 1
+
+      else:
+        cnt = g1.get(ch, 0)
+        if cnt == 0:
+          return False
+
+        g1[ch] -= 1
+
+    return True
+         
   def checkStrings(self, s1: str, s2: str) -> bool:
     e1, e2 = defaultdict(int), defaultdict(int)
     o1, o2 = defaultdict(int), defaultdict(int)

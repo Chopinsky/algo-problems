@@ -49,6 +49,26 @@ The testcases are generated such that there is only one possible originalText.
 
 
 class Solution:
+  def decodeCiphertext(self, encoded: str, rows: int) -> str:
+    n = len(encoded)
+    if rows == 1 or n == rows:
+      return encoded.rstrip()
+
+    cols = n // rows
+    grid = [encoded[i*cols:(i+1)*cols] for i in range(rows)]
+    res = ''
+    # print('init:', grid, (rows, cols))
+
+    for c in range(cols):
+      x, y = 0, c
+      while x < rows and y < cols:
+        res += grid[x][y]
+        # print('append:', (x, y), grid[x][y])
+        x += 1
+        y += 1
+
+    return res.rstrip()
+
   def decodeCiphertext(self, text: str, rows: int) -> str:
     cols = len(text) // rows
     res = ''

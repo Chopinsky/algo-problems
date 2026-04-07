@@ -29,7 +29,7 @@ class Solution:
       return curr > high
 
     @cache
-    def cost(i: int) -> int:
+    def calc_cost(i: int) -> int:
       high = nei_ht(i)
       curr = nums[i]
       return high + 1 - curr if high >= curr else 0
@@ -39,10 +39,10 @@ class Solution:
       prev1 = [INF] * (k + 1)
       prev1[0] = 0
       if first_peak:
-        prev1[1] = cost(0)
+        prev1[1] = calc_cost(0)
 
       for i in range(1, n):
-        val = cost(i)
+        val = calc_cost(i)
         curr = [INF] * (k+1)
         curr[0] = 0
 
@@ -67,5 +67,4 @@ class Solution:
       return 0
 
     low = min(count(False), count(True))
-
     return -1 if low >= INF else low

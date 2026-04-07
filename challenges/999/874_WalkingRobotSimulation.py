@@ -59,8 +59,84 @@ The answer is guaranteed to be less than 2^31.
 from typing import List
 from collections import defaultdict
 from bisect import bisect_left, bisect_right
+import math
+
 
 class Solution:
+  def robotSim(self, commands: List[int], obstacles: List[List[int]]) -> int:
+    dirs = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    curr = 0
+    rows = defaultdict(list)
+    cols = defaultdict(list)
+    dist = 0
+
+    for x, y in obstacles:
+      rows[x].append(y)
+      cols[y].append(x)
+
+    for x in rows:
+      rows[x].sort()
+
+    for y in cols:
+      cols[y].sort()
+
+    x, y = 0, 0
+    # print('init:', rows, cols)
+
+    for cmd in commands:
+      if cmd == -1:
+        curr = (curr+1) % 4
+        continue
+
+      if cmd == -2:
+        curr = (curr-1) % 4
+        continue
+
+      dx, dy = dirs[curr]
+      
+      if dx == 0:
+        # verticle moves
+        if x in rows:
+          # could be blocked
+          lst = rows[x]
+          jh = bisect_right(lst, y)
+          jl = bisect_left(lst, y) - 1
+
+          if dy > 0:
+            ob = math.inf if jh >= len(lst) else lst[jh]-1
+            y = min(ob, y+cmd*dy)
+          else:
+            ob = -math.inf if jl < 0 else lst[jl]+1
+            y = max(ob, y+cmd*dy)
+
+        else:
+          # no blocks
+          y += cmd * dy
+
+      else:
+        # hor moves
+        if y in cols:
+          # could be blocked
+          lst = cols[y]
+          jr = bisect_right(lst, x)
+          jl = bisect_left(lst, x) - 1
+
+          if dx > 0:
+            ob = math.inf if jr >= len(lst) else lst[jr]-1
+            x = min(ob, x+cmd*dx)
+          else:
+            ob = -math.inf if jl < 0 else lst[jl]+1
+            x = max(ob, x+cmd*dx)
+
+        else:
+          # no blocks
+          x += cmd * dx
+
+      # print('move:', cmd, (x, y))
+      dist = max(dist, x*x + y*y)
+
+    return dist
+        
   def robotSim(self, commands: List[int], obstacles: List[List[int]]) -> int:
     rows = defaultdict(list)
     cols = defaultdict(list)

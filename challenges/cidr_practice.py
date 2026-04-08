@@ -43,7 +43,7 @@ def _convert_mask(mask: str) -> int:
 class CIDR:
   def __init__(self, ip: str):
     parts = ip.split('/')
-    if len(parts) < 0 or not parts[0] or not parts[1]:
+    if len(parts) != 2 or not parts[0] or not parts[1]:
       raise ValueError('The IP must follow the 123.123.123.123/23 format')
     
     self.ip_val = _convert_ip_to_int(parts[0])

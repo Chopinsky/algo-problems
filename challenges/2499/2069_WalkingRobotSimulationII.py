@@ -48,7 +48,72 @@ At most 10^4 calls in total will be made to step, getPos, and getDir.
 from typing import List
 
 
+dirs = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+
+
 class Robot:
+  def __init__(self, w: int, h: int):
+    self.curr = 0
+    self.pos = []
+    self.dr = []
+    self.moved = False
+
+    size = 2*(w+h-2)
+    moves = 0
+    x0, y0 = 0, 0
+    d = 0
+
+    def _is_valid() -> bool:
+      dx, dy = dirs[d]
+      x1, y1 = x0+dx, y0+dy
+      return 0 <= x1 < w and 0 <= y1 < h
+
+    while moves < size:
+      while not _is_valid():
+        d = (d+1) % 4
+
+      dx, dy = dirs[d]
+      x0, y0 = x0+dx, y0+dy
+
+      self.pos.append((x0, y0))
+      self.dr.append(d)
+      moves += 1
+
+    self.pos = [self.pos.pop()] + self.pos
+    self.dr = [self.dr.pop()] + self.dr
+    self.idx = 0
+    # print('init:', self.pos, self.dr)
+
+  def step(self, num: int) -> None:
+    self.moved = True
+    self.idx = (self.idx + num) % len(self.pos)
+
+  def getPos(self) -> List[int]:
+    return self.pos[self.idx]
+
+  def getDir(self) -> str:
+    x, y = self.getPos()
+    if x == 0 and y == 0 and not self.moved:
+      d = 0
+    else:
+      d = self.dr[self.idx]
+
+    if d == 0:
+      return "East"
+
+    if d == 1:
+      return "North"
+
+    if d == 2:
+      return "West"
+
+    if d == 3:
+      return "South"
+
+    return "N/A"
+
+
+class Robot0:
   def __init__(self, width: int, height: int):
     self.x, self.y = 0, 0
     self.w = width

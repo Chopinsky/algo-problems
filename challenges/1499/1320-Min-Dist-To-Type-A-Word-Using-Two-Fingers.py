@@ -37,12 +37,39 @@ Constraints:
 word consists of uppercase English letters.
 '''
 
-
 from typing import Tuple
-from functools import lru_cache
+from functools import lru_cache, cache
 
 
 class Solution:
+  def minimumDistance(self, word: str) -> int:
+    @cache
+    def pos(s: str):
+      return divmod(ord(s[0])-ord('A'), 6)
+
+    @cache
+    def dist(s0: str, s1: str) -> int:
+      if s0 == '':
+        return 0
+
+      p0 = pos(s0)
+      p1 = pos(s1)
+      return abs(p0[0]-p1[0]) + abs(p0[1]-p1[1])
+
+    @cache
+    def dp(i: int, f0: str, f1: str) -> int:
+      if i >= len(word):
+        return 0
+
+      ch = word[i]
+      d0 = dist(f0, ch) + dp(i+1, ch, f1)
+      d1 = dist(f1, ch) + dp(i+1, f0, ch)
+      # print('iter:', (i, f0, f1), d0, d1)
+
+      return min(d0, d1)
+
+    return dp(0, '', '')
+        
   def minimumDistance(self, word: str) -> int:
     @lru_cache(None)
     def key_pos(k: str) -> Tuple:

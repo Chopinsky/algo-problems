@@ -38,7 +38,6 @@ class Solution:
     if n <= 1:
       return 0
 
-    # print('init:', factors)
     # count of active numbers divisible by prime factor
     pf = defaultdict(int)
     # frequency of counts of active numbers divisible by prime factors,

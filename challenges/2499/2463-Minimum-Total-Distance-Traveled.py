@@ -50,12 +50,69 @@ factory[j].length == 2
 The input will be generated such that it is always possible to repair every robot.
 '''
 
-from functools import lru_cache
+from functools import lru_cache, cache
 from typing import List
 import math
 
 
 class Solution:
+  def minimumTotalDistance(self, robot: List[int], factory: List[List[int]]) -> int:
+    f = {p:c for p, c in factory}
+    rr = []
+    ff = []
+
+    for r in sorted(robot):
+      if f.get(r, 0) > 0:
+        f[r] -= 1
+      else:
+        rr.append(r)
+
+    for p in sorted(f):
+      if f[p] > 0:
+        ff.append((p, f[p]))
+
+    n = len(rr)
+    suff = [v[1] for v in ff]
+
+    for i in range(len(suff)-2, -1, -1):
+      suff[i] += suff[i+1]
+
+    # print('init:', rr, ff, suff)
+
+    @cache
+    def dp(i: int, j: int) -> int:
+      # print('iter-0:', i, j)
+
+      # all handled
+      if i >= len(rr):
+        return 0
+
+      # no more factories left
+      if j >= len(ff):
+        return math.inf
+
+      # not enough cap left
+      if n-i > suff[j]:
+        return math.inf
+
+      dist = dp(i, j+1)
+      d0 = 0
+      f_pos, f_cap = ff[j]
+
+      for k in range(i, n):
+        # out of capacity
+        if k-i+1 > f_cap:
+          break
+
+        d0 += abs(f_pos - rr[k])
+        d1 = dp(k+1, j+1)
+        dist = min(dist, d0+d1)
+
+      # print('iter:', (i, j), dist)
+      return dist
+
+    return dp(0, 0)
+        
   def minimumTotalDistance(self, robot: List[int], factory: List[List[int]]) -> int:
     factory.sort()
     robot.sort()

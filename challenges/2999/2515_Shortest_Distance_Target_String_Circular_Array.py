@@ -44,6 +44,29 @@ from typing import List
 
 
 class Solution:
+  def closestTarget(self, words: List[str], target: str, startIndex: int) -> int:
+    if target not in words:
+      return -1
+
+    if target == words[startIndex]:
+      return 0
+
+    n = len(words)
+    i = (startIndex+1) % n 
+    j = (startIndex-1) % n
+    steps = 1
+
+    while steps <= n//2:
+      # print('iter:', (i, words[i]), (j, words[j]))
+      if target == words[i] or target == words[j]:
+        return steps
+
+      steps += 1
+      i = (i+1) % n
+      j = (j-1) % n
+
+    return -1
+
   def closetTarget(self, words: List[str], target: str, startIndex: int) -> int:
     if target not in words:
       return -1

@@ -43,6 +43,55 @@ from collections import defaultdict
 
 
 class Solution:
+  def minimumHammingDistance(self, source: List[int], target: List[int], allowedSwaps: List[List[int]]) -> int:
+    n = len(source)
+    g = [i for i in range(n)]
+    cnt = [1]*n
+
+    def find(x: int) -> int:
+      while g[x] != x:
+        x = g[x]
+
+      return x
+
+    def union(x: int, y: int):
+      rx = find(x)
+      ry = find(y)
+
+      if rx == ry:
+        return
+
+      if cnt[rx] < cnt[ry]:
+        rx, ry = ry, rx
+
+      g[ry] = rx
+      cnt[rx] += cnt[ry]
+    
+    for u, v in allowedSwaps:
+      union(u, v)
+
+    group = defaultdict(list)
+    for u in range(n):
+      root = find(u)
+      group[root].append(u)
+
+    dist = 0
+    c = defaultdict(int)
+
+    for lst in group.values():
+      c.clear()
+
+      for idx in lst:
+        c[source[idx]] += 1
+
+      for idx in lst:
+        if c[target[idx]] > 0:
+          c[target[idx]] -= 1
+        else:
+          dist += 1
+
+    return dist  
+        
   def minimumHammingDistance0(self, source: List[int], target: List[int], allowedSwaps: List[List[int]]) -> int:
     ln = len(source)
     arr = [i for i in range(ln)]

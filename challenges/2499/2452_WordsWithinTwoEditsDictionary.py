@@ -38,6 +38,59 @@ from typing import List
 
 class Solution:
   def twoEditWords(self, queries: List[str], dictionary: List[str]) -> List[str]:
+    root = {}
+
+    def insert(w: str):
+      curr = root
+
+      for ch in w:
+        if ch not in curr:
+          curr[ch] = {}
+
+        curr = curr[ch]
+
+      curr['$'] = True
+
+    def query(w: str, curr, edits: int) -> bool:
+      if not w:
+        return curr.get('$', False)
+
+      first = w[0]
+      if first in curr:
+        if query(w[1:], curr[first], edits):
+          return True
+      
+      # print('q:', w, edits, curr.keys())
+
+      if edits == 0:
+        return False
+
+      if edits >= len(w):
+        return True
+
+      for ch, node in curr.items():
+        if ch == '$':
+          continue
+
+        if query(w[1:], node, edits-1):
+          return True
+
+      return False
+
+      return True
+
+    for w in dictionary:
+      insert(w)
+
+    ans = []
+    for w in queries:
+      src = w
+      if query(w, root, 2):
+        ans.append(src)
+
+    return ans
+        
+  def twoEditWords(self, queries: List[str], dictionary: List[str]) -> List[str]:
     n = len(queries[0])
     if n <= 2:
       return queries

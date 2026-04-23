@@ -30,9 +30,37 @@ Constraints:
 
 from typing import List
 from collections import defaultdict
+from bisect import bisect_left
 
 
 class Solution:
+  def distance(self, nums: List[int]) -> List[int]:
+    pos = defaultdict(list)
+    prefix = defaultdict(list)
+    ans = []
+
+    for i, val in enumerate(nums):
+      pos[val].append(i)
+      prefix[val].append(prefix[val][-1]+i if prefix[val] else i)
+
+    # print('init:', pos, prefix)
+
+    for i, val in enumerate(nums):
+      if len(pos[val]) == 1:
+        ans.append(0)
+        continue
+
+      j = bisect_left(pos[val], i)
+      bc = j+1
+      ac = len(pos[val]) - bc
+      before = bc*i - prefix[val][j]
+      after = (prefix[val][-1]-prefix[val][j]) - ac*i
+
+      # print('iter:', (i, val), j, before, after)
+      ans.append(before+after)
+
+    return ans
+        
   def distance(self, nums: List[int]) -> List[int]:
     n = len(nums)
     res = [0] * n

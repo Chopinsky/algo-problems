@@ -23,8 +23,8 @@ class Solution:
       `evens` array
       '''
       pos = bisect_right(evens, target, lo=i, hi=j+1)
-      x = pos-i
-      y = target//2 - x
+      x = pos-i          # count of overlapping vals in the range
+      y = target//2 - x  # counts of remaining vals in the seq 
       return y >= k
 
     res = []

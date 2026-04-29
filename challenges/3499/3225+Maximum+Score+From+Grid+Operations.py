@@ -42,9 +42,51 @@ Test cases:
 
 from typing import List
 from collections import defaultdict
-from heapq import heappush, heappop
+
 
 class Solution:
+  def maximumScore(self, grid: List[List[int]]) -> int:
+    n = len(grid)
+    if n == 1:
+      return 0
+
+    col_prefix = [[0]*(n+1) for _ in range(n+1)]
+    dp = [[[0] * 2 for _ in range(n+1)] for _ in range(n+1)]
+
+    # set the column prefix
+    for i in range(n):
+      for j in range(n):
+        col_prefix[j][i+1] = col_prefix[j][i] + grid[i][j]
+
+    for j in range(1, n):
+      for b0 in range(n+1):
+        p0 = dp[j-1][b0][0]
+        p1 = dp[j-1][b0][1]
+
+        for b1 in range(n+1):
+          is_bigger = b1 > b0
+
+          prev_x = col_prefix[j-1][b1]-col_prefix[j-1][b0] if is_bigger else 0
+          curr_x = col_prefix[j][b0]-col_prefix[j][b1] if not is_bigger else 0
+
+          # stage 0: socre in curr col exclusive
+          dp[j][b1][0] = max(
+            dp[j][b1][0],
+            max(prev_x + p0, p1),
+          )
+
+          # stage 1: score in curr col inclusive
+          dp[j][b1][1] = max(
+            dp[j][b1][1],
+            curr_x + max(p1, prev_x+p0)
+          )
+
+    ans = 0
+    for b in range(n+1):
+      ans = max(ans, dp[n-1][b][1])
+
+    return ans
+
   def maximumScore(self, grid: List[List[int]]) -> int:
     n = len(grid)
     if n == 1:

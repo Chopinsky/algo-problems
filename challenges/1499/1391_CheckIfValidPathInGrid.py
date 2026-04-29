@@ -43,6 +43,68 @@ from typing import List
 
 class Solution:
   def hasValidPath(self, grid: List[List[int]]) -> bool:
+    mapping = [
+      {},
+      {
+        (0, 1): (0, 1),
+        (0, -1): (0, -1),
+      },
+      {
+        (1, 0): (1, 0),
+        (-1, 0): (-1, 0),
+      },
+      {
+        (0, 1): (1, 0),
+        (-1, 0): (0, -1),
+      },
+      {
+        (0, -1): (1, 0),
+        (-1, 0): (0, 1),
+      },
+      {
+        (0, 1): (-1, 0),
+        (1, 0): (0, -1),
+      },
+      {
+        (1, 0): (0, 1),
+        (0, -1): (-1, 0)
+      },
+    ]
+
+    m = len(grid)
+    n = len(grid[0])
+    if m == 1 and n == 1:
+      return True
+
+    def dfs(x: int, y: int, dx: int, dy: int, seen: set) -> bool:
+      if not (0 <= x < m and 0 <= y < n):
+        return False
+
+      # print('visit:', (x, y), (dx, dy), seen)
+      if (x, y) in seen:
+        return False
+
+      d = grid[x][y]
+
+      # can't enter this cell
+      if (dx, dy) not in mapping[d]:
+        return False
+
+      if x == m-1 and y == n-1:
+        return True
+
+      ddx, ddy = mapping[d][dx, dy]
+      seen.add((x, y))
+
+      return dfs(x+ddx, y+ddy, ddx, ddy, seen)
+
+    for dx, dy in mapping[grid[0][0]].values():
+      if dfs(dx, dy, dx, dy, set([(0, 0)])):
+        return True
+
+    return False
+
+  def hasValidPath(self, grid: List[List[int]]) -> bool:
     m, n = len(grid), len(grid[0])
     if m == 1 and n == 1:
       return True

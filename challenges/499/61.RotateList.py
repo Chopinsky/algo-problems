@@ -30,6 +30,29 @@ class ListNode:
 
 class Solution:
   def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+    nodes = []
+    curr = head
+
+    while curr:
+      nodes.append(curr)
+      curr = curr.next
+
+    n = len(nodes)
+    if n <= 1:
+      return head
+
+    k %= n
+    if k == 0:
+      return head
+
+    right = nodes[:-k]
+    left = nodes[-k:]
+    right[-1].next = None
+    left[-1].next = right[0]
+
+    return left[0]
+        
+  def rotateRight(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
     store = []
     curr = head
     

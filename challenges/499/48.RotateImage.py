@@ -31,7 +31,32 @@ matrix[i].length == n
 -1000 <= matrix[i][j] <= 1000
 '''
 
+from typing import List
+
+
 class Solution:
+  def rotate(self, mat: List[List[int]]) -> None:
+    """
+    Do not return anything, modify matrix in-place instead.
+    """
+    n = len(mat)
+    tmp = []
+
+    for i in range(n//2):
+      for j in range(i, n-i-1):
+        # cache
+        tmp.clear()
+        tmp.append(mat[i][j])
+        tmp.append(mat[j][n-1-i])
+        tmp.append(mat[n-1-i][n-1-j])
+        tmp.append(mat[n-1-j][i])
+
+        # assign
+        mat[i][j] = tmp[3]
+        mat[j][n-1-i] = tmp[0]
+        mat[n-1-i][n-1-j] = tmp[1]
+        mat[n-1-j][i] = tmp[2]
+        
   def rotate(self, mat: List[List[int]]) -> None:
     """
     Do not return anything, modify matrix in-place instead.

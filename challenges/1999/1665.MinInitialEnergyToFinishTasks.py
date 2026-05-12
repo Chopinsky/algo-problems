@@ -48,14 +48,37 @@ Starting with 27 energy, we finish the tasks in the following order:
 Constraints:
 
 1 <= tasks.length <= 10^5
-1 <= actual​i <= minimumi <= 10^4
+1 <= actual <= minimumi <= 10^4
 '''
-
 
 from typing import List
 
 
 class Solution:
+  def minimumEffort(self, tasks: List[List[int]]) -> int:
+    tasks.sort(key=lambda x: (x[1]-x[0], -x[1]), reverse=True)
+    l = len(tasks)
+    r = sum(t[0] for t in tasks) + max(t[1] for t in tasks)
+    # print('init:', tasks)
+
+    def can_complete(e: int) -> bool:
+      for cost, floor in tasks:
+        if e < floor:
+          return False
+
+        e -= cost
+
+      return True
+
+    while l <= r:
+      mid = (l+r) // 2
+      if can_complete(mid):
+        r = mid-1
+      else:
+        l = mid+1
+
+    return l
+
   def minimumEffort(self, tasks: List[List[int]]) -> int:
     tasks.sort(key=lambda x: (x[1]-x[0], -x[1]))
     bar = tasks[-1][1]

@@ -34,6 +34,71 @@ from typing import List
 
 class Solution:
   def rotateGrid(self, grid: List[List[int]], k: int) -> List[List[int]]:
+    dirs = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+    m, n = len(grid), len(grid[0])
+
+    def rotate(x0: int, y0: int, x1: int, y1: int):
+      # nothing to do here
+      if x0 == x1 and y0 == y1:
+        return 
+
+      x, y = x0, y0
+      d = 0
+      arr = []
+      # print('start:', (x0, y0), (x1, y1))
+
+      while d < 4:
+        dx, dy = dirs[d]
+        xx, yy = x+dx, y+dy
+        # print('move:', (x, y), "->", (xx, yy))
+        if xx < x0 or xx > x1 or yy < y0 or yy > y1:
+          d += 1
+          continue
+
+        arr.append(grid[x][y])
+        x, y = xx, yy
+        if x == x0 and y == y0:
+          break
+
+      shift = k % len(arr)
+      if shift == 0:
+        return
+
+      arr = arr[-shift:] + arr[:-shift]
+      x, y = x0, y0
+      d = 0
+      idx = 0
+      # print('arr:', (x0, y0), (x1, y1), arr)
+
+      while d < 4:
+        dx, dy = dirs[d]
+        xx, yy = x+dx, y+dy
+        # print('move:', (x, y), "->", (xx, yy))
+        if xx < x0 or xx > x1 or yy < y0 or yy > y1:
+          d += 1
+          continue
+
+        # print('iter:', (x, y), idx)
+        grid[x][y] = arr[idx]
+        idx += 1
+
+        x, y = xx, yy
+        if x == x0 and y == y0:
+          break
+        
+    x0, y0 = 0, 0
+    x1, y1 = m-1, n-1
+
+    while x0 <= x1 and y0 <= y1:
+      rotate(x0, y0, x1, y1)
+      x0 += 1
+      y0 += 1
+      x1 -= 1
+      y1 -= 1
+
+    return grid
+
+  def rotateGrid(self, grid: List[List[int]], k: int) -> List[List[int]]:
     m, n = len(grid), len(grid[0])
     x0, y0 = 0, 0
     

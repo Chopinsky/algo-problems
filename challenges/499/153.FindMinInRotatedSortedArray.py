@@ -42,6 +42,45 @@ from typing import List
 
 class Solution:
   def findMin(self, nums: List[int]) -> int:
+    n = len(nums)
+    if n == 1:
+      return nums[0]
+
+    if n == 2:
+      return min(nums[0], nums[1])
+
+    # min is the first num
+    if nums[0] < nums[-1]:
+      return nums[0]
+
+    # min is the last num
+    if nums[-1] < nums[-2]:
+      return nums[-1]
+
+    def check(i: int) -> int:
+      # the min value is @ index-i
+      val = nums[i]
+      if val < nums[i-1]:
+        return 0
+
+      return -1 if val <= nums[-1] else 1
+
+    l, r = 1, n-1
+    while l <= r:
+      mid = (l+r) // 2
+      res = check(mid)
+
+      if res == 0:
+        return nums[mid]
+
+      if res > 0:
+        l = mid+1
+      else:
+        r = mid-1
+
+    return nums[l]
+
+  def findMin(self, nums: List[int]) -> int:
     l, r = 0, len(nums)-1
     
     while l < r:

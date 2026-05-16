@@ -35,11 +35,25 @@ but nums may contain duplicates. Would this affect the runtime complexity?
 How and why?
 '''
 
-
 from typing import List
 
 
 class Solution:
+  def findMin(self, nums: List[int]) -> int:
+    l = 0
+    r = len(nums) - 1
+
+    while l < r:
+      m = (l+r) // 2
+      if nums[m] > nums[r]:
+        l = m + 1
+      elif nums[m] < nums[r]:
+        r = m
+      else:
+        r = r - 1
+
+    return nums[l]
+
   def findMin(self, nums: List[int]) -> int:
     if nums[0] < nums[-1]:
       return nums[0]
@@ -50,8 +64,7 @@ class Solution:
     
     l, r = 0, n-1
     while l < r:
-      # break the tie since this will lead to m == l, and for some test 
-      # cases (where we assign r = m) it means infinite loop
+      # print(l, r)
       if l+1 == r:
         return min(nums[l], nums[r])
         
@@ -61,22 +74,32 @@ class Solution:
       if (nums[l] <= nums[m] < nums[r]) or (nums[l] < nums[m] <= nums[r]):
         break
 
-      # if it's the --\ or /-\ shape
-      if nums[l] == nums[m] > nums[r] or (nums[l] < nums[m] and nums[r] < nums[m]):
+      # if it's the --\ shape
+      if nums[l] == nums[m] > nums[r]:
         l = m + 1
         continue
         
       # if it's the \-- shape
-      if (nums[l] > nums[m] == nums[r]) or (nums[l] > nums[m] and nums[r] > nums[m]):
+      if nums[l] > nums[m] == nums[r]:
         r = m
         continue
         
+      # if it's the /-\ shape:
+      if nums[l] < nums[m] and nums[r] < nums[m]:
+        l = m + 1
+        continue
+        
+      # it's the \_/ shape
+      if nums[l] > nums[m] and nums[r] > nums[m]:
+        r = m
+        
       # complicate case: --- shape, must find the first non-uniform number
       # to decide the directions
+      # if (nums[l] == nums[m] and nums[r] == nums[m]):
       while l < m and nums[l] == nums[m]:
         l += 1
 
-      while r > m and nums[r] == nums[m]:
+      while r > r and nums[r] == nums[m]:
         r -= 1
     
     return nums[l]

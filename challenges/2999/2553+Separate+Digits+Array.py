@@ -35,6 +35,14 @@ from typing import List
 
 class Solution:
   def separateDigits(self, nums: List[int]) -> List[int]:
+    ans = []
+
+    for val in nums:
+      ans.extend(list(int(d) for d in str(val)))
+
+    return ans
+        
+  def separateDigits(self, nums: List[int]) -> List[int]:
     res = []
     
     def break_down(val: int):

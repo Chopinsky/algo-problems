@@ -39,6 +39,53 @@ from bisect import bisect_left
 class Solution:
   def search(self, nums: List[int], target: int) -> int:
     n = len(nums)
+    if target == nums[0]:
+      return 0
+
+    if target == nums[-1]:
+      return n-1
+
+    if n <= 2:
+      return -1
+
+    if nums[0] < nums[-1]:
+      # no rotations
+      idx = bisect_left(nums, target)
+      return idx if idx < n and nums[idx] == target else -1
+
+    def check(i: int) -> int:
+      if nums[i] < nums[i-1]:
+        return 0
+
+      if nums[i] > nums[0]:
+        return 1
+
+      return -1
+
+    l, r = 1, n-1
+    while l <= r:
+      mid = (l+r) // 2
+      res = check(mid)
+
+      if res == 0:
+        l = mid
+        break
+
+      if res < 0:
+        r = mid-1
+      else:
+        l = mid+1
+
+    # print('seg:', l, nums[l:], nums[:l])
+    if target > nums[0]:
+      idx = bisect_left(nums[:l], target)
+      return idx if idx < l and target == nums[idx] else -1
+    
+    idx = bisect_left(nums[l:], target)
+    return l+idx if l+idx < n and target == nums[l+idx] else -1
+        
+  def search(self, nums: List[int], target: int) -> int:
+    n = len(nums)
     if n == 1:
       return 0 if nums[0] == target else -1
     

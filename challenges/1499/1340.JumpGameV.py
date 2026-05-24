@@ -47,20 +47,34 @@ Constraints:
 1 <= d <= arr.length
 '''
 
+from typing import List
+import math
+
+
 class Solution:
-  '''
-  The idea is to maintain a mono-decreasing queue, which contains the index
-  of the numbers that's smaller than the last number in the queue.
+  def maxJumps(self, arr: List[int], d: int) -> int:
+    n = len(arr)
+    jumps = [1]*n
+    cand = sorted((h, i) for i, h in enumerate(arr))
 
-  Then when we pop an index from the queue, it means the current number can
-  jump onto it, and the last number in the queue that's greater than the popped
-  value can jump onto it as well.
+    while cand:
+      _, i = cand.pop()
+      val = jumps[i]
 
-  So we update the last number in the queue after the pop(s), as well as the
-  current number we're examining. Note that if there are equal numbers in the
-  queue, we should handle the batch togeter -- the last number in the queue
-  should be the one larger than this number, not the one equals it.
-  '''
+      # check left:
+      l = i-1
+      while l >= 0 and i-l <= d and arr[l] < arr[i]:
+        jumps[l] = max(jumps[l], val+1)
+        l -= 1
+
+      # check right:
+      r = i+1
+      while r < n and r-i <= d and arr[r] < arr[i]:
+        jumps[r] = max(jumps[r], val+1)
+        r += 1
+
+    return max(jumps)
+
   def maxJumps(self, arr: List[int], d: int) -> int:
     n = len(arr)
     if n <= 1:
@@ -98,41 +112,4 @@ class Solution:
 
     # clean up the remaining numbers in the stack
     update(-1, math.inf)
-    return max(dp)
-
-
-  def maxJumps1(self, arr: List[int], d: int) -> int:
-    n = len(arr)
-    if n <= 1:
-      return n
-
-    dp = [1 for i in range(n)]
-    q = [i for i in range(n)]
-
-    def sort_key(i, j):
-      if arr[i] == arr[j]:
-        return -1 if i < j else 1
-
-      return -1 if arr[i] < arr[j] else 1
-
-    q.sort(key=cmp_to_key(sort_key))
-
-    for i in q:
-      # print("from:", i, arr[i])
-
-      for j in range(i+1, min(i+d, n-1)+1):
-        if arr[i] <= arr[j]:
-          break
-
-        if dp[j]+1 > dp[i]:
-          dp[i] = dp[j]+1
-
-      for j in range(i-1, max(i-d, 0)-1, -1):
-        if arr[i] <= arr[j]:
-          break
-
-        if dp[j]+1 > dp[i]:
-          dp[i] = dp[j]+1
-
-    # print(dp)
     return max(dp)

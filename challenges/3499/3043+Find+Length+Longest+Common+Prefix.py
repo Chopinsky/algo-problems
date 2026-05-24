@@ -39,6 +39,42 @@ from typing import List
 class Solution:
   def longestCommonPrefix(self, arr1: List[int], arr2: List[int]) -> int:
     root = [None]*10
+
+    def insert(val: int):
+      curr = root
+
+      for d in str(val):
+        idx = int(d)
+        if curr[idx] is None:
+          curr[idx] = [None]*10
+
+        curr = curr[idx]
+
+    def query(val: int) -> int:
+      ln = 0
+      curr = root
+
+      for d in str(val):
+        idx = int(d)
+        if curr[idx] is None:
+          break
+
+        ln += 1
+        curr = curr[idx]
+
+      return ln
+
+    ln = 0
+    for val in arr1:
+      insert(val)
+
+    for val in arr2:
+      ln = max(ln, query(val))
+
+    return ln
+        
+  def longestCommonPrefix(self, arr1: List[int], arr2: List[int]) -> int:
+    root = [None]*10
     
     def add(s: str):
       curr = root

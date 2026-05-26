@@ -27,10 +27,40 @@ s[0] == '0'
 '''
 
 
-from bisect import bisect_right
+from bisect import bisect_right, bisect_left
 
 
 class Solution:
+  def canReach(self, s: str, minJump: int, maxJump: int) -> bool:
+    n = len(s)
+    if s[0] != '0' or s[n-1] != '0':
+      return False
+
+    cand = []
+    for i in range(n):
+      if s[i] == '1':
+        continue
+
+      if i == 0:
+        cand.append(i)
+        continue
+
+      # won't make it
+      if cand[-1]+maxJump < i:
+        break
+
+      r = bisect_right(cand, i-minJump)-1
+      l = bisect_left(cand, i-maxJump)
+
+      # can't be reached from existing points
+      if l > r or l >= len(cand):
+        continue
+
+      cand.append(i)
+      # print('adding:', i)
+
+    return cand and cand[-1] == n-1
+
   def canReach(self, s: str, minJump: int, maxJump: int) -> bool:
     if s[-1] != '0':
       return False

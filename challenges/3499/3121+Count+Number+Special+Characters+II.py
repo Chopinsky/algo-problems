@@ -41,7 +41,30 @@ Constraints:
 word consists of only lowercase and uppercase English letters.
 '''
 
+
 class Solution:
+  def numberOfSpecialChars(self, word: str) -> int:
+    chars = {}
+    cnt = 0
+
+    for i, ch in enumerate(word):
+      if 'A' <= ch <= 'Z':
+        if ch not in chars:
+          chars[ch] = i
+
+      else:
+        chars[ch] = i
+      
+    offset = ord('A') - ord('a')
+
+    for ch in chars:
+      if 'a' <= ch <= 'z':
+        upper = chr(ord(ch)+offset)
+        if upper in chars and chars[ch] < chars[upper]:
+          cnt += 1
+
+    return cnt
+
   def numberOfSpecialChars(self, word: str) -> int:
     pos = {}
     cnt = 0

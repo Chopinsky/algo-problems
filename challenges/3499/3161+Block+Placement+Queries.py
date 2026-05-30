@@ -47,6 +47,9 @@ Test cases:
 '''
 
 from typing import List
+from sortedcontainers import SortedList
+from bisect import bisect_right
+
 
 class Node:
   def __init__(self, l=0, r=0):
@@ -62,6 +65,65 @@ class Node:
     
 
 class Solution:
+  def getResults(self, queries: List[List[int]]) -> List[bool]:
+    mx = 50000
+    seg = [0]*(min(4*mx, 3*len(queries)))
+    st = SortedList([0, mx])
+
+    def update(i: int, val: int, p: int, l: int, r: int):
+      if l == r:
+        seg[p] = val
+        return
+
+      mid = (l+r)//2
+      if i <= mid:
+        update(i, val, 2*p, l, mid)
+      else:
+        update(i, val, 2*p+1, mid+1, r)
+
+      seg[p] = max(seg[2*p], seg[2*p+1])
+
+    def query(lb: int, rb: int, p: int, l: int, r: int) -> int:
+      if lb <= l and r <= rb:
+        return seg[p]
+
+      mid = (l+r)//2
+      res = 0
+
+      if lb <= mid:
+        res = max(res, query(lb, rb, 2*p, l, mid))
+      
+      if rb > mid:
+        res = max(res, query(lb, rb, 2*p+1, mid+1, r))
+
+      return res
+
+    update(mx, mx, 1, 0, mx)
+    ans = []
+
+    for q in queries:
+      if q[0] == 1:
+        val = q[1]
+        idx = min(len(st)-1, bisect_right(st, val))
+
+        r = st[idx]
+        l = st[idx-1] if idx > 0 else st[0]
+
+        update(val, val-l, 1, 0, mx)
+        update(r, r-val, 1, 0, mx)
+        st.add(val)
+
+        continue
+
+      val, sz = q[1:]
+      idx = min(len(st)-1, bisect_right(st, val))
+      pre = st[0] if idx == 0 else st[idx-1]
+
+      max_space = max(val-pre, query(0, pre, 1, 0, mx))
+      ans.append(max_space >= sz)
+
+    return ans
+
   '''
   the idea is to use the range query on a segment-tree: there will be at most 10**5 nodes in this tree, making
   it log(n) time to update or query a result

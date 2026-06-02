@@ -47,7 +47,49 @@ Sum of wordsQuery[i].length is at most 5 * 10^5.
 
 from typing import List
 
+
 class Solution:
+  def stringIndices(self, words: List[str], query: List[str]) -> List[int]:
+    trie = {'$': ''}
+    ans = []
+
+    def insert(idx: int, w: str):
+      curr = trie
+      if not trie['$'] or len(w) < len(trie['$']):
+        trie['$'] = w
+        trie['idx'] = idx
+
+      for i in range(len(w)-1, -1, -1):
+        ch = w[i]
+        if ch not in curr:
+          curr[ch] = {'$': '', 'idx': -1}
+
+        curr = curr[ch]
+        if not curr['$'] or len(w) < len(curr['$']):
+          curr['$'] = w
+          curr['idx'] = idx
+
+    def find(w: str) -> int:
+      curr = trie
+      for i in range(len(w)-1, -1, -1):
+        ch = w[i]
+        if ch not in curr:
+          break
+
+        curr = curr[ch]
+
+      # print('find:', w, curr)
+      return curr['idx']
+
+    for i, w in enumerate(words):
+      insert(i, w)
+
+    # print('init:', trie)
+    for w in query:
+      ans.append(find(w))
+
+    return ans
+        
   def stringIndices(self, words: List[str], query: List[str]) -> List[int]:
     root = {'$':0}
     

@@ -41,6 +41,43 @@ class TreeNode:
 
 
 class Solution:
+  def createBinaryTree(self, d: List[List[int]]) -> Optional[TreeNode]:
+    if not d:
+      return None
+
+    ref = {v[1]: (v[0], v[2]) for v in d}
+    nodes = {}
+    root = None
+    # print('init:', ref)
+
+    def create(u: int):
+      nonlocal root
+
+      if u not in nodes:
+        node = TreeNode(val=u)
+        nodes[u] = node
+
+        if u in ref:
+          p, is_left = ref[u]
+          pn = create(p)
+
+          if is_left == 1:
+            pn.left = node
+          else:
+            pn.right = node
+
+        else:
+          root = node
+
+      # print('gen:', nodes[u].val)
+      return nodes[u]
+
+    for u in ref:
+      create(u)
+
+    # print('done:', root)
+    return root
+
   def createBinaryTree(self, descriptions: List[List[int]]) -> Optional[TreeNode]:
     tree = {}
     p = set()

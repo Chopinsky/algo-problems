@@ -284,6 +284,7 @@ class LCATarjan:
     """Union-Find find with path compression"""
     if self.parent[x] != x:
       self.parent[x] = self.find(self.parent[x])
+
     return self.parent[x]
 
   def union(self, x: int, y: int):
@@ -349,14 +350,15 @@ if __name__ == "__main__":
   #     1   2
   #    /|\   \
   #   3 4 5   6
-  #  /       / \
-  # 7       8   9
+  #  /   /   / \
+  # 7   10  8   9
 
   edges = [
     [0, 1], [0, 2],
     [1, 3], [1, 4], [1, 5],
     [2, 6],
     [3, 7],
+    [5, 10],
     [6, 8], [6, 9]
   ]
   n = 10

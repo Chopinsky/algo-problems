@@ -51,6 +51,20 @@ class ListNode:
 
 class Solution:
   def pairSum(self, head: Optional[ListNode]) -> int:
+    if not head:
+      return 0
+
+    stack = []
+    curr = head
+
+    while curr:
+      stack.append(curr.val)
+      curr = curr.next
+
+    n = len(stack)
+    return max(stack[i]+stack[n-i-1] for i in range(n//2))
+
+  def pairSum(self, head: Optional[ListNode]) -> int:
     lst = []
     curr = head
     

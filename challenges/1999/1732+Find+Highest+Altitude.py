@@ -28,6 +28,16 @@ from typing import List
 
 class Solution:
   def largestAltitude(self, gain: List[int]) -> int:
+    h = 0
+    highest = 0
+
+    for val in gain:
+      h += val
+      highest = max(highest, h)
+
+    return highest
+        
+  def largestAltitude(self, gain: List[int]) -> int:
     alt = 0
     max_alt = 0
     

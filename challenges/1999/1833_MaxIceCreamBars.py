@@ -38,6 +38,19 @@ from typing import List
 class Solution:
   def maxIceCream(self, costs: List[int], coins: int) -> int:
     costs.sort()
+    cnt = 0
+
+    for c in costs:
+      if c > coins:
+        break
+
+      coins -= c
+      cnt += 1
+
+    return cnt
+
+  def maxIceCream(self, costs: List[int], coins: int) -> int:
+    costs.sort()
     idx = 0
     
     while idx < len(costs) and coins >= costs[idx]:

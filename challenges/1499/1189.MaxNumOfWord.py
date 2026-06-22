@@ -30,6 +30,23 @@ from collections import Counter
 
 class Solution:
   def maxNumberOfBalloons(self, text: str) -> int:
+    c = Counter(text)
+    # print('init:', c)
+    cnt = len(text)
+
+    for ch in 'balon':
+      if ch not in c:
+        cnt = 0
+        break
+
+      if ch == 'l' or ch == 'o':
+        cnt = min(cnt, c[ch]//2)
+      else:
+        cnt = min(cnt, c[ch])
+
+    return cnt
+        
+  def maxNumberOfBalloons(self, text: str) -> int:
     count = Counter(text)
     ans = len(text)
     # print(count)  

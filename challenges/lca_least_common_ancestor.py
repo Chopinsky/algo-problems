@@ -111,15 +111,15 @@ class LCABinaryLifting:
 
     for v in self.graph[u]:
       if v != parent:
-        self._dfs(v, u, d + 1)
+        self._dfs(v, u, d+1)
 
   def _build_parents(self):
     """Build binary lifting table"""
     for k in range(1, self.log):
       for u in range(self.n):
-        prev_parent = self.parent[u][k - 1]
-        if prev_parent != -1:
-          self.parent[u][k] = self.parent[prev_parent][k - 1]
+        prev_parent = self.parent[u][k-1]
+        if prev_parent >= 0:
+          self.parent[u][k] = self.parent[prev_parent][k-1]
 
   def find_lca(self, u: int, v: int) -> int:
     """
@@ -140,7 +140,7 @@ class LCABinaryLifting:
 
     # Lift u to same depth as v
     for k in range(self.log):
-      if diff & (1 << k):
+      if diff & (1<<k):
         u = self.parent[u][k]
 
     # If u == v, one is ancestor of the other
@@ -149,6 +149,7 @@ class LCABinaryLifting:
 
     # Lift both nodes until their parents are the same
     for k in reversed(range(self.log)):
+      # binary lift: only lift if not the same parent after jumping 1<<k level up
       if self.parent[u][k] != self.parent[v][k]:
         u = self.parent[u][k]
         v = self.parent[v][k]
@@ -170,10 +171,11 @@ class LCABinaryLifting:
       return -1
 
     for i in range(self.log):
-      if k & (1 << i):
+      if k & (1<<i):
         u = self.parent[u][i]
         if u == -1:
           return -1
+
     return u
 
 

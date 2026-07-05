@@ -32,6 +32,49 @@ from typing import List
 class Solution:
   def pathsWithMaxScore(self, board: List[str]) -> List[int]:
     n = len(board)
+    dp = [[[0]*2 for _ in range(n)] for _ in range(n)]
+    dp[-1][-1][1] = 1
+    mod = 10**9 + 7
+
+    def update(x0: int, y0: int, x1: int, y1: int):
+      if x1 >= n or y1 >= n:
+        return
+
+      val = 0 if x == 0 and y == 0 else int(board[x][y])
+      v0, _ = dp[x0][y0]
+      v1, c1 = dp[x1][y1]
+
+      if c1 == 0:
+        return
+
+      if val+v1 > v0:
+        dp[x0][y0][0] = val+v1
+        dp[x0][y0][1] = c1
+        return
+
+      if val+v1 == v0:
+        dp[x0][y0][1] = (dp[x0][y0][1] + c1) % mod
+
+    for x in range(n-1, -1, -1):
+      for y in range(n-1, -1, -1):
+        s = board[x][y]
+        if s == 'X':
+          continue
+
+        # move up
+        update(x, y, x+1, y)
+
+        # move left
+        update(x, y, x, y+1)
+
+        # move up-left
+        update(x, y, x+1, y+1)
+
+    # print('done:', dp)
+    return [dp[0][0][0], dp[0][0][1]]
+        
+  def pathsWithMaxScore(self, board: List[str]) -> List[int]:
+    n = len(board)
     mod = 1_000_000_007
     stack, nxt = set([(n-1, n-1)]), set()
     

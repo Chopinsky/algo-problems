@@ -22,6 +22,10 @@ Constraints:
 -105 <= nums[i] <= 105
 '''
 
+import math
+from typing import List
+
+
 class Solution:
   def maxValueAfterReverse(self, nums: List[int]) -> int:
     n = len(nums)

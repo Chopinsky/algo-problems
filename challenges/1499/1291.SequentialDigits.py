@@ -18,8 +18,40 @@ Constraints:
 '''
 
 from typing import List
+from bisect import bisect_left, bisect_right
+
+
+top = 10**9
+cand = set()
+
+def gen(base: int):
+  d = base % 10
+  if d >= 9:
+    return
+
+  nxt = 10*base + (d+1)
+  if nxt > top:
+    return
+
+  cand.add(nxt)
+  gen(nxt)
+
+for base in range(1, 10):
+  gen(base)
+
+vals = sorted(cand)
+
 
 class Solution:
+  def sequentialDigits(self, low: int, high: int) -> List[int]:
+    # print('init', vals)
+    l = bisect_left(vals, low)
+    r = bisect_right(vals, high)
+    if l >= r:
+      return []
+
+    return vals[l:r]
+
   def sequentialDigits(self, low: int, high: int) -> List[int]:
     low_str = str(low)
     high_str = str(high)

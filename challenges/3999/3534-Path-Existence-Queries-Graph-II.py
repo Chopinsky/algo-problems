@@ -8,6 +8,63 @@ from functools import cache
 
 class Solution:
   def pathExistenceQueries(self, n: int, nums: List[int], maxDiff: int, queries: List[List[int]]) -> List[int]:
+    order = sorted(range(n), key=lambda i: nums[i])
+    vals = [nums[i] for i in order]
+    pos = [0] * n
+
+    for i, idx in enumerate(order):
+      pos[idx] = i
+
+    comp = [0] * n
+    cid = 0
+
+    for i in range(1, n):
+      if vals[i]-vals[i-1] > maxDiff:
+        cid += 1
+    
+      comp[i] = cid
+
+    nxt: List[int] = list(range(n))
+    r = 0
+
+    for l in range(n):
+      while r+1 < n and vals[r+1]-vals[l] <= maxDiff:
+        r += 1
+
+      nxt[l] = r
+
+    LOG = (n+1).bit_length()
+    up = [nxt]
+    
+    for _ in range(1, LOG):
+      prev = up[-1]
+      up.append([prev[prev[i]] for i in range(n)])
+
+    ans = []
+    for u, v in queries:
+      pu, pv = pos[u], pos[v]
+      if pu == pv:
+        ans.append(0)
+        continue
+
+      l, r = (pu, pv) if pu < pv else (pv, pu)
+      if comp[l] != comp[r]:
+        ans.append(-1)
+        continue
+
+      cur = l
+      dist = 0
+
+      for k in range(LOG - 1, -1, -1):
+        if up[k][cur] < r:
+          cur = up[k][cur]
+          dist += 1 << k
+
+      ans.append(dist+1)
+
+    return ans
+
+  def pathExistenceQueries0(self, n: int, nums: List[int], maxDiff: int, queries: List[List[int]]) -> List[int]:
     for query in queries:
       if nums[query[0]] > nums[query[1]]:
         query[0], query[1] = query[1], query[0]

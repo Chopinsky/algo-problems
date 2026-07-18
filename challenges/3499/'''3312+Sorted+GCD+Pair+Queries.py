@@ -15,6 +15,37 @@ for v0 in range(1, MAX):
 
 
 class Solution:
+  def gcdValues(self, nums: List[int], queries: List[int]) -> List[int]:
+    m = max(nums)
+    cnt = [0] * (m+1)
+
+    for val in nums:
+      cnt[val] += 1
+
+    for v0 in range(1, m+1):
+      for v1 in range(2*v0, m+1, v0):
+        # count of vals that will have gcd as v0
+        cnt[v0] += cnt[v1]
+
+    for v0 in range(1, m+1):
+      cnt[v0] = cnt[v0] * (cnt[v0]-1) // 2
+
+    for v0 in range(m, 0, -1):
+      for v1 in range(2*v0, m+1, v0):
+        # remove single counts
+        cnt[v0] -= cnt[v1]
+
+    for v0 in range(1, m+1):
+      # convert to accumulate counts to get ranks
+      cnt[v0] += cnt[v0-1]
+
+    ans = []
+    for q in queries:
+      pos = bisect_left(cnt, q+1)
+      ans.append(pos)
+
+    return ans
+
   '''
   the idea is to calculate the count of value pairs for common denominator, this will be done
   be get the counter of values [1, MAX], then check and count the number of values that has 

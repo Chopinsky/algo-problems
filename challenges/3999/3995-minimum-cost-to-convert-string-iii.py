@@ -18,6 +18,16 @@ class Solution:
     for (pat, rep), c in zip(rules, costs):
       cand.append((pat, rep, len(pat), c+pat.count('*')))
 
+    def is_valid(i: int, l: int, pat: str, rep: str) -> bool:
+      for k in range(l):
+        if pat[k] != source[i+k] and pat[k] != '*':
+          return False
+
+        if rep[k] != target[i+k]:
+          return False
+
+      return True
+
     for i in range(n-1, -1, -1):
       # can skip any replacement use past
       # best results
@@ -28,24 +38,7 @@ class Solution:
         if i+l > n:
           continue
 
-        ok = True
-
-        # check if pattern can be applied
-        for k in range(l):
-          if pat[k] != '*' and pat[k] != source[i+k]:
-            ok = False
-            break
-
-        if not ok:
-          continue
-
-        # check if replacement is the correct target seg
-        for k in range(l):
-          if rep[k] != target[i+k]:
-            ok = False
-            break
-
-        if not ok:
+        if not is_valid(i, l, pat, rep):
           continue
 
         # can replace with this cand pattern

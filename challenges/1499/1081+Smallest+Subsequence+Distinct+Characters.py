@@ -25,6 +25,31 @@ Note: This question is the same as 316: https://leetcode.com/problems/remove-dup
 
 class Solution:
   def smallestSubsequence(self, s: str) -> str:
+    pos = {}
+    for i, ch in enumerate(s):
+      pos[ch] = i
+
+    stack = []
+    seen = set()
+
+    for i, ch in enumerate(s):
+      if ch in seen:
+        continue
+
+      # print('append:', ch)
+
+      # this char can appear later
+      while stack and stack[-1] > ch and i < pos[stack[-1]]:
+        c = stack.pop()
+        seen.discard(c)
+
+      stack.append(ch)
+      seen.add(ch)
+      # print('curr:', stack)
+
+    return "".join(stack)
+
+  def smallestSubsequence(self, s: str) -> str:
     last = {c: i for i, c in enumerate(s)}
     stack = []
     

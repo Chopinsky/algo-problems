@@ -1,4 +1,4 @@
-def manacher(s: str) -> str:
+def manacher_pali_len(s: str) -> str:
   """Return the longest palindromic substring in s."""
   # Phase 1: insert separators
   t = "#" + "#".join(s) + "#"

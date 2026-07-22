@@ -40,6 +40,19 @@ from typing import List
 class Solution:
   def shiftGrid(self, grid: List[List[int]], k: int) -> List[List[int]]:
     m, n = len(grid), len(grid[0])
+    ans = [[0]*n for _ in range(m)]
+
+    for x0 in range(m):
+      for y0 in range(n):
+        h = (x0*n + y0 + k) % (m*n)
+        x1 = h // n
+        y1 = h % n
+        ans[x1][y1] = grid[x0][y0]
+
+    return ans
+        
+  def shiftGrid(self, grid: List[List[int]], k: int) -> List[List[int]]:
+    m, n = len(grid), len(grid[0])
     base = m * n
     
     if k % base == 0:

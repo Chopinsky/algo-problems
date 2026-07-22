@@ -18,7 +18,7 @@ def manacher_pali_len(s: str) -> str:
       p[i] += 1                        # L5
 
     # ----- L6: update rightmost palindrome -----
-    if i + p[i] > right:
+    if i+p[i] > right:
       center = i                       # L7
       right = i + p[i]                 # L8
 
@@ -26,4 +26,6 @@ def manacher_pali_len(s: str) -> str:
   max_radius = max(p)                      # L10
   center_idx = p.index(max_radius)         # L11
   start = (center_idx-max_radius) // 2     # L12
+
+  # longest palindrome in the string
   return s[start:start+max_radius]         # L13

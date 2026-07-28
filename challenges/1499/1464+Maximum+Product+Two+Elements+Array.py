@@ -30,6 +30,10 @@ from typing import List
 
 class Solution:
   def maxProduct(self, nums: List[int]) -> int:
+    nums = sorted(val-1 for val in nums)
+    return max(nums[-1]*nums[-2], nums[0]*nums[1])
+        
+  def maxProduct(self, nums: List[int]) -> int:
     ans = (nums[0]-1)*(nums[1]-1)
     prev = max(nums[:2])
     

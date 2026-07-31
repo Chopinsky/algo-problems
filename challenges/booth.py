@@ -1,4 +1,8 @@
 def booth_smallest_rotation(s: str) -> str:
+  '''
+  find the smallest string with rotations
+  '''
+
   base = s+s
   n = len(s)
 

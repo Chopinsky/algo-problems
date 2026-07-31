@@ -59,7 +59,23 @@ word consists of lowercase English letters.
 
 from collections import Counter
 
+
 class Solution:
+  def minimumPushes(self, word: str) -> int:
+    c = sorted(Counter(word).values(), reverse=True)
+    # print('init:', c)
+    curr = 0
+    total = 0
+
+    for i, cnt in enumerate(c):
+      if i % 8 == 0:
+        curr += 1
+
+      total += curr * cnt
+      # print('adding:', (curr, cnt), curr*cnt) 
+
+    return total  
+
   def minimumPushes(self, word: str) -> int:
     c = Counter(word)
     cand = sorted(cnt for cnt in c.values())

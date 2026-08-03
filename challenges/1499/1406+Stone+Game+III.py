@@ -39,10 +39,47 @@ Constraints:
 '''
 
 from typing import List
-from functools import lru_cache
+from functools import lru_cache, cache
+from math import inf
 
 
 class Solution:
+  def stoneGameIII(self, s: List[int]) -> str:
+    n = len(s)
+
+    @cache
+    def dp(i: int):
+      if i == n:
+        return (0, 0)
+
+      if i == n-1:
+        return (s[i], 0)
+
+      val = 0
+      diff = -inf
+      res = [-inf, 0]
+
+      for d in range(3):
+        if i+d >= n:
+          break
+
+        val += s[i+d]
+        b, a = dp(i+d+1)
+        a += val
+
+        if a-b > diff:
+          diff = a-b
+          res[0] = a
+          res[1] = b
+
+      return (res[0], res[1])
+
+    a, b = dp(0)
+    if a == b:
+      return "Tie"
+
+    return "Alice" if a > b else "Bob"
+        
   def stoneGameIII(self, stones: List[int]) -> str:
     n = len(stones)
     

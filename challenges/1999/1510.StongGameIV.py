@@ -29,11 +29,41 @@ Constraints:
 '''
 
 
-from functools import lru_cache
+from functools import cache, lru_cache
+from bisect import bisect_left
 from math import isqrt
 
 
+vals = []
+top = 10**5 + 1
+
+for i in range(1, 1+isqrt(top)):
+  vals.append(i*i)
+
+
 class Solution:
+  def winnerSquareGame(self, n: int) -> bool:
+    # print('init:', len(vals))
+    @cache
+    def dp(rem: int) -> bool:
+      if rem <= 0:
+        return False
+
+      i = bisect_left(vals, rem)
+      if i < len(vals) and vals[i] == rem:
+        return True
+
+      for val in vals:
+        if val >= rem:
+          break
+
+        if not dp(rem-val):
+          return True
+
+      return False
+
+    return dp(n)
+
   def winnerSquareGame(self, n: int) -> bool:
     @lru_cache(None)
     def dp(n: int) -> bool:

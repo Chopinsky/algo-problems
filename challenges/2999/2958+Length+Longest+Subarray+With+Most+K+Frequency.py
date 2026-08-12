@@ -51,7 +51,25 @@ Constraints:
 from typing import List
 from collections import defaultdict
 
+
 class Solution:
+  def maxSubarrayLength(self, nums: List[int], k: int) -> int:
+    count = defaultdict(int)
+    l = 0
+    ln = 1
+
+    for r, val in enumerate(nums):
+      count[val] += 1
+      while count[val] > k:
+        prev = nums[l]
+        count[prev] -= 1
+        l += 1
+
+      ln = max(ln, r-l+1)
+      # print('done:', val, (l, r))
+        
+    return ln
+
   def maxSubarrayLength(self, nums: List[int], k: int) -> int:
     n = len(nums)
     if n <= k:

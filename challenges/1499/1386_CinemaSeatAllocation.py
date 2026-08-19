@@ -31,9 +31,49 @@ All reservedSeats[i] are distinct.
 '''
 
 from typing import List
+from collections import defaultdict
 
 
 class Solution:
+  def maxNumberOfFamilies(self, n: int, res: List[List[int]]) -> int:
+    res.sort()
+    rows = defaultdict(list)
+
+    for r, c in res:
+      rows[r].append(c)
+
+    # print('init:', rows)
+    cnt = 2 * (n - len(rows))
+
+    for row in rows.values():
+      row.append(11)
+
+      for i in range(len(row)):
+        r0 = row[i]
+        if i == 0:
+          if r0 >= 6:
+            cnt += 1
+
+          if r0 >= 10:
+            cnt += 1
+
+          continue
+
+        r1 = row[i-1]
+        if r1 < 2 and r0 >= 6:
+          if r0 >= 10:
+            cnt += 2
+          else:
+            cnt += 1
+
+        elif r1 < 4 and r0 >= 8:
+          cnt += 1
+
+        elif r1 < 6 and r0 >= 10:
+          cnt += 1
+
+    return cnt
+        
   def maxNumberOfFamilies(self, n: int, reserved: List[List[int]]) -> int:
     count = 0
     reserved.sort()

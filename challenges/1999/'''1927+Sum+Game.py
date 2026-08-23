@@ -45,6 +45,21 @@ num consists of only digits and '?'.
 
 
 class Solution:
+  def sumGame(self, num: str) -> bool:
+    half = len(num) // 2
+    left, right = num[:half], num[half:]
+
+    sum_left = sum(int(c) for c in left if c != "?")
+    sum_right = sum(int(c) for c in right if c != "?")
+    questions_left = left.count("?")
+    questions_right = right.count("?")
+
+    if (questions_left + questions_right) % 2 != 0:
+        return True
+
+    diff = sum_left - sum_right
+    return 2*diff != 9*(questions_right - questions_left)
+    
   '''
   the trick is that left/right sums need to be balanced, and if that's the case, Bob can always
   adjust his choice based on what Alice chose: num_alice_diff = <alice_number>-4.5, then Bob can

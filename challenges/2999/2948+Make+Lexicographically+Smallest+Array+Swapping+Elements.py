@@ -47,6 +47,25 @@ from heapq import heappush, heappop
 
 class Solution:
   def lexicographicallySmallestArray(self, nums: List[int], limit: int) -> List[int]:
+    cand = sorted((val, i) for i, val in enumerate(nums))
+    l = 0
+
+    def assign(l: int, r: int):
+      idx = sorted(v[1] for v in cand[l:r+1])
+      for i in idx:
+        nums[i] = cand[l][0]
+        l += 1
+
+    for r in range(1, len(cand)):
+      if cand[r][0]-cand[r-1][0] > limit:
+        assign(l, r-1)
+        l = r
+    
+    assign(l, len(cand)-1)
+
+    return nums
+
+  def lexicographicallySmallestArray(self, nums: List[int], limit: int) -> List[int]:
     groups = []
     label = {}
     ans = []

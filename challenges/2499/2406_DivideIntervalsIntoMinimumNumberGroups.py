@@ -35,6 +35,23 @@ from heapq import heappop, heappush
 
 class Solution:
   def minGroups(self, intervals: List[List[int]]) -> int:
+    t = []
+    for s, e in intervals:
+      t.append((s, 0))
+      t.append((e, 1))
+      
+    t.sort()
+    groups = 0
+    total = 0
+    # print('init:', t)
+    
+    for t0, typ in t:
+      groups += 1 if typ == 0 else -1
+      total = max(total, groups)
+        
+    return total    
+    
+  def minGroups(self, intervals: List[List[int]]) -> int:
     intervals.sort()
     groups = []
     

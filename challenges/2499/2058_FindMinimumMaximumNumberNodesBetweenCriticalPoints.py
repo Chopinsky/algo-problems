@@ -52,7 +52,53 @@ class ListNode:
     self.val = val
     self.next = next
 
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
 class Solution:
+  def nodesBetweenCriticalPoints(self, head: Optional[ListNode]) -> List[int]:
+    cand = []
+    prev = []
+    idx = 0
+    curr = head
+    dist = [math.inf, -math.inf]
+
+    def is_critical():
+      if len(prev) < 3:
+        return False
+
+      if prev[1] < prev[0] and prev[1] < prev[2]:
+        return True
+
+      if prev[1] > prev[0] and prev[1] > prev[2]:
+        return True
+
+      return False
+
+    while curr:
+      prev.append(curr.val)
+      if len(prev) > 3:
+        prev = prev[1:]
+
+      if is_critical():
+        cand.append(idx-1)
+
+      if len(cand) > 1:
+        dist[0] = min(dist[0], cand[-1]-cand[-2])
+        dist[1] = cand[-1]-cand[0]
+
+      curr = curr.next
+      idx += 1
+
+    # print('done:', cand)
+    if dist[0] >= math.inf or dist[1] <= -math.inf:
+      return [-1, -1]
+
+    return dist
+        
   def nodesBetweenCriticalPoints(self, head: Optional[ListNode]) -> List[int]:
     prev = None
     first = -1

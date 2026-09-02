@@ -45,6 +45,27 @@ from typing import List
 
 
 class Solution:
+  def minimumDeletions(self, nums: list[int]) -> int:
+    n = len(nums)
+    if n <= 2:
+      return n
+
+    i = nums.index(min(nums))
+    j = nums.index(max(nums))
+    if i > j:
+      i, j = j, i
+
+    # both from left
+    op1 = j+1
+
+    # both from right
+    op2 = n-i
+
+    # from both ends
+    op3 = (i+1) + (n-j)
+
+    return min(op1, op2, op3)
+
   def minimumDeletions(self, nums: List[int]) -> int:
     n = len(nums)
     if n <= 3:

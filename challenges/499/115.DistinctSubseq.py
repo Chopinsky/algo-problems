@@ -40,6 +40,24 @@ from bisect import bisect_right
 
 class Solution:
   def numDistinct(self, s: str, t: str) -> int:
+    ns = len(s)
+    nt = len(t)
+    if ns < nt:
+      return 0
+
+    curr = {0:1}
+    for ch in s:
+      nxt = curr.copy()
+      for ln, cnt in curr.items():
+        # a match, advance
+        if ln < nt and ch == t[ln]:
+          nxt[ln+1] = nxt.get(ln+1, 0) + cnt
+
+      curr = nxt
+
+    return curr.get(nt, 0)
+
+  def numDistinct(self, s: str, t: str) -> int:
     if len(t) > len(s):
       return 0
     

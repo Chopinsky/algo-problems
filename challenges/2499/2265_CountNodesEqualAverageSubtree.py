@@ -41,6 +41,30 @@ class TreeNode:
 
 
 class Solution:
+  def averageOfSubtree(self, root: TreeNode) -> int:
+    count = 0
+
+    def iter(node: TreeNode):
+      nonlocal count
+      if not node:
+        return 0, 0
+
+      ls, lc = iter(node.left)
+      rs, rc = iter(node.right)
+      s = ls + rs + node.val
+      c = lc + rc + 1
+      avg = s // c
+      # print('iter:', node.val, avg)
+
+      if avg == node.val:
+        count += 1
+
+      return s, c
+
+    iter(root)
+    
+    return count
+
   def averageOfSubtree(self, root: Optional[TreeNode]) -> int:
     count = [0]
     

@@ -37,9 +37,46 @@ img2[i][j] is either 0 or 1.
 '''
 
 from typing import List
+from collections import Counter
+from functools import cache
 
 
 class Solution:
+  def largestOverlap(self, img1: List[List[int]], img2: List[List[int]]) -> int:
+    n = len(img1)
+    a = [(i, j) for i in range(n) for j in range(n) if img1[i][j]]
+    b = [(i, j) for i in range(n) for j in range(n) if img2[i][j]]
+    cnt = Counter((i - di, j - dj) for i, j in a for di, dj in b)
+    return max(cnt.values()) if cnt else 0
+
+  def largestOverlap0(self, img1: List[List[int]], img2: List[List[int]]) -> int:
+    m, n = len(img1), len(img2)
+    s1 = set((x, y) for x in range(m) for y in range(n) if img1[x][y] == 1)
+    s2 = [(x, y) for x in range(m) for y in range(n) if img2[x][y] == 1]
+    if not s1 or not s2:
+      return 0
+
+    # print('init:', s1, s2)
+
+    @cache
+    def count(dx: int, dy: int) -> int:
+      return sum(1 if (x+dx, y+dy) in s1 else 0 for x, y in s2)
+
+    def find(x0: int, y0: int) -> int:
+      cnt = 0
+      for x1 in range(m):
+        for y1 in range(n):
+          cnt = max(cnt, count(x0-x1, y0-y1))
+
+      return cnt
+
+    return max(
+      find(0, 0),
+      find(0, n-1),
+      find(m-1, 0),
+      find(m-1, n-1),
+    )
+
   def largestOverlap(self, img1: List[List[int]], img2: List[List[int]]) -> int:
     m, n = len(img1), len(img1[0])
     tgt = set()

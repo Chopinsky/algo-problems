@@ -36,6 +36,40 @@ import math
 
 class Solution:
   def minSumOfLengths(self, arr: List[int], target: int) -> int:
+    p = {0:-1}
+    n = len(arr)
+    ln = [0]*n
+    curr = 0
+    ans = -1
+
+    for i, val in enumerate(arr):
+      curr += val
+      t0 = curr-target
+
+      # prev short
+      if i > 0:
+        ln[i] = ln[i-1]
+      
+      # can't form a cand
+      if t0 not in p:
+        p[curr] = i
+        continue
+
+      j = p[t0]
+      l0 = i-j
+      l1 = ln[j]
+
+      # set the values
+      ln[i] = min(ln[i], l0) if ln[i] > 0 else l0
+      p[curr] = i
+
+      if l1 > 0:
+        ans = min(ans, l0+l1) if ans > 0 else l0+l1
+        # print('iter:', (j, i), l0, l1)
+        
+    return ans
+
+  def minSumOfLengths(self, arr: List[int], target: int) -> int:
     prefix = {0:-1}
     cand = []
     idx = 0

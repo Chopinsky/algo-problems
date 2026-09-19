@@ -31,6 +31,29 @@ from math import sqrt
 
 
 class Solution:
+  def checkOverlap(self, radius: int, xCenter: int, yCenter: int, x1: int, y1: int, x2: int, y2: int) -> bool:
+    if x1 <= xCenter <= x2:
+      if y1 <= yCenter <= y2:
+        return True
+
+      dist = min(abs(y1-yCenter), abs(y2-yCenter))
+      # print('c1:', dist, radius)
+      return dist <= radius
+
+    if y1 <= yCenter <= y2:
+      dist = min(abs(x1-xCenter), abs(x2-xCenter))
+      # print('c2:', dist, radius)
+      return dist <= radius
+
+    corners = [(x1, y1), (x1, y2), (x2, y1), (x2, y2)]
+    for x, y in corners:
+      l0 = sqrt((xCenter-x)**2 + (yCenter-y)**2)
+      # print('iter:', (x, y), l0, radius)
+      if l0 <= radius:
+        return True
+
+    return False
+
   def checkOverlap(self, radius: int, xc: int, yc: int, x1: int, y1: int, x2: int, y2: int) -> bool:
     if x1 <= xc <= x2 and y1 <= yc <= y2:
       return True

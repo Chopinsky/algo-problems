@@ -36,11 +36,91 @@ s contains only lowercase English letters.
 
 
 from typing import List, Tuple
-from functools import lru_cache
-from bisect import bisect_right
+from functools import lru_cache, cache
+from bisect import bisect_right, bisect_left
+from collections import defaultdict
 
 
 class Solution:
+  def maxNumOfSubstrings(self, s: str) -> list[str]:
+    pos = defaultdict(list)
+
+    def get_rng(i: int):
+      if i not in pos:
+        return (-1, -1)
+
+      l = pos[i][0]
+      r = pos[i][-1]
+      if l == r:
+        return (l, r)
+
+      done = False
+      while not done:
+        done = True
+        for lst in pos.values():
+          if lst[0] > r or lst[-1] < l:
+            continue
+
+          if l <= lst[0] and lst[-1] <= r:
+            continue
+
+          j = bisect_left(lst, l)
+          k = bisect_right(lst, r)-1
+          if k < j:
+            continue
+        
+          done = False
+          l = min(l, lst[0])
+          r = max(r, lst[-1])
+
+      return (l, r)
+
+    for i, ch in enumerate(s):
+      idx = ord(ch) - ord('a')
+      pos[idx].append(i)
+        
+    cand = set()
+    # print('init:', pos)
+
+    for i in range(26):
+      if i not in pos:
+        continue
+
+      rng = get_rng(i)
+      cand.add(rng)
+      # print('add:', i, rng, s[rng[0]:rng[1]+1])
+
+    lst = []
+    cand = sorted(cand, key=lambda x: x[1])
+    # print('done:', cand)
+
+    @cache
+    def dp(idx: int):
+      if idx >= cand[-1][-1]:
+        return ()
+
+      curr = ()
+      cnt = 0
+
+      for l, r in cand:
+        if l <= idx:
+          continue
+
+        # taking this interval
+        lst = dp(r)
+        nxt_ln = 1+len(lst)
+        nxt_cnt = (r-l+1) + sum(len(w) for w in lst)
+
+        if nxt_ln > len(curr) or (nxt_ln == len(curr) and nxt_cnt < cnt):
+          curr = ((l, r), ) + lst
+          cnt = nxt_cnt
+      
+      return curr
+
+    arr = dp(-1)
+
+    return [s[i:j+1] for i, j in arr]
+
   def maxNumOfSubstrings(self, s: str) -> List[str]:
     ch_pos = [None for i in range(26)]
     
@@ -64,44 +144,6 @@ class Solution:
         if l1 < i < r1:
           ch_pos[j][0] = min(l0, l1)
           ch_pos[j][1] = max(r0, r1)
-        
-    ''' 
-    # alternative way to obtain expanded range:
-    substr_raw = [(ch_pos[i][0], ch_pos[i][-1], i) for i in range(26) if ch_pos[i]]
-    # substr_raw.sort(key=lambda x: (x[1]-x[0], x[0], x[1]))
-    substr = {}
-    
-    for l0, r0, idx in substr_raw:
-      curr = 0
-      while curr < len(substr_raw):
-        l1, r1, jdx = substr_raw[curr]
-        curr += 1
-        
-        # same region, or no intersection
-        if idx == jdx or r0 < l1 or r1 < l0:
-          continue
-        
-        # expand the substr to contain all occurance
-        # of string
-        if l0 < l1 < r0 < r1:
-          # partial intersection, expand right
-          r0 = r1
-          curr = 0
-        elif l1 < l0 < r1 < r0:
-          # partial intersection, expand left
-          l0 = l1
-          curr = 0
-        elif l1 < l0 and r0 < r1:
-          # check if there's an intersection
-          k = bisect_right(ch_pos[jdx], l0)
-          if k < len(ch_pos[jdx]) and ch_pos[jdx][k] < r0:
-            l0, r0 = l1, r1
-            curr = 0
-          
-      substr[idx] = (l0, r0)
-    
-    substr = sorted(substr.values())
-    '''
 
     substr = [(ch_pos[i][0], ch_pos[i][-1]) for i in range(26) if ch_pos[i]]
     substr.sort()

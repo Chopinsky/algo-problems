@@ -41,6 +41,81 @@ from typing import List
 
 
 class Solution:
+  def braceExpansionII(self, e: str) -> list[str]:
+    n = len(e)
+    if not e:
+      return [e]
+
+    def gen(i: int):
+      res = set()
+      curr = [""]
+      j = i
+
+      while j < n:
+        ch = e[j]
+        if ch == '}':
+          res |= set(curr)
+          j += 1
+          break
+
+        if ch == '{':
+          arr, j = gen(j+1)
+          nxt = []
+
+          for s0 in curr:
+            for s1 in arr:
+              if not s1:
+                continue
+
+              nxt.append(s0+s1)
+
+          curr = nxt
+          continue
+
+        if ch == ',':
+          res |= set(curr)
+          curr = [""]
+          j += 1
+          continue
+
+        # a char, append to the current strings
+        for i in range(len(curr)):
+          curr[i] += ch
+
+        j += 1
+
+      # print('gen:', e[i:j+1], res)
+      if curr:
+        res |= set(curr)
+
+      return res, j
+
+    i = 1 if e[0] == '{' else 0
+    ans = set()
+
+    while i < n:
+      res, i = gen(i)
+      res.discard("")
+      if not ans:
+        ans = res
+        continue
+
+      nxt = set()
+      for s0 in ans:
+        if not s0:
+          continue
+
+        for s1 in res:
+          if not s1:
+            continue
+            
+          nxt.add(s0+s1)
+      
+      ans = nxt
+      # print('inner:', res, nxt)
+
+    return sorted(ans)
+        
   def braceExpansionII(self, expr: str) -> List[str]:
     idx = 0
     n = len(expr)

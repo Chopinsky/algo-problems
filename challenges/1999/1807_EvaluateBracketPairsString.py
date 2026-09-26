@@ -51,6 +51,37 @@ from typing import List
 
 
 class Solution:
+  def evaluate(self, s: str, knowledge: list[list[str]]) -> str:
+    res = ""
+    k = {a[0]:a[1] for a in knowledge}
+    v = ""
+    is_variable = False
+    # print('init:', k)
+
+    for ch in s:
+      if ch == '(':
+        is_variable = True
+        continue
+
+      if ch == ')':
+        is_variable = False
+        # print('replace:', v)
+        if v in k:
+          res += k[v]
+        else:
+          res += "?"
+
+        v = ""
+
+        continue
+
+      if is_variable:
+        v += ch
+      else:
+        res += ch
+
+    return res
+        
   def evaluate(self, s: str, knowledge: List[List[str]]) -> str:
     k = {}
     for key, val in knowledge:

@@ -29,7 +29,25 @@ s only contains lower case English characters and parentheses.
 It is guaranteed that all parentheses are balanced.
 '''
 
+
 class Solution:
+  def reverseParentheses(self, s: str) -> str:
+    stack = [""]
+
+    for ch in s:
+      if ch == "(":
+        stack.append("")
+        continue
+
+      if ch == ")":
+        curr = stack.pop()
+        stack[-1] += curr[::-1]
+        continue
+
+      stack[-1] += ch
+
+    return stack[0]
+
   def reverseParentheses(self, s: str) -> str:
     curr = ''
     stack = []

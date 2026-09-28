@@ -33,7 +33,23 @@ s consists of digits 0-9 and characters '+', '-', '*', '/', '(', and ')'.
 It is guaranteed that parentheses expression s is a VPS.
 '''
 
+
 class Solution:
+  def maxDepth(self, s: str) -> int:
+    cnt = 0
+    max_cnt = 0
+
+    for ch in s:
+      if ch == '(':
+        cnt += 1
+        max_cnt = max(max_cnt, cnt)
+        continue
+
+      if ch == ')':
+        cnt -= 1
+
+    return max_cnt
+
   def maxDepth(self, s: str) -> int:
     level = 0
     max_level = 0

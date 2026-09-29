@@ -35,9 +35,31 @@ grid[i][j] is either '(' or ')'.
 '''
 
 from typing import List
+from functools import cache
 
 
 class Solution:
+  def hasValidPath(self, grid: list[list[str]]) -> bool:
+    m, n = len(grid), len(grid[0])
+    if m <= 0 or n <= 0:
+      return False
+
+    @cache
+    def dp(x: int, y: int, bal: int) -> bool:
+      if x >= m or y >= n:
+        return False
+
+      bal += 1 if (grid[x][y] == '(') else -1
+      if bal < 0:
+        return False
+
+      if x == m-1 and y == n-1:
+        return bal == 0
+
+      return dp(x+1, y, bal) or dp(x, y+1, bal)
+
+    return dp(0, 0, 0)
+
   def hasValidPath(self, grid: List[List[str]]) -> bool:
     m, n = len(grid), len(grid[0])
     if grid[0][0] == ')' or grid[-1][-1] == '(':

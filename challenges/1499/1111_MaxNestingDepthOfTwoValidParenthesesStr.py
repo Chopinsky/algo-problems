@@ -39,6 +39,31 @@ from typing import List
 
 
 class Solution:
+  def maxDepthAfterSplit(self, seq: str) -> list[int]:
+    ans = []
+    level = 0
+    a = 0
+    b = 0
+
+    for ch in seq:
+      if ch == '(':
+        if a < b:
+          a += 1
+          ans.append(0)
+        else:
+          b += 1
+          ans.append(1)
+
+      else:
+        if a > b:
+          a -= 1
+          ans.append(0)
+        else:
+          b -= 1
+          ans.append(1)
+
+    return ans
+
   def maxDepthAfterSplit(self, seq: str) -> List[int]:
     n = len(seq)
     balance = []

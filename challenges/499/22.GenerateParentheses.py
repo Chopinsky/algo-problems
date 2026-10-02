@@ -21,8 +21,39 @@ from typing import List
 from itertools import combinations
 
 class Solution:
-  def generateParenthesis(self, n: int) -> List[str]:
+  def generateParenthesis(self, n: int) -> list[str]:
+    @functools.cache
+    def dp(n: int) -> tuple:
+      if n == 1:
+        return tuple(["()"])
 
+      if n <= 0:
+        return tuple([""])
+
+      res = set()
+
+      for i in range(1, n):
+        for p0 in dp(i):
+          if n-i > i:
+            break
+
+          for p1 in dp(n-i):
+            res.add(p0+p1)
+            res.add(p1+p0)
+
+            if p0:
+              res.add(p0[0] + p1 + p0[1:])
+              res.add(p0[:-1] + p1 + p0[-1])
+
+            if p1:
+              res.add(p1[0] + p0 + p1[1:])
+              res.add(p1[:-1] + p0 + p1[-1])
+
+      return tuple(res)
+
+    return sorted(dp(n))
+
+  def generateParenthesis(self, n: int) -> List[str]:
     @functools.cache
     def generate(num: int) -> List[str]:
       if num == 0:

@@ -34,7 +34,30 @@ Test cases:
 "()(((()(()))))"
 '''
 
+
 class Solution:
+  def longestValidParentheses(self, s: str) -> int:
+    stack = [-1]  # stack[0] is always the "tomestone" for valid substring start
+    max_len = 0 
+
+    for i in range(len(s)):
+      if s[i] == "(":
+        stack.append(i)
+        continue
+
+      if stack:
+        stack.pop()
+
+      if len(stack) == 0:
+        # a new start
+        stack.append(i)
+        continue
+
+      # count length from the last valid point
+      max_len = max(max_len, i-stack[-1])
+    
+    return max_len
+  
   def longestValidParentheses(self, s: str) -> int:
     stack = []
     long = 0

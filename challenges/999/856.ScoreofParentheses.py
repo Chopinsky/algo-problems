@@ -31,6 +31,22 @@ s is a balanced parentheses string.
 
 class Solution:
   def scoreOfParentheses(self, s: str) -> int:
+    stack = [0]
+
+    for ch in s:
+      if ch == '(':
+        stack.append(0)
+        continue
+
+      curr = stack.pop()
+      if curr == 0:
+        stack[-1] += 1
+      else:
+        stack[-1] += 2*curr
+
+    return stack[0]
+
+  def scoreOfParentheses(self, s: str) -> int:
     def dp(i: int, j: int) -> int:
       if i+1 == j:
         return 1

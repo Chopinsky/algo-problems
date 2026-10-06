@@ -26,7 +26,23 @@ Constraints:
 s[i] is either '(' or ')'.
 '''
 
+
 class Solution:
+  def minAddToMakeValid(self, s: str) -> int:
+    ops = 0
+    bal = 0
+
+    for ch in s:
+      if ch == '(':
+        bal += 1
+      else:
+        if bal <= 0:
+          ops += 1
+        else:
+          bal -= 1
+
+    return ops + abs(bal)
+
   def minAddToMakeValid(self, s: str) -> int:
     added = 0
     balance = 0

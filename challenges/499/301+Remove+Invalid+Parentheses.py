@@ -26,8 +26,41 @@ There will be at most 20 parentheses in s.
 '''
 
 from typing import List
+from functools import cache, lru_cache
+
 
 class Solution:
+  def removeInvalidParentheses(self, s: str) -> list[str]:
+    n = len(s)
+
+    @cache
+    def dp(i: int, bal: int, prev: str) -> list:
+      if bal < 0:
+        return []
+
+      if i >= n:
+        return [prev] if bal == 0 else []
+
+      if s[i] != '(' and s[i] != ')':
+        return dp(i+1, bal, prev+s[i])
+
+      res = set()
+      ln = 0
+      cand = dp(i+1, bal+(1 if s[i] == '(' else -1), prev+s[i]) + dp(i+1, bal, prev)
+
+      # if use it
+      for w in cand:
+        if len(w) > ln:
+          ln = len(w)
+          res.clear()
+          res.add(w)
+        elif len(w) == ln:
+          res.add(w)
+
+      return list(res)
+
+    return dp(0, 0, "")
+
   def removeInvalidParentheses(self, s: str) -> List[str]:
     n = len(s)
     

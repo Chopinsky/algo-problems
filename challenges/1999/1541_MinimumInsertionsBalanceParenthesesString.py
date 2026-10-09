@@ -38,6 +38,51 @@ s consists of '(' and ')' only.
 
 class Solution:
   def minInsertions(self, s: str) -> int:
+    stack = [0, 0]
+    ops = 0
+
+    for ch in s:
+      # print('iter-start:', ch, ops, stack)
+      # closing para
+      if ch == ')':
+        stack[1] += 1
+        continue
+
+      # opening para
+      if stack[1] == 0:
+        stack[0] += 1
+        continue
+
+      # need to pop all closing para
+      if stack[1]%2 == 1:
+        ops += 1
+        stack[1] += 1
+
+      lc = stack[1]//2
+      if lc > stack[0]:
+        ops += lc - stack[0]
+        stack[0] = 0
+      else:
+        stack[0] -= lc
+
+      stack[0] += 1
+      stack[1] = 0
+      # print('iter-end:', ops, stack)
+
+    # final tally
+    if stack[1]%2 == 1:
+      ops += 1
+      stack[1] += 1
+
+    lc = stack[1]//2
+    if lc > stack[0]:
+      ops += lc - stack[0]
+    else:
+      ops += 2*(stack[0] - lc)
+
+    return ops
+
+  def minInsertions(self, s: str) -> int:
     b = 0
     cnt = 0
     

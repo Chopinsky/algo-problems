@@ -41,17 +41,42 @@ from typing import List
 
 class Solution:
   def minSumSquareDiff(self, nums1: List[int], nums2: List[int], k1: int, k2: int) -> int:
+    k = k1 + k2
+    d = [abs(a-b) for a, b in zip(nums1, nums2)]
+
+    if sum(d) <= k:
+      return 0
+
+    d.sort(reverse=True)
+    d.append(0)
+    n = len(nums1)
+
+    for i in range(1, n+1):
+      cost = (d[i-1] - d[i]) * i
+      if cost > k:
+        q, r = divmod(k, i)
+        hi = d[i-1] - q
+        return (
+          hi * hi * (i - r)
+          + (hi - 1) * (hi - 1) * r
+          + sum(x * x for x in d[i:n])
+        )
+
+      k -= cost
+
+    return 0
+
+  def minSumSquareDiff(self, nums1: List[int], nums2: List[int], k1: int, k2: int) -> int:
     arr = sorted(abs(n1-n2) for n1, n2 in zip(nums1, nums2))
     if k1 == 0 and k2 == 0:
       return sum(x*x for x in arr)
     
     # print(arr)
     cnt = k1+k2
-    n = len(arr)
     if cnt >= sum(arr):
       return 0
     
-    def check(th):
+    def check(th: int) -> int:
       cost = 0
       for val in arr:
         cost += max(0, val-th)

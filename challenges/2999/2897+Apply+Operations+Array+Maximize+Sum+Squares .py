@@ -41,6 +41,28 @@ from collections import defaultdict
 
 class Solution:
   def maxSum(self, nums: List[int], k: int) -> int:
+    m = max(nums).bit_length()
+    c = [0]*m 
+    mod = 10**9 + 7
+
+    for x in nums:
+      for i in range(m):
+        if x & (1<<i) > 0:
+          c[i] += 1
+
+    res = 0
+    for _ in range(k):
+      x = 0
+      for i in range(m):
+        if c[i] > 0:
+          x |= 1 << i 
+          c[i] -= 1
+
+      res += x * x 
+
+    return res % mod
+
+  def maxSum(self, nums: List[int], k: int) -> int:
     mod = 10**9+7
     c = defaultdict(int)
     stack = []

@@ -43,7 +43,130 @@ Constraints:
 from typing import List
 
 
+class Node:
+  def __init__(self, lo: int, hi: int):
+    self.lo = lo
+    self.hi = hi
+    self.val = 0
+    self.lazy = 0
+
+    if lo+1 < hi:
+      mid = (lo+hi) // 2
+      self.l = Node(lo, mid)
+      self.r = Node(mid, hi)
+
+  def update(self, val: int):
+    self.lazy += val
+    self.val += val * (self.hi - self.lo)
+
+  def query(self, lo: int, hi: int) -> int:
+    if lo <= self.lo and self.hi <= hi:
+      res = self.val
+      self.update(1)
+      return res
+
+    mid = (self.lo + self.hi) // 2
+    res = 0
+    
+    self.l.update(self.lazy)
+    self.r.update(self.lazy)
+    self.lazy = 0
+
+    if lo < mid:
+      res += self.l.query(lo, hi)
+    
+    if mid < hi:
+      res += self.r.query(lo, hi)
+
+    self.val = self.l.val + self.r.val
+    return res
+
+
 class Solution:
+  def sumCounts(self, nums: List[int]) -> int:
+    mod = 10**9 + 7
+    last = {}
+    tree = Node(0, len(nums))
+    res = 0
+    curr = 0
+
+    for i, val in enumerate(nums):
+      last_idx = last.get(val, -1) + 1
+      curr = (curr + (i-last_idx+1) + 2*tree.query(last_idx, i+1)) % mod
+      res += curr
+      last[val] = i
+
+    return res % mod
+
+  def sumCounts(self, nums: List[int]) -> int:
+    n = len(nums)
+    t = [0] * (4*n)
+    lz = [0] * (4*n)
+
+    def push(x: int, l: int, r: int):
+      if not lz[x]:
+        return
+
+      # push down the lz values tree
+      m = (l + r) // 2
+      
+      # l-child
+      t[2*x] += lz[x] * (m-l+1)
+      lz[2*x] += lz[x]
+
+      # r-child
+      t[2*x+1] += lz[x] * (r-m)
+      lz[2*x+1] += lz[x]
+
+      # reset lz
+      lz[x] = 0
+
+    def update(x: int, l: int, r: int, a: int, b: int):
+      # outside the bound, nothing to be done
+      if b < l or a > r:
+        return
+
+      # inclusive, update
+      if a <= l and r <= b:
+        t[x] += r-l+1
+        lz[x] += 1
+        return
+
+      # need to update the partial tree
+      push(x, l, r)
+      m = (l+r) // 2
+
+      # update the subtree
+      update(2*x, l, m, a, b)
+      update(2*x+1, m+1, r, a, b)
+      t[x] = t[2*x] + t[2*x+1]
+
+    def query(x: int, l: int, r: int, a: int, b: int) -> int:
+      if b < l or a > r:
+        return 0
+
+      if a <= l and r <= b:
+        return t[x]
+
+      push(x, l, r)
+      m = (l+r) // 2
+      return query(2*x, l, m, a, b) + query(2*x+1, m+1, r, a, b)
+
+    mod = 10**9 + 7
+    sq = 0
+    ans = 0
+    last = [-1] * 100001
+
+    for i in range(n):
+      p = last[nums[i]]
+      s = query(1, 0, n-1, p+1, i)
+      sq = (sq + 2*(s%mod) + (i-p)) % mod
+      update(1, 0, n-1, p+1, i)
+      ans = (ans + sq) % mod
+      last[nums[i]] = i
+
+    return ans
+
   def sumCounts(self, nums: List[int]) -> int:
     mod = 10**9 + 7
     n = len(nums)

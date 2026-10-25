@@ -32,12 +32,49 @@ Constraints:
 0 <= grid[i][j] <=1
 '''
 
-
-from typing import List, Tuple
+from typing import List
 from collections import deque
 
 
 class Solution:
+  def closedIsland(self, grid: list[list[int]]) -> int:
+    m = len(grid)
+    n = len(grid[0])
+    seen = set()
+    cnt = 0
+
+    def dfs(x: int, y: int) -> bool:
+      is_closed = 0 < x < m-1 and 0 < y < n-1
+      stack = [(x, y)]
+
+      while stack:
+        x0, y0 = stack.pop()
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+          x1, y1 = x0+dx, y0+dy
+          if x1 < 0 or x1 >= m or y1 < 0 or y1 >= n:
+            continue
+
+          if (x1, y1) in seen or grid[x1][y1] == 1:
+            continue
+
+          if x1 == 0 or x1 == m-1 or y1 == 0 or y1 == n-1:
+            is_closed = False
+
+          seen.add((x1, y1))
+          stack.append((x1, y1))
+
+      return is_closed
+
+    for x in range(m):
+      for y in range(n):
+        if (x, y) in seen or grid[x][y] == 1:
+          continue
+
+        if dfs(x, y):
+          cnt += 1
+
+    return cnt
+
   def closedIsland(self, grid: List[List[int]]) -> int:
     seen = set()
     m, n = len(grid), len(grid[0])

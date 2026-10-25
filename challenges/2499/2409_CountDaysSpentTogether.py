@@ -29,6 +29,29 @@ The given dates are valid dates of a non-leap year.
 
 
 class Solution:
+  def countDaysTogether(self, aa: str, la: str, ab: str, lb: str) -> int:
+    days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    for i in range(1, len(days)):
+      days[i] += days[i-1]
+
+    def to_day(d: str) -> int:
+      mo = int(d[:2])-1
+      dt = int(d[3:])
+      return dt + (days[mo-1] if mo > 0 else 0)
+
+    a = [to_day(aa), to_day(la)]
+    b = [to_day(ab), to_day(lb)]
+    if a[0] > b[0]:
+      a, b = b, a
+
+    # print('init:', a, b)
+    if a[1] < b[0]:
+      return 0
+
+    s = max(a[0], b[0])
+    e = min(a[1], b[1])
+    return e-s+1
+
   def countDaysTogether(self, arriveAlice: str, leaveAlice: str, arriveBob: str, leaveBob: str) -> int:
     def parse(s):
       dates = s.split('-')

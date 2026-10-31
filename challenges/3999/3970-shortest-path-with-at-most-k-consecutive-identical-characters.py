@@ -36,6 +36,7 @@ class Solution:
           # visited
           continue
 
+        # push to the stack
         seen[v, c1, cnt1] = w1
         heappush(stack, (w1, v, c1, cnt1))
 

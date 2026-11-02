@@ -29,6 +29,22 @@ import math
 
 
 class Solution:
+  def minMoves2(self, nums: list[int]) -> int:
+    nums.sort()
+    ans = sum(val-nums[0] for val in nums)
+    l = 0
+    r = ans
+    n = len(nums)
+
+    for i in range(1, n):
+      rc = n-i
+      diff = nums[i] - nums[i-1]
+      r -= rc * diff
+      l += i * diff
+      ans = min(ans, l+r)
+
+    return ans
+
   def minMoves2(self, nums: List[int]) -> int:
     nums.sort()
     n = len(nums)

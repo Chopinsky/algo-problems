@@ -33,7 +33,8 @@ class Solution:
       # find subarr if we exclude value at i 
       lval = 0
       for j in range(i, -1, -1):
-        lval = (lval + nums[j]*(-1 if j == i else 1)) % k      # left side sums
+        # left side sums
+        lval = (lval + nums[j]*(-1 if j == i else 1)) % k
         if lval == 0:
           ln = max(ln, i-j+1)
 

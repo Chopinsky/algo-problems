@@ -38,10 +38,46 @@ x < queries[i] <= 10^6
 '''
 
 from typing import List
-from collections import defaultdict
+from collections import defaultdict, deque
 
 
 class Solution:
+  def countServers(self, n: int, logs: List[List[int]], x: int, queries: List[int]) -> List[int]:
+    q = sorted((t0-x, t0, i) for i, t0 in enumerate(queries))
+    qln = len(q)
+    logs.sort(key=lambda x: x[1])
+    lln = len(logs)
+
+    i = 0
+    dq = deque()
+    ans = [0] * qln
+    cnt = defaultdict(int)
+    # print('init:', logs, q)
+
+    for s, e, j in q:
+      # skip logs not in the window
+      while i < lln and logs[i][1] < s:
+        i += 1
+
+      # add logs in the window
+      while i < lln and logs[i][1] <= e:
+        sid, t = logs[i]
+        cnt[sid] += 1
+        dq.append((t, sid))
+        i += 1
+
+      # pop logs moved out of the window
+      while dq and dq[0][0] < s:
+        _, sid = dq.popleft()
+        cnt[sid] -= 1
+        if not cnt[sid]:
+          del cnt[sid]
+
+      ans[j] = n - len(cnt)
+      # print('iter:', j, (s, e), cnt)
+
+    return ans
+
   '''
   idea is to use two-pointers in the logs to find the number of servers receiving events during
   the window for each query [t-x, t].

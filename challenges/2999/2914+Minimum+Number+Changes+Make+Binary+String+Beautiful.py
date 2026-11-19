@@ -42,6 +42,16 @@ class Solution:
   def minChanges(self, s: str) -> int:
     n = len(s)
     ops = 0
+
+    for i in range(1, n, 2):
+      if s[i] != s[i-1]:
+        ops += 1
+
+    return ops
+        
+  def minChanges(self, s: str) -> int:
+    n = len(s)
+    ops = 0
     pos = 0
     curr = s[0]
     i = 1

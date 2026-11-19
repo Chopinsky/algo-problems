@@ -37,6 +37,29 @@ from typing import List
 
 class Solution:
   def minimizeSum(self, nums: List[int]) -> int:
+    nums.sort()
+    n = len(nums)
+    # print('init:', nums)
+
+    l0 = min(nums[i]-nums[i-1] for i in range(1, n))
+    h0 = nums[-1] - nums[0]
+    ans = l0 + h0
+
+    # lift the left end
+    h1 = nums[-1] - nums[2]
+    ans = min(ans, h1)
+
+    # suppress the right end
+    h2 = nums[-3] - nums[0]
+    ans = min(ans, h2)
+
+    # move both ends
+    h3 = nums[-2] - nums[1]
+    ans = min(ans, h3)
+
+    return ans
+        
+  def minimizeSum(self, nums: List[int]) -> int:
     n = len(nums)
     if n <= 3:
       return 0

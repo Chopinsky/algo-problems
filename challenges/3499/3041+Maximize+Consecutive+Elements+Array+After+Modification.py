@@ -30,7 +30,37 @@ Constraints:
 from typing import List
 from collections import defaultdict
 
+
 class Solution:
+  def maxSelectedElements(self, nums: List[int]) -> int:
+    vals = sorted(nums)
+    prev, curr = {}, {}
+    prev[vals[0]] = 1
+    prev[vals[0]+1] = 1
+    ln = 1
+    # print('init:', vals, prev)
+
+    for val in vals[1:]:
+      # if remain as val
+      if val-1 in prev:
+        curr[val-1] = prev[val-1]
+        curr[val] = prev[val-1] + 1
+      
+      # if bumping up by 1
+      if val in prev:
+        curr[val+1] = prev[val] + 1
+
+      # if start fresh
+      curr[val] = max(curr.get(val, 0), 1)
+      curr[val+1] = max(curr.get(val+1, 0), 1)
+      # print('iter:', val, curr)
+
+      ln = max(ln, max(curr.values()))
+      prev, curr = curr, prev
+      curr.clear()
+
+    return ln
+
   def maxSelectedElements(self, nums: List[int]) -> int:
     nums.sort()
     conseq = defaultdict(int)
